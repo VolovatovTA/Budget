@@ -7,6 +7,9 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import ru.bysoft.budget.R
 import ru.bysoft.budget.uikit.colors.UiKitColors
 
 internal val LightColors = lightColors(
@@ -43,6 +46,10 @@ internal val Custom1Colors = customColors(
     onPrimary = UiKitColors.white,
     onSurface = UiKitColors.black,
     onError = UiKitColors.white
+)
+
+internal val Ermilov = FontFamily(
+    Font(R.font.ermilov)
 )
 
 enum class BudgetThemes {
