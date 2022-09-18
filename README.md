@@ -1,2 +1,2 @@
 # Budget
-Budget planer. Save your finance from the bags)
+Budget planer. Save your finance from the bags!
