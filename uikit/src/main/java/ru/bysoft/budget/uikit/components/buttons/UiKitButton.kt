@@ -1,4 +1,42 @@
 package ru.bysoft.budget.uikit.components.buttons
 
-class UiKitButton {
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import ru.bysoft.budget.uikit.colors.UiKitColors
+import ru.bysoft.budget.uikit.components.buttons.entity.BadgeButtonColors
+import ru.bysoft.budget.uikit.components.buttons.entity.UiKitButtonInfo
+import ru.bysoft.budget.uikit.theme.Ermilov
+
+@Composable
+fun UiKitButton(
+    info: UiKitButtonInfo,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier
+            .clip(RoundedCornerShape(10.dp))
+            .height(32.dp)
+        ,
+        colors = BadgeButtonColors(
+            backgroundColor = UiKitColors.col4,
+            contentColor = UiKitColors.white,
+            disabledBackgroundColor = UiKitColors.col3,
+            disabledContentColor = UiKitColors.white
+        )
+    ) {
+        Text(
+            info.text.uppercase(),
+            fontSize = 10.sp,
+            fontFamily = Ermilov
+        )
+    }
 }
