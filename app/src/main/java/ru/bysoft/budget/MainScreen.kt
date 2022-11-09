@@ -41,7 +41,6 @@ fun MainScreen() {
             ) {
                 Log.d(TAG, "MainScreen: click")
             }
-
         }
     }
 
