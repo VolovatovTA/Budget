@@ -18,7 +18,8 @@ import ru.bysoft.budget.uikit.theme.Ermilov
 fun UiKitButton(
     info: UiKitButtonInfo,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    enabled: Boolean = true,
+    onClick: () -> Unit = {}
 ) {
     Button(
         onClick = onClick,
@@ -27,11 +28,12 @@ fun UiKitButton(
             .height(32.dp)
         ,
         colors = BadgeButtonColors(
-            backgroundColor = UiKitColors.col4,
+            backgroundColor = UiKitColors.col6,
             contentColor = UiKitColors.white,
-            disabledBackgroundColor = UiKitColors.col3,
+            disabledBackgroundColor = UiKitColors.col4,
             disabledContentColor = UiKitColors.white
-        )
+        ),
+        enabled = enabled
     ) {
         Text(
             info.text.uppercase(),
