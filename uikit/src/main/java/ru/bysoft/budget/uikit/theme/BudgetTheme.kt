@@ -52,6 +52,10 @@ internal val Ermilov = FontFamily(
     Font(R.font.ermilov)
 )
 
+internal val Roboto = FontFamily(
+    Font(R.font.roboto)
+)
+
 enum class BudgetThemes {
     CUSTOM1
 }
