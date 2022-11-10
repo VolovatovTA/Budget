@@ -25,7 +25,7 @@ fun UiKitListItem(
     ) {
         UiKitAvatar(
             icon
-        ) {}
+        )
         Column(modifier = Modifier.padding(start = 20.dp)) {
             Text(
                 text = title,
