@@ -21,12 +21,14 @@ fun BottomNavigationNavHost() {
     }
 }
 
-open class BottomNavigationInfo(
+open class NavigationInfo(
     val route: String,
-    val icon: ImageVector
 )
 
+object BottomNavigation: NavigationInfo("bottom navigation")
+
 interface BottomNavigationButtonInfo{
+    val icon: ImageVector
     val label: String?
     val backgroundColor: Color
 }
