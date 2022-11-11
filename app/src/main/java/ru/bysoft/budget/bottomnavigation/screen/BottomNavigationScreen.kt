@@ -20,7 +20,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import ru.bysoft.budget.TAG
 import ru.bysoft.budget.common.navigation.home.Wallet
 import ru.bysoft.budget.common.navigation.qr.QRCode
 import ru.bysoft.budget.common.navigation.statistic.Plus
@@ -100,7 +99,6 @@ fun BottomNavigationScreen(navController: NavHostController = rememberNavControl
                 val launcher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.TakePicture(),
                     onResult = {
-                        Log.d(TAG, "Result from Camera")
                     }
                 )
                 LaunchedEffect(key1 = Unit) {
@@ -109,7 +107,7 @@ fun BottomNavigationScreen(navController: NavHostController = rememberNavControl
 
             }
             composable(Plus.route) {
-                Dialog(onDismissRequest = { Log.d(TAG, "onDismissDialog") }) {
+                Dialog(onDismissRequest = {  }) {
                     DialogCreateTransaction()
                 }
             }
