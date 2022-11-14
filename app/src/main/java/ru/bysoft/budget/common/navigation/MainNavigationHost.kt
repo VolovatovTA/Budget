@@ -5,8 +5,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ru.bysoft.budget.auth.screen.AuthScreen
-import ru.bysoft.budget.auth.screen.AuthViewModel
+import ru.bysoft.budget.auth.presentation.AuthScreen
+import ru.bysoft.budget.auth.presentation.AuthViewModel
 import ru.bysoft.budget.common.navigation.auth.Auth
 
 @Composable

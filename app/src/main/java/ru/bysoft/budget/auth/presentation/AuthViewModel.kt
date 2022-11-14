@@ -1,11 +1,11 @@
-package ru.bysoft.budget.auth.screen
+package ru.bysoft.budget.auth.presentation
 
-import android.provider.ContactsContract.CommonDataKinds.Email
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import ru.bysoft.budget.auth.data.IAuthRepository
+import ru.bysoft.budget.auth.presentation.entity.AuthState
 import javax.inject.Inject
 
 interface IAuthViewModel {
