@@ -2,13 +2,12 @@ package ru.bysoft.budget.auth.data.network
 
 import retrofit2.http.Body
 import retrofit2.http.POST
-import ru.bysoft.budget.auth.data.entity.AuthResponse
-import ru.bysoft.budget.auth.data.entity.SignInRequest
-import ru.bysoft.budget.auth.data.entity.SignUpRequest
+import ru.bysoft.budget.auth.data.network.entity.AuthResponse
+import ru.bysoft.budget.auth.data.network.entity.SignInRequest
+import ru.bysoft.budget.auth.data.network.entity.SignUpRequest
 
-
-const val postSignInRoute = "api/v1/users/signIn"
-const val postSignUpRoute = "api/v1/users/signUp"
+const val postSignInRoute = "users/api/v1/signIn"
+const val postSignUpRoute = "users/api/v1/signUp"
 
 interface IAuthApi {
     @POST(postSignInRoute)

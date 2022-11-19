@@ -1,4 +1,4 @@
-package ru.bysoft.budget.auth.data.entity
+package ru.bysoft.budget.auth.data.network.entity
 import com.google.gson.annotations.SerializedName
 
 
@@ -20,7 +20,9 @@ data class SignInRequest(
 
 data class AuthResponse(
     @SerializedName("access")
-    val accessToken: String,
+    val accessToken: String? = null,
     @SerializedName("refresh")
-    val refreshToken: String
+    val refreshToken: String? = null,
+    @SerializedName("slug")
+    val slug: String? = null
 )

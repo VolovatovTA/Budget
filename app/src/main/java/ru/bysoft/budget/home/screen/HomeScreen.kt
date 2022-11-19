@@ -24,11 +24,12 @@ import java.util.*
 @Composable
 fun HomeScreen() {
     Scaffold(
-        modifier = Modifier.fillMaxSize(), backgroundColor = UiKitColors.white
+        modifier = Modifier.fillMaxSize(), backgroundColor = UiKitColors.white,
+        bottomBar = {}
     ) {
         Column(
             modifier = Modifier
-//                .padding(it)
+                .padding(it)
                 .fillMaxSize()
                 .background(UiKitColors.white)
         ) {

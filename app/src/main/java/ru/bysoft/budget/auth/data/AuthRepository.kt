@@ -1,24 +1,38 @@
 package ru.bysoft.budget.auth.data
 
-import ru.bysoft.budget.auth.data.mapper.IAuthMapper
+import android.util.Log
+import ru.bysoft.budget.auth.data.entity.SignInData
+import ru.bysoft.budget.auth.data.entity.SignUpData
+import ru.bysoft.budget.auth.data.mapper.IAuthDataMapper
 import ru.bysoft.budget.auth.data.network.IAuthApi
+import ru.bysoft.budget.common.token.ITokenRepo
 import javax.inject.Inject
 
-interface IAuthRepository{
-    suspend fun signIn(phone: String)
-    suspend fun signUp(phone: String)
+const val TAG = "Timofey"
+
+interface IAuthRepository {
+    suspend fun signIn(signInData: SignInData)
+    suspend fun signUp(signUpData: SignUpData)
 }
 
 class AuthRepository @Inject constructor(
-    private val mapper: IAuthMapper,
-    private val api: IAuthApi
-): IAuthRepository {
+    private val mapper: IAuthDataMapper,
+    private val api: IAuthApi,
+    private val tokenRepo: ITokenRepo
+) : IAuthRepository {
 
-    override suspend fun signIn(phone: String) {
-        TODO("Not yet implemented")
+    override suspend fun signIn(signInData: SignInData) {
+        val authResponse = api.signIn(mapper.getSignInRequest(signInData))
+        Log.d(TAG, "signIn: $authResponse")
+        tokenRepo.saveToken(authResponse)
     }
 
-    override suspend fun signUp(phone: String) {
-        TODO("Not yet implemented")
+    override suspend fun signUp(signUpData: SignUpData) {
+        Log.d(TAG, "signUp: ")
+        val authResponse = api.signUp(mapper.getSignUpRequest(signUpData))
+        Log.d(TAG, "signUn: $authResponse")
+        tokenRepo.saveToken(authResponse)
     }
+
+
 }

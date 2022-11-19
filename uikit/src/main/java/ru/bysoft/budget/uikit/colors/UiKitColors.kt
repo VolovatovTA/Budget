@@ -16,6 +16,7 @@ class UiKitColors {
         val col6 = Color(0xFF00AF85)
         val col7 = Color(0x80296B66)
         val colE = Color(0xFFEEEEEE)
+        val red1 = Color(0xFFEB5757)
 
         val blue123 = Color(0xFF018786)
         val white = Color.White
@@ -32,8 +33,7 @@ class UiKitColors {
             disabledLeadingIconColor = black,
             disabledPlaceholderColor = col2,
             disabledTrailingIconColor = col2,
-            errorIndicatorColor = col5,
-            errorLeadingIconColor = col5,
+
             leadingIconColor = black,
             focusedIndicatorColor = black,
             focusedLabelColor = black,
@@ -41,9 +41,11 @@ class UiKitColors {
             unfocusedIndicatorColor = black,
             unfocusedLabelColor = black,
             trailingIconColor = black,
-            errorCursorColor = col5,
-            errorLabelColor = col5,
-            errorTrailingIconColor = col5
+            errorCursorColor = red1,
+            errorLabelColor = red1,
+            errorTrailingIconColor = red1,
+            errorIndicatorColor = red1,
+            errorLeadingIconColor = red1,
         )
     }
 }

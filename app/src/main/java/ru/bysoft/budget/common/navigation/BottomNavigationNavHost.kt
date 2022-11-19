@@ -23,9 +23,10 @@ fun BottomNavigationNavHost() {
 
 open class NavigationInfo(
     val route: String,
+    val screenName: String
 )
 
-object BottomNavigation: NavigationInfo("bottom navigation")
+object BottomNavigation: NavigationInfo("bottom navigation", "bottomNavScreen")
 
 interface BottomNavigationButtonInfo{
     val icon: ImageVector

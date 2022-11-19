@@ -1,5 +1,6 @@
 package ru.bysoft.budget.uikit.styles
 
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -27,6 +28,14 @@ class UiKitStyles {
             fontWeight = FontWeight(400),
             fontFamily = Roboto
         )
+
+        val Body2Link = SpanStyle(
+            color = UiKitColors.col1,
+            fontSize = 14.sp,
+            fontWeight = FontWeight(400),
+            fontFamily = Roboto
+        )
+
         val Caption = TextStyle(
             color = UiKitColors.black,
             fontSize = 10.sp,

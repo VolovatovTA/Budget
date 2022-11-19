@@ -14,8 +14,8 @@ import ru.bysoft.budget.uikit.colors.UiKitColors
 
 
 data class TextFieldState(
-    val isError: Boolean,
-    val text: String
+    val text: String = "",
+    val isError: Boolean = false,
 )
 
 @Composable

@@ -1,8 +1,15 @@
 package ru.bysoft.budget.auth.presentation.entity
 
+import ru.bysoft.budget.uikit.components.textfield.TextFieldState
+
 data class AuthState(
-    val email: TextFieldState,
-    val password: TextFieldState,
-    val name: TextFieldState,
-    val isButtonEnabled: Boolean
+    val email: TextFieldState = TextFieldState(),
+    val password: TextFieldState = TextFieldState(),
+    val name: TextFieldState = TextFieldState(),
+    val isButtonEnabled: Boolean = false,
+    val type: AuthActionType
 )
+
+enum class AuthActionType {
+    SIGN_IN, SIGN_UP
+}
