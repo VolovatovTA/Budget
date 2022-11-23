@@ -8,9 +8,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import ru.bysoft.budget.home.IHomeViewModel
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.components.buttons.UiKitButton
 import ru.bysoft.budget.uikit.components.buttons.entity.ButtonType
@@ -22,7 +25,13 @@ import java.util.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    viewModel: IHomeViewModel,
+    controller: NavHostController
+) {
+    LaunchedEffect(Unit){
+        viewModel.init(controller)
+    }
     Scaffold(
         modifier = Modifier.fillMaxSize(), backgroundColor = UiKitColors.white,
         bottomBar = {}

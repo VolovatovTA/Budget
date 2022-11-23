@@ -1,38 +1,71 @@
 package ru.bysoft.budget.auth.data
 
-import android.util.Log
+import retrofit2.HttpException
 import ru.bysoft.budget.auth.data.entity.SignInData
+import ru.bysoft.budget.auth.data.entity.SignInErrorData
 import ru.bysoft.budget.auth.data.entity.SignUpData
-import ru.bysoft.budget.auth.data.mapper.IAuthDataMapper
+import ru.bysoft.budget.auth.data.entity.SignUpErrorData
+import ru.bysoft.budget.auth.data.mapper.mapToErrorData
+import ru.bysoft.budget.auth.data.mapper.mapToSignInRequest
+import ru.bysoft.budget.auth.data.mapper.mapToSignUpRequest
 import ru.bysoft.budget.auth.data.network.IAuthApi
+import ru.bysoft.budget.auth.data.network.entity.AuthSuccessResponse
+import ru.bysoft.budget.auth.data.network.entity.SignInErrorResponse
+import ru.bysoft.budget.auth.data.network.entity.SignUpErrorResponse
 import ru.bysoft.budget.common.token.ITokenRepo
+import ru.bysoft.budget.common.util.restore
 import javax.inject.Inject
 
-const val TAG = "Timofey"
-
 interface IAuthRepository {
-    suspend fun signIn(signInData: SignInData)
-    suspend fun signUp(signUpData: SignUpData)
+    suspend fun signIn(signInData: SignInData): SignInErrorData?
+    suspend fun signUp(signUpData: SignUpData): SignUpErrorData?
 }
 
 class AuthRepository @Inject constructor(
-    private val mapper: IAuthDataMapper,
     private val api: IAuthApi,
     private val tokenRepo: ITokenRepo
 ) : IAuthRepository {
 
-    override suspend fun signIn(signInData: SignInData) {
-        val authResponse = api.signIn(mapper.getSignInRequest(signInData))
-        Log.d(TAG, "signIn: $authResponse")
-        tokenRepo.saveToken(authResponse)
+    override suspend fun signIn(signInData: SignInData): SignInErrorData? {
+        val authResponse = try {
+            api.signIn(signInData.mapToSignInRequest())
+        } catch (e: HttpException) {
+            val responseJson = e.response()?.errorBody()?.string()
+            responseJson?.restore<SignInErrorResponse>() ?: throw EmptySlugMessage(responseJson)
+        }
+
+        return when (authResponse) {
+            is SignInErrorResponse -> {
+                authResponse.mapToErrorData()
+            }
+            is AuthSuccessResponse -> {
+                tokenRepo.saveTokens(authResponse)
+                null
+            }
+            else -> throw Throwable()
+        }
     }
 
-    override suspend fun signUp(signUpData: SignUpData) {
-        Log.d(TAG, "signUp: ")
-        val authResponse = api.signUp(mapper.getSignUpRequest(signUpData))
-        Log.d(TAG, "signUn: $authResponse")
-        tokenRepo.saveToken(authResponse)
-    }
+    override suspend fun signUp(signUpData: SignUpData): SignUpErrorData? {
+        val authResponse = try {
+            api.signUp(signUpData.mapToSignUpRequest())
+        } catch (e: HttpException) {
+            val responseJson = e.response()?.errorBody()?.string()
+            responseJson?.restore<SignUpErrorResponse>() ?: throw EmptySlugMessage(responseJson)
+        }
 
+        return when (authResponse) {
+            is SignUpErrorResponse -> {
+                authResponse.mapToErrorData()
+            }
+            is AuthSuccessResponse -> {
+                tokenRepo.saveTokens(authResponse)
+                null
+            }
+            else -> throw Throwable()
+        }
+    }
 
 }
+
+class EmptySlugMessage(json: String?): Throwable(json)

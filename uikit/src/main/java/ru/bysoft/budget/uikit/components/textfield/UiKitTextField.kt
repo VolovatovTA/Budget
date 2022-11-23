@@ -15,7 +15,7 @@ import ru.bysoft.budget.uikit.colors.UiKitColors
 
 data class TextFieldState(
     val text: String = "",
-    val isError: Boolean = false,
+    val errorText: String? = null,
 )
 
 @Composable
@@ -39,6 +39,6 @@ fun UiKitTextField(
         shape = RoundedCornerShape(10.dp),
         colors = UiKitColors.basicTextFieldColors,
         label = { Text(label) },
-        isError = state.isError
+        isError = state.errorText != null
     )
 }

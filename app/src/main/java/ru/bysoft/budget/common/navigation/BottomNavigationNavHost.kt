@@ -16,7 +16,7 @@ import ru.bysoft.budget.statistic.screen.StatisticScreen
 fun BottomNavigationNavHost() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Wallet.route) {
-        composable(Wallet.route) { HomeScreen() }
+        composable(Wallet.route) {  }
         composable(Statistic.route) { StatisticScreen() }
     }
 }

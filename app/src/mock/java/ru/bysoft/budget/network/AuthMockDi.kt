@@ -9,7 +9,7 @@ import ru.bysoft.budget.auth.data.network.IAuthApi
 
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class AuthMockDI {
+abstract class AuthMockDi {
     @Binds
     abstract fun provideAuthApi(apiMock: AuthApiMock): IAuthApi
 }

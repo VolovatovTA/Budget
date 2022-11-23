@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -24,6 +25,7 @@ import ru.bysoft.budget.common.navigation.home.Wallet
 import ru.bysoft.budget.common.navigation.qr.QRCode
 import ru.bysoft.budget.common.navigation.statistic.Plus
 import ru.bysoft.budget.common.navigation.statistic.Statistic
+import ru.bysoft.budget.home.HomeViewModel
 import ru.bysoft.budget.home.screen.HomeScreen
 import ru.bysoft.budget.statistic.screen.StatisticScreen
 import ru.bysoft.budget.uikit.colors.UiKitColors
@@ -93,7 +95,9 @@ fun BottomNavigationScreen(navController: NavHostController = rememberNavControl
             navController = navController,
             startDestination = Wallet.route,
         ) {
-            composable(Wallet.route) { HomeScreen() }
+            composable(Wallet.route) {
+                HomeScreen(hiltViewModel<HomeViewModel>(), navController)
+            }
             composable(Statistic.route) { StatisticScreen() }
             composable(QRCode.route) {
                 val launcher = rememberLauncherForActivityResult(

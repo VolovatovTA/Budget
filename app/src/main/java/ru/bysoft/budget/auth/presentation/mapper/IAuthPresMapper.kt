@@ -14,5 +14,5 @@ fun AuthState.getSignUpData()=
     SignUpData(
         email = email.text,
         password = password.text,
-        name = email.text
+        name = name.text
     )

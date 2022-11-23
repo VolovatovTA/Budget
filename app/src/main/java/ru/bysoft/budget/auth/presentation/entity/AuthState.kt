@@ -7,7 +7,9 @@ data class AuthState(
     val password: TextFieldState = TextFieldState(),
     val name: TextFieldState = TextFieldState(),
     val isButtonEnabled: Boolean = false,
-    val type: AuthActionType
+    val type: AuthActionType,
+    val isLoading: Boolean,
+    val toastText: String?
 )
 
 enum class AuthActionType {

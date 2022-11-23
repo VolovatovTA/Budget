@@ -6,17 +6,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.bysoft.budget.auth.data.IAuthRepository
-import ru.bysoft.budget.auth.data.TAG
 import ru.bysoft.budget.auth.presentation.entity.AuthActionType
 import ru.bysoft.budget.auth.presentation.entity.AuthState
 import ru.bysoft.budget.auth.presentation.mapper.getSignInData
 import ru.bysoft.budget.auth.presentation.mapper.getSignUpData
+import ru.bysoft.budget.common.errors.errorLogger
 import ru.bysoft.budget.common.navigation.BottomNavigation
 import ru.bysoft.budget.uikit.components.textfield.TextFieldState
 import javax.inject.Inject
@@ -39,11 +36,20 @@ class AuthViewModel @Inject constructor(
     private lateinit var controller: NavHostController
 
     private val handler = CoroutineExceptionHandler { _, t ->
-        t.printStackTrace()
+        errorLogger.logError(t)
+        state.value = state.value.copy(
+            toastText = "Не предвиденная ошибка...",
+            isLoading = false
+        )
     }
-
     override val state: MutableStateFlow<AuthState> =
-        MutableStateFlow(AuthState(type = AuthActionType.SIGN_IN))
+        MutableStateFlow(
+            AuthState(
+                type = AuthActionType.SIGN_IN,
+                isLoading = false,
+                toastText = null
+            )
+        )
 
     override fun init(controller: NavHostController) {
         this.controller = controller
@@ -51,52 +57,90 @@ class AuthViewModel @Inject constructor(
 
     override fun setNewPassword(password: String) {
         state.value = state.value.copy(
-            password = TextFieldState(password, !isPasswordCorrect(password)),
-            isButtonEnabled = isAllComplete(state.value)
+            password = TextFieldState(password, null),
+            isButtonEnabled = isAllComplete(state.value),
+            toastText = null
         )
     }
 
     override fun setNewName(name: String) {
         state.value = state.value.copy(
-            name = TextFieldState(name, name == ""),
-            isButtonEnabled = isAllComplete(state.value)
+            name = TextFieldState(name, null),
+            isButtonEnabled = isAllComplete(state.value),
+            toastText = null
         )
     }
 
     override fun setNewEmail(email: String) {
         state.value = state.value.copy(
-            email = TextFieldState(email, !isEmailCorrect(email)),
-            isButtonEnabled = isAllComplete(state.value)
+            email = TextFieldState(email, null),
+            isButtonEnabled = isAllComplete(state.value),
+            toastText = null
         )
     }
 
     override fun onButtonClick(action: AuthActionType) {
+        state.value = state.value.copy(
+            isLoading = true,
+            toastText = null
+        )
         when (action) {
             AuthActionType.SIGN_IN -> {
                 viewModelScope.launch(handler) {
-                    repository.signIn(state.value.getSignInData())
-                    Log.d(TAG, "afterSignIn: $controller")
-                    controller.navigate(BottomNavigation.route)
+                    val errorData = repository.signIn(state.value.getSignInData())
+                    state.value = state.value.copy(
+                        isLoading = false,
+                        toastText = null
+                    )
 
+                    if (errorData == null) {
+                        controller.navigate(BottomNavigation.route)
+                    } else {
+                        state.value = state.value.copy(
+                            email = state.value.email.copy(errorText = errorData.errorEmailText),
+                            password = state.value.password.copy(errorText = errorData.errorPasswordText),
+                            toastText = errorData.errorToastText
+                        )
+                    }
                 }
             }
             AuthActionType.SIGN_UP -> {
                 viewModelScope.launch(handler) {
-                    repository.signUp(state.value.getSignUpData())
-                    controller.navigate(BottomNavigation.route)
+                    val errorData = repository.signUp(state.value.getSignUpData())
+                    state.value = state.value.copy(
+                        isLoading = false,
+                        toastText = null
+                    )
+                    if (errorData == null) {
+                        controller.navigate(BottomNavigation.route)
+                    } else {
+                        state.value = state.value.copy(
+                            email = state.value.email.copy(errorText = errorData.errorEmailText),
+                            password = state.value.password.copy(errorText = errorData.errorPasswordText),
+                            name = state.value.name.copy(errorText = errorData.errorNameText),
+                            toastText = errorData.errorToastText
+                        )
+                    }
                 }
             }
         }
     }
 
     override fun switchAuthType(newType: AuthActionType) {
-        state.value = state.value.copy(type = newType)
+        state.value = state.value.copy(
+            type = newType,
+            toastText = null
+        )
     }
 
     private fun isAllComplete(state: AuthState) =
-        isEmailCorrect(state.email.text) && isPasswordCorrect(state.password.text)
+        isEmailCorrect(state.email.text) && isPasswordCorrect(state.password.text) && isNameCorrect(
+            state.name.text
+        )
 
-    private fun isEmailCorrect(email: String) = email.contains('@') && email.contains('.')
+    private fun isEmailCorrect(email: String) = email.contains('@') && email.contains('.') || true
 
-    private fun isPasswordCorrect(password: String) = password.length > 5
+    private fun isPasswordCorrect(password: String) = password.length >= 5 || true
+
+    private fun isNameCorrect(name: String) = name.isNotEmpty() || true
 }

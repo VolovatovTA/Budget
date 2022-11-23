@@ -3,12 +3,20 @@ package ru.bysoft.budget.network.interceptors
 import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Response
+import ru.bysoft.budget.common.util.toJson
+import javax.inject.Inject
+import javax.inject.Singleton
+
 const val TAG = "networkLog"
 
-class LoggerIntercepor: Interceptor {
+interface IStandInterceptor : Interceptor
+
+@Singleton
+class LoggerIntercepor @Inject constructor(): IStandInterceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         Log.d(TAG, "$originalRequest ")
+        Log.d(TAG, originalRequest.headers().toJson())
         val response = chain.proceed(originalRequest)
         Log.d(TAG, "$response ")
         return response
