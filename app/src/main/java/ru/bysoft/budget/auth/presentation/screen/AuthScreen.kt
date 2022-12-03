@@ -1,7 +1,7 @@
 package ru.bysoft.budget.auth.presentation.screen
 
+import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.compose.foundation.interaction.*
@@ -13,6 +13,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.*
@@ -72,6 +74,9 @@ private fun AuthSuccessScreen(
             modifier = Modifier.padding(horizontal = 30.dp)
         )
 
+        val focusRequesterName = remember { FocusRequester() }
+        val focusRequesterEmail = remember { FocusRequester() }
+
         if (state.type == AuthActionType.SIGN_UP) {
             AuthTextField(
                 state.name,
@@ -79,7 +84,8 @@ private fun AuthSuccessScreen(
                 "Ваше имя",
                 state.name.errorText ?: "",
                 KeyboardType.Text,
-                viewModel::setNewName
+                Modifier.focusRequester(focusRequesterName),
+                viewModel::setNewName,
             )
         }
 
@@ -96,8 +102,18 @@ private fun AuthSuccessScreen(
             "Email",
             state.email.errorText ?: "",
             KeyboardType.Email,
+            modifier = Modifier.focusRequester(focusRequesterEmail),
             viewModel::setNewEmail,
         )
+        LaunchedEffect(state.type) {
+            if (state.type == AuthActionType.SIGN_IN) {
+                focusRequesterEmail.requestFocus()
+            } else {
+                focusRequesterEmail.freeFocus()
+                focusRequesterName.requestFocus()
+            }
+        }
+
 
         AuthTextField(
             state.password,
@@ -105,7 +121,7 @@ private fun AuthSuccessScreen(
             "Пароль",
             state.password.errorText ?: "",
             KeyboardType.Password,
-            viewModel::setNewPassword,
+            onNotFocused = viewModel::setNewPassword
         )
 
 
@@ -155,7 +171,9 @@ private fun AuthSuccessScreen(
             if (state.type == AuthActionType.SIGN_IN) "войти" else "зарегестрироваться"
 
         Box(
-            Modifier.padding(vertical = 26.dp).height(35.dp),
+            Modifier
+                .padding(vertical = 26.dp)
+                .height(35.dp),
             contentAlignment = Alignment.Center
         ) {
             if (state.isLoading) {
@@ -185,7 +203,8 @@ private fun AuthTextField(
     label: String,
     errorDescription: String,
     type: KeyboardType,
-    onNotFocused: (lastText: String) -> Unit = {}
+    modifier: Modifier = Modifier,
+    onNotFocused: (lastText: String) -> Unit = {},
 ) {
     val source = remember { MutableInteractionSource() }
 
@@ -194,7 +213,7 @@ private fun AuthTextField(
         OutlinedTextField(
             value = state.text,
             onValueChange = onTextChange,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp)
                 .onFocusChanged { if (!it.isFocused) onNotFocused(state.text) },
@@ -209,7 +228,7 @@ private fun AuthTextField(
             isError = state.errorText != null,
             interactionSource = source
         )
-        if (state.errorText != null) {
+        if (state.errorText != null && state.errorText?.isNotEmpty() == true) {
             Text(
                 text = errorDescription,
                 style = UiKitStyles.Caption,

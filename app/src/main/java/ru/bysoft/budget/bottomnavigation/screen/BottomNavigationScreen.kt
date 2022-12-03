@@ -26,7 +26,7 @@ import ru.bysoft.budget.common.navigation.qr.QRCode
 import ru.bysoft.budget.common.navigation.statistic.Plus
 import ru.bysoft.budget.common.navigation.statistic.Statistic
 import ru.bysoft.budget.home.HomeViewModel
-import ru.bysoft.budget.home.screen.HomeScreen
+import ru.bysoft.budget.home.presentation.screen.HomeScreen
 import ru.bysoft.budget.statistic.screen.StatisticScreen
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.components.avatar.UiKitAvatar

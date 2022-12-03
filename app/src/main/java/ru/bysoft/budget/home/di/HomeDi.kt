@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import ru.bysoft.budget.home.data.HomeWalletsRepo
 import ru.bysoft.budget.home.data.IHomeWalletsRepo
+import ru.bysoft.budget.home.data.me.HomeMeRepo
+import ru.bysoft.budget.home.data.me.IHomeMeRepo
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -14,4 +16,6 @@ abstract class HomeDi {
     @Binds
     abstract fun bindWalletsRepo(repo: HomeWalletsRepo): IHomeWalletsRepo
 
+    @Binds
+    abstract fun bindMeRepo(repo: HomeMeRepo): IHomeMeRepo
 }

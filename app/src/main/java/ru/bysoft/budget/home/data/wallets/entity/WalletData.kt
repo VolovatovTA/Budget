@@ -1,8 +1,8 @@
-package ru.bysoft.budget.home.data.entity
+package ru.bysoft.budget.home.data.wallets.entity
 
 import java.util.Currency
 
-data class WalletsData(
+data class WalletData(
     val balance: Float,
     val currency: Currency,
     val name: String

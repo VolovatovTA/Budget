@@ -18,6 +18,7 @@ import javax.inject.Named
 @Module
 @InstallIn(ViewModelComponent::class)
 abstract class AuthNetworkDi {
+
     companion object {
         @Provides
         fun provideAuthApi(
@@ -27,16 +28,8 @@ abstract class AuthNetworkDi {
             .baseUrl(baseUrl)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
-            .callbackExecutor {
-                it.run()
-            }
             .build()
             .create(IAuthApi::class.java)
-
-        @Provides
-        @IntoSet
-        fun provideInterceptors(): Interceptor =
-            LoggerIntercepor()
 
     }
 }

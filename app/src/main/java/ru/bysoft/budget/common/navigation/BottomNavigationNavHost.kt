@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ru.bysoft.budget.common.navigation.home.Wallet
 import ru.bysoft.budget.common.navigation.statistic.Statistic
-import ru.bysoft.budget.home.screen.HomeScreen
+import ru.bysoft.budget.home.presentation.screen.HomeScreen
 import ru.bysoft.budget.statistic.screen.StatisticScreen
 
 // todo: Доделать этот хост чтоб работал правильно

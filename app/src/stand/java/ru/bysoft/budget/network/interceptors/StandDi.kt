@@ -9,6 +9,7 @@ import dagger.multibindings.IntoSet
 import okhttp3.Dispatcher
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.bysoft.budget.common.network.authentificator.AuthenticationInterceptorRefreshToken
@@ -29,13 +30,14 @@ abstract class StandDi {
 
         @Provides
         @Named(MAIN_BASE_URL_NAME)
-        fun provideBaseUrl(): String = "http://bysoft.ru/"
+//        fun provideBaseUrl(): String = "http://85.193.83.80:8989"
+        fun provideBaseUrl(): String = "https://bysoft.ru/"
 
         @Provides
         fun provideRefreshApi(
             @Named(MAIN_BASE_URL_NAME) baseUrl: String,
             @Named(NO_AUTH_CLIENT_NAME) client: OkHttpClient
-        ):ITokenRefreshApi = Retrofit.Builder()
+        ): ITokenRefreshApi = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
@@ -45,7 +47,7 @@ abstract class StandDi {
         @Provides
         @Named(AUTH_CLIENT_NAME)
         fun provideAuthClient(
-            set: Set<@JvmSuppressWildcards IStandInterceptor>,
+            set: Set<@JvmSuppressWildcards Interceptor>,
             @Named(AUTH_INTERCEPTOR_NAME) authInterceptor: Interceptor
         ): OkHttpClient {
             //ADD DISPATCHER WITH MAX REQUEST TO 1
@@ -60,13 +62,19 @@ abstract class StandDi {
         @Provides
         @Named(NO_AUTH_CLIENT_NAME)
         fun provideNoAuthClient(
-            set: Set<@JvmSuppressWildcards IStandInterceptor>
+            set: Set<@JvmSuppressWildcards Interceptor>
         ): OkHttpClient {
             val clientBuilder = OkHttpClient.Builder()
             set.forEach { clientBuilder.addInterceptor(it) }
             return clientBuilder.build()
         }
 
+        @Provides
+        @IntoSet
+        fun provideLoggerInterceptor(): Interceptor = HttpLoggingInterceptor()
+            .apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
     }
 
 
@@ -74,8 +82,5 @@ abstract class StandDi {
     @Named(AUTH_INTERCEPTOR_NAME)
     abstract fun provide(authInterceptor: AuthenticationInterceptorRefreshToken): Interceptor
 
-    @Binds
-    @IntoSet
-    abstract fun bindLoggerInterceptor(logger: LoggerIntercepor): IStandInterceptor
 
 }

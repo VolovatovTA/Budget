@@ -16,7 +16,7 @@ class LoggerIntercepor @Inject constructor(): IStandInterceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         Log.d(TAG, "$originalRequest ")
-        Log.d(TAG, originalRequest.headers().toJson())
+        Log.d(TAG, originalRequest.headers.toJson())
         val response = chain.proceed(originalRequest)
         Log.d(TAG, "$response ")
         return response

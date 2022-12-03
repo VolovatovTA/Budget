@@ -37,9 +37,9 @@ class AuthenticationInterceptorRefreshToken @Inject constructor(
             .build()
         val initialResponse = chain.proceed(authenticationRequest)
 
-        when {
-            initialResponse.code() == 401 -> {
-                val slug = initialResponse.body()!!.string().restore<SignInErrorResponse>().slug
+        when (initialResponse.code) {
+            401 -> {
+                val slug = initialResponse.body!!.string().restore<SignInErrorResponse>().slug
                 val responseNewTokens = if (slug == "invalid-token") {
                     //RUN BLOCKING!!
                     runBlocking(Dispatchers.IO) {

@@ -79,14 +79,17 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
 
-//    implementation "com.github.d-max:spots-dialog:1.1@aar"
-
     //hilt
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-compiler:2.44"
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
     kapt "androidx.hilt:hilt-compiler:1.0.0"
     annotationProcessor "androidx.hilt:hilt-compiler:1.0.0"
+
+    implementation "com.google.accompanist:accompanist-pager:0.27.1"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.27.1"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
+
 
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     implementation "androidx.compose.runtime:runtime-rxjava2:$compose_version"
