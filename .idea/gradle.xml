@@ -18,8 +18,6 @@
             <option value="$PROJECT_DIR$/features/bottom-navigation/home" />
             <option value="$PROJECT_DIR$/features/bottom-navigation/host" />
             <option value="$PROJECT_DIR$/features/bottom-navigation/statistic" />
-            <option value="$PROJECT_DIR$/features/home" />
-            <option value="$PROJECT_DIR$/features/statistic" />
             <option value="$PROJECT_DIR$/uikit" />
           </set>
         </option>
