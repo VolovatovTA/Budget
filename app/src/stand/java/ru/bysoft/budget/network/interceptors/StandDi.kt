@@ -30,7 +30,6 @@ abstract class StandDi {
 
         @Provides
         @Named(MAIN_BASE_URL_NAME)
-//        fun provideBaseUrl(): String = "http://85.193.83.80:8989"
         fun provideBaseUrl(): String = "https://bysoft.ru/"
 
         @Provides

@@ -28,10 +28,10 @@ fun UiKitButton(
             .height(32.dp)
         ,
         colors = BadgeButtonColors(
-            backgroundColor = UiKitColors.col6,
-            contentColor = UiKitColors.white,
-            disabledBackgroundColor = UiKitColors.col3,
-            disabledContentColor = UiKitColors.white
+            backgroundColor = UiKitColors.colors.col6,
+            contentColor = UiKitColors.colors.white,
+            disabledBackgroundColor = UiKitColors.colors.col3,
+            disabledContentColor = UiKitColors.colors.white
         ),
         enabled = enabled
     ) {

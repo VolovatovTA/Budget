@@ -10,43 +10,50 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import ru.bysoft.budget.R
-import ru.bysoft.budget.uikit.colors.UiKitColors
+import ru.bysoft.budget.uikit.colors.UiKitColors.colors
 
-internal val LightColors = lightColors(
-    primary = UiKitColors.col1,
-    primaryVariant = UiKitColors.col2,
-    secondary = UiKitColors.col3,
-    secondaryVariant = UiKitColors.blue123,
-    background = UiKitColors.white,
-    error = UiKitColors.red,
-    onPrimary = UiKitColors.white,
-    onSurface = UiKitColors.black,
-    onError = UiKitColors.white
-)
 
-internal val DarkColors = darkColors(
-    primary = UiKitColors.col1,
-    primaryVariant = UiKitColors.col2,
-    secondary = UiKitColors.col3,
-    secondaryVariant = UiKitColors.blue123,
-    background = UiKitColors.white,
-    error = UiKitColors.red,
-    onPrimary = UiKitColors.white,
-    onSurface = UiKitColors.black,
-    onError = UiKitColors.white
-)
+internal val LightColors: Colors
+    @Composable
+    get() = lightColors(
+        primary = colors.col1,
+        primaryVariant = colors.col2,
+        secondary = colors.col3,
+        secondaryVariant = colors.blue123,
+        background = colors.colE,
+        error = colors.red,
+        onPrimary = colors.col7,
+        onSurface = colors.col5,
+        onError = colors.col4
+    )
 
-internal val Custom1Colors = customColors(
-    primary = UiKitColors.col1,
-    primaryVariant = UiKitColors.col2,
-    secondary = UiKitColors.col3,
-    secondaryVariant = UiKitColors.blue123,
-    background = UiKitColors.white,
-    error = UiKitColors.red,
-    onPrimary = UiKitColors.white,
-    onSurface = UiKitColors.black,
-    onError = UiKitColors.white
-)
+internal val DarkColors: Colors
+    @Composable
+    get() = darkColors(
+        primary = colors.col1,
+        primaryVariant = colors.col2,
+        secondary = colors.col3,
+        secondaryVariant = colors.blue123,
+        background = colors.colE,
+        error = colors.red,
+        onPrimary = colors.white,
+        onSurface = colors.black,
+        onError = colors.white
+    )
+
+internal val Custom1Colors: Colors
+    @Composable
+    get() = customColors(
+        primary = colors.col1,
+        primaryVariant = colors.col2,
+        secondary = colors.col3,
+        secondaryVariant = colors.blue123,
+        background = colors.white,
+        error = colors.red,
+        onPrimary = colors.white,
+        onSurface = colors.black,
+        onError = colors.white
+    )
 
 internal val Ermilov = FontFamily(
     Font(R.font.ermilov)
@@ -105,7 +112,7 @@ object BudgetTheme {
 
     @Composable
     private fun getColorsByTheme(theme: BudgetThemes? = null): Colors {
-        return when(theme){
+        return when (theme) {
             BudgetThemes.CUSTOM1 -> Custom1Colors
             null -> getColorsBySystemTheme()
         }

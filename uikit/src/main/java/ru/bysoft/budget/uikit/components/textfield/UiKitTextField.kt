@@ -37,7 +37,7 @@ fun UiKitTextField(
             keyboardType = inputType
         ),
         shape = RoundedCornerShape(10.dp),
-        colors = UiKitColors.basicTextFieldColors,
+        colors = UiKitColors.colors.textFieldColors,
         label = { Text(label) },
         isError = state.errorText != null
     )

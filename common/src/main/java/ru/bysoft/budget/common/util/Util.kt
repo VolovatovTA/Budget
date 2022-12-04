@@ -1,0 +1,62 @@
+package ru.bysoft.budget.common.util
+
+import android.content.Context
+import android.content.res.AssetManager
+import com.google.gson.Gson
+
+fun Context.getStringFromAsset(filePath: String) =
+    this.assets.open(filePath).bufferedReader().use { it.readText() }
+
+fun <T> T.toJson() = Gson().toJson(this)
+inline fun <reified T> String.restore() = Gson().fromJson(this, T::class.java)
+
+const val pointJson = ".json"
+
+private val listCurrency = listOf(
+    BudgetCurrency('؋', "AFN"),
+    BudgetCurrency('฿', "THB"),
+    BudgetCurrency('₩', "KPW"),
+    BudgetCurrency('₴', "UAH"),
+    BudgetCurrency('₲', "PYG"),
+    BudgetCurrency('ƒ', "ANG"),
+    BudgetCurrency('₫', "VND"),
+    BudgetCurrency('€', "EUR"),
+    BudgetCurrency('¥', "JPY"),
+    BudgetCurrency('₭', "LAK"),
+    BudgetCurrency('₡', "CRC"),
+    BudgetCurrency('₾', "GEL"),
+    BudgetCurrency('₺', "TRY"),
+    BudgetCurrency('₼', "AZN"),
+    BudgetCurrency('₦', "NGN"),
+    BudgetCurrency('﷼', "IRR"),
+    BudgetCurrency('៛', "KHR"),
+    BudgetCurrency('₽', "RUB"),
+    BudgetCurrency('₽', "RUR"),
+    BudgetCurrency('₹', "INR"),
+    BudgetCurrency('₵', "GHS"),
+    BudgetCurrency('৳', "BDT"),
+    BudgetCurrency('₸', "KZT"),
+    BudgetCurrency('₮', "MNT"),
+    BudgetCurrency('ƒ', "AWG"),
+    BudgetCurrency('ƒ', "HUF"),
+    BudgetCurrency('₤', "GBP"),
+    BudgetCurrency('₤', "GIP"),
+    BudgetCurrency('₤', "EGP"),
+    BudgetCurrency('₤', "LBP"),
+    BudgetCurrency('₤', "SHP"),
+    BudgetCurrency('₤', "SYP"),
+    BudgetCurrency('₤', "SDG"),
+    BudgetCurrency('₤', "FKP"),
+    BudgetCurrency('₪', "ILS"),
+    BudgetCurrency('¥', "CNY"),
+    BudgetCurrency('֏', "AMD"),
+    BudgetCurrency('$', "USD"),
+)
+
+fun getCurrency(iso4217: String): BudgetCurrency? =
+    listCurrency.firstOrNull { it.iso4217 == iso4217 }
+
+data class BudgetCurrency(
+    val displayName: Char,
+    val iso4217: String
+)

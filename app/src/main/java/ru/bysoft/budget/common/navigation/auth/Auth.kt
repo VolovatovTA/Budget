@@ -1,6 +1,6 @@
 package ru.bysoft.budget.common.navigation.auth
 
-import ru.bysoft.budget.common.navigation.NavigationInfo
+import com.example.bottom_navigation.navigation.NavigationInfo
 
-object Auth:NavigationInfo("auth", "authScreenName") {
+object Auth: NavigationInfo("auth", "authScreenName") {
 }

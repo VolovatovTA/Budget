@@ -11,6 +11,15 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/features" />
+            <option value="$PROJECT_DIR$/features/auth" />
+            <option value="$PROJECT_DIR$/features/bottom-navigation" />
+            <option value="$PROJECT_DIR$/features/bottom-navigation/home" />
+            <option value="$PROJECT_DIR$/features/bottom-navigation/host" />
+            <option value="$PROJECT_DIR$/features/bottom-navigation/statistic" />
+            <option value="$PROJECT_DIR$/features/home" />
+            <option value="$PROJECT_DIR$/features/statistic" />
             <option value="$PROJECT_DIR$/uikit" />
           </set>
         </option>

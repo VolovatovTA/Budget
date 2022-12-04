@@ -22,8 +22,8 @@ import ru.bysoft.budget.uikit.colors.UiKitColors
 fun UiKitAvatar(
     icon: ImageVector,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = UiKitColors.col3,
-    tintColor: Color = UiKitColors.black,
+    backgroundColor: Color = UiKitColors.colors.col3,
+    tintColor: Color = UiKitColors.colors.black,
     elevation: Dp = 3.dp,
     onClick: () -> Unit = {}
 ) {

@@ -15,3 +15,12 @@ dependencyResolutionManagement {
 rootProject.name = "Budget"
 include ':app'
 include ':uikit'
+include ':features'
+include ':features:auth'
+include ':common'
+include ':features:statistic'
+include ':features:home'
+include ':features:bottom-navigation'
+include ':features:bottom-navigation:host'
+include ':features:bottom-navigation:home'
+include ':features:bottom-navigation:statistic'

@@ -4,13 +4,16 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import ru.bysoft.budget.home.data.network.HomeWalletsApiMock
-import ru.bysoft.budget.home.data.network.IHomeWalletsApi
-
+import ru.bysoft.budget.features.bottom_navigation.home.data.me.network.HomeMeApiMock
+import ru.bysoft.budget.features.bottom_navigation.home.data.me.network.IHomeMeApi
+import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.network.HomeWalletsApiMock
+import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.network.IHomeWalletsApi
 
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class HomeMockDi {
     @Binds
-    abstract fun bindApiMock(api: HomeWalletsApiMock): IHomeWalletsApi
+    abstract fun bindWalletsApiMock(api: HomeWalletsApiMock): IHomeWalletsApi
+    @Binds
+    abstract fun bindMeApiMock(api: HomeMeApiMock): IHomeMeApi
 }

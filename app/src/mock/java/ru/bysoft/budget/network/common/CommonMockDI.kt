@@ -13,6 +13,6 @@ abstract class CommonMockDI {
     companion object {
         @Provides
         @Named(MOCK_DELAY_NAME)
-        fun provideMockDelay(): Long = 2000L
+        fun provideMockDelay(): Long = 10000L
     }
 }
