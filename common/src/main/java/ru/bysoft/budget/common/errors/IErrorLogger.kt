@@ -17,5 +17,5 @@ class ErrorLogger @Inject constructor() : IErrorLogger {
 
 val errorLogger = ErrorLogger()
 
-val ViewModel.exceptionHandler: CoroutineExceptionHandler
+val exceptionHandler: CoroutineExceptionHandler
     get() = CoroutineExceptionHandler { _, t -> errorLogger.logError(t) }

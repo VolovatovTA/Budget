@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ru.bysoft.budget.uikit.colors.UiKitColors
+import ru.bysoft.budget.uikit.styles.UiKitStyles
 
 
 data class TextFieldState(
@@ -39,6 +40,7 @@ fun UiKitTextField(
         shape = RoundedCornerShape(10.dp),
         colors = UiKitColors.colors.textFieldColors,
         label = { Text(label) },
-        isError = state.errorText != null
+        isError = state.errorText != null,
+        textStyle = UiKitStyles.Body2
     )
 }

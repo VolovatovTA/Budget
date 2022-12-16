@@ -15,7 +15,8 @@ import javax.inject.Inject
 object ThrowableWhenTryingRefreshToken : Throwable()
 class UnknownSlugMessage(slug: String?) : Throwable(slug)
 
-const val tokenHeader = "X-API-Token"
+const val tokenHeader = "Authorization"
+const val tokenAdder = "Bearer "
 
 class AuthenticationInterceptorRefreshToken @Inject constructor(
     private val refreshApi: ITokenRefreshApi,
@@ -32,7 +33,7 @@ class AuthenticationInterceptorRefreshToken @Inject constructor(
         val authenticationRequest = originalRequest.newBuilder()
             .addHeader(
                 tokenHeader,
-                tokenRepo.getAccessToken()?: "empty-access-token"
+                tokenAdder + tokenRepo.getAccessToken()
             )
             .build()
         val initialResponse = chain.proceed(authenticationRequest)
@@ -64,7 +65,8 @@ class AuthenticationInterceptorRefreshToken @Inject constructor(
                             tokenRepo.saveTokens(responseNewTokens.body()!!)
                         }
                         val newAuthenticationRequest = originalRequest.newBuilder().addHeader(
-                            "X-Api-Token", responseNewTokens.body()?.accessToken ?: ""
+                            tokenHeader,
+                            tokenAdder + responseNewTokens.body()?.accessToken
                         ).build()
                         chain.proceed(newAuthenticationRequest)
                     }

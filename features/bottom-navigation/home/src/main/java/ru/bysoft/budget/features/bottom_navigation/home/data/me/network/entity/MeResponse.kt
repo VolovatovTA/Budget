@@ -1,4 +1,4 @@
-package ru.bysoft.budget.home.data.me.network.entity
+package ru.bysoft.budget.features.bottom_navigation.home.data.me.network.entity
 
 import com.google.gson.annotations.SerializedName
 
@@ -8,12 +8,12 @@ data class MeResponse(
     @SerializedName("name")
     val name: String,
     @SerializedName("settings")
-    val settings: Settings,
-    @SerializedName("userId")
+    val settingsResponse: SettingsResponse,
+    @SerializedName("uuid")
     val userId: String
 )
 
-data class Settings(
+data class SettingsResponse(
     @SerializedName("currency")
-    val currency: String
+    val currencyResponse: String
 )

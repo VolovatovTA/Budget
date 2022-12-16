@@ -12,103 +12,94 @@ interface Palette {
     val col3: Color
     val col4: Color
     val col5: Color
-    val col6: Color
-    val col7: Color
-    val colE: Color
-    val red1: Color
-    val blue123: Color
-    val white: Color
+    val col4_inactive: Color
     val red: Color
-    val black: Color
+    val light: Color
+    val light40: Color
     val dark: Color
+    val dark40: Color
+    val grey: Color
 
-    val borderColor: Color
     val textFieldColors: BaseTextFieldColors
 }
 
 object DarkPalette : Palette {
     override val col1 = Color(0xFF11799E)
     override val col2 = Color(0x80006F97)
-    override val col3 = Color(0x80002F41)
+    override val col3 = Color(0x809DD9D4)
     override val col4 = Color(0xFF296B66)
-    override val col5 = Color(0xFFB071EB)
-    override val col6 = Color(0xFF00AF85)
-    override val col7 = Color(0xFF00AF85)
-    override val colE = Color(0x80002F41)
-    override val red1 = Color(0xFFEB5757)
-    override val blue123 = Color(0xFF018786)
-    override val white = colE
-    override val red = Color.Red
-    override val black = Color.Black
-    override val dark = Color(0xFFEEEEEE)
-    override val borderColor = Color(0xFFEEEEEE)
+    override val col5 = Color(0xFFDECFEB)
+    override val col4_inactive = Color(0x80296B66)
+    override val red = Color(0xFFEB5757)
+    override val dark = Color(0xFFFFFFFF)
+    override val dark40 = Color(0x65FFFFFF)
+    override val light = Color(0xFF000000)
+    override val light40 = Color(0x65000000)
+    override val grey = Color(0xFF4F4F4F)
 
     override val textFieldColors = BaseTextFieldColors(
-        textColor = dark,
-        disabledTextColor = col2,
+        textColor = col5,
+        disabledTextColor = red,
         cursorColor = dark,
-        backgroundColor = colE,
-        disabledIndicatorColor = dark,
+        backgroundColor = Color.Transparent,
+        disabledIndicatorColor = dark40,
         disabledLabelColor = col2,
         disabledLeadingIconColor = dark,
         disabledPlaceholderColor = col2,
-        disabledTrailingIconColor = col2,
+        disabledTrailingIconColor = red,
 
         leadingIconColor = dark,
-        focusedIndicatorColor = dark,
-        focusedLabelColor = dark,
-        placeholderColor = dark,
-        unfocusedIndicatorColor = dark,
-        unfocusedLabelColor = dark,
-        errorCursorColor = red1,
-        trailingIconColor = dark,
-        errorLabelColor = red1,
-        errorTrailingIconColor = red1,
-        errorIndicatorColor = red1,
-        errorLeadingIconColor = red1,
+        focusedIndicatorColor = col5,
+        focusedLabelColor = col5,
+        placeholderColor = Color.Transparent,
+        unfocusedIndicatorColor = col5,
+        unfocusedLabelColor = col5,
+        errorCursorColor = red,
+        trailingIconColor = red,
+        errorLabelColor = red,
+        errorTrailingIconColor = red,
+        errorIndicatorColor = red,
+        errorLeadingIconColor = red,
     )
 }
 
 private object LightPalette : Palette {
     override val col1 = Color(0xFF11799E)
     override val col2 = Color(0x80006F97)
-    override val col3 = Color(0xFF9DD9D4)
+    override val col3 = Color(0x809DD9D4)
     override val col4 = Color(0xFF296B66)
-    override val col5 = Color(0xFFB071EB)
-    override val col6 = Color(0xFF00AF85)
-    override val col7 = Color(0xFF00AF85)
-    override val colE = Color(0xFFEEEEEE)
-    override val red1 = Color(0xFFEB5757)
-    override val blue123 = Color(0xFF018786)
-    override val white = Color.White
-    override val red = Color.Red
-    override val black = colE
-    override val dark: Color = Color.Black
-    override val borderColor = Color(0xFF9DD9D4)
+    override val col5 = Color(0xFFDECFEB)
+    override val col4_inactive = Color(0x80296B66)
+    override val red = Color(0xFFEB5757)
+    override val light = Color(0xFFFFFFFF)
+    override val light40 = Color(0xFFFFFFFF)
+    override val dark: Color = Color(0xFF000000)
+    override val dark40: Color = Color(0x65000000)
+    override val grey = Color(0xFF4F4F4F)
 
     override val textFieldColors = BaseTextFieldColors(
         textColor = dark,
-        disabledTextColor = col7,
+        disabledTextColor = red,
         cursorColor = dark,
-        backgroundColor = colE,
-        disabledIndicatorColor = dark,
+        backgroundColor = Color.Transparent,
+        disabledIndicatorColor = dark40,
         disabledLabelColor = col2,
         disabledLeadingIconColor = dark,
         disabledPlaceholderColor = col2,
-        disabledTrailingIconColor = col2,
+        disabledTrailingIconColor = red,
 
         leadingIconColor = dark,
         focusedIndicatorColor = dark,
         focusedLabelColor = dark,
-        placeholderColor = dark,
+        placeholderColor = Color.Transparent,
         unfocusedIndicatorColor = dark,
         unfocusedLabelColor = dark,
-        errorCursorColor = red1,
-        trailingIconColor = dark,
-        errorLabelColor = red1,
-        errorTrailingIconColor = red1,
-        errorIndicatorColor = red1,
-        errorLeadingIconColor = red1,
+        errorCursorColor = red,
+        trailingIconColor = red,
+        errorLabelColor = red,
+        errorTrailingIconColor = red,
+        errorIndicatorColor = red,
+        errorLeadingIconColor = red,
     )
 }
 
@@ -118,39 +109,36 @@ object Custom1Palette : Palette {
     override val col3 = Color(0xFF9DD9D4)
     override val col4 = Color(0xFF296B66)
     override val col5 = Color(0xFFB071EB)
-    override val col6 = Color(0xFF00AF85)
-    override val col7 = Color(0xFF00AF85)
-    override val colE = Color(0xFFEEEEEE)
-    override val red1 = Color(0xFFEB5757)
-    override val blue123 = Color(0xFF018786)
-    override val white = Color.White
-    override val red = Color.Red
-    override val black = Color.Black
+    override val col4_inactive = Color(0xFF00AF85)
+    override val red = Color(0xFFEB5757)
+    override val light = Color.Black
+    override val light40 = Color.Black
     override val dark: Color = col3
-    override val borderColor = Color(0xFF9DD9D4)
+    override val dark40: Color = Color(0x65000000)
+    override val grey = Color(0xFF4F4F4F)
     override val textFieldColors = BaseTextFieldColors(
-        textColor = black,
-        disabledTextColor = col7,
-        cursorColor = black,
-        backgroundColor = colE,
-        disabledIndicatorColor = black,
+        textColor = dark,
+        disabledTextColor = col4_inactive,
+        cursorColor = dark,
+        backgroundColor = light,
+        disabledIndicatorColor = dark,
         disabledLabelColor = col2,
-        disabledLeadingIconColor = black,
+        disabledLeadingIconColor = dark,
         disabledPlaceholderColor = col2,
         disabledTrailingIconColor = col2,
 
-        leadingIconColor = black,
-        focusedIndicatorColor = black,
-        focusedLabelColor = black,
-        placeholderColor = black,
-        unfocusedIndicatorColor = black,
-        unfocusedLabelColor = black,
-        errorCursorColor = red1,
-        trailingIconColor = black,
-        errorLabelColor = red1,
-        errorTrailingIconColor = red1,
-        errorIndicatorColor = red1,
-        errorLeadingIconColor = red1,
+        leadingIconColor = dark,
+        focusedIndicatorColor = dark,
+        focusedLabelColor = dark,
+        placeholderColor = dark,
+        unfocusedIndicatorColor = dark,
+        unfocusedLabelColor = dark,
+        errorCursorColor = this.red,
+        trailingIconColor = dark,
+        errorLabelColor = this.red,
+        errorTrailingIconColor = this.red,
+        errorIndicatorColor = this.red,
+        errorLeadingIconColor = this.red,
     )
 }
 

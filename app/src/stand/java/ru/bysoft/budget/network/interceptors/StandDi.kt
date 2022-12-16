@@ -81,5 +81,4 @@ abstract class StandDi {
     @Named(AUTH_INTERCEPTOR_NAME)
     abstract fun provide(authInterceptor: AuthenticationInterceptorRefreshToken): Interceptor
 
-
 }

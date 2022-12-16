@@ -12,17 +12,16 @@ import androidx.compose.ui.text.font.FontFamily
 import ru.bysoft.budget.R
 import ru.bysoft.budget.uikit.colors.UiKitColors.colors
 
-
 internal val LightColors: Colors
     @Composable
     get() = lightColors(
-        primary = colors.col1,
-        primaryVariant = colors.col2,
-        secondary = colors.col3,
-        secondaryVariant = colors.blue123,
-        background = colors.colE,
+        primary = colors.light,
+        primaryVariant = colors.col1,
+        secondary = colors.col4,
+        secondaryVariant = colors.col4_inactive,
+        background = colors.light,
         error = colors.red,
-        onPrimary = colors.col7,
+        onPrimary = colors.dark40,
         onSurface = colors.col5,
         onError = colors.col4
     )
@@ -30,29 +29,29 @@ internal val LightColors: Colors
 internal val DarkColors: Colors
     @Composable
     get() = darkColors(
-        primary = colors.col1,
-        primaryVariant = colors.col2,
-        secondary = colors.col3,
-        secondaryVariant = colors.blue123,
-        background = colors.colE,
+        primary = colors.light,
+        primaryVariant = colors.col1,
+        secondary = colors.col4,
+        secondaryVariant = colors.col4_inactive,
+        background = colors.light40,
         error = colors.red,
-        onPrimary = colors.white,
-        onSurface = colors.black,
-        onError = colors.white
+        onPrimary = colors.dark,
+        onSurface = colors.col5,
+        onError = colors.col4
     )
 
 internal val Custom1Colors: Colors
     @Composable
     get() = customColors(
-        primary = colors.col1,
-        primaryVariant = colors.col2,
-        secondary = colors.col3,
-        secondaryVariant = colors.blue123,
-        background = colors.white,
+        primary = colors.light,
+        primaryVariant = colors.col1,
+        secondary = colors.col4,
+        secondaryVariant = colors.col4_inactive,
+        background = colors.light,
         error = colors.red,
-        onPrimary = colors.white,
-        onSurface = colors.black,
-        onError = colors.white
+        onPrimary = colors.dark,
+        onSurface = colors.col5,
+        onError = colors.col4
     )
 
 internal val Ermilov = FontFamily(

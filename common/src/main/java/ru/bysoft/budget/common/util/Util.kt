@@ -56,7 +56,10 @@ private val listCurrency = listOf(
 fun getCurrency(iso4217: String): BudgetCurrency? =
     listCurrency.firstOrNull { it.iso4217 == iso4217 }
 
+fun getAvailableCurrency() = listCurrency
 data class BudgetCurrency(
     val displayName: Char,
     val iso4217: String
 )
+
+inline fun <R> R?.onNull(block: () -> R): R = this ?: block()

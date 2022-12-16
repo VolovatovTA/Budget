@@ -1,4 +1,4 @@
-package ru.bysoft.budget.common.navigation.qr
+package com.example.bottom_navigation.navigation.qr
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -11,6 +11,6 @@ object QRCode : NavigationInfo("qrCode", "qrScreenName"), BottomNavigationButton
     override val icon: ImageVector = Qrcode
     override val label: String? = null
     @Composable
-    override fun backgroundColor() = UiKitColors.colors.white
+    override fun backgroundColor() = UiKitColors.colors.light
 
 }

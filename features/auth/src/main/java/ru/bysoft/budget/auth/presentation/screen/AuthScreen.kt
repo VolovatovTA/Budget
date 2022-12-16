@@ -20,13 +20,10 @@ import androidx.compose.ui.text.*
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import ru.bysoft.budget.auth.AuthViewModel
 import ru.bysoft.budget.auth.IAuthViewModel
-import ru.bysoft.budget.auth.navigation.IAuthNavigation
 import ru.bysoft.budget.auth.presentation.entity.AuthActionType
 import ru.bysoft.budget.auth.presentation.entity.AuthState
-import ru.bysoft.budget.auth.presentation.entity.NavAction
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.components.buttons.UiKitButton
 import ru.bysoft.budget.uikit.components.buttons.entity.ButtonType
@@ -35,21 +32,11 @@ import ru.bysoft.budget.uikit.components.textfield.TextFieldState
 import ru.bysoft.budget.uikit.styles.UiKitStyles
 
 @Composable
-fun AuthScreen(
-    navHostController: NavHostController,
-    navigate: IAuthNavigation
-) {
+fun AuthScreen() {
     val viewModel: IAuthViewModel = hiltViewModel<AuthViewModel>()
 
     (LocalContext.current as Activity).window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
     val state = viewModel.state.collectAsState().value
-
-    LaunchedEffect(state.navAction){
-        when (state.navAction) {
-            NavAction.BOTTOM_NAVIGATION -> navigate.toBottomNavigation()
-            else -> {}
-        }
-    }
 
     Scaffold {
         AuthSuccessScreen(it, state, viewModel)
@@ -241,7 +228,7 @@ private fun AuthTextField(
             Text(
                 text = errorDescription,
                 style = UiKitStyles.Caption,
-                color = UiKitColors.colors.red1,
+                color = UiKitColors.colors.red,
                 modifier = Modifier.padding(horizontal = 30.dp)
             )
         }

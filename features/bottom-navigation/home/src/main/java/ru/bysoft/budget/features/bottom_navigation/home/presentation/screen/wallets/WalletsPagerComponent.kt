@@ -88,8 +88,8 @@ fun WalletsPagerComponent(
                     HorizontalPagerIndicator(
                         pagerState,
                         pageCount = state.list.size,
-                        activeColor = UiKitColors.colors.col5,
-                        inactiveColor = UiKitColors.colors.black
+                        activeColor = UiKitColors.colors.col1,
+                        inactiveColor = UiKitColors.colors.col5
                     )
                 }
             }
@@ -154,9 +154,8 @@ private fun WalletCardCreateNewWallet(onClick: () -> Unit) {
             .height(150.dp)
             .fillMaxWidth(),
         elevation = 5.dp,
-        backgroundColor = UiKitColors.colors.colE,
-        shape = RoundedCornerShape(20.dp),
-        border = BorderStroke(1.dp, Color.Black)
+        backgroundColor = UiKitColors.colors.light,
+        shape = RoundedCornerShape(20.dp)
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -186,10 +185,9 @@ fun WalletSimpleCard(
         modifier = Modifier
             .height(150.dp)
             .fillMaxWidth(),
-        elevation = 5.dp,
-//        color = UiKitColors.colors.col3,
+//        elevation = 5.dp,
+        color = UiKitColors.colors.col3,
         shape = RoundedCornerShape(20.dp),
-        border = BorderStroke(1.dp, UiKitColors.colors.borderColor)
     ) {
         Row(
             Modifier

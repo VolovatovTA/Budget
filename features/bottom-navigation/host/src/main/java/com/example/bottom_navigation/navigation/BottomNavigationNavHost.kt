@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.bottom_navigation.navigation.home.Wallet
+import com.example.bottom_navigation.navigation.home.Home
 import com.example.bottom_navigation.navigation.statistic.Statistic
 import ru.bysoft.budget.features.bottom_navigation.statistic.screen.StatisticScreen
 
@@ -14,8 +14,8 @@ import ru.bysoft.budget.features.bottom_navigation.statistic.screen.StatisticScr
 @Composable
 fun BottomNavigationNavHost() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Wallet.route) {
-        composable(Wallet.route) {  }
+    NavHost(navController = navController, startDestination = Home.route) {
+        composable(Home.route) {  }
         composable(Statistic.route) { StatisticScreen() }
     }
 }

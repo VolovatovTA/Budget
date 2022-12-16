@@ -31,7 +31,7 @@ fun HomeTitleComponent(
                 ) {
                     ShimmerComponent(
                         modifier = Modifier.weight(1f),
-                        backgroundColor = UiKitColors.colors.col7,
+                        backgroundColor = UiKitColors.colors.col4_inactive,
                         cornerRadius = 15.dp
                     )
                     Spacer(modifier = Modifier.weight(1f))

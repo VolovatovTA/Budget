@@ -11,38 +11,34 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.example.bottom_navigation.navigation.home.Wallet
-import ru.bysoft.budget.common.navigation.qr.QRCode
-import com.example.bottom_navigation.navigation.statistic.Plus
+import androidx.navigation.compose.*
+import com.example.bottom_navigation.navigation.home.Home
+import com.example.bottom_navigation.navigation.plus.Plus
+import com.example.bottom_navigation.navigation.qr.QRCode
 import com.example.bottom_navigation.navigation.statistic.Statistic
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.screen.HomeScreen
 import ru.bysoft.budget.features.bottom_navigation.statistic.screen.StatisticScreen
 import ru.bysoft.budget.features.bottom_navigation.home.HomeViewModel
+import ru.bysoft.budget.features.bottom_navigation.home.navigation.IHomeNavigation
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.components.avatar.UiKitAvatar
-import ru.bysoft.budget.uikit.components.buttons.UiKitButton
-import ru.bysoft.budget.uikit.components.buttons.entity.ButtonType
-import ru.bysoft.budget.uikit.components.buttons.entity.UiKitButtonInfo
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun BottomNavigationScreen(navController: NavHostController = rememberNavController()) {
+fun BottomNavigationScreen(
+    navController: NavHostController
+) {
     Scaffold(
         bottomBar = {
 
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
             val items = listOf(
-                Wallet,
+                Home,
                 Statistic,
                 QRCode,
                 Plus
@@ -56,9 +52,9 @@ fun BottomNavigationScreen(navController: NavHostController = rememberNavControl
                 items.forEach { screen ->
                     val tinColor =
                         if (currentDestination?.hierarchy?.any { it.route == screen.route } == true) {
-                            UiKitColors.colors.col6
+                            UiKitColors.colors.col4_inactive
                         } else {
-                            UiKitColors.colors.black
+                            UiKitColors.colors.col4
                         }
 
                     UiKitAvatar(
@@ -80,7 +76,7 @@ fun BottomNavigationScreen(navController: NavHostController = rememberNavControl
                         },
                         tintColor = tinColor,
                         modifier = Modifier,
-                        backgroundColor = UiKitColors.colors.white,
+                        backgroundColor = UiKitColors.colors.light,
                         elevation = 4.dp
                     )
                 }
@@ -91,10 +87,10 @@ fun BottomNavigationScreen(navController: NavHostController = rememberNavControl
     ) {
         NavHost(
             navController = navController,
-            startDestination = Wallet.route,
+            startDestination = Home.route,
         ) {
-            composable(Wallet.route) {
-                HomeScreen(hiltViewModel<HomeViewModel>(), navController)
+            composable(Home.route) {
+                HomeScreen(hiltViewModel<HomeViewModel>())
             }
             composable(Statistic.route) { StatisticScreen() }
             composable(QRCode.route) {
@@ -109,17 +105,8 @@ fun BottomNavigationScreen(navController: NavHostController = rememberNavControl
 
             }
             composable(Plus.route) {
-                Dialog(onDismissRequest = {  }) {
-                    DialogCreateTransaction()
-                }
+
             }
         }
-    }
-}
-
-@Composable
-fun DialogCreateTransaction() {
-    Column {
-        UiKitButton(info = UiKitButtonInfo(text = "РАСХОД", type = ButtonType.MEDIUM))
     }
 }

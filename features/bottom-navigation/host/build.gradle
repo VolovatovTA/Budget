@@ -77,4 +77,5 @@ dependencies {
     implementation project(":uikit")
     implementation project(":features:bottom-navigation:home")
     implementation project(":features:bottom-navigation:statistic")
+    implementation project(":features:create-wallet")
 }

@@ -11,21 +11,35 @@ import ru.bysoft.budget.auth.presentation.screen.AuthScreen
 import com.example.bottom_navigation.screen.BottomNavigationScreen
 import ru.bysoft.budget.common.navigation.auth.Auth
 import ru.bysoft.budget.common.navigation.auth.AuthNavigation
+import com.example.bottom_navigation.navigation.create_wallet.CreateWalletNavigation
+import ru.bysoft.budget.common.navigation.home.HomeNavigation
+import ru.bysoft.budget.features.create_wallet.presentation.screen.CreateWalletScreen
 
 @Composable
-fun MainNavigationHost(navHostController: NavHostController = rememberNavController()) {
+fun MainNavigationHost(navHostController: NavHostController) {
     NavHost(navController = navHostController, startDestination = Auth.route) {
 
         navigation(route = BottomNavigation.route, startDestination = BottomNavigation.screenName) {
-            composable(BottomNavigation.screenName) { BottomNavigationScreen() }
+            composable(BottomNavigation.screenName) {
+                val bottomNavigationController = rememberNavController()
+                BottomNavigationScreen(
+                    bottomNavigationController
+                )
+            }
         }
 
         navigation(route = Auth.route, startDestination = Auth.screenName) {
             composable(Auth.screenName) {
-                AuthScreen(
-                    navHostController,
-                    AuthNavigation(navHostController)
-                )
+                AuthScreen()
+            }
+        }
+
+        navigation(
+            route = CreateWalletNavigation.route,
+            startDestination = CreateWalletNavigation.screenName
+        ) {
+            composable(CreateWalletNavigation.screenName) {
+                CreateWalletScreen()
             }
         }
 

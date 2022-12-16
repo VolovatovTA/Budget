@@ -8,9 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.clipRect
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.google.accompanist.pager.*
 import ru.bysoft.budget.features.bottom_navigation.home.IHomeViewModel
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.screen.title.HomeTitleComponent
@@ -25,30 +27,41 @@ import java.util.*
 @Composable
 fun HomeScreen(
     viewModel: IHomeViewModel,
-    controller: NavHostController
 ) {
-    LaunchedEffect(Unit) { viewModel.init(controller) }
+    LaunchedEffect(Unit) { viewModel.loadData() }
 
     val walletsState = viewModel.walletsState.collectAsState().value
     val meState = viewModel.meState.collectAsState().value
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(), backgroundColor = UiKitColors.colors.white,
+        modifier = Modifier.fillMaxSize(),
+        backgroundColor = Color.Transparent,
         bottomBar = {}
     ) {
         Column(
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize()
-                .background(UiKitColors.colors.white)
+                .background(Color.Transparent)
         ) {
-            Column(Modifier.shadow(2.dp)) {
+            Column(Modifier.bottomElevation()) {
 
                 HomeTitleComponent(meState)
 
-                WalletsPagerComponent(walletsState, viewModel::onClickSimpleWallet, viewModel::onClickCreateWallet,viewModel::onClickEditWallet)
+                WalletsPagerComponent(
+                    walletsState,
+                    viewModel::onClickSimpleWallet,
+                    viewModel::onClickCreateWallet,
+                    viewModel::onClickEditWallet
+                )
 
                 HomeFiltersComponent()
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(UiKitColors.colors.dark40)
+                )
             }
 
             HomeTransactionsComponent()
@@ -56,3 +69,16 @@ fun HomeScreen(
         }
     }
 }
+
+private fun Modifier.bottomElevation(elevation: Dp = 8.dp): Modifier =
+    this.then(Modifier.drawWithContent {
+        val paddingPx = elevation.toPx()
+        clipRect(
+            left = 0f,
+            top = 0f,
+            right = size.width,
+            bottom = size.height + paddingPx
+        ) {
+            this@drawWithContent.drawContent()
+        }
+    })

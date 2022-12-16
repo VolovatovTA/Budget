@@ -10,13 +10,8 @@ data class AuthState(
     val type: AuthActionType,
     val isLoading: Boolean,
     val toastText: String?,
-    val navAction: NavAction? = null
 )
 
 enum class AuthActionType {
     SIGN_IN, SIGN_UP
-}
-
-enum class NavAction {
-    BOTTOM_NAVIGATION
 }

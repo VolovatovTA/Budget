@@ -18,7 +18,7 @@ object MeLoadingState : IMeState
 interface IWalletsState
 
 data class WalletsSuccessState(
-    val list: List<IWalletPresentation>
+    val list: List<IWalletPresentation>,
 ) : IWalletsState
 
 object WalletsErrorState : IWalletsState
@@ -33,6 +33,6 @@ data class WalletCardPresentation(
     val backgroundColor: String,
     val currency: Char,
     val balance: String
-):IWalletPresentation
+) : IWalletPresentation
 
-object WalletCreateNewPresentation:IWalletPresentation
+object WalletCreateNewPresentation : IWalletPresentation

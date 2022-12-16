@@ -2,15 +2,16 @@ package ru.bysoft.budget.features.bottom_navigation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavHostController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.bysoft.budget.common.errors.errorLogger
+import ru.bysoft.budget.common.me_info.IMeInfo
 import ru.bysoft.budget.features.bottom_navigation.home.data.me.IHomeMeRepo
 import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.IHomeWalletsRepo
+import ru.bysoft.budget.features.bottom_navigation.home.navigation.IHomeNavigation
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.*
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.mapper.mapToState
 import javax.inject.Inject
@@ -18,7 +19,7 @@ import javax.inject.Inject
 interface IHomeViewModel {
     val walletsState: StateFlow<IWalletsState>
     val meState: StateFlow<IMeState>
-    fun init(controller: NavHostController)
+    fun loadData()
     fun onClickSimpleWallet()
     fun onClickCreateWallet()
     fun onClickEditWallet(walletId: String)
@@ -27,8 +28,15 @@ interface IHomeViewModel {
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val walletsRepo: IHomeWalletsRepo,
-    private val meRepo: IHomeMeRepo
+    private val meRepo: IHomeMeRepo,
+    private val navigate: IHomeNavigation,
+    private val meInfo: IMeInfo
 ) : ViewModel(), IHomeViewModel {
+
+    override fun loadData() {
+        getMeInfo()
+    }
+
     private val homeWalletsExceptionHandler = CoroutineExceptionHandler { _, t ->
         errorLogger.logError(t)
         walletsState.value = WalletsErrorState
@@ -39,27 +47,21 @@ class HomeViewModel @Inject constructor(
         meState.value = MeErrorState
     }
 
-    val TAG = "Timofey"
-
-    lateinit var controller: NavHostController
 
     override val walletsState: MutableStateFlow<IWalletsState> =
         MutableStateFlow(WalletsLoadingState)
     override val meState: MutableStateFlow<IMeState> =
         MutableStateFlow(MeLoadingState)
 
-    override fun init(controller: NavHostController) {
-        this.controller = controller
-        getMeInfo()
-        getWallets()
-    }
-
     override fun onClickSimpleWallet() {
-//        controller.navigate("")
+
     }
 
     override fun onClickCreateWallet() {
-//        controller.navigate("")
+        val currentWalletState = walletsState.value
+        if (currentWalletState is WalletsSuccessState) {
+            navigate.toCreateWallet()
+        }
     }
 
     override fun onClickEditWallet(walletId: String) {
@@ -76,9 +78,11 @@ class HomeViewModel @Inject constructor(
     private fun getMeInfo() {
         viewModelScope.launch(homeMeExceptionHandler) {
             meState.value = MeLoadingState
-            meState.value = MeSuccessState(meRepo.getMeInfo().name)
+            val meInfoData = meRepo.getMeInfo()
+            meInfo.setCurrentMeInfo(meInfoData)
+            meState.value = MeSuccessState(meInfoData.name)
+            getWallets()
         }
     }
-
 
 }

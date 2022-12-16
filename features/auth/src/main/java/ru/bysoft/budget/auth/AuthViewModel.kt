@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.bysoft.budget.auth.data.IAuthRepository
+import ru.bysoft.budget.auth.navigation.IAuthNavigation
 import ru.bysoft.budget.auth.presentation.entity.AuthActionType
 import ru.bysoft.budget.auth.presentation.entity.AuthState
-import ru.bysoft.budget.auth.presentation.entity.NavAction
 import ru.bysoft.budget.auth.presentation.mapper.getSignInData
 import ru.bysoft.budget.auth.presentation.mapper.getSignUpData
 import ru.bysoft.budget.common.errors.errorLogger
@@ -29,6 +29,7 @@ interface IAuthViewModel {
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val repository: IAuthRepository,
+    private val navigate: IAuthNavigation
 ) : ViewModel(), IAuthViewModel {
 
     private val handler = CoroutineExceptionHandler { _, t ->
@@ -86,7 +87,7 @@ class AuthViewModel @Inject constructor(
                     )
 
                     if (errorData == null) {
-                        state.value = state.value.copy(navAction = NavAction.BOTTOM_NAVIGATION)
+                        navigate.toBottomNavigation()
                     } else {
                         state.value = state.value.copy(
                             email = state.value.email.copy(errorText = errorData.errorEmailText),
@@ -104,7 +105,7 @@ class AuthViewModel @Inject constructor(
                         toastText = null
                     )
                     if (errorData == null) {
-                        state.value = state.value.copy(navAction = NavAction.BOTTOM_NAVIGATION)
+                        navigate.toBottomNavigation()
                     } else {
                         state.value = state.value.copy(
                             email = state.value.email.copy(errorText = errorData.errorEmailText),

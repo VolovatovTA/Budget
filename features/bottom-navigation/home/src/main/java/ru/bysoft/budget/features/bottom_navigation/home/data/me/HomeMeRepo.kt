@@ -2,7 +2,7 @@ package ru.bysoft.budget.features.bottom_navigation.home.data.me
 
 import ru.bysoft.budget.features.bottom_navigation.home.data.me.mapper.mapToData
 import ru.bysoft.budget.features.bottom_navigation.home.data.me.network.IHomeMeApi
-import ru.bysoft.budget.features.bottom_navigation.home.data.me.entity.MeData
+import ru.bysoft.budget.common.me_info.entity.MeData
 import javax.inject.Inject
 
 interface IHomeMeRepo {

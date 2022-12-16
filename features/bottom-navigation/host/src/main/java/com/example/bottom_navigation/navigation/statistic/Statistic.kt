@@ -12,13 +12,6 @@ object Statistic : NavigationInfo("statistic", "statisticScreenName"), BottomNav
     override val icon: ImageVector = Statistic
     override val label: String? = null
     @Composable
-    override fun backgroundColor() = UiKitColors.colors.white
+    override fun backgroundColor() = UiKitColors.colors.light
 
-}
-
-object Plus : NavigationInfo("plus", "plusScreenName"), BottomNavigationButtonInfo {
-    override val icon: ImageVector = Plus
-    override val label: String? = null
-    @Composable
-    override fun backgroundColor() = UiKitColors.colors.col4
 }

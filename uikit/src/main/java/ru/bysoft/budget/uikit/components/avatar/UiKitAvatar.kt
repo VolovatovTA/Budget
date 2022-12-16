@@ -23,7 +23,7 @@ fun UiKitAvatar(
     icon: ImageVector,
     modifier: Modifier = Modifier,
     backgroundColor: Color = UiKitColors.colors.col3,
-    tintColor: Color = UiKitColors.colors.black,
+    tintColor: Color = UiKitColors.colors.dark,
     elevation: Dp = 3.dp,
     onClick: () -> Unit = {}
 ) {
