@@ -3,12 +3,47 @@ package ru.bysoft.budget.common.util
 import android.content.Context
 import android.content.res.AssetManager
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody
+import okio.Buffer
+import okio.BufferedSource
+import java.util.*
+
+val TAG = "Timofey"
 
 fun Context.getStringFromAsset(filePath: String) =
     this.assets.open(filePath).bufferedReader().use { it.readText() }
 
 fun <T> T.toJson() = Gson().toJson(this)
 inline fun <reified T> String.restore() = Gson().fromJson(this, T::class.java)
+
+interface MainResponse
+
+data class GoToAuth(
+    @SerializedName("goToAuth")
+    val result: Boolean
+) : MainResponse
+
+fun wrapWithGoToAuth(block: () -> MainResponse){
+
+}
+
+fun getBeautifulAmount(amount: Float, currency: BudgetCurrency): String {
+    val countNumbersAfterDot = Currency.getInstance(currency.iso4217).defaultFractionDigits
+    val roundedAmount = String.format("%.${countNumbersAfterDot}f", amount)
+    val accurateAmount = roundedAmount
+        .dropLastWhile { it != '.' }
+        .dropLast(1)
+        .reversed()
+        .chunked(3)
+        .reduce { acc, s -> "$acc $s" }
+        .reversed()
+    val decimals = roundedAmount.dropWhile { it != '.' }.drop(1)
+    return "$accurateAmount.$decimals ${currency.displayName}"
+
+}
 
 const val pointJson = ".json"
 

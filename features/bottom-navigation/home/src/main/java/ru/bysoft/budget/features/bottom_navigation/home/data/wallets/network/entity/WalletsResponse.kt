@@ -1,11 +1,10 @@
-package ru.bysoft.budget.home.data.wallets.network.entity
+package ru.bysoft.budget.features.bottom_navigation.home.data.wallets.network.entity
 
 import com.google.gson.annotations.SerializedName
-import java.util.UUID
 
 data class WalletsResponse(
     @SerializedName("data")
-    val data: List<WalletResponse>
+    val data: List<WalletResponse>?
 )
 
 data class WalletResponse(
@@ -14,7 +13,7 @@ data class WalletResponse(
     @SerializedName("currency")
     val currency: String?,
     @SerializedName("id")
-    val id: String,
+    val id: String?,
     @SerializedName("name")
     val name: String?,
     @SerializedName("user_id")

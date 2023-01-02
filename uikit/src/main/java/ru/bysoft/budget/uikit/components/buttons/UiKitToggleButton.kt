@@ -1,0 +1,72 @@
+package ru.bysoft.budget.uikit.components.buttons
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.IconToggleButton
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import ru.bysoft.budget.uikit.colors.UiKitColors
+import ru.bysoft.budget.uikit.components.buttons.entity.UiKitButtonInfo
+import ru.bysoft.budget.uikit.theme.Ermilov
+
+//BadgeButtonColors(
+//backgroundColor = UiKitColors.colors.col4,
+//contentColor = UiKitColors.colors.light,
+//disabledBackgroundColor = UiKitColors.colors.col4_inactive,
+//disabledContentColor = UiKitColors.colors.light
+//)
+@Composable
+fun UiKitToggleButton(
+    info: UiKitButtonInfo,
+    modifier: Modifier = Modifier,
+    checked: Boolean = true,
+    enabled: Boolean = true,
+    onCheckedChange: (Boolean) -> Unit = {}
+) {
+    val backgroundColor = when {
+        checked && enabled -> UiKitColors.colors.col4
+        !checked && enabled -> UiKitColors.colors.col4_inactive
+        !enabled -> UiKitColors.colors.light
+        else -> UiKitColors.colors.col4
+    }
+
+    Surface(
+        shape = RoundedCornerShape(10.dp),
+        modifier = modifier
+            .height(32.dp),
+        color = backgroundColor
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .clickable(
+                    interactionSource = remember {
+                        MutableInteractionSource()
+                    },
+                    indication = null,
+                    onClick = { onCheckedChange(!checked) }
+                )
+                .padding(horizontal = 25.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                info.text.uppercase(),
+                fontSize = 10.sp,
+                fontFamily = Ermilov,
+                maxLines = 1
+            )
+        }
+
+    }
+
+}

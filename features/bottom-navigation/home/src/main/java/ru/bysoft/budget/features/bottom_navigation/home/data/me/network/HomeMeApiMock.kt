@@ -1,9 +1,11 @@
 package ru.bysoft.budget.features.bottom_navigation.home.data.me.network
 
 import android.content.Context
+import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import ru.bysoft.budget.common.network.MOCK_DELAY_NAME
+import ru.bysoft.budget.common.util.TAG
 import ru.bysoft.budget.common.util.getStringFromAsset
 import ru.bysoft.budget.common.util.pointJson
 import ru.bysoft.budget.common.util.restore
@@ -18,7 +20,8 @@ class HomeMeApiMock @Inject constructor(
 
     override suspend fun getMeInfo(): MeResponse {
         delay(delayMock)
-        return context.getStringFromAsset(pathSettings + pointJson).restore<MeResponse>()
+        Log.d(TAG, "getMeInfo: $pathSettings ${context.getStringFromAsset(pathSettings + pointJson)}")
+        return context.getStringFromAsset(pathSettings + pointJson).restore()
     }
 
 

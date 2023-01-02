@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import ru.bysoft.budget.features.bottom_navigation.home.data.me.HomeMeRepo
 import ru.bysoft.budget.features.bottom_navigation.home.data.me.IHomeMeRepo
+import ru.bysoft.budget.features.bottom_navigation.home.data.transactions.ITransactionsRepo
+import ru.bysoft.budget.features.bottom_navigation.home.data.transactions.TransactionRepo
 import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.HomeWalletsRepo
 import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.IHomeWalletsRepo
 
@@ -18,4 +20,7 @@ abstract class HomeDi {
 
     @Binds
     abstract fun bindMeRepo(repo: HomeMeRepo): IHomeMeRepo
+
+    @Binds
+    abstract fun bindTransactionsRepo(repo: TransactionRepo): ITransactionsRepo
 }

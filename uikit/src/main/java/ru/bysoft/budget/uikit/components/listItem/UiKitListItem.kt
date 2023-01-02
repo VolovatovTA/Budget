@@ -5,6 +5,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import ru.bysoft.budget.uikit.components.avatar.UiKitAvatar
@@ -17,15 +18,14 @@ fun UiKitListItem(
     count: String,
     modifier: Modifier = Modifier,
     subTitle: String? = null,
+    countColor: Color,
 ) {
 
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        UiKitAvatar(
-            icon
-        )
+        UiKitAvatar(icon)
         Column(modifier = Modifier.padding(start = 20.dp)) {
             Text(
                 text = title,
@@ -47,7 +47,8 @@ fun UiKitListItem(
             Text(
                 text = count,
                 style = UiKitStyles.Body2,
-                modifier = Modifier
+                modifier = Modifier,
+                color = countColor
             )
         }
     }

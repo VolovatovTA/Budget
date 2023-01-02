@@ -13,4 +13,14 @@ class HomeNavigation @Inject constructor(
         navHostController.navigate(CreateWalletNavigation.route)
     }
 
+    override fun toAuth() {
+        navHostController.currentBackStackEntry?.destination?.route?.let {
+            navHostController.navigate(
+                route = it
+            ) {
+                popUpTo(it)
+            }
+        }
+    }
+
 }

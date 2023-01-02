@@ -12,6 +12,7 @@ interface Palette {
     val col3: Color
     val col4: Color
     val col5: Color
+    val col6: Color
     val col4_inactive: Color
     val red: Color
     val light: Color
@@ -29,6 +30,7 @@ object DarkPalette : Palette {
     override val col3 = Color(0x809DD9D4)
     override val col4 = Color(0xFF296B66)
     override val col5 = Color(0xFFDECFEB)
+    override val col6 = Color(0xFFDECFEB)
     override val col4_inactive = Color(0x80296B66)
     override val red = Color(0xFFEB5757)
     override val dark = Color(0xFFFFFFFF)
@@ -69,6 +71,7 @@ private object LightPalette : Palette {
     override val col3 = Color(0x809DD9D4)
     override val col4 = Color(0xFF296B66)
     override val col5 = Color(0xFFDECFEB)
+    override val col6 = Color(0xFF00AF85)
     override val col4_inactive = Color(0x80296B66)
     override val red = Color(0xFFEB5757)
     override val light = Color(0xFFFFFFFF)
@@ -109,6 +112,7 @@ object Custom1Palette : Palette {
     override val col3 = Color(0xFF9DD9D4)
     override val col4 = Color(0xFF296B66)
     override val col5 = Color(0xFFB071EB)
+    override val col6 = Color(0xFFB071EB)
     override val col4_inactive = Color(0xFF00AF85)
     override val red = Color(0xFFEB5757)
     override val light = Color.Black
@@ -146,7 +150,7 @@ object Custom1Palette : Palette {
 object UiKitColors {
     @Composable
     private fun getColorsByTheme(theme: BudgetThemes? = null): Palette =
-        when(theme){
+        when (theme) {
             BudgetThemes.CUSTOM1 -> Custom1Palette
             else -> getColorsBySystemTheme()
         }
@@ -155,6 +159,26 @@ object UiKitColors {
     private fun getColorsBySystemTheme(): Palette {
         return if (isSystemInDarkTheme()) DarkPalette else LightPalette
     }
+
+    @Composable
+    fun getColorByName(color: String): Color =
+        when (color) {
+            "col1" -> this.colors.col1
+            "col2" -> this.colors.col2
+            "col3" -> this.colors.col3
+            "col4" -> this.colors.col4
+            "col4_inactive" -> this.colors.col4_inactive
+            "col5" -> this.colors.col5
+            "col6" -> this.colors.col6
+            "dark" -> this.colors.dark
+            "dark40" -> this.colors.dark40
+            "grey" -> this.colors.grey
+            "red" -> this.colors.red
+            "light" -> this.colors.light
+            "light40" -> this.colors.light40
+            else -> throw Throwable()
+        }
+
 
     val colors: Palette
         @Composable

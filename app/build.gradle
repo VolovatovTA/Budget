@@ -109,6 +109,7 @@ dependencies {
 
     implementation project(':uikit')
     implementation project(':common')
+    implementation project(':features:splash')
     implementation project(':features:auth')
     implementation project(':features:create-wallet')
     implementation project(':features:bottom-navigation:host')

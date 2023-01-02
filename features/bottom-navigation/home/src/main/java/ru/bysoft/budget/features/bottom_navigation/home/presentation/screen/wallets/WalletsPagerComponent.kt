@@ -1,7 +1,6 @@
 package ru.bysoft.budget.features.bottom_navigation.home.presentation.screen.wallets
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,8 +19,9 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.*
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.*
+import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.wallets.*
 import ru.bysoft.budget.uikit.colors.UiKitColors
-import ru.bysoft.budget.uikit.components.shimmer.ShimmerComponent
+import ru.bysoft.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.budget.uikit.icons.pack.Edit
 import ru.bysoft.budget.uikit.icons.pack.Plus
 import ru.bysoft.budget.uikit.styles.UiKitStyles
@@ -41,59 +41,81 @@ fun WalletsPagerComponent(
         modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
     ) {
         when (state) {
-            is WalletsLoadingState -> {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Spacer(Modifier.height(10.dp))
-                    HorizontalPager(
-                        count = 2,
-                        state = pagerState,
-                        modifier = Modifier.fillMaxWidth(),
-                        contentPadding = PaddingValues(start = 30.dp, end = 100.dp),
-                        itemSpacing = 20.dp
-                    ) {
-                        ShimmerComponent(
-                            modifier = Modifier
-                                .height(150.dp)
-                                .fillMaxWidth(),
-                            cornerRadius = 20.dp
-                        )
-                    }
-                    Spacer(Modifier.height(10.dp))
-                    ShimmerComponent(
-                        modifier = Modifier
-                            .height(8.dp)
-                            .width(70.dp), cornerRadius = 4.dp
-                    )
-                }
-            }
-            is WalletsErrorState -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "Не удалось загрузить данные...",
-                        style = UiKitStyles.Body2,
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-            }
-            is WalletsSuccessState -> {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Spacer(Modifier.height(10.dp))
-                    WalletsPagerComponent(
-                        state, pagerState, onClickSimple, onClickCreate, onClickEdit
-                    )
-                    Spacer(Modifier.height(10.dp))
-                    HorizontalPagerIndicator(
-                        pagerState,
-                        pageCount = state.list.size,
-                        activeColor = UiKitColors.colors.col1,
-                        inactiveColor = UiKitColors.colors.col5
-                    )
-                }
-            }
+            is WalletsLoadingState -> LoadingWallets(pagerState)
+            is WalletsErrorState -> ErrorWallets()
+            is WalletsSuccessState -> SuccessWallets(
+                state,
+                pagerState,
+                onClickSimple,
+                onClickCreate,
+                onClickEdit
+            )
         }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalPagerApi::class)
+private fun SuccessWallets(
+    state: WalletsSuccessState,
+    pagerState: PagerState,
+    onClickSimple: () -> Unit,
+    onClickCreate: () -> Unit,
+    onClickEdit: (id: String) -> Unit
+) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(Modifier.height(10.dp))
+        WalletsPagerComponent(
+            state, pagerState, onClickSimple, onClickCreate, onClickEdit
+        )
+        Spacer(Modifier.height(10.dp))
+        HorizontalPagerIndicator(
+            pagerState,
+            pageCount = state.list.size,
+            activeColor = UiKitColors.colors.col1,
+            inactiveColor = UiKitColors.colors.col5
+        )
+    }
+}
+
+@Composable
+private fun ErrorWallets() {
+    Box(
+        modifier = Modifier.height(178.5.dp).fillMaxWidth(), contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "Не удалось загрузить данные...",
+            style = UiKitStyles.Body2,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+@OptIn(ExperimentalPagerApi::class)
+private fun LoadingWallets(pagerState: PagerState) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(Modifier.height(10.dp))
+        HorizontalPager(
+            count = 2,
+            state = pagerState,
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(start = 30.dp, end = 100.dp),
+            itemSpacing = 20.dp
+        ) {
+            UiKitShimmerComponent(
+                modifier = Modifier
+                    .height(150.dp)
+                    .fillMaxWidth(),
+                cornerRadius = 20.dp
+            )
+        }
+        Spacer(Modifier.height(10.dp))
+        UiKitShimmerComponent(
+            modifier = Modifier
+                .height(8.dp)
+                .width(70.dp), cornerRadius = 4.dp
+        )
     }
 }
 
@@ -218,7 +240,7 @@ fun WalletSimpleCard(
                 ) {
                     Text(
                         modifier = Modifier,
-                        text = info.balance + " " + info.currency,
+                        text = info.balance,
                         style = UiKitStyles.H1,
                     )
                 }

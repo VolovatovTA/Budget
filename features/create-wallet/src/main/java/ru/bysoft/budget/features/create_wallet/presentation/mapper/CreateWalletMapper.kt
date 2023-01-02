@@ -1,6 +1,5 @@
 package ru.bysoft.budget.features.create_wallet.presentation.mapper
 
-import ru.bysoft.budget.common.util.onNull
 import ru.bysoft.budget.features.create_wallet.data.entity.CreateWalletData
 import ru.bysoft.budget.features.create_wallet.data.entity.CreateWalletErrorData
 import ru.bysoft.budget.features.create_wallet.data.network.entity.CreateWalletErrorResponse
@@ -27,7 +26,7 @@ fun CreateWalletErrorResponse.mapToData() =
 fun CreateWalletSuccessResponse.mapToData() = CreateWalletData()
 
 fun CreateWalletResponse.mapToData() =
-    when(this){
+    when (this) {
         is CreateWalletErrorResponse -> this.mapToData()
         is CreateWalletSuccessResponse -> this.mapToData()
     }

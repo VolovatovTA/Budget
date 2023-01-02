@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.bysoft.budget.features.bottom_navigation.home.data.me.network.IHomeMeApi
+import ru.bysoft.budget.features.bottom_navigation.home.data.transactions.network.ITransactionsApi
 import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.network.IHomeWalletsApi
 import ru.bysoft.budget.network.interceptors.AUTH_CLIENT_NAME
 import ru.bysoft.budget.network.interceptors.MAIN_BASE_URL_NAME
@@ -39,6 +40,17 @@ abstract class HomeNetworkDi {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(IHomeMeApi::class.java)
+
+        @Provides
+        fun provideHomeTransactionsApi(
+            @Named(MAIN_BASE_URL_NAME) baseUrl: String,
+            @Named(AUTH_CLIENT_NAME) client: OkHttpClient
+        ): ITransactionsApi = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ITransactionsApi::class.java)
 
     }
 

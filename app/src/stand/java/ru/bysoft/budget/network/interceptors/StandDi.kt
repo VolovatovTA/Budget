@@ -49,9 +49,6 @@ abstract class StandDi {
             set: Set<@JvmSuppressWildcards Interceptor>,
             @Named(AUTH_INTERCEPTOR_NAME) authInterceptor: Interceptor
         ): OkHttpClient {
-            //ADD DISPATCHER WITH MAX REQUEST TO 1
-            val dispatcher = Dispatcher()
-//            dispatcher.maxRequests = 1
             val clientBuilder = OkHttpClient.Builder()
             set.forEach { clientBuilder.addInterceptor(it) }
             clientBuilder.addInterceptor(authInterceptor)

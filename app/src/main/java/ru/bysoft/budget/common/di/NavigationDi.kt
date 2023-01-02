@@ -13,10 +13,14 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.bysoft.budget.auth.navigation.IAuthNavigation
 import ru.bysoft.budget.common.navigation.auth.AuthNavigation
+import ru.bysoft.budget.common.navigation.common.CommonNavigation
 import ru.bysoft.budget.common.navigation.create_wallet.CreateWalletNavigation
 import ru.bysoft.budget.common.navigation.home.HomeNavigation
+import ru.bysoft.budget.common.navigation.splash.SplashNavigation
+import ru.bysoft.budget.common.network.authentificator.ICommonNavigation
 import ru.bysoft.budget.features.bottom_navigation.home.navigation.IHomeNavigation
 import ru.bysoft.budget.features.create_wallet.navigation.ICreateWalletNavigation
+import ru.bysoft.budget.splash.navigation.ISplashNavigation
 import javax.inject.Singleton
 
 @Module
@@ -40,4 +44,10 @@ abstract class NavigationDi {
 
     @Binds
     abstract fun bindCreateWalletNavigation(navigation: CreateWalletNavigation): ICreateWalletNavigation
+
+    @Binds
+    abstract fun bindSplashNavigation(navigation: SplashNavigation): ISplashNavigation
+
+    @Binds
+    abstract fun bindCommonNavigation(navigation: CommonNavigation): ICommonNavigation
 }

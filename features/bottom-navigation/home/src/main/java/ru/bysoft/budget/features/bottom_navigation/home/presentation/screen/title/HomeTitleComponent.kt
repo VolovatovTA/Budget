@@ -6,12 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.IMeState
-import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.MeErrorState
-import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.MeLoadingState
-import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.MeSuccessState
+import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.title.IMeState
+import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.title.MeErrorState
+import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.title.MeLoadingState
+import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.title.MeSuccessState
 import ru.bysoft.budget.uikit.colors.UiKitColors
-import ru.bysoft.budget.uikit.components.shimmer.ShimmerComponent
+import ru.bysoft.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.budget.uikit.styles.UiKitStyles
 
 @Composable
@@ -29,7 +29,7 @@ fun HomeTitleComponent(
                         .padding(top = 20.dp)
                         .padding(horizontal = 30.dp),
                 ) {
-                    ShimmerComponent(
+                    UiKitShimmerComponent(
                         modifier = Modifier.weight(1f),
                         backgroundColor = UiKitColors.colors.col4_inactive,
                         cornerRadius = 15.dp

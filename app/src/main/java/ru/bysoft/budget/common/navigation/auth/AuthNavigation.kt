@@ -9,5 +9,4 @@ class AuthNavigation @Inject constructor(private val controller: NavHostControll
     override fun toBottomNavigation() {
         controller.navigate(BottomNavigation.route)
     }
-
 }

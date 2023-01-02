@@ -7,11 +7,9 @@ import ru.bysoft.budget.common.util.restore
 import ru.bysoft.budget.common.util.toJson
 import javax.inject.Inject
 
-
 interface ITokenRepo {
     fun saveTokens(tokenData: AuthSuccessResponse)
-    fun getAccessToken(): String?
-    fun getRefreshToken(): String?
+    fun getTokens(): AuthSuccessResponse?
     fun clearTokens()
 }
 
@@ -26,14 +24,11 @@ class TokenRepo @Inject constructor(
         shredPrefs.edit().putString(tokenKey, tokenData.toJson()).apply()
     }
 
-    override fun getAccessToken() =
-        shredPrefs.getString(tokenKey, "")?.restore<AuthSuccessResponse>()?.accessToken
-
-    override fun getRefreshToken() =
-        shredPrefs.getString(tokenKey, "")?.restore<AuthSuccessResponse>()?.refreshToken
+    override fun getTokens() =
+        shredPrefs.getString(tokenKey, "")?.restore<AuthSuccessResponse>()
 
     override fun clearTokens() {
-        shredPrefs.edit().clear().apply()
+        shredPrefs.edit().clear().commit()
     }
 
 }

@@ -22,7 +22,7 @@ import com.valentinilk.shimmer.shimmer
 import ru.bysoft.budget.uikit.colors.UiKitColors
 
 @Composable
-fun ShimmerComponent(
+fun UiKitShimmerComponent(
     modifier: Modifier = Modifier,
     backgroundColor: Color = UiKitColors.colors.col4_inactive,
     cornerRadius: Dp = 10.dp,

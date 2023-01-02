@@ -1,19 +1,4 @@
-package ru.bysoft.budget.features.bottom_navigation.home.presentation.entity
-
-data class HomeState(
-    val meState: IMeState,
-    val walletsState: IWalletsState,
-)
-
-sealed interface IMeState
-
-data class MeSuccessState(
-    val name: String = "",
-) : IMeState
-
-object MeErrorState : IMeState
-
-object MeLoadingState : IMeState
+package ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.wallets
 
 interface IWalletsState
 
@@ -23,7 +8,9 @@ data class WalletsSuccessState(
 
 object WalletsErrorState : IWalletsState
 
-object WalletsLoadingState : IWalletsState
+data class WalletsLoadingState(
+    val isRefreshing: Boolean
+) : IWalletsState
 
 sealed interface IWalletPresentation
 
