@@ -6,7 +6,6 @@ import ru.bysoft.budget.common.util.restore
 import ru.bysoft.budget.features.create_wallet.data.entity.CreateWalletData
 import ru.bysoft.budget.features.create_wallet.data.network.ICreateWalletApi
 import ru.bysoft.budget.features.create_wallet.data.network.entity.CreateWalletErrorResponse
-import ru.bysoft.budget.features.create_wallet.data.network.entity.CreateWalletResponse
 import ru.bysoft.budget.features.create_wallet.presentation.entity.CreateWalletState
 import ru.bysoft.budget.features.create_wallet.presentation.mapper.mapToData
 import ru.bysoft.budget.features.create_wallet.presentation.mapper.mapToRequest

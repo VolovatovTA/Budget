@@ -4,17 +4,20 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ru.bysoft.budget.common.errors.IErrorLogger
 import ru.bysoft.budget.common.errors.exceptionHandler
 import ru.bysoft.budget.common.me_info.IMeInfo
 import ru.bysoft.budget.common.util.BudgetCurrency
 import ru.bysoft.budget.common.util.getCurrency
 import ru.bysoft.budget.features.create_wallet.data.ICreateWalletRepository
+import ru.bysoft.budget.features.create_wallet.data.entity.CreateWalletErrorData
 import ru.bysoft.budget.features.create_wallet.navigation.ICreateWalletNavigation
 import ru.bysoft.budget.features.create_wallet.presentation.entity.CreateWalletState
-import ru.bysoft.budget.features.create_wallet.presentation.entity.CurrencyField
+import ru.bysoft.budget.features.create_wallet.presentation.entity.CurrencyFieldState
 import ru.bysoft.budget.uikit.components.textfield.TextFieldState
 import javax.inject.Inject
 
@@ -30,17 +33,28 @@ interface ICreateWalletViewModel {
 class CreateWalletViewModel @Inject constructor(
     private val repository: ICreateWalletRepository,
     private val navigate: ICreateWalletNavigation,
-    private val meInfo: IMeInfo
+    private val meInfo: IMeInfo,
+    private val errorLogger: IErrorLogger
 ) : ViewModel(), ICreateWalletViewModel {
     val TAG = "Timofey"
+
     init {
         val d = meInfo.getCurrentMeInfo()
         Log.d(TAG, d.toString())
     }
+
+    val createWalletExceptionHAndler = CoroutineExceptionHandler { _, throwable ->
+        errorLogger.logError(throwable)
+        state.value = state.value.copy(
+            isLoading = false,
+            toastText = "Произошла непредвиденная ошибка"
+        )
+    }
+
     override val state: MutableStateFlow<CreateWalletState> =
         MutableStateFlow(
             CreateWalletState(
-                currencyFieldState = CurrencyField(
+                currencyFieldState = CurrencyFieldState(
                     selectedCurrency = getCurrency(meInfo.getCurrentMeInfo()!!.settingsData.currency)!!
                 )
             )
@@ -63,12 +77,47 @@ class CreateWalletViewModel @Inject constructor(
     }
 
     override fun onButtonClick() {
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(createWalletExceptionHAndler) {
             state.value = state.value.copy(isLoading = true)
-            repository.createWallet(state.value)
-            navigate.popBack()
-            state.value = state.value.copy(isLoading = false)
+            val data = repository.createWallet(state.value)
+            if (data.errorType == null) {
+                state.value = state.value.copy(isLoading = false)
+                navigate.popBack()
+            } else {
+                state.value = state.value.copy(
+                    isLoading = false,
+                    balanceTextState = getBalanceStateByErrorType(data.errorType),
+                    nameTextState = getNameStateByErrorType(data.errorType),
+                    currencyFieldState = getCurrencyStateByErrorType(data.errorType),
+                )
+            }
         }
     }
 
+    private fun getBalanceStateByErrorType(errorType: CreateWalletErrorData): TextFieldState =
+        when (errorType) {
+            CreateWalletErrorData.INVALID_BALANCE -> state.value.balanceTextState.copy(
+                errorText = CreateWalletErrorData.INVALID_BALANCE.errorText
+            )
+            else -> state.value.balanceTextState
+        }
+
+    private fun getNameStateByErrorType(errorType: CreateWalletErrorData): TextFieldState =
+        when (errorType) {
+            CreateWalletErrorData.INVALID_NAME -> state.value.nameTextState.copy(
+                errorText = CreateWalletErrorData.INVALID_NAME.errorText
+            )
+            CreateWalletErrorData.NO_UNIQ_NAME -> state.value.nameTextState.copy(
+                errorText = CreateWalletErrorData.NO_UNIQ_NAME.errorText
+            )
+            else -> state.value.nameTextState
+        }
+
+    private fun getCurrencyStateByErrorType(errorType: CreateWalletErrorData): CurrencyFieldState =
+        when (errorType) {
+            CreateWalletErrorData.INVALID_CURRENCY -> state.value.currencyFieldState.copy(
+                errorText = CreateWalletErrorData.INVALID_CURRENCY.errorText
+            )
+            else -> state.value.currencyFieldState
+        }
 }

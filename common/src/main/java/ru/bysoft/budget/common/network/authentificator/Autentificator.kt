@@ -123,8 +123,6 @@ class AuthenticationInterceptorRefreshToken @Inject constructor(
                 )
             )
 
-    private val queue: MutableStateFlow<List<Boolean>> = MutableStateFlow(emptyList())
-
     private fun awaitRefreshingAndRequest(
         originalRequest: Request,
         chain: Interceptor.Chain
@@ -132,6 +130,8 @@ class AuthenticationInterceptorRefreshToken @Inject constructor(
         Log.d(TAG, "awaitRefreshingAndRequest: $originalRequest")
         runBlocking {
             tokenStatus.collect { tokenStatus ->
+                Log.d(TAG, "collect tokenStatus: $tokenStatus")
+
                 if (tokenStatus is TokenSuccess) {
                     val newAuthenticationRequest = getAuthRequest(originalRequest)
                     chain.proceed(newAuthenticationRequest)

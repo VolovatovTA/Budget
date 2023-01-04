@@ -61,13 +61,18 @@ fun HomeTransactionsComponent(
 @Composable
 private fun TransactionsSuccessComponent(state: TransactionSuccess) {
     if (state.list.isEmpty()) {
-        Text(
-            text = "Тут пока что пусто...",
+        Box(
             modifier = Modifier
-                .height(150.dp)
+                .height(70.dp)
                 .fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "У вас пока нет ни одной транзакции...",
+                textAlign = TextAlign.Center
+            )
+        }
+
     } else {
         state.list.forEach { data ->
             UiKitListItem(
@@ -88,7 +93,7 @@ private fun TransactionsSuccessComponent(state: TransactionSuccess) {
 
 @Composable
 private fun TransactionLoadingComponent() {
-    Column(modifier = Modifier) {
+    Column {
         (0..4).forEach { _ ->
             WaitingListItem()
         }

@@ -19,27 +19,17 @@ fun Context.getStringFromAsset(filePath: String) =
 fun <T> T.toJson() = Gson().toJson(this)
 inline fun <reified T> String.restore() = Gson().fromJson(this, T::class.java)
 
-interface MainResponse
-
-data class GoToAuth(
-    @SerializedName("goToAuth")
-    val result: Boolean
-) : MainResponse
-
-fun wrapWithGoToAuth(block: () -> MainResponse){
-
-}
-
 fun getBeautifulAmount(amount: Float, currency: BudgetCurrency): String {
     val countNumbersAfterDot = Currency.getInstance(currency.iso4217).defaultFractionDigits
-    val roundedAmount = String.format("%.${countNumbersAfterDot}f", amount)
+    val roundedAmount = String.format("%.${countNumbersAfterDot}f", amount).replace(',', '.')
     val accurateAmount = roundedAmount
         .dropLastWhile { it != '.' }
         .dropLast(1)
         .reversed()
         .chunked(3)
-        .reduce { acc, s -> "$acc $s" }
-        .reversed()
+        .takeIf { it.isNotEmpty() }
+        ?.reduce { acc, s -> "$acc $s" }
+        ?.reversed() ?: "0"
     val decimals = roundedAmount.dropWhile { it != '.' }.drop(1)
     return "$accurateAmount.$decimals ${currency.displayName}"
 

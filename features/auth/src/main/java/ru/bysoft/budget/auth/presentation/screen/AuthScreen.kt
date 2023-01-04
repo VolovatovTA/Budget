@@ -186,12 +186,6 @@ private fun AuthSuccessScreen(
     }
 }
 
-
-@Composable
-private fun ToastCompose(text: String) {
-    Toast.makeText(LocalContext.current, text, Toast.LENGTH_LONG).show()
-}
-
 @Composable
 private fun AuthTextField(
     state: TextFieldState,

@@ -7,12 +7,14 @@ import ru.bysoft.budget.uikit.components.textfield.TextFieldState
 data class CreateWalletState(
     val nameTextState: TextFieldState = TextFieldState(""),
     val balanceTextState: TextFieldState = TextFieldState("0.0"),
-    val currencyFieldState: CurrencyField,
-    val isLoading: Boolean = false
+    val currencyFieldState: CurrencyFieldState,
+    val isLoading: Boolean = false,
+    val toastText: String? = null
 )
 
-data class CurrencyField(
+data class CurrencyFieldState(
     val selectedCurrency: BudgetCurrency,
-    val list: List<BudgetCurrency> = getAvailableCurrency()
+    val list: List<BudgetCurrency> = getAvailableCurrency(),
+    val errorText: String? = null
 )
 
