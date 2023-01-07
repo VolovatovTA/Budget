@@ -14,9 +14,7 @@ object NoCategoriesOccurred : Throwable()
 
 
 fun ListTransactionsResponse.mapToData() =
-    ListTransactionsData(
-        listTransactions = this.data.map { it.mapToData() }
-    )
+    ListTransactionsData(listTransactions = this.data.map { it.mapToData() })
 
 private fun TransactionResponse.mapToData() = when (type) {
     "EXPENSE" -> getExpenseTransaction(this)
@@ -64,7 +62,8 @@ private fun getCategories(transactionResponse: TransactionResponse): List<Catego
             ExpenseCategory(
                 currency = getCurrency(it.currency) ?: throw UnknownCurrencyException(it.currency),
                 id = it.id,
-                name = it.name
+                name = it.name,
+                iconName = it.iconName,
             )
         }
         transactionResponse.listIncomeCategoryResponse != null -> listOf(
@@ -72,7 +71,8 @@ private fun getCategories(transactionResponse: TransactionResponse): List<Catego
                 currency = getCurrency(transactionResponse.listIncomeCategoryResponse.currency)
                     ?: throw UnknownCurrencyException(transactionResponse.listIncomeCategoryResponse.currency),
                 id = transactionResponse.listIncomeCategoryResponse.id,
-                name = transactionResponse.listIncomeCategoryResponse.name
+                name = transactionResponse.listIncomeCategoryResponse.name,
+                iconName = transactionResponse.listIncomeCategoryResponse.iconName
             )
         )
         else -> throw NoCategoriesOccurred

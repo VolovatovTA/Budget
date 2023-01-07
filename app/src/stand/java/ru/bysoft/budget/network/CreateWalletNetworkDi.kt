@@ -7,7 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.bysoft.budget.features.create_wallet.data.network.ICreateWalletApi
+import ru.bysoft.budget.features.create_update_wallet.data.network.ICreateWalletApi
 import ru.bysoft.budget.network.interceptors.AUTH_CLIENT_NAME
 import ru.bysoft.budget.network.interceptors.MAIN_BASE_URL_NAME
 import javax.inject.Named

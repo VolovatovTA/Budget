@@ -6,15 +6,24 @@ import ru.bysoft.budget.features.bottom_navigation.home.data.transactions.networ
 import javax.inject.Inject
 
 interface ITransactionsRepo {
-    suspend fun getTransactions(type: String?): ListTransactionsData
+    suspend fun getTransactions(
+        type: String?,
+        walletId: String?
+    ): ListTransactionsData
 }
 
 class TransactionRepo @Inject constructor(
     private val api: ITransactionsApi,
 ) : ITransactionsRepo {
 
-    override suspend fun getTransactions(type: String?): ListTransactionsData {
-        return api.getTransactions(type = type).mapToData()
+    override suspend fun getTransactions(
+        type: String?,
+        walletId: String?
+    ): ListTransactionsData {
+        return api.getTransactions(
+            type = type,
+            wallet_ids = walletId
+        ).mapToData()
     }
 
 }

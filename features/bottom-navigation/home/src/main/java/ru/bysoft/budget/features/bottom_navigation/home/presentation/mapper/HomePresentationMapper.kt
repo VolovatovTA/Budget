@@ -7,6 +7,7 @@ import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.entity.Wall
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionInfo
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletCardPresentation
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletCreateNewPresentation
+import ru.bysoft.budget.uikit.icons.UiKitIcons
 
 fun List<WalletData>.mapToState() = this.map { it.mapToState() }.plus(WalletCreateNewPresentation)
 
@@ -35,7 +36,7 @@ private fun getTransactionInfo(transactionData: TransactionData): TransactionInf
         } + getBeautifulAmount(transactionData.amount, transactionData.currency),
         currency = transactionData.currency,
         date = transactionData.date.toLocaleString(),
-        icon = transactionData.categories.first().name,
+        icon = UiKitIcons.getByName(transactionData.categories.first().iconName),
         name = transactionData.comment,
         color = when (transactionData) {
             is TransactionIncome -> "col6"

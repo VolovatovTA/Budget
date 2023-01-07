@@ -18,7 +18,8 @@
             <option value="$PROJECT_DIR$/features/bottom-navigation/home" />
             <option value="$PROJECT_DIR$/features/bottom-navigation/host" />
             <option value="$PROJECT_DIR$/features/bottom-navigation/statistic" />
-            <option value="$PROJECT_DIR$/features/create-wallet" />
+            <option value="$PROJECT_DIR$/features/create-udate-category" />
+            <option value="$PROJECT_DIR$/features/create-update-wallet" />
             <option value="$PROJECT_DIR$/features/splash" />
             <option value="$PROJECT_DIR$/uikit" />
           </set>

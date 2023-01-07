@@ -43,7 +43,7 @@ fun SplashScreen() {
             animationSpec = tween(1000),
             finishedListener = {
                 animatedState.value++
-                if (animatedState.value == 5)
+                if (animatedState.value >= 1)
                     viewModel.onAnimationFinished()
             }
         )

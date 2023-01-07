@@ -42,6 +42,7 @@ interface IHomeViewModel {
     fun onClickSimpleWallet()
     fun onClickCreateWallet()
     fun onClickEditWallet(walletId: String)
+    fun onPositionChanged(walletId: String)
     fun onClickFilter(newValue: Boolean, filter: FilterData)
 }
 
@@ -57,7 +58,6 @@ class HomeViewModel @Inject constructor(
     override fun loadData(isRefresh: Boolean) {
         getMeInfo()
         getWallets(isRefresh)
-        getTransactions(isRefresh)
     }
 
     override fun loadTransactions(isRefresh: Boolean) {
@@ -91,6 +91,8 @@ class HomeViewModel @Inject constructor(
     override val transactionsState: MutableStateFlow<TransactionsState> =
         MutableStateFlow(TransactionLoading(false))
 
+    private var currentWalletId: String = ""
+
     private fun getBasicFilterState() = FilterState(
         listFilters = listOf(
             FilterData(
@@ -121,6 +123,11 @@ class HomeViewModel @Inject constructor(
 
     }
 
+    override fun onPositionChanged(walletId: String) {
+        currentWalletId = walletId
+        getTransactions(false)
+    }
+
     override fun onClickFilter(newValue: Boolean, filter: FilterData) {
         filterState.value = filterState.value.copy(
             listFilters = filterState.value.listFilters.map {
@@ -133,7 +140,10 @@ class HomeViewModel @Inject constructor(
     private fun getWallets(isRefresh: Boolean) {
         viewModelScope.launch(homeWalletsExceptionHandler) {
             walletsState.value = WalletsLoadingState(isRefresh)
-            walletsState.value = WalletsSuccessState(walletsRepo.getWallets().mapToState())
+            val loadedData = walletsRepo.getWallets()
+            walletsState.value = WalletsSuccessState(loadedData.mapToState())
+            currentWalletId = loadedData.first().id
+            getTransactions(isRefresh)
         }
     }
 
@@ -155,7 +165,8 @@ class HomeViewModel @Inject constructor(
                     .map { ",${it.type.nameForBack}" }
                     .takeIf { it.isNotEmpty() }
                     ?.reduce { acc, s -> acc + s }
-                    ?.drop(1)
+                    ?.drop(1),
+                walletId = currentWalletId
             )
             transactionsState.value = TransactionSuccess(transactions.mapToInfo())
         }

@@ -1,6 +1,7 @@
 package ru.bysoft.budget.features.bottom_navigation.home.presentation.screen.wallets
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,6 +23,7 @@ import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.*
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.wallets.*
 import ru.bysoft.budget.uikit.colors.UiKitColors
+import ru.bysoft.budget.uikit.components.expandablecontetn.defaultAnimationSpec
 import ru.bysoft.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.budget.uikit.icons.pack.Edit
 import ru.bysoft.budget.uikit.icons.pack.Plus
@@ -34,6 +37,7 @@ fun WalletsPagerComponent(
     onClickSimple: () -> Unit,
     onClickCreate: () -> Unit,
     onClickEdit: (id: String) -> Unit,
+    onPositionChanged: (String) -> Unit,
 ) {
     val pagerState = rememberPagerState(0)
 
@@ -48,7 +52,8 @@ fun WalletsPagerComponent(
                 pagerState,
                 onClickSimple,
                 onClickCreate,
-                onClickEdit
+                onClickEdit,
+                onPositionChanged
             )
         }
     }
@@ -61,13 +66,18 @@ private fun SuccessWallets(
     pagerState: PagerState,
     onClickSimple: () -> Unit,
     onClickCreate: () -> Unit,
-    onClickEdit: (id: String) -> Unit
+    onClickEdit: (id: String) -> Unit,
+    onPositionChanged: (id: String) -> Unit
 ) {
+    LaunchedEffect(pagerState.currentPage) {
+        val currentWallet = state.list[pagerState.currentPage]
+        if (currentWallet is WalletCardPresentation) {
+            onPositionChanged(currentWallet.walletId)
+        }
+    }
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(Modifier.height(10.dp))
-        WalletsPagerComponent(
-            state, pagerState, onClickSimple, onClickCreate, onClickEdit
-        )
+        WalletsPagerComponent(state, pagerState, onClickSimple, onClickCreate, onClickEdit)
         Spacer(Modifier.height(10.dp))
         HorizontalPagerIndicator(
             pagerState,
@@ -81,7 +91,9 @@ private fun SuccessWallets(
 @Composable
 private fun ErrorWallets() {
     Box(
-        modifier = Modifier.height(178.5.dp).fillMaxWidth(), contentAlignment = Alignment.Center
+        modifier = Modifier
+            .height(178.5.dp)
+            .fillMaxWidth(), contentAlignment = Alignment.Center
     ) {
         Text(
             text = "Не удалось загрузить данные...",
@@ -144,9 +156,8 @@ private fun WalletsPagerComponent(
                     indexStart + 3 * diff / diff.absoluteValue
                 }
             },
-            endContentPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr),
-
-            ),
+            endContentPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
+        ),
         contentPadding = contentPadding,
         itemSpacing = 20.dp
     ) { page ->

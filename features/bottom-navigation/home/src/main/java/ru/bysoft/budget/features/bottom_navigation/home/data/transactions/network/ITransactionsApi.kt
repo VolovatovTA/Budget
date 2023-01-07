@@ -15,5 +15,6 @@ interface ITransactionsApi {
         @Query("date_to") dateTo: String? = null,
         @Query("expense_ids") expenseIds: String? = null,
         @Query("income_ids") income_ids: String? = null,
+        @Query("wallet_ids") wallet_ids: String? = null,
     ): ListTransactionsResponse
 }

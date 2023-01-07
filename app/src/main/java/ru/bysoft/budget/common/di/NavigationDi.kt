@@ -1,7 +1,6 @@
 package ru.bysoft.budget.common.di
 
 import android.content.Context
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.DialogNavigator
@@ -14,12 +13,16 @@ import dagger.hilt.components.SingletonComponent
 import ru.bysoft.budget.auth.navigation.IAuthNavigation
 import ru.bysoft.budget.common.navigation.auth.AuthNavigation
 import ru.bysoft.budget.common.navigation.common.CommonNavigation
+import ru.bysoft.budget.common.navigation.create_update_categiry.CreateUpdateCategoryNavigation
 import ru.bysoft.budget.common.navigation.create_wallet.CreateWalletNavigation
 import ru.bysoft.budget.common.navigation.home.HomeNavigation
 import ru.bysoft.budget.common.navigation.splash.SplashNavigation
+import ru.bysoft.budget.common.navigation.statistic.StatisticNavigation
 import ru.bysoft.budget.common.network.authentificator.ICommonNavigation
+import ru.bysoft.budget.create_udate_category.navigation.ICreateUpdateCategoryNavigation
 import ru.bysoft.budget.features.bottom_navigation.home.navigation.IHomeNavigation
-import ru.bysoft.budget.features.create_wallet.navigation.ICreateWalletNavigation
+import ru.bysoft.budget.features.bottom_navigation.statistic.navigation.IStatisticNavigation
+import ru.bysoft.budget.features.create_update_wallet.navigation.ICreateWalletNavigation
 import ru.bysoft.budget.splash.navigation.ISplashNavigation
 import javax.inject.Singleton
 
@@ -50,4 +53,10 @@ abstract class NavigationDi {
 
     @Binds
     abstract fun bindCommonNavigation(navigation: CommonNavigation): ICommonNavigation
+
+    @Binds
+    abstract fun bindStatisticNavigation(navigation: StatisticNavigation): IStatisticNavigation
+
+    @Binds
+    abstract fun bindCreateUpdateCategoryNavigation(navigation: CreateUpdateCategoryNavigation): ICreateUpdateCategoryNavigation
 }

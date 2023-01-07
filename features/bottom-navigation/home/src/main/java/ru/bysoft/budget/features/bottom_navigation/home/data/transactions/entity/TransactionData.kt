@@ -46,17 +46,20 @@ data class TransactionTransfer(
 sealed class CategoryData(
     open val currency: BudgetCurrency,
     open val id: String,
-    open val name: String
+    open val name: String,
+    open val iconName: String?
 )
 
 data class ExpenseCategory(
     override val currency: BudgetCurrency,
     override val id: String,
-    override val name: String
-) : CategoryData(currency, id, name)
+    override val name: String,
+    override val iconName: String?,
+) : CategoryData(currency, id, name, iconName)
 
 data class IncomeCategory(
     override val currency: BudgetCurrency,
     override val id: String,
-    override val name: String
-) : CategoryData(currency, id, name)
+    override val name: String,
+    override val iconName: String?,
+) : CategoryData(currency, id, name, iconName)

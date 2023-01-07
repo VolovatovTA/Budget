@@ -1,6 +1,7 @@
 package ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.transactions
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.graphics.vector.ImageVector
 import ru.bysoft.budget.common.util.BudgetCurrency
 
 sealed interface TransactionsState
@@ -18,7 +19,7 @@ object TransactionError : TransactionsState
 
 data class TransactionInfo(
     val name: String,
-    val icon: String,
+    val icon: ImageVector?,
     val date: String,
     val amount: String,
     val currency: BudgetCurrency,

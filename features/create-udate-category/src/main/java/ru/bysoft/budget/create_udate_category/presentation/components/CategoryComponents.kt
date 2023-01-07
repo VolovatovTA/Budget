@@ -1,0 +1,161 @@
+package ru.bysoft.budget.create_udate_category.presentation.components
+
+import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import ru.bysoft.budget.common.util.TAG
+import ru.bysoft.budget.create_udate_category.presentation.entity.CreateUpdateCategoryState
+import ru.bysoft.budget.create_udate_category.presentation.entity.IconState
+import ru.bysoft.budget.uikit.colors.UiKitColors
+import ru.bysoft.budget.uikit.components.avatar.UiKitAvatar
+import ru.bysoft.budget.uikit.components.buttons.UiKitButton
+import ru.bysoft.budget.uikit.components.buttons.entity.ButtonType
+import ru.bysoft.budget.uikit.components.buttons.entity.UiKitButtonInfo
+import ru.bysoft.budget.uikit.components.textfield.TextFieldState
+import ru.bysoft.budget.uikit.icons.UiKitIcons
+import ru.bysoft.budget.uikit.styles.UiKitStyles
+
+
+@Composable
+fun IconsComponent(onClick: (String?) -> Unit, selectedIcon: IconState) {
+    Log.d(TAG, "IconsComponent: $selectedIcon")
+    val listIcons = UiKitIcons.getCategories().map { it.second }.plus(null)
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(45.dp),
+        contentPadding = PaddingValues(
+            start = 12.dp,
+            top = 16.dp,
+            end = 12.dp,
+            bottom = 16.dp
+        ),
+    ) {
+        items(listIcons.size) {
+            Box(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                val icon = listIcons[it]
+                if (icon != null) {
+                    UiKitAvatar(
+                        icon = icon,
+                        backgroundColor =
+                        if (icon.name == selectedIcon.iconName) Color(0x22000000) else
+                            Color.Transparent,
+                        onClick = { onClick(icon.name) },
+                        rippleEnabled = false,
+                        elevation = 0.dp
+                    )
+                } else {
+                    Text(
+                        text = "без \nиконки",
+                        style = UiKitStyles.Caption,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .clickable(
+                                remember { MutableInteractionSource() },
+                                indication = null
+                            ) { onClick(null) }
+                            .background(
+                                if (selectedIcon.iconName == null) Color(0x22000000)
+                                else Color.Transparent
+                            )
+                            .wrapContentHeight(align = Alignment.CenterVertically)
+                    )
+                }
+
+            }
+
+        }
+    }
+}
+
+@Composable
+fun ButtonComponent(
+    onClickCreateUpdate: () -> Unit,
+    state: CreateUpdateCategoryState,
+    text: String
+) {
+    Box(modifier = Modifier.height(50.dp)) {
+        if (state.isLoading) {
+            CircularProgressIndicator(modifier = Modifier.fillMaxHeight())
+        } else {
+            UiKitButton(
+                info = UiKitButtonInfo(text, type = ButtonType.MEDIUM),
+                onClick = onClickCreateUpdate
+            )
+        }
+    }
+
+}
+
+@Composable
+fun CreateUpdateCategoryTextField(
+    state: TextFieldState,
+    onTextChange: (String) -> Unit,
+    label: String,
+    type: KeyboardType,
+    modifier: Modifier = Modifier,
+    onNotFocused: (lastText: String) -> Unit = {},
+) {
+    val source = remember { MutableInteractionSource() }
+
+    Log.d(TAG, "CreateUpdateCategoryTextField: ${state.errorText}")
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center
+    ) {
+        OutlinedTextField(
+            value = state.text,
+            onValueChange = onTextChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .onFocusChanged { if (!it.isFocused) onNotFocused(state.text) },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                autoCorrect = false,
+                keyboardType = type
+            ),
+            shape = RoundedCornerShape(10.dp),
+            colors = UiKitColors.colors.textFieldColors,
+            label = {
+                Text(
+                    text = label,
+                    style = UiKitStyles.Body2
+                )
+            },
+            isError = state.errorText != null,
+            interactionSource = source,
+            textStyle = UiKitStyles.Body2
+        )
+        if (state.errorText != null && state.errorText?.isNotEmpty() == true) {
+            Text(
+                text = state.errorText!!,
+                style = UiKitStyles.Caption,
+                color = UiKitColors.colors.red
+            )
+        }
+    }
+}

@@ -45,6 +45,7 @@ fun HomeScreen(
 
     val refreshingWallets = walletsState as? WalletsLoadingState
     val refreshEnabled = walletsState !is WalletsLoadingState && meState !is MeLoadingState
+
     val pullRefreshState = rememberPullRefreshState(
         refreshing = refreshingWallets?.isRefreshing ?: false,
         onRefresh = { viewModel.loadData(true) }
@@ -80,7 +81,8 @@ fun HomeScreen(
                             walletsState,
                             viewModel::onClickSimpleWallet,
                             viewModel::onClickCreateWallet,
-                            viewModel::onClickEditWallet
+                            viewModel::onClickEditWallet,
+                            viewModel::onPositionChanged
                         )
 
                         HomeFiltersComponent(filtersState, viewModel::onClickFilter)

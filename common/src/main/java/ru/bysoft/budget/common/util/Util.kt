@@ -78,7 +78,7 @@ private val listCurrency = listOf(
     BudgetCurrency('$', "USD"),
 )
 
-fun getCurrency(iso4217: String): BudgetCurrency? =
+fun getCurrency(iso4217: String?): BudgetCurrency? =
     listCurrency.firstOrNull { it.iso4217 == iso4217 }
 
 fun getAvailableCurrency() = listCurrency

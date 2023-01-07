@@ -78,11 +78,11 @@ private fun TransactionsSuccessComponent(state: TransactionSuccess) {
             UiKitListItem(
                 title = data.name,
                 subTitle = data.date,
-                icon = Food,
+                icon = data.icon,
                 modifier = Modifier
                     .clickable { }
                     .padding(vertical = 10.dp, horizontal = 30.dp),
-                count = data.amount,
+                amount = data.amount,
                 countColor = UiKitColors.getColorByName(data.color)
             )
         }

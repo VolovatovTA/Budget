@@ -1,7 +1,7 @@
 package ru.bysoft.budget.common.navigation.create_wallet
 
 import androidx.navigation.NavHostController
-import ru.bysoft.budget.features.create_wallet.navigation.ICreateWalletNavigation
+import ru.bysoft.budget.features.create_update_wallet.navigation.ICreateWalletNavigation
 import javax.inject.Inject
 
 class CreateWalletNavigation @Inject constructor(

@@ -12,12 +12,12 @@ android {
             storePassword 'werthvfy926'
         }
     }
-    compileSdk 33
+    compileSdk compile_sdk
 
     defaultConfig {
-        applicationId "com.example.budget"
-        minSdk 23
-        targetSdk 33
+        applicationId "ru.bysoft.android.budget"
+        minSdk min_sdk
+        targetSdk target_sdk
         versionCode 1
         versionName "1.0"
 
@@ -111,7 +111,8 @@ dependencies {
     implementation project(':common')
     implementation project(':features:splash')
     implementation project(':features:auth')
-    implementation project(':features:create-wallet')
+    implementation project(':features:create-udate-category')
+    implementation project(':features:create-update-wallet')
     implementation project(':features:bottom-navigation:host')
     implementation project(':features:bottom-navigation:home')
     implementation project(':features:bottom-navigation:statistic')

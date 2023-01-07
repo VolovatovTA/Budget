@@ -83,7 +83,7 @@ class AuthenticationInterceptorRefreshToken @Inject constructor(
                     )
                     tokenRepo.clearTokens()
                     tokenStatus.value = TokenError
-                    navigator.navigateToAuth()
+                    runBlocking(Dispatchers.Main) { navigator.navigateToAuth() }//нужно навигироваться в мэйн потоке
                     Response.Builder()
                         .body("{\"goToAuth\": true}".toResponseBody("application/json; charset=utf-8".toMediaType()))
                         .code(200)

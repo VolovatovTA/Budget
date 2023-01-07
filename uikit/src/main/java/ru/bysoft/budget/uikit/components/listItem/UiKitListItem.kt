@@ -14,8 +14,8 @@ import ru.bysoft.budget.uikit.styles.UiKitStyles
 @Composable
 fun UiKitListItem(
     title: String,
-    icon: ImageVector,
-    count: String,
+    icon: ImageVector?,
+    amount: String,
     modifier: Modifier = Modifier,
     subTitle: String? = null,
     countColor: Color,
@@ -45,7 +45,7 @@ fun UiKitListItem(
             contentAlignment = Alignment.CenterEnd
         ) {
             Text(
-                text = count,
+                text = amount,
                 style = UiKitStyles.Body2,
                 modifier = Modifier,
                 color = countColor

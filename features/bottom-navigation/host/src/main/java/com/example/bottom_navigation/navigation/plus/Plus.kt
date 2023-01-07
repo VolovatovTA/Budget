@@ -5,12 +5,44 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.bottom_navigation.navigation.BottomNavigationButtonInfo
 import com.example.bottom_navigation.navigation.NavigationInfo
 import ru.bysoft.budget.uikit.colors.UiKitColors
+import ru.bysoft.budget.uikit.icons.pack.ArrowUp
+import ru.bysoft.budget.uikit.icons.pack.Minus
 import ru.bysoft.budget.uikit.icons.pack.Plus
+import ru.bysoft.budget.uikit.icons.pack.Recycle
 
-
-object Plus : NavigationInfo("plus", "plusScreenName"), BottomNavigationButtonInfo {
-    override val icon: ImageVector = Plus
+object Plus : BottomNavigationButtonInfo {
+    override val icon: ImageVector = ArrowUp
     override val label: String? = null
+
+    @Composable
+    override fun backgroundColor() = UiKitColors.colors.col4
+    val entireList: List<BottomNavigationButtonInfo> = listOf(
+        EntirePlus,
+        EntireTransfer,
+        EntireMinus,
+    )
+}
+
+object EntirePlus : NavigationInfo("", ""), BottomNavigationButtonInfo {
+    override val icon: ImageVector = Plus
+    override val label: String = "Доход"
+
+    @Composable
+    override fun backgroundColor() = UiKitColors.colors.col4
+}
+
+object EntireMinus : NavigationInfo("", ""), BottomNavigationButtonInfo {
+    override val icon: ImageVector = Minus
+    override val label: String = "Расход"
+
+    @Composable
+    override fun backgroundColor() = UiKitColors.colors.col4
+}
+
+object EntireTransfer : NavigationInfo("", ""), BottomNavigationButtonInfo {
+    override val icon: ImageVector = Recycle
+    override val label: String = "Перевод"
+
     @Composable
     override fun backgroundColor() = UiKitColors.colors.col4
 }

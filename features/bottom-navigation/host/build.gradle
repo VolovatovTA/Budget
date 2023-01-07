@@ -8,11 +8,11 @@ plugins {
 
 android {
     namespace 'com.example.bottom_navigation'
-    compileSdk 33
+    compileSdk compile_sdk
 
     defaultConfig {
-        minSdk 23
-        targetSdk 33
+        minSdk min_sdk
+        targetSdk target_sdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -77,5 +77,5 @@ dependencies {
     implementation project(":uikit")
     implementation project(":features:bottom-navigation:home")
     implementation project(":features:bottom-navigation:statistic")
-    implementation project(":features:create-wallet")
+    implementation project(':features:create-update-wallet')
 }
