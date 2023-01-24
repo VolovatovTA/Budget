@@ -29,12 +29,16 @@ import ru.bysoft.budget.uikit.styles.UiKitStyles
 import java.util.*
 
 @Composable
-fun UiKitCurrencyPopUp(info: CurrencyFieldState, onNameChanged: (BudgetCurrency) -> Unit) {
+fun UiKitCurrencyPopUp(
+    info: CurrencyFieldState,
+    onNameChanged: (BudgetCurrency) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val showMenu = remember { mutableStateOf(false) }
     Spacer(modifier = Modifier.height(20.dp))
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .heightIn(min = 50.dp, max = 100.dp)
             .fillMaxWidth()
             .clickable { showMenu.value = !showMenu.value }
@@ -50,7 +54,9 @@ fun UiKitCurrencyPopUp(info: CurrencyFieldState, onNameChanged: (BudgetCurrency)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Spacer(modifier = Modifier.width(15.dp))
                 val text =
-                    "${info.selectedCurrency?.displayName} ${Currency.getInstance(info.selectedCurrency?.iso4217).displayName}"
+                    if (info.selectedCurrency != null) info.selectedCurrency.displayName +
+                            " ${Currency.getInstance(info.selectedCurrency.iso4217).displayName}"
+                    else "Валюта не выбрана"
 
                 Text(
                     text = text,
@@ -59,8 +65,7 @@ fun UiKitCurrencyPopUp(info: CurrencyFieldState, onNameChanged: (BudgetCurrency)
                     modifier = Modifier.weight(1f)
                 )
                 Box(
-                    contentAlignment = Alignment.CenterEnd,
-                    modifier = Modifier.weight(1f)
+                    contentAlignment = Alignment.CenterEnd
                 ) {
                     Icon(
                         imageVector = if (showMenu.value) {

@@ -8,8 +8,8 @@ data class StatisticExpenseResponse(
 )
 
 data class CategoryExpenseResponse(
-//    @SerializedName("currency")
-//    val currency: String,
+    @SerializedName("currency")
+    val currency: String,
     @SerializedName("icon_name")
     val iconName: String?,
     @SerializedName("id")

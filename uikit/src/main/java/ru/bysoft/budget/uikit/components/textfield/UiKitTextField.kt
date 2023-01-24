@@ -24,14 +24,14 @@ fun UiKitTextField(
     state: TextFieldState,
     onValueChange: (String) -> Unit,
     label: String,
-    inputType: KeyboardType
+    inputType: KeyboardType,
+    modifier: Modifier = Modifier
 ) {
     OutlinedTextField(
         value = state.text,
         onValueChange = onValueChange,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 30.dp, vertical = 20.dp),
+        modifier = modifier
+            .fillMaxWidth(),
         singleLine = true,
         keyboardOptions = KeyboardOptions(
             autoCorrect = false,

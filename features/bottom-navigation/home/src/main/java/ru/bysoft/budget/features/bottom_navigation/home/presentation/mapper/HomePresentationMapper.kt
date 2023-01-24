@@ -17,7 +17,7 @@ fun WalletData.mapToState() = WalletCardPresentation(
         balance,
         getCurrency(currency) ?: throw Throwable("UnknownCurrency")
     ),
-    currency = getCurrency(this.currency)?.displayName ?: '*',
+    currency = getCurrency(this.currency)?.displayName ?: "*",
     backgroundColor = "col3",
     walletId = this.id
 )
@@ -36,7 +36,7 @@ private fun getTransactionInfo(transactionData: TransactionData): TransactionInf
         } + getBeautifulAmount(transactionData.amount, transactionData.currency),
         currency = transactionData.currency,
         date = transactionData.date.toLocaleString(),
-        icon = UiKitIcons.getByName(transactionData.categories.first().iconName),
+        icon = UiKitIcons.getByName(transactionData.categories.ifEmpty { null }?.first()?.iconName),
         name = transactionData.comment,
         color = when (transactionData) {
             is TransactionIncome -> "col6"

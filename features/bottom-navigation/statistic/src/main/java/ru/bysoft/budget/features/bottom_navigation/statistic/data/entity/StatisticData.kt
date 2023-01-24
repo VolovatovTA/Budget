@@ -8,7 +8,7 @@ data class StatisticData(
 )
 
 data class CategoryData(
-//    val currency: BudgetCurrency,
+    val currency: BudgetCurrency,
     val iconName: String?,
     val id: String,
     val name: String

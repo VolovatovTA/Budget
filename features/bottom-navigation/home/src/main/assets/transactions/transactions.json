@@ -1,0 +1,147 @@
+{
+  "data": [
+    {
+      "id": "32661182-29c7-46de-8ce6-d9e13e7dde58",
+      "type": "EXPENSE",
+      "comment": "kushal",
+      "expenses": [
+        {
+          "id": "c403d77f-00f5-4c42-b385-5b7bf29eaa73",
+          "name": "Food",
+          "currency": "RUB",
+          "icon_name": "Food"
+        }
+      ],
+      "wallet": {
+        "id": "9fb74e7e-b088-4c33-9046-73775ee10938",
+        "name": "Rublevui",
+        "currency": "RUB"
+      },
+      "amount": 3257,
+      "currency": "RUB",
+      "created": "01/22/2023 18:05:11",
+      "exchanges": []
+    },
+    {
+      "id": "491fd75c-879f-4d3b-b32e-ae7f23569f31",
+      "type": "EXPENSE",
+      "comment": "Бенз",
+      "expenses": [],
+      "wallet": {
+        "id": "9fb74e7e-b088-4c33-9046-73775ee10938",
+        "name": "Rublevui",
+        "currency": "RUB"
+      },
+      "amount": 2212,
+      "currency": "EUR",
+      "created": "01/01/2023 22:50:48",
+      "exchanges": []
+    },
+    {
+      "id": "84c231cc-f5c1-4c0b-8dd7-ba9868b7d52d",
+      "type": "EXPENSE",
+      "comment": "Бенз",
+      "expenses": [],
+      "wallet": {
+        "id": "9fb74e7e-b088-4c33-9046-73775ee10938",
+        "name": "Rublevui",
+        "currency": "RUB"
+      },
+      "amount": 2212,
+      "currency": "EUR",
+      "created": "01/01/2023 21:58:22",
+      "exchanges": []
+    },
+    {
+      "id": "9cfa336d-2f4a-414e-a761-d4139fc2ec08",
+      "type": "EXPENSE",
+      "comment": "Бенз",
+      "expenses": [],
+      "wallet": {
+        "id": "9fb74e7e-b088-4c33-9046-73775ee10938",
+        "name": "Rublevui",
+        "currency": "RUB"
+      },
+      "amount": 2212,
+      "currency": "EUR",
+      "created": "01/01/2023 22:50:46",
+      "exchanges": []
+    },
+    {
+      "id": "e5370bef-c35e-479f-8ea1-444e921ad19c",
+      "type": "EXPENSE",
+      "comment": "Бенз",
+      "expenses": [],
+      "wallet": {
+        "id": "9fb74e7e-b088-4c33-9046-73775ee10938",
+        "name": "Rublevui",
+        "currency": "RUB"
+      },
+      "amount": 223,
+      "currency": "EUR",
+      "created": "01/01/2023 21:58:10",
+      "exchanges": []
+    },
+    {
+      "id": "e567b324-86bd-4357-ba01-2d256536fcec",
+      "type": "EXPENSE",
+      "comment": "pokushal",
+      "expenses": [
+        {
+          "id": "c403d77f-00f5-4c42-b385-5b7bf29eaa73",
+          "name": "Food",
+          "currency": "RUB",
+          "icon_name": "Food"
+        }
+      ],
+      "wallet": {
+        "id": "9fb74e7e-b088-4c33-9046-73775ee10938",
+        "name": "Rublevui",
+        "currency": "RUB"
+      },
+      "amount": 36364,
+      "currency": "RUB",
+      "created": "01/22/2023 18:06:52",
+      "exchanges": []
+    },
+    {
+      "id": "f8980a32-32ef-4e8c-a784-0febbc31cd10",
+      "type": "EXPENSE",
+      "comment": "hghghg",
+      "expenses": [
+        {
+          "id": "c403d77f-00f5-4c42-b385-5b7bf29eaa73",
+          "name": "Food",
+          "currency": "RUB",
+          "icon_name": "Food"
+        }
+      ],
+      "wallet": {
+        "id": "9fb74e7e-b088-4c33-9046-73775ee10938",
+        "name": "Rublevui",
+        "currency": "RUB"
+      },
+      "amount": 1540,
+      "currency": "RUB",
+      "created": "01/22/2023 16:39:36",
+      "exchanges": []
+    }
+  ],
+  "filter": {
+    "wallet_ids": [
+      "9fb74e7e-b088-4c33-9046-73775ee10938"
+    ],
+    "expense_ids": null,
+    "income_ids": null,
+    "type": [
+      "EXPENSE"
+    ],
+    "currency": null,
+    "date_from": null,
+    "date_to": null,
+    "last_id": null,
+    "count": 10,
+    "sort_by": "created",
+    "search": null
+  }
+}

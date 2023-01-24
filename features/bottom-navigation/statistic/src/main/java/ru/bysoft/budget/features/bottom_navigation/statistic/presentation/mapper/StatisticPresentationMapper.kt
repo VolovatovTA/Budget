@@ -17,7 +17,7 @@ class StatisticPresentationMapper @Inject constructor() {
 
     private fun getCategoryState(categoryData: CategoryData): CategoryInfo =
         CategoryInfo(
-            amount = getBeautifulAmount(500f, getCurrency("EUR")!!),
+            amount = getBeautifulAmount(500f, categoryData.currency),
             icon = UiKitIcons.getByName(categoryData.iconName),
             subtitle = "Лимит ${getBeautifulAmount(1500f, getCurrency("EUR")!!)}",
             name = categoryData.name,

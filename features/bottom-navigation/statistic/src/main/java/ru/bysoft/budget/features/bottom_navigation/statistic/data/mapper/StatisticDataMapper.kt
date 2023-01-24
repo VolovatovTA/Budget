@@ -16,7 +16,7 @@ class StatisticDataMapper @Inject constructor() {
 
     private fun getCategoryData(categoryExpense: CategoryExpenseResponse): CategoryData =
         CategoryData(
-//            currency = getCurrency(categoryExpense.currency)!!,
+            currency = getCurrency(categoryExpense.currency)!!,
             name = categoryExpense.name,
             iconName = categoryExpense.iconName,
             id = categoryExpense.id

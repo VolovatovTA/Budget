@@ -78,4 +78,6 @@ dependencies {
     implementation project(":features:bottom-navigation:home")
     implementation project(":features:bottom-navigation:statistic")
     implementation project(':features:create-update-wallet')
+    implementation project(':features:create-update-delete-transactions')
+    implementation project(':common')
 }

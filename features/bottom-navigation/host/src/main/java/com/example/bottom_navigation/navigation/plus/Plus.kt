@@ -3,7 +3,8 @@ package com.example.bottom_navigation.navigation.plus
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.bottom_navigation.navigation.BottomNavigationButtonInfo
-import com.example.bottom_navigation.navigation.NavigationInfo
+import ru.bysoft.budget.common.navigation.NavigationInfo
+import ru.bysoft.budget.create_update_delete_transactions.navigation.transaction.Transaction
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.icons.pack.ArrowUp
 import ru.bysoft.budget.uikit.icons.pack.Minus
@@ -23,7 +24,7 @@ object Plus : BottomNavigationButtonInfo {
     )
 }
 
-object EntirePlus : NavigationInfo("", ""), BottomNavigationButtonInfo {
+object EntirePlus : NavigationInfo(Transaction.createScreen, Transaction.createScreen), BottomNavigationButtonInfo {
     override val icon: ImageVector = Plus
     override val label: String = "Доход"
 

@@ -1,6 +1,6 @@
 package ru.bysoft.budget.common.navigation.create_update_categiry
 
-import com.example.bottom_navigation.navigation.NavigationInfo
+import ru.bysoft.budget.common.navigation.NavigationInfo
 
 object CreateUpdateCategory : NavigationInfo("createUpdateCategoryRoute", "createUpdateScreenName"){
     val createScreenName = screenName

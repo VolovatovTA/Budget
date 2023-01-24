@@ -1,9 +1,6 @@
 package com.example.bottom_navigation.screen
 
 import android.annotation.SuppressLint
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,34 +15,30 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.example.bottom_navigation.navigation.BottomNavigationButtonInfo
-import com.example.bottom_navigation.navigation.NavigationInfo
+import com.example.bottom_navigation.navigation.BottomNavigationNavHost
 import com.example.bottom_navigation.navigation.home.Home
 import com.example.bottom_navigation.navigation.plus.Plus
 import com.example.bottom_navigation.navigation.qr.QRCode
 import com.example.bottom_navigation.navigation.statistic.Statistic
-import ru.bysoft.budget.features.bottom_navigation.home.presentation.screen.HomeScreen
-import ru.bysoft.budget.features.bottom_navigation.statistic.presentation.screen.StatisticScreen
-import ru.bysoft.budget.features.bottom_navigation.home.HomeViewModel
-import ru.bysoft.budget.features.bottom_navigation.statistic.StatisticViewModel
+import ru.bysoft.budget.common.navigation.NavigationInfo
 import ru.bysoft.budget.uikit.colors.UiKitColors
-import ru.bysoft.budget.uikit.components.avatar.UiKitAvatar
 import ru.bysoft.budget.uikit.components.expandablecontetn.VerticalExpandableContent
 import ru.bysoft.budget.uikit.styles.UiKitStyles
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun BottomNavigationScreen(
-    navController: NavHostController
+    bottomNavigateionNavController: NavHostController,
+    mainNavController: NavHostController
 ) {
     Scaffold(
         bottomBar = {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val navBackStackEntry by bottomNavigateionNavController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
             val items = listOf(
                 Home,
@@ -72,42 +65,25 @@ fun BottomNavigationScreen(
                             UiKitColors.colors.col4
                         }
 
-                    BottomNavigationItem(screen, navController, tinColor)
+                    BottomNavigationItem(
+                        screen,
+                        bottomNavigateionNavController,
+                        mainNavController,
+                        tinColor
+                    )
                 }
             }
-
-
         }
     ) {
-        NavHost(
-            navController = navController,
-            startDestination = Home.route,
-        ) {
-            composable(Home.route) {
-                HomeScreen(hiltViewModel<HomeViewModel>())
-            }
-            composable(Statistic.route) {
-                StatisticScreen(hiltViewModel<StatisticViewModel>())
-            }
-            composable(QRCode.route) {
-                val launcher = rememberLauncherForActivityResult(
-                    contract = ActivityResultContracts.TakePicture(),
-                    onResult = {
-                    }
-                )
-                LaunchedEffect(key1 = Unit) {
-                    launcher.launch(Uri.parse(""))
-                }
-
-            }
-        }
+        BottomNavigationNavHost(bottomNavigateionNavController)
     }
 }
 
 @Composable
 private fun BottomNavigationItem(
     screen: BottomNavigationButtonInfo,
-    navController: NavHostController,
+    bottomNavigationNavController: NavHostController,
+    mainNavController: NavHostController,
     tinColor: Color
 ) {
     val isCollapsed = remember { mutableStateOf(true) }
@@ -120,18 +96,17 @@ private fun BottomNavigationItem(
                     Plus.entireList.forEach { bottomNavigationButtonInfo ->
                         BottomButton(
                             bottomNavigationButtonInfo,
-                            navController,
+                            mainNavController,
                             isCollapsed,
-                            tinColor
+                            tinColor,
+                            false
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                     }
                 }
             }
         }
-
-        BottomButton(screen, navController, isCollapsed, tinColor)
-
+        BottomButton(screen, bottomNavigationNavController, isCollapsed, tinColor, true)
     }
 
 
@@ -142,7 +117,8 @@ private fun BottomButton(
     screen: BottomNavigationButtonInfo,
     navController: NavHostController,
     isCollapsed: MutableState<Boolean>,
-    tintColor: Color
+    tintColor: Color,
+    needPopUp: Boolean
 ) {
     Surface(
         shape = RoundedCornerShape(10.dp),
@@ -154,7 +130,7 @@ private fun BottomButton(
                 .background(UiKitColors.colors.light)
                 .clickable {
                     if (screen is NavigationInfo) {
-                        navigateToScreen(navController, screen)
+                        navigateToScreen(navController, screen, needPopUp)
                     } else {
                         isCollapsed.value = !isCollapsed.value
                     }
@@ -187,14 +163,17 @@ private fun BottomButton(
 
 private fun navigateToScreen(
     navController: NavHostController,
-    screen: NavigationInfo
+    screen: NavigationInfo,
+    needPopUp: Boolean = true
 ) {
     navController.navigate(screen.route) {
         // Pop up to the start destination of the graph to
         // avoid building up a large stack of destinations
         // on the back stack as users select items
-        popUpTo(navController.graph.findStartDestination().id) {
-            saveState = true
+        if (needPopUp){
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
         }
         // Avoid multiple copies of the same destination when
         // reselecting the same item

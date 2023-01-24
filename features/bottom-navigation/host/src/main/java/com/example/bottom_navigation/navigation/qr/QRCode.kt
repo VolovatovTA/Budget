@@ -3,7 +3,7 @@ package com.example.bottom_navigation.navigation.qr
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.bottom_navigation.navigation.BottomNavigationButtonInfo
-import com.example.bottom_navigation.navigation.NavigationInfo
+import ru.bysoft.budget.common.navigation.NavigationInfo
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.icons.another.Qrcode
 

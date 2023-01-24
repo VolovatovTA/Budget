@@ -12,5 +12,3 @@ data class CategoryResponse(
     @SerializedName("name")
     val name: String,
 )
-
-class CategoryDeleteResponse

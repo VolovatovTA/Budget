@@ -18,8 +18,10 @@ import ru.bysoft.budget.common.navigation.create_wallet.CreateWalletNavigation
 import ru.bysoft.budget.common.navigation.home.HomeNavigation
 import ru.bysoft.budget.common.navigation.splash.SplashNavigation
 import ru.bysoft.budget.common.navigation.statistic.StatisticNavigation
+import ru.bysoft.budget.create_update_delete_transactions.navigation.transaction.TransactionNavigation
 import ru.bysoft.budget.common.network.authentificator.ICommonNavigation
 import ru.bysoft.budget.create_udate_category.navigation.ICreateUpdateCategoryNavigation
+import ru.bysoft.budget.create_update_delete_transactions.navigation.ITransactionNavigation
 import ru.bysoft.budget.features.bottom_navigation.home.navigation.IHomeNavigation
 import ru.bysoft.budget.features.bottom_navigation.statistic.navigation.IStatisticNavigation
 import ru.bysoft.budget.features.create_update_wallet.navigation.ICreateWalletNavigation
@@ -59,4 +61,8 @@ abstract class NavigationDi {
 
     @Binds
     abstract fun bindCreateUpdateCategoryNavigation(navigation: CreateUpdateCategoryNavigation): ICreateUpdateCategoryNavigation
+
+    @Binds
+    abstract fun bindTransactionNavigation(navigation: TransactionNavigation): ITransactionNavigation
+
 }

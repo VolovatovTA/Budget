@@ -2,7 +2,7 @@ package ru.bysoft.budget.features.bottom_navigation.statistic.data
 
 import ru.bysoft.budget.features.bottom_navigation.statistic.data.entity.StatisticData
 import ru.bysoft.budget.features.bottom_navigation.statistic.data.mapper.StatisticDataMapper
-import ru.bysoft.budget.features.bottom_navigation.statistic.data.network.StatisticApi
+import ru.bysoft.budget.features.bottom_navigation.statistic.data.network.IStatisticApi
 import javax.inject.Inject
 
 interface IStatisticRepo {
@@ -10,7 +10,7 @@ interface IStatisticRepo {
 }
 
 class StatisticRepo @Inject constructor(
-    private val api: StatisticApi,
+    private val api: IStatisticApi,
     private val mapper: StatisticDataMapper
 ) : IStatisticRepo {
 

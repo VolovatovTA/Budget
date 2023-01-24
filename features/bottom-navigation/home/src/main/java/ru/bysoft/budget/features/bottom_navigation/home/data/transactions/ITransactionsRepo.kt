@@ -22,7 +22,8 @@ class TransactionRepo @Inject constructor(
     ): ListTransactionsData {
         return api.getTransactions(
             type = type,
-            wallet_ids = walletId
+            wallet_ids = walletId,
+
         ).mapToData()
     }
 

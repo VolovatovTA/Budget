@@ -18,7 +18,7 @@ data class WalletCardPresentation(
     val walletId: String,
     val name: String,
     val backgroundColor: String,
-    val currency: Char,
+    val currency: String,
     val balance: String
 ) : IWalletPresentation
 

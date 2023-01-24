@@ -7,7 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
-import ru.bysoft.budget.create_udate_category.data.network.entity.CategoryDeleteResponse
 import ru.bysoft.budget.create_udate_category.data.network.entity.CategoryRequest
 import ru.bysoft.budget.create_udate_category.data.network.entity.CategoryResponse
 

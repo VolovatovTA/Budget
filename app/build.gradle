@@ -112,6 +112,7 @@ dependencies {
     implementation project(':features:splash')
     implementation project(':features:auth')
     implementation project(':features:create-udate-category')
+    implementation project(':features:create-update-delete-transactions')
     implementation project(':features:create-update-wallet')
     implementation project(':features:bottom-navigation:host')
     implementation project(':features:bottom-navigation:home')
