@@ -1,5 +1,6 @@
 package ru.bysoft.budget.features.bottom_navigation.home.data.transactions.network
 
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -19,4 +20,7 @@ interface ITransactionsApi {
         @Query("income_ids") income_ids: String? = null,
         @Query("wallet_ids[]") wallet_ids: List<String>? = null,
     ): ListTransactionsResponse
+
+    @DELETE("$pathToTransactions/{id}")
+    suspend fun deleteTransaction(@Path("id") id: String): String
 }

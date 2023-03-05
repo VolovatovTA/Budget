@@ -1,13 +1,15 @@
 package ru.bysoft.budget.features.bottom_navigation.home
 
+import androidx.compose.material.DismissValue
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import ru.bysoft.budget.common.errors.errorLogger
 import ru.bysoft.budget.common.me_info.IMeInfo
 import ru.bysoft.budget.features.bottom_navigation.home.data.me.IHomeMeRepo
@@ -15,6 +17,7 @@ import ru.bysoft.budget.features.bottom_navigation.home.data.transactions.ITrans
 import ru.bysoft.budget.features.bottom_navigation.home.data.transactions.TransferTypeEnum
 import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.IHomeWalletsRepo
 import ru.bysoft.budget.features.bottom_navigation.home.navigation.IHomeNavigation
+import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.ToastInfo
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.filters.FilterData
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.filters.FilterState
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.filters.TypeFilter
@@ -32,6 +35,7 @@ import ru.bysoft.budget.features.bottom_navigation.home.presentation.mapper.mapT
 import javax.inject.Inject
 
 interface IHomeViewModel {
+    val toastState: StateFlow<ToastInfo?>
     val walletsState: StateFlow<IWalletsState>
     val meState: StateFlow<IMeState>
     val filterState: StateFlow<FilterState>
@@ -43,8 +47,8 @@ interface IHomeViewModel {
     fun onClickEditWallet(walletId: String)
     fun onPositionChanged(walletId: String)
     fun onClickFilter(newValue: Boolean, filter: FilterData)
-    fun updateTransaction(info: TransactionInfo)
-    fun deleteTransaction(info: TransactionInfo)
+    fun updateTransaction(id: String)
+    fun deleteTransaction(id: String)
 }
 
 @HiltViewModel
@@ -79,6 +83,8 @@ class HomeViewModel @Inject constructor(
         errorLogger.logError(t)
         transactionsState.value = TransactionError
     }
+    override val toastState: MutableStateFlow<ToastInfo?> =
+        MutableStateFlow(null)
 
     override val walletsState: MutableStateFlow<IWalletsState> =
         MutableStateFlow(WalletsLoadingState(false))
@@ -138,16 +144,47 @@ class HomeViewModel @Inject constructor(
         getTransactions(false)
     }
 
-    override fun updateTransaction(info: TransactionInfo) {
-        navigate.toUpdateTransaction(info.id)
+    override fun updateTransaction(id: String) {
+        navigate.toUpdateTransaction(id)
     }
 
-    override fun deleteTransaction(info: TransactionInfo) {
-        transactionsState.update { transactionState ->
-            (transactionState as? TransactionSuccess)?.copy(
-                list = transactionState.list.filter { it.id != info.id }
-            ) ?: transactionState
+    @OptIn(ExperimentalMaterialApi::class)
+    override fun deleteTransaction(id: String) {
+        viewModelScope.launch(homeTransactionExceptionHandler) {
+            transactionsState.update { transactionState ->
+                (transactionState as? TransactionSuccess)?.copy(
+                    list = transactionState.list.map { if (it.id == id) it.copy(isWaiting = true) else it }
+                ) ?: transactionState
+            }
+            val result = transactionsRepo.deleteTransaction(id)
+            if (result.isSuccess) {
+                transactionsState.update { transactionState ->
+                    (transactionState as? TransactionSuccess)?.copy(
+                        list = transactionState.list.filterNot { it.id == id }
+                    ) ?: transactionState
+                }
+            } else {
+                transactionsState.update { transactionState ->
+                    (transactionState as? TransactionSuccess)?.copy(
+                        list = transactionState.list.map {
+                            if (it.id == id) it.copy(isWaiting = false) else it
+                        }
+                    ) ?: transactionState
+                }
+                toastState.update {
+                    if (result.exceptionOrNull() is HttpException) {
+                        ToastInfo(it?.keyLaunchedEffect?.not() ?: true, "Произошла ошибка на бэке")
+                    } else {
+                        ToastInfo(
+                            it?.keyLaunchedEffect?.not() ?: true,
+                            "Произошла ошибка на фронте"
+                        )
+                    }
+                }
+                errorLogger.logError(result.exceptionOrNull() ?: Exception("Unknown error"))
+            }
         }
+
     }
 
     private fun getWallets(isRefresh: Boolean) {
@@ -189,8 +226,17 @@ class HomeViewModel @Inject constructor(
                 },
                 walletId = listOf(currentWalletId)
             )
-            transactionsState.value = TransactionSuccess(transactions.mapToInfo())
+            transactionsState.value = TransactionSuccess(transactions.mapToInfo(deleteLambda))
         }
+    }
+
+    private val deleteLambda: (value: DismissValue, data: String) -> Boolean = { value, data ->
+        when (value) {
+            DismissValue.DismissedToStart -> deleteTransaction(data)
+            DismissValue.DismissedToEnd -> updateTransaction(data)
+            else -> {}
+        }
+        true
     }
 
 }

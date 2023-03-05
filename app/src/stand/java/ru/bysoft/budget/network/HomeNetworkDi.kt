@@ -1,5 +1,6 @@
 package ru.bysoft.budget.network
 
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,6 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.bysoft.budget.features.bottom_navigation.home.data.me.network.IHomeMeApi
 import ru.bysoft.budget.features.bottom_navigation.home.data.transactions.network.ITransactionsApi
+import ru.bysoft.budget.features.bottom_navigation.home.data.transactions.network.TransactionApiMock
 import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.network.IHomeWalletsApi
 import ru.bysoft.budget.network.interceptors.AUTH_CLIENT_NAME
 import ru.bysoft.budget.network.interceptors.MAIN_BASE_URL_NAME
@@ -53,5 +55,7 @@ abstract class HomeNetworkDi {
             .create(ITransactionsApi::class.java)
 
     }
+//    @Binds
+//    abstract fun bindHomeTransactionsApi(api: TransactionApiMock): ITransactionsApi
 
 }

@@ -1,6 +1,7 @@
 package ru.bysoft.budget.features.bottom_navigation.home.presentation.screen
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.clipRect
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.*
@@ -38,6 +40,12 @@ fun HomeScreen(
 ) {
     LaunchedEffect(Unit) { viewModel.loadData() }
 
+    val toastState = viewModel.toastState.collectAsState().value
+
+    val context = LocalContext.current
+    LaunchedEffect(toastState?.keyLaunchedEffect) {
+        if (toastState != null) Toast.makeText(context, toastState.text, Toast.LENGTH_SHORT).show()
+    }
     val walletsState = viewModel.walletsState.collectAsState().value
     val meState = viewModel.meState.collectAsState().value
     val filtersState = viewModel.filterState.collectAsState().value
@@ -105,8 +113,6 @@ fun HomeScreen(
             HomeTransactionsComponent(
                 transactionsState,
                 onRefresh = viewModel::loadTransactions,
-                onEndStartSwipe = viewModel::deleteTransaction,
-                onStartEndSwipe = viewModel::updateTransaction,
             )
         }
     }

@@ -11,7 +11,7 @@ data class TransactionResponse(
     @SerializedName("amount")
     val amount: Float,
     @SerializedName("comment")
-    val comment: String,
+    val comment: String?,
     @SerializedName("created_at")
     val createdAt: String,
     @SerializedName("currency")
@@ -25,7 +25,7 @@ data class TransactionResponse(
     @SerializedName("income")
     val income: Income?,
     @SerializedName("transfer")
-    val transfer: Transfer,
+    val transfer: Transfer?,
     @SerializedName("type")
     val type: String,
     @SerializedName("updated_at")

@@ -1,5 +1,8 @@
 package ru.bysoft.budget.features.bottom_navigation.home.presentation.mapper
 
+import androidx.compose.material.DismissState
+import androidx.compose.material.DismissValue
+import androidx.compose.material.ExperimentalMaterialApi
 import ru.bysoft.budget.common.util.getBeautifulAmount
 import ru.bysoft.budget.common.util.getCurrency
 import ru.bysoft.budget.features.bottom_navigation.home.data.transactions.entity.*
@@ -23,12 +26,18 @@ fun WalletData.mapToState() = WalletCardPresentation(
     walletId = this.id
 )
 
-fun ListTransactionsData.mapToInfo(): List<TransactionInfo> =
+fun ListTransactionsData.mapToInfo(
+    confirmStateChange: (value: DismissValue, data: String) -> Boolean
+): List<TransactionInfo> =
     this.listTransactions.map {
-        getTransactionInfo(it)
+        getTransactionInfo(it, confirmStateChange)
     }
 
-private fun getTransactionInfo(transactionData: TransactionData): TransactionInfo =
+@OptIn(ExperimentalMaterialApi::class)
+private fun getTransactionInfo(
+    transactionData: TransactionData,
+    confirmStateChange: (value: DismissValue, id: String) -> Boolean
+): TransactionInfo =
     TransactionInfo(
         amount = when (transactionData) {
             is TransactionIncome -> "+ "
@@ -46,7 +55,9 @@ private fun getTransactionInfo(transactionData: TransactionData): TransactionInf
             is TransactionExpense -> "red"
             is TransactionTransfer -> "col1"
         },
-        id = transactionData.id
+        id = transactionData.id,
+        isWaiting = false,
+        dismissState = DismissState(DismissValue.Default, confirmStateChange = {confirmStateChange(it, transactionData.id)})
     )
 
 

@@ -5,8 +5,9 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -19,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.transactions.*
 import ru.bysoft.budget.uikit.colors.UiKitColors
@@ -35,8 +35,6 @@ fun HomeTransactionsComponent(
     state: TransactionsState,
     modifier: Modifier = Modifier,
     onRefresh: (Boolean) -> Unit,
-    onStartEndSwipe: (TransactionInfo) -> Unit,
-    onEndStartSwipe: (TransactionInfo) -> Unit,
 ) {
     val isRefreshing = (state as? TransactionLoading)?.isRefreshing ?: false
     val pullRefreshState = rememberPullRefreshState(
@@ -45,16 +43,13 @@ fun HomeTransactionsComponent(
     )
 
     Box(modifier = Modifier.pullRefresh(pullRefreshState)) {
-        val scrollState = rememberScrollState()
-        Column(modifier.verticalScroll(scrollState)) {
+        LazyColumn(modifier) {
             when (state) {
-                is TransactionSuccess -> TransactionsSuccessComponent(
-                    state = state,
-                    onStartEndSwipe = onStartEndSwipe,
-                    onEndStartSwipe = onEndStartSwipe
+                is TransactionSuccess -> transactionsSuccessComponent(
+                    state = state
                 )
-                is TransactionLoading -> TransactionLoadingComponent()
-                is TransactionError -> TransactionErrorComponent()
+                is TransactionLoading -> transactionLoadingComponent()
+                is TransactionError -> transactionErrorComponent()
             }
         }
         PullRefreshIndicator(
@@ -65,39 +60,39 @@ fun HomeTransactionsComponent(
                 .alpha(if (isRefreshing) 1f else 0f)
         )
     }
-
 }
 
 @OptIn(ExperimentalMaterialApi::class)
-@Composable
-private fun TransactionsSuccessComponent(
-    state: TransactionSuccess,
-    onStartEndSwipe: (TransactionInfo) -> Unit,
-    onEndStartSwipe: (TransactionInfo) -> Unit,
+private fun LazyListScope.transactionsSuccessComponent(
+    state: TransactionSuccess
 ) {
     if (state.list.isEmpty()) {
-        Box(
-            modifier = Modifier
-                .height(70.dp)
-                .fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "У вас пока нет ни одной транзакции...",
-                textAlign = TextAlign.Center
-            )
+        item {
+            Box(
+                modifier = Modifier
+                    .height(70.dp)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "У вас пока нет ни одной транзакции...",
+                    textAlign = TextAlign.Center
+                )
+            }
         }
 
     } else {
 
-        state.list.forEach { data ->
-            val dismissState = rememberDismissState {
-                when (it) {
-                    DismissValue.DismissedToStart -> onEndStartSwipe(data)
-                    DismissValue.DismissedToEnd -> onStartEndSwipe(data)
-                    else -> {}
+        items(
+            items = state.list,
+            key = { data -> data.id }
+        ) { data ->
+            val dismissState = data.dismissState
+
+            LaunchedEffect(data.isWaiting) {
+                if (!data.isWaiting) {
+                    dismissState.reset()
                 }
-                true
             }
             SwipeToDismiss(
                 state = dismissState,
@@ -157,6 +152,13 @@ private fun TransactionsSuccessComponent(
                                 .alpha(alphaDeleteIcon)
                                 .align(Alignment.CenterEnd)
                         )
+                        if (data.isWaiting) {
+                            CircularProgressIndicator(
+                                Modifier
+                                    .padding(horizontal = 60.dp)
+                                    .align(Alignment.CenterEnd)
+                            )
+                        }
                     }
                 },
                 dismissContent = {
@@ -166,7 +168,7 @@ private fun TransactionsSuccessComponent(
                             .padding(vertical = 10.dp, horizontal = 30.dp)
                     ) {
                         UiKitListItem(
-                            title = data.name,
+                            title = data.name ?: "",
                             subTitle = data.date,
                             icon = data.icon,
                             modifier = Modifier
@@ -179,18 +181,16 @@ private fun TransactionsSuccessComponent(
                 }
             )
         }
-        Spacer(modifier = Modifier.height(60.dp))
+
+        item {
+            Spacer(modifier = Modifier.height(60.dp))
+        }
     }
 
 }
 
-@Composable
-private fun TransactionLoadingComponent() {
-    Column {
-        (0..4).forEach { _ ->
-            WaitingListItem()
-        }
-    }
+private fun LazyListScope.transactionLoadingComponent() {
+    items(4) { WaitingListItem() }
 }
 
 @Composable
@@ -230,20 +230,21 @@ private fun WaitingListItem() {
     }
 }
 
-@Composable
-private fun TransactionErrorComponent() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp)
-    ) {
-        Text(
-            text = "Не удалось загрузить данные",
+private fun LazyListScope.transactionErrorComponent() {
+    item {
+        Box(
             modifier = Modifier
-                .padding(
-                    horizontal = 30.dp, vertical = 30.dp
-                ),
-            style = UiKitStyles.Body2
-        )
+                .fillMaxWidth()
+                .height(50.dp)
+        ) {
+            Text(
+                text = "Не удалось загрузить данные",
+                modifier = Modifier
+                    .padding(
+                        horizontal = 30.dp, vertical = 30.dp
+                    ),
+                style = UiKitStyles.Body2
+            )
+        }
     }
 }

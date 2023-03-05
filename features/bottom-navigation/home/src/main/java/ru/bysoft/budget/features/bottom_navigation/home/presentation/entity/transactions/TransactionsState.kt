@@ -1,5 +1,8 @@
 package ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.transactions
 
+import androidx.compose.material.DismissState
+import androidx.compose.material.DismissValue
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.vector.ImageVector
 import ru.bysoft.budget.common.util.BudgetCurrency
@@ -17,12 +20,14 @@ data class TransactionLoading(
 
 object TransactionError : TransactionsState
 
-data class TransactionInfo(
-    val name: String,
+data class TransactionInfo @OptIn(ExperimentalMaterialApi::class) constructor(
+    val name: String?,
     val icon: ImageVector?,
     val date: String?,
     val amount: String,
     val currency: BudgetCurrency,
     val color: String,
-    val id: String
+    val id: String,
+    val isWaiting: Boolean,
+    val dismissState: DismissState,
 )
