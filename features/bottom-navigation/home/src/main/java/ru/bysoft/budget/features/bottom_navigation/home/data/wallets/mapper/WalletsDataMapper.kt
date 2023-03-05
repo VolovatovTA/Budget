@@ -4,7 +4,7 @@ import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.entity.Wall
 import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.network.entity.WalletResponse
 import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.network.entity.WalletsResponse
 
-fun WalletsResponse.mapToData() = this.data!!.map { it.mapToData() }
+fun WalletsResponse.mapToData() = this.data?.map { it.mapToData() }
 
 fun WalletResponse.mapToData() = WalletData(
     balance = this.balance ?: 0f,

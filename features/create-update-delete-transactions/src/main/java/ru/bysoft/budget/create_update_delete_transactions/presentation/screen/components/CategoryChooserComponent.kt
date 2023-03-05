@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -14,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ru.bysoft.budget.create_update_delete_transactions.presentation.entity.*
@@ -27,7 +25,16 @@ import ru.bysoft.budget.uikit.icons.UiKitIcons
 import ru.bysoft.budget.uikit.styles.UiKitStyles
 
 @Composable
-fun CategoryChooserComponent(state: TransactionState, onClick: (CategoryPresentation) -> Unit) {
+fun CategoryChooserComponent(state: TransactionExpenseState, onClick: (CategoryPresentation) -> Unit) {
+    when (state.categoryState) {
+        is CategoryWaiting -> WaitingCategoryComponent()
+        is CategoryError -> ErrorCategoryComponent()
+        is CategorySuccess -> SuccessCategoryComponent(state.categoryState, onClick)
+    }
+}
+
+@Composable
+fun CategoryChooserComponent(state: TransactionIncomeState, onClick: (CategoryPresentation) -> Unit) {
     when (state.categoryState) {
         is CategoryWaiting -> WaitingCategoryComponent()
         is CategoryError -> ErrorCategoryComponent()

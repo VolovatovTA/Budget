@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
 import com.example.bottom_navigation.navigation.home.Home
 import com.example.bottom_navigation.navigation.qr.QRCode
 import com.example.bottom_navigation.navigation.statistic.Statistic
@@ -27,31 +28,42 @@ fun BottomNavigationNavHost(navController: NavHostController) {
         navController = navController,
         startDestination = Home.route,
     ) {
-        composable(Home.route) {
-            HomeScreen(hiltViewModel<HomeViewModel>())
-        }
-        composable(Statistic.route) {
-            StatisticScreen(hiltViewModel<StatisticViewModel>())
-        }
-        composable(QRCode.route) {
-            val launcher = rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.TakePicture(),
-                onResult = {
-                }
-            )
-            LaunchedEffect(key1 = Unit) {
-                launcher.launch(Uri.parse(""))
+        navigation(
+            route = Home.route,
+            startDestination = Home.screenName
+        ) {
+            composable(Home.screenName) {
+                HomeScreen(hiltViewModel<HomeViewModel>())
             }
+        }
+        navigation(route = Statistic.route, startDestination = Statistic.screenName) {
+            composable(Statistic.screenName) {
+                StatisticScreen(hiltViewModel<StatisticViewModel>())
+            }
+        }
 
+        navigation(route = QRCode.route, startDestination = QRCode.screenName) {
+            composable(QRCode.screenName) {
+                val launcher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.TakePicture(),
+                    onResult = {
+                    }
+                )
+                LaunchedEffect(key1 = Unit) {
+                    launcher.launch(Uri.parse(""))
+                }
+            }
         }
     }
 }
 
-object BottomNavigation: NavigationInfo("bottom navigation", "bottomNavScreen")
+object BottomNavigation : NavigationInfo("bottom navigation", "bottomNavScreen")
 
-interface BottomNavigationButtonInfo{
+interface BottomNavigationButtonInfo {
     val icon: ImageVector
     val label: String?
-    @Composable fun backgroundColor(): Color
+
+    @Composable
+    fun backgroundColor(): Color
 }
 

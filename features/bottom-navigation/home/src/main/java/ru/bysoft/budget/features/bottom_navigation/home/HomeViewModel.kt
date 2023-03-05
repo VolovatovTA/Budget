@@ -6,11 +6,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.bysoft.budget.common.errors.errorLogger
 import ru.bysoft.budget.common.me_info.IMeInfo
 import ru.bysoft.budget.features.bottom_navigation.home.data.me.IHomeMeRepo
 import ru.bysoft.budget.features.bottom_navigation.home.data.transactions.ITransactionsRepo
+import ru.bysoft.budget.features.bottom_navigation.home.data.transactions.TransferTypeEnum
 import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.IHomeWalletsRepo
 import ru.bysoft.budget.features.bottom_navigation.home.navigation.IHomeNavigation
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.filters.FilterData
@@ -20,10 +22,7 @@ import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.titl
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.title.MeErrorState
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.title.MeLoadingState
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.title.MeSuccessState
-import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionError
-import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionLoading
-import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionSuccess
-import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionsState
+import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.transactions.*
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.wallets.IWalletsState
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletsErrorState
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletsLoadingState
@@ -44,6 +43,8 @@ interface IHomeViewModel {
     fun onClickEditWallet(walletId: String)
     fun onPositionChanged(walletId: String)
     fun onClickFilter(newValue: Boolean, filter: FilterData)
+    fun updateTransaction(info: TransactionInfo)
+    fun deleteTransaction(info: TransactionInfo)
 }
 
 @HiltViewModel
@@ -137,12 +138,24 @@ class HomeViewModel @Inject constructor(
         getTransactions(false)
     }
 
+    override fun updateTransaction(info: TransactionInfo) {
+        navigate.toUpdateTransaction(info.id)
+    }
+
+    override fun deleteTransaction(info: TransactionInfo) {
+        transactionsState.update { transactionState ->
+            (transactionState as? TransactionSuccess)?.copy(
+                list = transactionState.list.filter { it.id != info.id }
+            ) ?: transactionState
+        }
+    }
+
     private fun getWallets(isRefresh: Boolean) {
         viewModelScope.launch(homeWalletsExceptionHandler) {
             walletsState.value = WalletsLoadingState(isRefresh)
             val loadedData = walletsRepo.getWallets()
             walletsState.value = WalletsSuccessState(loadedData.mapToState())
-            currentWalletId = loadedData.first().id
+            currentWalletId = loadedData.firstOrNull()?.id ?: ""
             getTransactions(isRefresh)
         }
     }
@@ -159,14 +172,22 @@ class HomeViewModel @Inject constructor(
     private fun getTransactions(isRefresh: Boolean) {
         viewModelScope.launch(homeTransactionExceptionHandler) {
             transactionsState.value = TransactionLoading(isRefresh)
+            val filters = filterState.value
             val transactions = transactionsRepo.getTransactions(
-                type = filterState.value.listFilters
+                type = filters.listFilters
+                    .filterNot { it.type == TypeFilter.Transfer }
                     .filter { it.isChecked }
                     .map { ",${it.type.nameForBack}" }
                     .takeIf { it.isNotEmpty() }
                     ?.reduce { acc, s -> acc + s }
                     ?.drop(1),
-                walletId = currentWalletId
+                transferType = when {
+                    filters.isTransfersChecked() && !filters.isExpensesChecked() && !filters.isIncomeChecked() -> TransferTypeEnum.ONLY_TRANSFER
+                    filters.isTransfersChecked() -> TransferTypeEnum.WITH_TRANSFER
+                    !filters.isTransfersChecked() -> TransferTypeEnum.WITHOUT_TRANSFER
+                    else -> TransferTypeEnum.WITHOUT_TRANSFER
+                },
+                walletId = listOf(currentWalletId)
             )
             transactionsState.value = TransactionSuccess(transactions.mapToInfo())
         }

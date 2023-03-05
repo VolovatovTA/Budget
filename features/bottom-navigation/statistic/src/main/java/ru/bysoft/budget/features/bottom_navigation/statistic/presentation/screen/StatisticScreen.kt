@@ -21,6 +21,7 @@ import ru.bysoft.budget.features.bottom_navigation.statistic.presentation.entity
 import ru.bysoft.budget.features.bottom_navigation.statistic.presentation.entity.StatisticSuccessState
 import ru.bysoft.budget.features.bottom_navigation.statistic.presentation.entity.StatisticWaitingState
 import ru.bysoft.budget.uikit.components.listItem.UiKitListItem
+import ru.bysoft.budget.uikit.components.listItem.entity.UiKitAmountInfoSuccess
 import ru.bysoft.budget.uikit.icons.pack.Plus
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -69,8 +70,8 @@ fun AddCategoryElement(onClick: () -> Unit) {
     UiKitListItem(
         title = "Сздать новую категорию",
         icon = Plus,
-        amount = "",
-        countColor = Color.Transparent,
+        amount = UiKitAmountInfoSuccess(""),
+        amountColor = Color.Transparent,
         modifier = Modifier
             .clickable { onClick.invoke() }
             .padding(horizontal = 30.dp, vertical = 15.dp)

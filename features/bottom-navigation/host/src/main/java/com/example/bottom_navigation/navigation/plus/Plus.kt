@@ -4,7 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.bottom_navigation.navigation.BottomNavigationButtonInfo
 import ru.bysoft.budget.common.navigation.NavigationInfo
+import ru.bysoft.budget.common.util.toJson
+import ru.bysoft.budget.create_update_delete_transactions.navigation.TransactionsCreateNavParams
 import ru.bysoft.budget.create_update_delete_transactions.navigation.transaction.Transaction
+import ru.bysoft.budget.create_update_delete_transactions.presentation.entity.TransactionTypeEnum
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.icons.pack.ArrowUp
 import ru.bysoft.budget.uikit.icons.pack.Minus
@@ -24,7 +27,10 @@ object Plus : BottomNavigationButtonInfo {
     )
 }
 
-object EntirePlus : NavigationInfo(Transaction.createScreen, Transaction.createScreen), BottomNavigationButtonInfo {
+object EntirePlus : NavigationInfo(
+    Transaction.createScreen,
+    "${Transaction.createScreen}/" + TransactionsCreateNavParams(TransactionTypeEnum.INCOME).toJson()
+), BottomNavigationButtonInfo {
     override val icon: ImageVector = Plus
     override val label: String = "Доход"
 
@@ -32,7 +38,10 @@ object EntirePlus : NavigationInfo(Transaction.createScreen, Transaction.createS
     override fun backgroundColor() = UiKitColors.colors.col4
 }
 
-object EntireMinus : NavigationInfo("", ""), BottomNavigationButtonInfo {
+object EntireMinus : NavigationInfo(
+    Transaction.createScreen,
+    "${Transaction.createScreen}/" + TransactionsCreateNavParams(TransactionTypeEnum.EXPENSE).toJson()
+), BottomNavigationButtonInfo {
     override val icon: ImageVector = Minus
     override val label: String = "Расход"
 
@@ -40,7 +49,10 @@ object EntireMinus : NavigationInfo("", ""), BottomNavigationButtonInfo {
     override fun backgroundColor() = UiKitColors.colors.col4
 }
 
-object EntireTransfer : NavigationInfo("", ""), BottomNavigationButtonInfo {
+object EntireTransfer : NavigationInfo(
+    Transaction.createScreen,
+    "${Transaction.createScreen}/" + TransactionsCreateNavParams(TransactionTypeEnum.TRANSFER).toJson()
+), BottomNavigationButtonInfo {
     override val icon: ImageVector = Recycle
     override val label: String = "Перевод"
 

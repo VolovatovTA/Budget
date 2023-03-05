@@ -4,10 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.bottom_navigation.navigation.BottomNavigation
 import ru.bysoft.budget.auth.presentation.screen.AuthScreen
 import com.example.bottom_navigation.screen.BottomNavigationScreen
@@ -20,7 +22,6 @@ import ru.bysoft.budget.create_udate_category.presentation.screen.CreateCategory
 import ru.bysoft.budget.create_udate_category.presentation.screen.UpdateCategoryScreen
 import ru.bysoft.budget.create_udate_category.presentation.viewmodels.CreateCategoryViewModel
 import ru.bysoft.budget.create_udate_category.presentation.viewmodels.UpdateCategoryViewModel
-import ru.bysoft.budget.create_update_delete_transactions.navigation.TransactionNavParamsCreate
 import ru.bysoft.budget.create_update_delete_transactions.presentation.screen.TransactionScreen
 import ru.bysoft.budget.create_update_delete_transactions.viewmodels.TransactionCreateViewModel
 import ru.bysoft.budget.create_update_delete_transactions.viewmodels.TransactionUpdateViewModel
@@ -79,11 +80,20 @@ fun MainNavigationHost(mainNavController: NavHostController) {
             route = Transaction.route,
             startDestination = Transaction.screenName
         ) {
-            composable(Transaction.createScreen) {
+            val argumentName = "argument"
+
+            composable(
+                route = "${Transaction.createScreen}/{$argumentName}",
+                arguments = listOf(navArgument(argumentName) { type = NavType.StringType })
+
+            ) {
+//                 = ""
+//                val transactionsNavParams = it.arguments?.getString("argument")?.restore<TransactionsNavParams>()!!
                 val viewModel = hiltViewModel<TransactionCreateViewModel>()
-                LaunchedEffect(Unit) { viewModel.initNavParams() }
+//                LaunchedEffect(Unit) { viewModel.initNavParams(transactionsNavParams) }
                 TransactionScreen(viewModel)
             }
+
             composable("${Transaction.updateScreen}/{arguments}") {
                 val id = it.arguments?.getString("arguments")!!
                 val viewModel = hiltViewModel<TransactionUpdateViewModel>()

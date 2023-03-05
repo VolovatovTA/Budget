@@ -1,6 +1,7 @@
 package ru.bysoft.budget.create_udate_category.data
 
 import retrofit2.HttpException
+import ru.bysoft.budget.common.util.BudgetCurrency
 import ru.bysoft.budget.create_udate_category.data.entity.CategoryData
 import ru.bysoft.budget.create_udate_category.data.entity.ErrorCategoryCreate
 import ru.bysoft.budget.create_udate_category.data.entity.SuccessCategoryCreate
@@ -35,7 +36,11 @@ class CategoryRepo @Inject constructor(
 
     }
 
-    override suspend fun updateCategory(categoryRequest: CategoryRequest, name: String, id: String): CategoryData {
+    override suspend fun updateCategory(
+        categoryRequest: CategoryRequest,
+        name: String,
+        id: String
+    ): CategoryData {
         return try {
             api.updateCategory(categoryRequest, name, id)
             SuccessCategoryCreate

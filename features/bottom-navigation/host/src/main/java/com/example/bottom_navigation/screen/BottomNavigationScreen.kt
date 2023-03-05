@@ -26,6 +26,7 @@ import com.example.bottom_navigation.navigation.plus.Plus
 import com.example.bottom_navigation.navigation.qr.QRCode
 import com.example.bottom_navigation.navigation.statistic.Statistic
 import ru.bysoft.budget.common.navigation.NavigationInfo
+import ru.bysoft.budget.create_update_delete_transactions.presentation.entity.TransactionTypeEnum
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.components.expandablecontetn.VerticalExpandableContent
 import ru.bysoft.budget.uikit.styles.UiKitStyles
@@ -166,7 +167,7 @@ private fun navigateToScreen(
     screen: NavigationInfo,
     needPopUp: Boolean = true
 ) {
-    navController.navigate(screen.route) {
+    navController.navigate(route = screen.screenName) {
         // Pop up to the start destination of the graph to
         // avoid building up a large stack of destinations
         // on the back stack as users select items

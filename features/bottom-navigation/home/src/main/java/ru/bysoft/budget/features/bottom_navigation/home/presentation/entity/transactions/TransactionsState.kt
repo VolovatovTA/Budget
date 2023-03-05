@@ -20,8 +20,9 @@ object TransactionError : TransactionsState
 data class TransactionInfo(
     val name: String,
     val icon: ImageVector?,
-    val date: String,
+    val date: String?,
     val amount: String,
     val currency: BudgetCurrency,
-    val color: String
+    val color: String,
+    val id: String
 )

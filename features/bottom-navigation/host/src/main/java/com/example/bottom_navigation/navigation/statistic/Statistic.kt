@@ -7,9 +7,11 @@ import ru.bysoft.budget.common.navigation.NavigationInfo
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.icons.pack.Statistic
 
-object Statistic : NavigationInfo("statistic", "statisticScreenName"), BottomNavigationButtonInfo {
+object Statistic : NavigationInfo(route = "statistic", screenName = "statisticScreenName"),
+    BottomNavigationButtonInfo {
     override val icon: ImageVector = Statistic
     override val label: String? = null
+
     @Composable
     override fun backgroundColor() = UiKitColors.colors.light
 

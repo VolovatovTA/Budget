@@ -1,6 +1,5 @@
 package ru.bysoft.budget.create_udate_category.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -8,16 +7,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import ru.bysoft.budget.common.errors.IErrorLogger
 import ru.bysoft.budget.common.me_info.IMeInfo
-import ru.bysoft.budget.common.util.TAG
 import ru.bysoft.budget.common.util.getCurrency
-import ru.bysoft.budget.create_udate_category.CreateUpdateCategoryViewModel
-import ru.bysoft.budget.create_udate_category.ICreateCategoryViewModel
 import ru.bysoft.budget.create_udate_category.data.ICategoryRepo
-import ru.bysoft.budget.create_udate_category.data.entity.CategoryErrorType
 import ru.bysoft.budget.create_udate_category.data.entity.ErrorCategoryCreate
 import ru.bysoft.budget.create_udate_category.data.entity.SuccessCategoryCreate
 import ru.bysoft.budget.create_udate_category.data.network.entity.CategoryRequest
 import ru.bysoft.budget.create_udate_category.navigation.ICreateUpdateCategoryNavigation
+import ru.bysoft.budget.create_udate_category.presentation.entity.CategoryTypeEnum
 import ru.bysoft.budget.create_udate_category.presentation.entity.CreateUpdateCategoryState
 import ru.bysoft.budget.uikit.components.currecyfield.entity.CurrencyFieldState
 import javax.inject.Inject
@@ -43,17 +39,22 @@ class CreateCategoryViewModel @Inject constructor(
         )
     )
 
-
     override fun onClickCreate() {
         viewModelScope.launch(handler) {
             state.value = state.value.copy(isLoading = true)
+            val path = when (state.value.typeCategory) {
+                CategoryTypeEnum.EXPENSE -> "expenses"
+                CategoryTypeEnum.INCOME -> "incomes"
+            }
             val categoryData = repo.createCategory(
                 CategoryRequest(
                     iconName = state.value.iconState.iconName,
                     currency = state.value.currencyFieldState.selectedCurrency!!.iso4217,
                     name = state.value.nameTextState.text,
+                    limitAmount = state.value.amountTextState.text.toFloatOrNull(),
+                    limitType = state.value.periodState.selectedValue?.textToBack
                 ),
-                "expenses"
+                path
             )
             state.value = state.value.copy(isLoading = false)
             when (categoryData) {
@@ -64,7 +65,6 @@ class CreateCategoryViewModel @Inject constructor(
                     updateState(categoryData)
                 }
             }
-            Log.d(TAG, "onClickCreate: $categoryData")
         }
     }
 }

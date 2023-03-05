@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import ru.bysoft.budget.create_udate_category.IUpdateCategoryViewModel
+import ru.bysoft.budget.create_udate_category.presentation.viewmodels.IUpdateCategoryViewModel
 import ru.bysoft.budget.create_udate_category.presentation.components.ButtonComponent
 import ru.bysoft.budget.create_udate_category.presentation.components.CreateUpdateCategoryTextField
 import ru.bysoft.budget.create_udate_category.presentation.components.IconsComponent

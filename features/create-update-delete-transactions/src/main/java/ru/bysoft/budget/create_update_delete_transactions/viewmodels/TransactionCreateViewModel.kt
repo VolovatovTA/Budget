@@ -1,5 +1,7 @@
 package ru.bysoft.budget.create_update_delete_transactions.viewmodels
 
+import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -8,12 +10,15 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import ru.bysoft.budget.common.errors.IErrorLogger
 import ru.bysoft.budget.common.me_info.IMeInfo
-import ru.bysoft.budget.common.network.entity.CommonErrorBody
 import ru.bysoft.budget.common.util.*
 import ru.bysoft.budget.create_update_delete_transactions.data.network.ITransactionApi
 import ru.bysoft.budget.create_update_delete_transactions.data.network.ITransactionsCategoryApi
 import ru.bysoft.budget.create_update_delete_transactions.data.network.ITransactionsWalletApi
+import ru.bysoft.budget.create_update_delete_transactions.data.network.entity.requests.TransactionExpenseCreateRequest
+import ru.bysoft.budget.create_update_delete_transactions.data.network.entity.requests.TransactionIncomeCreateRequest
+import ru.bysoft.budget.create_update_delete_transactions.data.network.entity.requests.TransactionTransferCreateRequest
 import ru.bysoft.budget.create_update_delete_transactions.navigation.ITransactionNavigation
+import ru.bysoft.budget.create_update_delete_transactions.navigation.TransactionsCreateNavParams
 import ru.bysoft.budget.create_update_delete_transactions.presentation.entity.*
 import ru.bysoft.budget.create_update_delete_transactions.presentation.mapper.ITransactionPresentationMapper
 import ru.bysoft.budget.create_update_delete_transactions.presentation.mapper.ITransactionWalletPresentationMapper
@@ -24,106 +29,88 @@ import javax.inject.Inject
 @HiltViewModel
 class TransactionCreateViewModel @Inject constructor(
     private val navigate: ITransactionNavigation,
-    private val categoryApi: ITransactionsCategoryApi,
-    private val walletApi: ITransactionsWalletApi,
     private val transactionApi: ITransactionApi,
-    private val errorLogger: IErrorLogger,
-    private val categoryMapperPresentation: ITransactionsCategoryPresentationMapper,
-    private val walletMapper: ITransactionWalletPresentationMapper,
     private val transactionMapper: ITransactionPresentationMapper,
-    private val meInfo: IMeInfo
-) : TransactionsCommonViewModel(navigate), ITransactionCreateViewModel {
+    private val errorLogger: IErrorLogger,
+    private val meInfo: IMeInfo,
+    categoryApi: ITransactionsCategoryApi,
+    walletApi: ITransactionsWalletApi,
+    categoryMapperPresentation: ITransactionsCategoryPresentationMapper,
+    walletMapper: ITransactionWalletPresentationMapper,
+    savedStateHandle: SavedStateHandle
+) : TransactionsCommonViewModel(
+    navigate = navigate,
+    errorLogger = errorLogger,
+    categoryApi = categoryApi,
+    walletApi = walletApi,
+    categoryMapperPresentation = categoryMapperPresentation,
+    walletMapper = walletMapper
+), ITransactionCreateViewModel {
 
-    private val handlerCategory = CoroutineExceptionHandler { _, t ->
-        errorLogger.logError(t)
-        state.update { it.copy(categoryState = CategoryError) }
-    }
-
-    private val handlerWallet = CoroutineExceptionHandler { _, t ->
-        errorLogger.logError(t)
-        state.update { it.copy(walletFieldState = WalletErrorState) }
+    init {
+        val argument = savedStateHandle.get<String>("argument")?.restore<TransactionsCreateNavParams>()!!
+        Log.d(TAG, "init: $argument")
+        setTypeTransactions(argument.type)
+        state.update {
+            it.copyWithCurrency(
+                currencyFieldState = it.currencyFieldState.copy(
+                    selectedCurrency = getCurrency(meInfo.getCurrentMeInfo()?.settingsData?.currency)
+                )
+            )
+        }
     }
 
     private val handlerTransaction = CoroutineExceptionHandler { _, t ->
         errorLogger.logError(t)
-
+        state.update {
+            it.copyWithToast("Произошла ошибка запроса")
+        }
     }
 
     override fun create() {
         viewModelScope.launch(handlerTransaction) {
             try {
                 state.update {
-                    it.copy(
+                    it.copyWithLoading(
                         isLoading = true
                     )
                 }
-                transactionApi.createTransaction(transactionMapper.toRequest(state.value))
+                when (val request = transactionMapper.toRequest(state.value)) {
+                    is TransactionExpenseCreateRequest ->
+                        transactionApi.createTransactionExpense(request)
+                    is TransactionTransferCreateRequest ->
+                        transactionApi.createTransactionTransfer(request)
+                    is TransactionIncomeCreateRequest ->
+                        transactionApi.createTransactionIncome(request)
+                }
+
                 state.update {
-                    it.copy(
+                    it.copyWithLoading(
                         isLoading = false
                     )
                 }
                 navigate.back()
-            } catch (e: HttpException) {
+            } catch (e: Throwable) {
+                if (e is HttpException) {
+                    state.update {
+                        it.copyWithToast(
+                            toastText = e.response()?.errorBody()?.string()
+                        )
+                    }
+                } else {
+                    Log.d(TAG, e.toString())
+                }
                 state.update {
-                    it.copy(
-                        toastText = e.response()?.errorBody()?.string()
-                            ?.restore<CommonErrorBody>()?.slug
+                    it.copyWithLoading(
+                        isLoading = false
                     )
                 }
             }
         }
     }
 
-    override fun initNavParams() {
-        state.update {
-            it.copy(
-                currencyFieldState = it.currencyFieldState.copy(
-                    selectedCurrency = getCurrency(meInfo.getCurrentMeInfo()?.settingsData?.currency)
-                )
-            )
-        }
-        loadCategories()
-        loadWallets()
-    }
+    override fun initNavParams(argument: TransactionsCreateNavParams) {
 
-    private fun loadCategories() {
-        viewModelScope.launch(handlerCategory) {
-            state.value = state.value.copy(
-                categoryState = CategoryWaiting,
-                isLoading = true
-            )
-            val path = when (state.value.typeState) {
-                TransactionTypeEnum.EXPENSE -> "expenses"
-                TransactionTypeEnum.TRANSFER -> "transfer"
-                TransactionTypeEnum.INCOME -> "income"
-            }
-
-            val response = categoryApi.getCategories(path)
-            state.value =
-                state.value.copy(
-                    categoryState = categoryMapperPresentation.toPresentation(response),
-                    isLoading = false
-                )
-        }
-    }
-
-    private fun loadWallets() {
-        viewModelScope.launch(handlerWallet) {
-            state.update {
-                it.copy(
-                    walletFieldState = WalletWaitingState,
-                    isLoading = true
-                )
-            }
-            val response = walletApi.getWallets()
-            state.update {
-                it.copy(
-                    walletFieldState = walletMapper.toPresentation(response),
-                    isLoading = false
-                )
-            }
-        }
     }
 
     private fun showExchangesIfNeed() {
@@ -136,20 +123,30 @@ class TransactionCreateViewModel @Inject constructor(
                 ?.filter { it.currency != state.value.currencyFieldState.selectedCurrency?.displayName }
                 ?.mapNotNull { getCurrencyByDisplayName(it.currency) } ?: emptyList()
 
-        val walletId = (currentState.walletFieldState as? WalletSuccessState)?.selectedWalletId
+        // List of selected walletIdes
+        val walletIdList = listOfNotNull(
+            (currentState.walletToFieldState as? WalletSuccessState)?.selectedWalletId,
+            (currentState.walletFromFieldState as? WalletSuccessState)?.selectedWalletId
+        )
 
-        val walletCurrency = (currentState.walletFieldState as? WalletSuccessState)?.list
-            ?.firstOrNull { it.id == walletId }
-            .takeIf { it?.currency != currentState.currencyFieldState.selectedCurrency }
-            ?.currency
+        val listWalletsInfo = (currentState.walletToFieldState as? WalletSuccessState)?.list.orEmpty()
+            .plus((currentState.walletFromFieldState as? WalletSuccessState)?.list.orEmpty())
 
-        val listWalletCurrencyExceptSelectedCurrency = listOfNotNull(walletCurrency)
+        // List of currency in selected wallets except selected currency in currency field
+        val listWalletCurrencyExceptSelectedCurrency = listWalletsInfo
+            .filter { walletIdList.contains(it.id) }
+            .filter { it.currency != currentState.currencyFieldState.selectedCurrency }
+            .map { it.currency }
+
 
         val finalListCurrency =
-            (categoryWithCurrencyDiffWithTransactionCurrency + listWalletCurrencyExceptSelectedCurrency).filterSameCurrency()
+            (categoryWithCurrencyDiffWithTransactionCurrency + listWalletCurrencyExceptSelectedCurrency)
+                .filterSameCurrency()
+                .takeIf { currentState.currencyFieldState.selectedCurrency != null }
+                .orEmpty()
 
         state.update {
-            it.copy(
+            it.copyWithExchanges(
                 exchangeFieldState = finalListCurrency.map { currency ->
                     ExchangeFieldState(
                         currencyFieldState = CurrencyFieldState(
@@ -177,8 +174,8 @@ class TransactionCreateViewModel @Inject constructor(
         showExchangesIfNeed()
     }
 
-    override fun setWalletId(id: String) {
-        super.setWalletId(id)
+    override fun setWalletId(fromId: String?, toId: String?) {
+        super.setWalletId(fromId, toId)
         showExchangesIfNeed()
     }
 }

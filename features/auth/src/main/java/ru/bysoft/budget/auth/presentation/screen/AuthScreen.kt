@@ -173,7 +173,9 @@ private fun AuthSuccessScreen(
             contentAlignment = Alignment.Center
         ) {
             if (state.isLoading) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(
+                    color = UiKitColors.colors.grey,
+                )
             } else {
                 UiKitButton(
                     info = UiKitButtonInfo(text = btnText, type = ButtonType.LARGE),

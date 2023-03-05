@@ -102,7 +102,12 @@ fun HomeScreen(
                 )
             }
 
-            HomeTransactionsComponent(transactionsState, onRefresh = viewModel::loadTransactions)
+            HomeTransactionsComponent(
+                transactionsState,
+                onRefresh = viewModel::loadTransactions,
+                onEndStartSwipe = viewModel::deleteTransaction,
+                onStartEndSwipe = viewModel::updateTransaction,
+            )
         }
     }
 }

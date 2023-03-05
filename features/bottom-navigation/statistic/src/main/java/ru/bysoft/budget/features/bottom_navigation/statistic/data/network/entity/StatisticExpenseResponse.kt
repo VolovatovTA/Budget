@@ -15,5 +15,9 @@ data class CategoryExpenseResponse(
     @SerializedName("id")
     val id: String,
     @SerializedName("name")
-    val name: String
+    val name: String,
+    @SerializedName("limit_amount")
+    val limitAmount: String?,
+    @SerializedName("limit_type")
+    val limitType: String?
 )

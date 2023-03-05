@@ -8,6 +8,7 @@ import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.tran
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletCardPresentation
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletCreateNewPresentation
 import ru.bysoft.budget.uikit.icons.UiKitIcons
+import ru.bysoft.budget.uikit.icons.pack.Recycle
 
 fun List<WalletData>.mapToState() = this.map { it.mapToState() }.plus(WalletCreateNewPresentation)
 
@@ -35,14 +36,17 @@ private fun getTransactionInfo(transactionData: TransactionData): TransactionInf
             is TransactionTransfer -> ""
         } + getBeautifulAmount(transactionData.amount, transactionData.currency),
         currency = transactionData.currency,
-        date = transactionData.date.toLocaleString(),
-        icon = UiKitIcons.getByName(transactionData.categories.ifEmpty { null }?.first()?.iconName),
+        date = transactionData.date?.toString(),
+        icon =
+        if (transactionData is TransactionTransfer) Recycle
+        else UiKitIcons.getByName(transactionData.categories.ifEmpty { null }?.first()?.iconName),
         name = transactionData.comment,
         color = when (transactionData) {
             is TransactionIncome -> "col6"
             is TransactionExpense -> "red"
             is TransactionTransfer -> "col1"
-        }
+        },
+        id = transactionData.id
     )
 
 

@@ -1,26 +1,30 @@
 package ru.bysoft.budget.features.bottom_navigation.home.presentation.screen.transactions
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionError
-import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionLoading
-import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionSuccess
-import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionsState
+import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.transactions.*
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.components.listItem.UiKitListItem
+import ru.bysoft.budget.uikit.components.listItem.entity.UiKitAmountInfoSuccess
 import ru.bysoft.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.budget.uikit.icons.pack.*
 import ru.bysoft.budget.uikit.styles.UiKitStyles
@@ -30,7 +34,9 @@ import ru.bysoft.budget.uikit.styles.UiKitStyles
 fun HomeTransactionsComponent(
     state: TransactionsState,
     modifier: Modifier = Modifier,
-    onRefresh: (Boolean) -> Unit
+    onRefresh: (Boolean) -> Unit,
+    onStartEndSwipe: (TransactionInfo) -> Unit,
+    onEndStartSwipe: (TransactionInfo) -> Unit,
 ) {
     val isRefreshing = (state as? TransactionLoading)?.isRefreshing ?: false
     val pullRefreshState = rememberPullRefreshState(
@@ -42,7 +48,11 @@ fun HomeTransactionsComponent(
         val scrollState = rememberScrollState()
         Column(modifier.verticalScroll(scrollState)) {
             when (state) {
-                is TransactionSuccess -> TransactionsSuccessComponent(state)
+                is TransactionSuccess -> TransactionsSuccessComponent(
+                    state = state,
+                    onStartEndSwipe = onStartEndSwipe,
+                    onEndStartSwipe = onEndStartSwipe
+                )
                 is TransactionLoading -> TransactionLoadingComponent()
                 is TransactionError -> TransactionErrorComponent()
             }
@@ -58,8 +68,13 @@ fun HomeTransactionsComponent(
 
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun TransactionsSuccessComponent(state: TransactionSuccess) {
+private fun TransactionsSuccessComponent(
+    state: TransactionSuccess,
+    onStartEndSwipe: (TransactionInfo) -> Unit,
+    onEndStartSwipe: (TransactionInfo) -> Unit,
+) {
     if (state.list.isEmpty()) {
         Box(
             modifier = Modifier
@@ -74,16 +89,94 @@ private fun TransactionsSuccessComponent(state: TransactionSuccess) {
         }
 
     } else {
+
         state.list.forEach { data ->
-            UiKitListItem(
-                title = data.name,
-                subTitle = data.date,
-                icon = data.icon,
-                modifier = Modifier
-                    .clickable { }
-                    .padding(vertical = 10.dp, horizontal = 30.dp),
-                amount = data.amount,
-                countColor = UiKitColors.getColorByName(data.color)
+            val dismissState = rememberDismissState {
+                when (it) {
+                    DismissValue.DismissedToStart -> onEndStartSwipe(data)
+                    DismissValue.DismissedToEnd -> onStartEndSwipe(data)
+                    else -> {}
+                }
+                true
+            }
+            SwipeToDismiss(
+                state = dismissState,
+                background = {
+                    val color by animateColorAsState(
+                        when (dismissState.targetValue) {
+                            DismissValue.Default -> UiKitColors.colors.light
+                            DismissValue.DismissedToEnd -> UiKitColors.colors.col4
+                            DismissValue.DismissedToStart -> UiKitColors.colors.red
+                            else -> UiKitColors.colors.light
+                        }
+                    )
+                    val alignment = Alignment.CenterEnd
+
+                    val scale by animateFloatAsState(
+                        when (dismissState.targetValue) {
+                            DismissValue.Default -> 0.25f
+                            else -> 1f
+                        }
+                    )
+
+                    val alphaDeleteIcon by animateFloatAsState(
+                        when (dismissState.targetValue) {
+                            DismissValue.DismissedToStart -> 1f
+                            else -> 0f
+                        }
+                    )
+                    val alphaUpdateIcon by animateFloatAsState(
+                        when (dismissState.targetValue) {
+                            DismissValue.DismissedToEnd -> 1f
+                            else -> 0f
+                        }
+                    )
+
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                            .background(color),
+                        contentAlignment = alignment
+                    ) {
+                        Icon(
+                            Edit,
+                            contentDescription = "Update Icon",
+                            modifier = Modifier
+                                .scale(scale)
+                                .padding(horizontal = 30.dp)
+                                .alpha(alphaUpdateIcon)
+                                .align(Alignment.CenterStart)
+                        )
+
+                        Icon(
+                            Delete,
+                            contentDescription = "Delete Icon",
+                            modifier = Modifier
+                                .scale(scale)
+                                .padding(horizontal = 30.dp)
+                                .alpha(alphaDeleteIcon)
+                                .align(Alignment.CenterEnd)
+                        )
+                    }
+                },
+                dismissContent = {
+                    Box(
+                        modifier = Modifier
+                            .background(UiKitColors.colors.light)
+                            .padding(vertical = 10.dp, horizontal = 30.dp)
+                    ) {
+                        UiKitListItem(
+                            title = data.name,
+                            subTitle = data.date,
+                            icon = data.icon,
+                            modifier = Modifier
+                                .clickable { }
+                                .background(UiKitColors.colors.light),
+                            amount = UiKitAmountInfoSuccess(data.amount),
+                            amountColor = UiKitColors.getColorByName(data.color)
+                        )
+                    }
+                }
             )
         }
         Spacer(modifier = Modifier.height(60.dp))

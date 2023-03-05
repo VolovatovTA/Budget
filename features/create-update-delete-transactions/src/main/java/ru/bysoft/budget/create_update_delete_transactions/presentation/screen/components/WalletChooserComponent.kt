@@ -22,11 +22,17 @@ import ru.bysoft.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.budget.uikit.styles.UiKitStyles
 
 @Composable
-fun WalletChooserComponent(state: IWalletFieldState, onClick: (String) -> Unit) {
-    when (state) {
-        is WalletWaitingState -> WalletWaitingComponent()
-        is WalletErrorState -> WalletErrorComponent()
-        is WalletSuccessState -> WalletSuccessComponent(state, onClick)
+fun WalletChooserComponent(
+    state: IWalletFieldState,
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit
+) {
+    Box(modifier = modifier) {
+        when (state) {
+            is WalletWaitingState -> WalletWaitingComponent()
+            is WalletErrorState -> WalletErrorComponent()
+            is WalletSuccessState -> WalletSuccessComponent(state, onClick)
+        }
     }
 }
 
@@ -35,7 +41,7 @@ private fun WalletSuccessComponent(state: WalletSuccessState, onClick: (String) 
     val scrollState = rememberScrollState()
     Column(
         Modifier
-            .padding(horizontal = 30.dp)
+            .padding(horizontal = 5.dp)
             .heightIn(max = MAX_HEIGHT)
             .verticalScroll(scrollState)
     ) {
@@ -85,11 +91,11 @@ private fun WalletWaitingComponent() {
     Column(
         modifier = Modifier
             .heightIn(max = MAX_HEIGHT)
-            .padding(horizontal = 30.dp)
+            .padding(horizontal = 5.dp)
             .padding(top = 10.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        (0..4).forEach{ _ ->
+        (0..4).forEach { _ ->
             UiKitShimmerComponent(
                 Modifier
                     .fillMaxWidth()
@@ -107,6 +113,6 @@ private fun WalletErrorComponent() {
         text = "Не удалось загрузить список категорий",
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 20.dp, horizontal = 30.dp)
+            .padding(vertical = 20.dp, horizontal = 5.dp)
     )
 }

@@ -15,7 +15,7 @@ class HomeWalletsRepo @Inject constructor(
 ) : IHomeWalletsRepo {
 
     override suspend fun getWallets(): List<WalletData> {
-        return api.getWallets().mapToData()
+        return api.getWallets().mapToData() ?: emptyList()
     }
 
 }

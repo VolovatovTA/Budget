@@ -1,11 +1,11 @@
 package ru.bysoft.budget.create_update_delete_transactions.navigation
 
-sealed interface ITransactionsNavParams
+import ru.bysoft.budget.create_update_delete_transactions.presentation.entity.TransactionTypeEnum
 
-object TransactionNavParamsCreate : ITransactionsNavParams
-data class TransactionNavParamsUpdate(
+data class TransactionsCreateNavParams(
+    val type: TransactionTypeEnum,
+)
+
+data class TransactionUpdateNavParams(
     val id: String
-) : ITransactionsNavParams
-data class TransactionNavParamsRead(
-    val id: String
-) : ITransactionsNavParams
+)

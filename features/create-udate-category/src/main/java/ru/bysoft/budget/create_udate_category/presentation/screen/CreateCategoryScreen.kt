@@ -14,15 +14,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import ru.bysoft.budget.create_udate_category.ICreateCategoryViewModel
+import ru.bysoft.budget.create_udate_category.presentation.viewmodels.ICreateCategoryViewModel
 import ru.bysoft.budget.create_udate_category.presentation.components.ButtonComponent
 import ru.bysoft.budget.create_udate_category.presentation.components.CreateUpdateCategoryTextField
 import ru.bysoft.budget.create_udate_category.presentation.components.IconsComponent
-import ru.bysoft.budget.uikit.colors.UiKitColors
+import ru.bysoft.budget.create_udate_category.presentation.entity.CategoryTypeEnum
+import ru.bysoft.budget.uikit.components.buttons.entity.ButtonType
+import ru.bysoft.budget.uikit.components.buttons.entity.UiKitButtonInfo
 import ru.bysoft.budget.uikit.components.currecyfield.UiKitCurrencyPopUp
 import ru.bysoft.budget.uikit.components.currecyfield.UiKitPopUp
+import ru.bysoft.budget.uikit.components.rowtab.UiKitRowTab
+import ru.bysoft.budget.uikit.components.rowtab.entity.UiKitRowTabState
+import ru.bysoft.budget.uikit.components.rowtab.entity.UiKitTabInfo
 import ru.bysoft.budget.uikit.icons.pack.ArrowLeft
-import ru.bysoft.budget.uikit.icons.pack.Delete
 import ru.bysoft.budget.uikit.styles.UiKitStyles
 
 @Composable
@@ -61,15 +65,36 @@ fun CreateCategoryScreen(
             }
         }
 
-    ) {
+    ) { paddingValues ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(paddingValues)
                 .padding(horizontal = 30.dp)
         ) {
+            val rowTabs = listOf(
+                CategoryTypeEnum.EXPENSE,
+                CategoryTypeEnum.INCOME,
+            )
+
+            UiKitRowTab(
+                startState = UiKitRowTabState(
+                    rowTabs.map { type ->
+                        UiKitTabInfo(
+                            info = UiKitButtonInfo(
+                                type.text,
+                                type = ButtonType.SMALL
+                            ),
+                            isChecked = type == state.typeCategory
+                        )
+                    }
+                ),
+                onCheckChanged = { _, position ->
+                    viewModel.setCategoryType(rowTabs[position])
+                }
+            )
             CreateUpdateCategoryTextField(
                 state = state.nameTextState,
                 onTextChange = viewModel::onNameChanged,

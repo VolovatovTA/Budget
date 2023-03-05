@@ -1,6 +1,5 @@
 package ru.bysoft.budget.create_udate_category.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -10,10 +9,7 @@ import kotlinx.coroutines.withContext
 import ru.bysoft.budget.common.errors.IErrorLogger
 import ru.bysoft.budget.common.errors.exceptionHandler
 import ru.bysoft.budget.common.me_info.IMeInfo
-import ru.bysoft.budget.common.util.TAG
 import ru.bysoft.budget.common.util.getCurrency
-import ru.bysoft.budget.create_udate_category.CreateUpdateCategoryViewModel
-import ru.bysoft.budget.create_udate_category.IUpdateCategoryViewModel
 import ru.bysoft.budget.create_udate_category.data.ICategoryRepo
 import ru.bysoft.budget.create_udate_category.data.entity.ErrorCategoryCreate
 import ru.bysoft.budget.create_udate_category.data.entity.SuccessCategoryCreate
@@ -50,6 +46,8 @@ class UpdateCategoryViewModel @Inject constructor(
                     iconName = state.value.iconState.iconName,
                     currency = state.value.currencyFieldState.selectedCurrency!!.iso4217,
                     name = state.value.nameTextState.text,
+                    limitAmount = state.value.amountTextState.text.toFloatOrNull(),
+                    limitType = state.value.periodState.selectedValue?.textToBack
                 ),
                 "expenses",
                 id

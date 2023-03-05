@@ -18,12 +18,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.bysoft.budget.common.util.BudgetCurrency
-import ru.bysoft.budget.create_update_delete_transactions.presentation.entity.CategoryPresentation
-import ru.bysoft.budget.create_update_delete_transactions.presentation.entity.TransactionState
-import ru.bysoft.budget.create_update_delete_transactions.presentation.entity.TransactionTypeEnum
+import ru.bysoft.budget.create_update_delete_transactions.presentation.entity.*
 import ru.bysoft.budget.create_update_delete_transactions.presentation.screen.components.CategoryChooserComponent
 import ru.bysoft.budget.create_update_delete_transactions.presentation.screen.components.ExchangesComponent
 import ru.bysoft.budget.create_update_delete_transactions.presentation.screen.components.WalletChooserComponent
@@ -34,6 +33,9 @@ import ru.bysoft.budget.uikit.components.buttons.UiKitButton
 import ru.bysoft.budget.uikit.components.buttons.entity.ButtonType
 import ru.bysoft.budget.uikit.components.buttons.entity.UiKitButtonInfo
 import ru.bysoft.budget.uikit.components.currecyfield.UiKitCurrencyPopUp
+import ru.bysoft.budget.uikit.components.rowtab.UiKitRowTab
+import ru.bysoft.budget.uikit.components.rowtab.entity.UiKitTabInfo
+import ru.bysoft.budget.uikit.components.rowtab.entity.UiKitRowTabState
 import ru.bysoft.budget.uikit.components.textfield.UiKitTextField
 import ru.bysoft.budget.uikit.icons.pack.ArrowLeft
 import ru.bysoft.budget.uikit.styles.UiKitStyles
@@ -45,33 +47,38 @@ internal val MAX_HEIGHT = 200.dp
 fun TransactionScreen(
     viewModel: ITransactionsViewModel,
 ) {
-    val state by viewModel.state.collectAsState()
-    state.toastText?.let {
+    val transactionState by viewModel.state.collectAsState()
+    transactionState.toastText?.let {
         val context = LocalContext.current
         LaunchedEffect(Unit) {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         }
     }
-    Scaffold(topBar = transactionTopBar(viewModel)) {
+    Scaffold(topBar = transactionTopBar(viewModel)) { paddingValues ->
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             if (viewModel is TransactionCreateViewModel) {
                 TransactionCreateScreenMain(
                     modifier = Modifier.weight(10f),
-                    it,
-                    state,
-                    viewModel::setCategoriesIds,
-                    viewModel::setWalletId,
-                    viewModel::setComment,
-                    viewModel::setAmount,
-                    viewModel::setCurrency,
+                    paddingValues = paddingValues,
+                    transactionState = transactionState,
+                    setCategoriesIds = viewModel::setCategoriesIds,
+                    setWalletId = viewModel::setWalletId,
+                    setComment = viewModel::setComment,
+                    setAmount = viewModel::setAmount,
+                    setCurrency = viewModel::setCurrency,
                     setExchangeAmount = viewModel::setExchangeAmount,
-                    setExchangeCurrency = viewModel::setExchangeCurrency
+                    setTransactionType = viewModel::setTypeTransactions,
                 )
-                TransactionButtonComponent(state.isLoading, viewModel::create, Modifier.weight(1f))
+                TransactionButtonComponent(
+                    transactionState.isLoading,
+                    viewModel::create,
+                    Modifier.weight(1f)
+                )
             }
         }
     }
 }
+
 
 @Composable
 @Preview(
@@ -86,43 +93,103 @@ fun TransactionScreen(
     showSystemUi = false,
     backgroundColor = 0L,
     uiMode = UI_MODE_TYPE_NORMAL,
-    device = "android"
 )
 private fun TransactionCreateScreenMain(
     modifier: Modifier = Modifier,
-    it: PaddingValues = PaddingValues(0.dp),
-    state: TransactionState = TransactionState(),
+    paddingValues: PaddingValues = PaddingValues(0.dp),
+    transactionState: ITransactionState = TransactionTransferState(),
     setCategoriesIds: (CategoryPresentation) -> Unit = {},
-    setWalletId: (String) -> Unit = {},
+    setWalletId: (fromId: String?, toId: String?) -> Unit = { _, _ -> },
     setComment: (String) -> Unit = {},
     setAmount: (String) -> Unit = {},
     setCurrency: (BudgetCurrency) -> Unit = {},
     onButtonClick: () -> Unit = {},
     setExchangeAmount: (BudgetCurrency, String) -> Unit = { _, _ -> },
-    setExchangeCurrency: (Int, BudgetCurrency) -> Unit = { _, _ -> },
+    setTransactionType: (TransactionTypeEnum) -> Unit = { },
 ) {
     Column(
         modifier
-            .padding(it)
+            .padding(paddingValues)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+
+        val rowTabs = listOf(
+            TransactionTypeEnum.EXPENSE,
+            TransactionTypeEnum.TRANSFER,
+            TransactionTypeEnum.INCOME,
+        )
+        val selectedType = when (transactionState) {
+            is TransactionIncomeState -> TransactionTypeEnum.INCOME
+            is TransactionExpenseState -> TransactionTypeEnum.EXPENSE
+            is TransactionTransferState -> TransactionTypeEnum.TRANSFER
+        }
+        UiKitRowTab(
+            startState = UiKitRowTabState(
+                rowTabs.map {
+                    UiKitTabInfo(
+                        info = UiKitButtonInfo(
+                            it.text,
+                            type = ButtonType.SMALL
+                        ),
+                        isChecked = it == selectedType,
+                        isEnabled = true
+                    )
+                }
+            ),
+            onCheckChanged = { _, position ->
+                setTransactionType(rowTabs[position])
+            }
+        )
         Text(
             "Кошельки",
             style = UiKitStyles.Body2,
             modifier = Modifier
-                .padding(top = 20.dp, start = 40.dp, end = 30.dp)
+                .padding(top = 20.dp, start = 30.dp, end = 30.dp)
                 .fillMaxWidth()
         )
 
-        WalletChooserComponent(state.walletFieldState, setWalletId)
+        Row(Modifier.padding(horizontal = 25.dp)) {
+            transactionState.walletFromFieldState?.let { iWalletFieldState ->
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        "Кошелёк с которого хотите снять деньги",
+                        style = UiKitStyles.Body2,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .padding(top = 20.dp, start = 10.dp, end = 10.dp)
+                    )
+                    WalletChooserComponent(
+                        iWalletFieldState
+                    ) { fromId -> setWalletId(fromId, null) }
+                }
+
+            }
+            transactionState.walletToFieldState?.let { iWalletFieldState ->
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        "Кошелёк который хотите пополнить",
+                        style = UiKitStyles.Body2,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .padding(top = 20.dp, start = 10.dp, end = 10.dp)
+                            .fillMaxWidth()
+                    )
+                    WalletChooserComponent(
+                        iWalletFieldState
+                    ) { toId -> setWalletId(null, toId) }
+                }
+            }
+        }
+
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             UiKitTextField(
-                state = state.amountState,
+                state = transactionState.amountState,
                 onValueChange = setAmount,
                 label = "Сумма",
                 inputType = KeyboardType.Number,
@@ -132,7 +199,7 @@ private fun TransactionCreateScreenMain(
                     .height(HEIGHT_ELEMENT)
             )
             UiKitCurrencyPopUp(
-                info = state.currencyFieldState,
+                info = transactionState.currencyFieldState,
                 onNameChanged = setCurrency,
                 modifier = Modifier
                     .padding(end = 30.dp, top = 18.dp, bottom = 5.dp, start = 5.dp)
@@ -141,7 +208,7 @@ private fun TransactionCreateScreenMain(
             )
         }
         UiKitTextField(
-            state = state.commentState,
+            state = transactionState.commentState,
             onValueChange = setComment,
             label = "Коментарий",
             inputType = KeyboardType.Text,
@@ -151,19 +218,34 @@ private fun TransactionCreateScreenMain(
         )
 
         ExchangesComponent(
-            state.exchangeFieldState,
-            setAmount = setExchangeAmount,
-            setCurrency = setExchangeCurrency
+            transactionState.exchangeFieldState,
+            setAmount = setExchangeAmount
         )
 
-        Text(
-            "Категории",
-            style = UiKitStyles.Body2,
-            modifier = Modifier
-                .padding(top = 10.dp, start = 40.dp, end = 30.dp)
-                .fillMaxWidth()
-        )
-        CategoryChooserComponent(state, setCategoriesIds)
+        when (transactionState) {
+            is TransactionIncomeState -> {
+                Text(
+                    "Категории дохода",
+                    style = UiKitStyles.Body2,
+                    modifier = Modifier
+                        .padding(top = 10.dp, start = 40.dp, end = 30.dp)
+                        .fillMaxWidth()
+                )
+                CategoryChooserComponent(transactionState, setCategoriesIds)
+            }
+            is TransactionExpenseState -> {
+                Text(
+                    "Категории расхода",
+                    style = UiKitStyles.Body2,
+                    modifier = Modifier
+                        .padding(top = 10.dp, start = 40.dp, end = 30.dp)
+                        .fillMaxWidth()
+                )
+                CategoryChooserComponent(transactionState, setCategoriesIds)
+            }
+            is TransactionTransferState -> {}
+        }
+
 
     }
 
@@ -176,16 +258,6 @@ private fun TransactionButtonComponent(
     modifier: Modifier = Modifier,
     typeEnum: TransactionTypeEnum = TransactionTypeEnum.EXPENSE
 ) {
-//    val text = when (typeEnum) {
-//        TransactionTypeEnum.EXPENSE ->
-//        else -> UiKitButton(
-//            info = UiKitButtonInfo(
-//                text = "Не сделано",
-//                type = ButtonType.MEDIUM
-//            ),
-//            onClick = { }
-//        )
-//    }
     Box(
         modifier = modifier,
         contentAlignment = Alignment.BottomCenter

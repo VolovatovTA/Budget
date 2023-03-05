@@ -8,5 +8,9 @@ data class CategoryRequest(
     @SerializedName("icon_name")
     val iconName: String? = null,
     @SerializedName("name")
-    val name: String
+    val name: String,
+    @SerializedName("limit_type")
+    val limitType: String?,
+    @SerializedName("limit_amount")
+    val limitAmount: Float?
 )

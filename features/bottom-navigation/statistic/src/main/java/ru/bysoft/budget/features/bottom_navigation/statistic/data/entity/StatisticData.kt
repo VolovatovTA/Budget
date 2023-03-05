@@ -1,6 +1,7 @@
 package ru.bysoft.budget.features.bottom_navigation.statistic.data.entity
 
 import ru.bysoft.budget.common.util.BudgetCurrency
+import ru.bysoft.budget.common.util.PeriodState
 
 
 data class StatisticData(
@@ -11,5 +12,8 @@ data class CategoryData(
     val currency: BudgetCurrency,
     val iconName: String?,
     val id: String,
-    val name: String
+    val name: String,
+    val limitType: PeriodState?,
+    val limitAmount: Float?,
+    val amount: Float? = null,
 )
