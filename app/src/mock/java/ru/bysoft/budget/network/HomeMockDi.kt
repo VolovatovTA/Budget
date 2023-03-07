@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ru.bysoft.budget.features.bottom_navigation.home.data.me.network.HomeMeApiMock
 import ru.bysoft.budget.features.bottom_navigation.home.data.me.network.IHomeMeApi
+import ru.bysoft.budget.features.bottom_navigation.home.data.transactions.network.ITransactionsApi
+import ru.bysoft.budget.features.bottom_navigation.home.data.transactions.network.TransactionApiMock
 import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.network.HomeWalletsApiMock
 import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.network.IHomeWalletsApi
 
@@ -14,6 +16,10 @@ import ru.bysoft.budget.features.bottom_navigation.home.data.wallets.network.IHo
 abstract class HomeMockDi {
     @Binds
     abstract fun bindWalletsApiMock(api: HomeWalletsApiMock): IHomeWalletsApi
+
     @Binds
     abstract fun bindMeApiMock(api: HomeMeApiMock): IHomeMeApi
+
+    @Binds
+    abstract fun bindTransactionApiMock(api: TransactionApiMock): ITransactionsApi
 }

@@ -12,9 +12,11 @@ interface ITransactionsRepo {
         walletId: List<String>?,
         transferType: TransferTypeEnum,
     ): ListTransactionsData
+
+    suspend fun deleteTransaction(id: String): Result<Unit>
 }
 
-enum class TransferTypeEnum(val nameToBack: String?){
+enum class TransferTypeEnum(val nameToBack: String?) {
     WITH_TRANSFER(null),
     WITHOUT_TRANSFER("WITHOUT"),
     ONLY_TRANSFER("ONLY")
@@ -35,6 +37,15 @@ class TransactionRepo @Inject constructor(
             wallet_ids = walletId,
             transferType = transferType.nameToBack
         ).mapToData(locale)
+    }
+
+    override suspend fun deleteTransaction(id: String): Result<Unit> {
+        return try {
+            api.deleteTransaction(id)
+            Result.success(Unit)
+        } catch (e: Throwable) {
+            Result.failure(e)
+        }
     }
 
 }

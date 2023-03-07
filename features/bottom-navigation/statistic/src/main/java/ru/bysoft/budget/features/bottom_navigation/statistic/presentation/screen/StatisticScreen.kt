@@ -69,12 +69,12 @@ fun StatisticScreen(
 fun AddCategoryElement(onClick: () -> Unit) {
     UiKitListItem(
         title = "Сздать новую категорию",
-        icon = Plus,
+        icons = listOf(Plus),
         amount = UiKitAmountInfoSuccess(""),
         amountColor = Color.Transparent,
         modifier = Modifier
             .clickable { onClick.invoke() }
-            .padding(horizontal = 30.dp, vertical = 15.dp)
+            .padding(vertical = 15.dp)
 
     )
 }

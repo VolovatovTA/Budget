@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ru.bysoft.budget.features.bottom_navigation.statistic.data.network.IStatisticApi
+import ru.bysoft.budget.features.bottom_navigation.statistic.data.network.StatisticApiMock
 
 @Module
 @InstallIn(SingletonComponent::class)

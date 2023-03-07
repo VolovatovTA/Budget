@@ -25,7 +25,7 @@ class TransactionPresentationMapper @Inject constructor() : ITransactionPresenta
             income_id = (state.categoryState as CategorySuccess).listCategory
                 .firstOrNull { it.isChosen }
                 ?.id,
-            walletId = (state.walletFromFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
+            walletId = (state.walletToFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
             exchanges = state.exchangeFieldState.map {
                 Exchange(
                     it.amount.text.toFloatOrNull() ?: 0f,
@@ -44,7 +44,7 @@ class TransactionPresentationMapper @Inject constructor() : ITransactionPresenta
                     if (it.isChosen) Expense(it.id)
                     else null
                 }?.ifEmpty { null },
-            walletId = (state.walletToFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
+            walletId = (state.walletFromFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
             exchanges = state.exchangeFieldState.map {
                 Exchange(
                     it.amount.text.toFloatOrNull() ?: 0f,

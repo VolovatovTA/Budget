@@ -9,7 +9,7 @@ data class ListTransactionsData(
 
 sealed class TransactionData(
     open val id: String,
-    open val comment: String,
+    open val comment: String?,
     open val date: Date?,
     open val categories: List<CategoryData>,
     open val amount: Float,
@@ -18,7 +18,7 @@ sealed class TransactionData(
 
 data class TransactionExpense(
     override val id: String,
-    override val comment: String,
+    override val comment: String?,
     override val date: Date?,
     override val categories: List<CategoryData>,
     override val amount: Float,
@@ -27,7 +27,7 @@ data class TransactionExpense(
 
 data class TransactionIncome(
     override val id: String,
-    override val comment: String,
+    override val comment: String?,
     override val date: Date?,
     override val categories: List<CategoryData>,
     override val amount: Float,
@@ -36,7 +36,7 @@ data class TransactionIncome(
 
 data class TransactionTransfer(
     override val id: String,
-    override val comment: String,
+    override val comment: String?,
     override val date: Date?,
     override val amount: Float,
     override val currency: BudgetCurrency,
