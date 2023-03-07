@@ -14,9 +14,6 @@ import ru.bysoft.budget.features.bottom_navigation.statistic.IStatisticViewModel
 import ru.bysoft.budget.features.bottom_navigation.statistic.presentation.entity.*
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.components.listItem.UiKitListItem
-import ru.bysoft.budget.uikit.components.listItem.entity.UiKitAmountInfoError
-import ru.bysoft.budget.uikit.components.listItem.entity.UiKitAmountInfoSuccess
-import ru.bysoft.budget.uikit.components.listItem.entity.UiKitAmountInfoWaiting
 import ru.bysoft.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.budget.uikit.styles.UiKitStyles
 
@@ -34,14 +31,16 @@ fun StatisticSuccessScreen(
                 Column(
                     Modifier
                         .clickable { viewModel.updateCategory(it.id) }
-                        .padding(horizontal = 30.dp)) {
+                        ) {
                     Spacer(modifier = Modifier.height(15.dp))
                     UiKitListItem(
                         title = it.name,
-                        icon = it.icon,
+                        icons = listOfNotNull(it.icon),
                         amount = it.amount,
                         amountColor = UiKitColors.colors.dark,
-                        subTitle = it.subtitle
+                        subTitle = it.subtitle,
+                        modifier = Modifier
+                            .padding(end = 30.dp)
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     StatisticProgressIndicator(it.progressInfo)
@@ -58,14 +57,15 @@ private fun StatisticProgressIndicator(progress: ProgressInfo) {
     when (progress) {
         is ProgressInfoSuccess -> LinearProgressIndicator(
             progress = progress.progress,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 30.dp),
             color = UiKitColors.colors.red,
             backgroundColor = UiKitColors.colors.grey
         )
         is ProgressInfoWaiting -> UiKitShimmerComponent(
             Modifier
                 .height(4.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(horizontal = 30.dp),
             cornerRadius = 1.dp
         )
         is ProgressInfoError ->
@@ -75,6 +75,7 @@ private fun StatisticProgressIndicator(progress: ProgressInfo) {
                 modifier = Modifier
                     .height(20.dp)
                     .fillMaxWidth()
+                    .padding(horizontal = 30.dp)
             ) {
                 Spacer(
                     Modifier

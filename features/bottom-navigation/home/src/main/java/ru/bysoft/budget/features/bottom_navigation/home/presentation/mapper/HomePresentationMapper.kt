@@ -46,9 +46,9 @@ private fun getTransactionInfo(
         } + getBeautifulAmount(transactionData.amount, transactionData.currency),
         currency = transactionData.currency,
         date = transactionData.date?.toString(),
-        icon =
-        if (transactionData is TransactionTransfer) Recycle
-        else UiKitIcons.getByName(transactionData.categories.ifEmpty { null }?.first()?.iconName),
+        icons =
+        if (transactionData is TransactionTransfer) listOf(Recycle)
+        else transactionData.categories.mapNotNull { UiKitIcons.getByName(it.iconName) },
         name = transactionData.comment,
         color = when (transactionData) {
             is TransactionIncome -> "col6"

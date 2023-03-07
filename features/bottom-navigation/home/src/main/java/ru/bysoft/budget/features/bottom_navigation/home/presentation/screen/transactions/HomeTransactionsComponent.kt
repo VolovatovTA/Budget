@@ -165,12 +165,13 @@ private fun LazyListScope.transactionsSuccessComponent(
                     Box(
                         modifier = Modifier
                             .background(UiKitColors.colors.light)
-                            .padding(vertical = 10.dp, horizontal = 30.dp)
+                            .padding(vertical = 10.dp)
+                            .padding(end = 30.dp)
                     ) {
                         UiKitListItem(
                             title = data.name ?: "",
                             subTitle = data.date,
-                            icon = data.icon,
+                            icons = data.icons,
                             modifier = Modifier
                                 .clickable { }
                                 .background(UiKitColors.colors.light),
