@@ -99,8 +99,8 @@ class CreateWalletViewModel @Inject constructor(
             CreateWalletErrorData.INVALID_NAME -> state.value.nameTextState.copy(
                 errorText = CreateWalletErrorData.INVALID_NAME.errorText
             )
-            CreateWalletErrorData.NO_UNIQ_NAME -> state.value.nameTextState.copy(
-                errorText = CreateWalletErrorData.NO_UNIQ_NAME.errorText
+            CreateWalletErrorData.NO_UNIQUE_NAME -> state.value.nameTextState.copy(
+                errorText = CreateWalletErrorData.NO_UNIQUE_NAME.errorText
             )
             else -> state.value.nameTextState
         }

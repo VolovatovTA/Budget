@@ -2,10 +2,11 @@ package ru.bysoft.budget.common.util
 
 import android.content.Context
 import com.google.gson.Gson
+import ru.bysoft.budget.common.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-val TAG = "Timofey"
+const val TAG = "Timofey"
 
 fun Context.getStringFromAsset(filePath: String) =
     this.assets.open(filePath).bufferedReader().use { it.readText() }
@@ -90,14 +91,19 @@ data class BudgetCurrency(
 
 inline fun <R> R?.onNull(block: () -> R): R = this ?: block()
 
-enum class PeriodState(val textToShow: String, val textToBack: String) {
-    DAY("в день", "DAY"),
-    WEEK("в неделю", "WEEK"),
-    PERIOD_DAYS("дней", "PERIOD_DAYS"),
-    MONTH("в месяц", "MONTH"),
-    NO_PERIOD("на всё время", "WO_PERIOD");
+enum class PeriodState(val textToShow: Int, val textToBack: String) {
+    DAY(R.string.add_text_per_day, "DAY"),
+    WEEK(R.string.add_text_per_week, "WEEK"),
+    PERIOD_DAYS(R.string.add_text_per_some_days, "PERIOD_DAYS"),
+    MONTH(R.string.add_text_per_mont, "MONTH"),
+    NO_PERIOD(R.string.add_text_whole_time, "WO_PERIOD");
 }
-
+enum class TransactionTypeEnum(val text: Int) {
+    EXPENSE(R.string.btn_expense_text), INCOME(R.string.btn_income_text), TRANSFER(R.string.btn_transfer_text);
+}
+enum class CategoryTypeEnum(val text: Int) {
+    INCOME(R.string.btn_income_text), EXPENSE(R.string.btn_expense_text);
+}
 const val dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
 
 fun getCalculatedDate(locale: Locale, days: Int): String? {

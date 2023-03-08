@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_screen_title">Создание транзакции</string>
+    <string name="update_screen_title">Редактирование транзакции</string>
+    <string name="wallet_from_title_text">Кошелёк с которого хотите снять деньги</string>
+    <string name="wallet_to_text">Кошелёк который хотите пополнить</string>
+    <string name="text_field_comment_label">Комментарий</string>
+    <string name="text_field_amount_label">Сумма</string>
+    <string name="text_field_exchange_label">Курс</string>
+    <string name="title_categories_incomes">Категории дохода</string>
+    <string name="title_categories_expense">Категории расхода</string>
+    <string name="btn_text_create">Создать транзакцию</string>
+    <string name="text_field_exchange_not_empty">Так как валюта транзакции отличается от валют кошелька(ов)/категори(ий), необходимо ввести курс конвертации валют</string>
+    <string name="error_loading_wallets">Не удалось загрузить список кошельков</string>
+    <string name="error_loading_categories">Не удалось загрузить список категорий</string>
+</resources>

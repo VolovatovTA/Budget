@@ -1,5 +1,6 @@
 package ru.bysoft.budget.auth.data.mapper
 
+import ru.bysoft.budget.auth.R
 import ru.bysoft.budget.auth.data.entity.*
 import ru.bysoft.budget.auth.data.network.entity.*
 import ru.bysoft.budget.common.token.entity.SignInErrorResponse
@@ -20,11 +21,11 @@ fun SignInErrorResponse.mapToErrorData() =
     if (this.slug != null) {
         when (slug) {
             "field-email-invalid" ->
-                SignInErrorData(errorEmailText = "Email адрес занят или введён не корректно")
+                SignInErrorData(errorEmailText = R.string.field_email_invalid)
             "field-password-invalid-length" ->
-                SignInErrorData(errorPasswordText = "Пароль должен содержать 5 или более символов")
+                SignInErrorData(errorPasswordText = R.string.field_password_invalid_length)
             "invalid-credentials" ->
-                SignInErrorData(errorToastText = "Неверные почта или пароль", errorPasswordText = "", errorEmailText = "")
+                SignInErrorData(errorToastText = R.string.invalid_credentials, errorPasswordText = R.string.empty_text, errorEmailText = R.string.empty_text)
             "invalid-input" -> SignInErrorData()
             else -> throw Throwable()
         }
@@ -36,21 +37,21 @@ fun SignUpErrorResponse.mapToErrorData() =
     if (this.slug != null) {
         when (slug) {
             "field-email-invalid" ->
-                SignUpErrorData(errorEmailText = "Email адрес занят или введён не корректно")
+                SignUpErrorData(errorEmailText = R.string.field_email_invalid)
             "field-email-required" ->
-                SignUpErrorData(errorEmailText = "Нужен ваш email")
+                SignUpErrorData(errorEmailText = R.string.field_email_required)
             "field-password-required" ->
-                SignUpErrorData(errorPasswordText = "Без пароля не получиться зарегестрироваться")
+                SignUpErrorData(errorPasswordText = R.string.field_password_required)
             "field-name-required" ->
-                SignUpErrorData(errorNameText = "Без вашего имени регистрация невозможна")
+                SignUpErrorData(errorNameText = R.string.field_name_required)
             "field-name-invalid-length" ->
-                SignUpErrorData(errorNameText = "Имя должно содержать хотя бы один символ")
+                SignUpErrorData(errorNameText = R.string.field_name_invalid_length)
             "field-password-invalid-length" ->
-                SignUpErrorData(errorPasswordText = "Пароль должен содержать 5 или более символов")
+                SignUpErrorData(errorPasswordText = R.string.field_password_invalid_length)
             "invalid-credentials" ->
-                SignUpErrorData(errorToastText = "Неверные почта или пароль", errorPasswordText = "", errorEmailText = "")
+                SignUpErrorData(errorToastText = R.string.invalid_credentials, errorPasswordText = R.string.empty_text, errorEmailText = R.string.empty_text)
             "internal-server-error" ->
-                SignUpErrorData(errorToastText = "Произошла ошибка сервера. Мы о ней знаем и скоро исправим")
+                SignUpErrorData(errorToastText = R.string.internal_server_error)
             "invalid-input" -> SignUpErrorData()
             else -> throw Throwable()
         }

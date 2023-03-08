@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -150,9 +151,9 @@ fun CreateUpdateCategoryTextField(
             interactionSource = source,
             textStyle = UiKitStyles.Body2
         )
-        if (state.errorText != null && state.errorText?.isNotEmpty() == true) {
+        if (state.errorText != null && state.errorText != ru.bysoft.budget.R.string.empty_text) {
             Text(
-                text = state.errorText!!,
+                text = stringResource(state.errorText!!),
                 style = UiKitStyles.Caption,
                 color = UiKitColors.colors.red
             )

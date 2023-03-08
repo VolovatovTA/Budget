@@ -31,6 +31,7 @@ data class CategoryInfo(
     val icon: ImageVector?,
     val name: String,
     val subtitle: String?,
+    val subtitleAddition: Int?,
     val amount: UiKitAmountInfo,
     val progressInfo: ProgressInfo,
     val id: String

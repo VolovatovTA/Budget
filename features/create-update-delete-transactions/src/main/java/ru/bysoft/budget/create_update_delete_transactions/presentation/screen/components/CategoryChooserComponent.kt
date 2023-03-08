@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ru.bysoft.budget.create_update_delete_transactions.presentation.entity.*
@@ -23,7 +24,7 @@ import ru.bysoft.budget.uikit.components.avatar.UiKitAvatar
 import ru.bysoft.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.budget.uikit.icons.UiKitIcons
 import ru.bysoft.budget.uikit.styles.UiKitStyles
-
+import ru.bysoft.budget.create_update_delete_transactions.R
 @Composable
 fun CategoryChooserComponent(state: TransactionExpenseState, onClick: (CategoryPresentation) -> Unit) {
     when (state.categoryState) {
@@ -127,7 +128,7 @@ private fun WaitingCategoryComponent() {
 @Composable
 private fun ErrorCategoryComponent() {
     Text(
-        text = "Не удалось загрузить список категорий",
+        text = stringResource(R.string.error_loading_categories),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 20.dp, horizontal = 30.dp)

@@ -20,7 +20,7 @@ fun CreateWalletErrorResponse.mapToData() =
         CreateWalletErrorData.INVALID_CURRENCY.slug -> CreateWalletData(errorType = CreateWalletErrorData.INVALID_CURRENCY)
         CreateWalletErrorData.INVALID_NAME.slug -> CreateWalletData(errorType = CreateWalletErrorData.INVALID_NAME)
         CreateWalletErrorData.INVALID_BALANCE.slug -> CreateWalletData(errorType = CreateWalletErrorData.INVALID_BALANCE)
-        CreateWalletErrorData.NO_UNIQ_NAME.slug -> CreateWalletData(errorType = CreateWalletErrorData.NO_UNIQ_NAME)
+        CreateWalletErrorData.NO_UNIQUE_NAME.slug -> CreateWalletData(errorType = CreateWalletErrorData.NO_UNIQUE_NAME)
         else -> throw Throwable("Unknown slug: $slug")
     }
 

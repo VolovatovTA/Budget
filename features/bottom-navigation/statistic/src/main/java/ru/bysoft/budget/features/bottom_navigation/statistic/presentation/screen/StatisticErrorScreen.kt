@@ -6,6 +6,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import ru.bysoft.budget.statistic.R
 
 @Composable
 fun StatisticErrorScreen() {
@@ -13,7 +15,7 @@ fun StatisticErrorScreen() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = "Не удалось загрузить данные")
+        Text(text = stringResource(R.string.error_while_loading_some_data_statistic))
 
     }
 }

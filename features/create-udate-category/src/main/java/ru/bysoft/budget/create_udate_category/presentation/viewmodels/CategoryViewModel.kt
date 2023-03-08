@@ -5,11 +5,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import ru.bysoft.budget.common.util.BudgetCurrency
+import ru.bysoft.budget.common.util.CategoryTypeEnum
 import ru.bysoft.budget.common.util.PeriodState
+import ru.bysoft.budget.create_udate_category.R
 import ru.bysoft.budget.create_udate_category.data.entity.CategoryErrorType
 import ru.bysoft.budget.create_udate_category.data.entity.ErrorCategoryCreate
 import ru.bysoft.budget.create_udate_category.navigation.ICreateUpdateCategoryNavigation
-import ru.bysoft.budget.create_udate_category.presentation.entity.CategoryTypeEnum
 import ru.bysoft.budget.create_udate_category.presentation.entity.CreateUpdateCategoryState
 import ru.bysoft.budget.create_udate_category.presentation.entity.IconState
 import ru.bysoft.budget.uikit.components.currecyfield.entity.CurrencyFieldState
@@ -94,29 +95,29 @@ abstract class CreateUpdateCategoryViewModel(
     fun updateState(categoryData: ErrorCategoryCreate) {
         when (categoryData.errorType) {
             CategoryErrorType.INVALID_ICON_NAME ->
-                state.update { it.copy(toastText = "Что-то не понравилось с иконкой... Хотя что там могло не понравиться") }
+                state.update { it.copy(toastText = R.string.invalid_icon_name) }
             CategoryErrorType.TECHNICAL_ERROR_IN_BACK ->
-                state.update { it.copy(toastText = "Чегот сломались...") }
+                state.update { it.copy(toastText = R.string.technical_error) }
             CategoryErrorType.UNKNOWN_ERROR ->
-                state.update { it.copy(toastText = "Неизвестная ошибка") }
+                state.update { it.copy(toastText = R.string.undefined_error) }
             CategoryErrorType.NULL_ERROR ->
-                state.update { it.copy(toastText = "Сервер ответил ошибкой, но без подробностей..") }
+                state.update { it.copy(toastText = R.string.null_error_server_sent) }
             CategoryErrorType.INVALID_CURRENCY_ ->
                 state.update {
                     it.copy(
-                        currencyFieldState = state.value.currencyFieldState.copy(errorText = "Недопустимая валюта")
+                        currencyFieldState = state.value.currencyFieldState.copy(errorText = R.string.invalid_currency)
                     )
                 }
             CategoryErrorType.INVALID_NAME_____ ->
                 state.update {
                     it.copy(
-                        nameTextState = state.value.nameTextState.copy(errorText = "Недопустимое имя")
+                        nameTextState = state.value.nameTextState.copy(errorText = R.string.invalid_name)
                     )
                 }
             CategoryErrorType.NO_UNIQ_NAME_____ ->
                 state.update {
                     it.copy(
-                        nameTextState = state.value.nameTextState.copy(errorText = "Нужно уникальное имя")
+                        nameTextState = state.value.nameTextState.copy(errorText = R.string.no_unique_name)
                     )
                 }
         }

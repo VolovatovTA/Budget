@@ -15,14 +15,14 @@ data class SignUpData(
 )
 
 data class SignInErrorData(
-    val errorEmailText: String? = null,
-    val errorPasswordText: String? = null,
-    val errorToastText: String? = null
+    val errorEmailText: Int? = null,
+    val errorPasswordText: Int? = null,
+    val errorToastText: Int? = null
 ) : SignInResult
 
 data class SignUpErrorData(
-    val errorNameText: String? = null,
-    val errorEmailText: String? = null,
-    val errorPasswordText: String? = null,
-    val errorToastText: String? = null
+    val errorNameText: Int? = null,
+    val errorEmailText: Int? = null,
+    val errorPasswordText: Int? = null,
+    val errorToastText: Int? = null
 ) : SignUpResult

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallet_name_text">"Name of new wallet"</string>
+    <string name="wallet_balance_text">"Balance"</string>
+    <string name="wallet_btn_create_text">"Create"</string>
+    <string name="invalid_currency">"Our server doesn't support this currency . How is it placed here…?"</string>
+    <string name="invalid_balance">Invalid balance. Please change it</string>
+    <string name="invalid_name">Name must not be empty</string>
+    <string name="wallet_name_must_be_unique">Wallet name must be unique</string>
+</resources>

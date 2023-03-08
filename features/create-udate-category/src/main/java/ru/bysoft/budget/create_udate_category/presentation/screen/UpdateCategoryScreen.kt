@@ -12,8 +12,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import ru.bysoft.budget.create_udate_category.R
 import ru.bysoft.budget.create_udate_category.presentation.viewmodels.IUpdateCategoryViewModel
 import ru.bysoft.budget.create_udate_category.presentation.components.ButtonComponent
 import ru.bysoft.budget.create_udate_category.presentation.components.CreateUpdateCategoryTextField
@@ -52,7 +54,7 @@ fun UpdateCategoryScreen(
             )
             Spacer(modifier = Modifier.width(15.dp))
             Text(
-                text = "Редактирование категории", style = UiKitStyles.H2
+                text = stringResource(R.string.update_category_title), style = UiKitStyles.H2
             )
             Spacer(modifier = Modifier.width(15.dp))
 
@@ -83,7 +85,7 @@ fun UpdateCategoryScreen(
             CreateUpdateCategoryTextField(
                 state = state.nameTextState,
                 onTextChange = viewModel::onNameChanged,
-                label = "Имя категории",
+                label = stringResource(R.string.text_field_name_category_label),
                 type = KeyboardType.Text,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -96,7 +98,7 @@ fun UpdateCategoryScreen(
                 CreateUpdateCategoryTextField(
                     state = state.amountTextState,
                     onTextChange = viewModel::onAmountChanged,
-                    label = "Лимит категории",
+                    label = stringResource(R.string.text_field_limit_label),
                     type = KeyboardType.Number,
                     modifier = Modifier.weight(1f)
                 )
@@ -114,7 +116,8 @@ fun UpdateCategoryScreen(
                             contentAlignment = Alignment.CenterStart
                         ) {
                             Text(
-                                text = periodState.textToShow, style = UiKitStyles.Body2
+                                text = stringResource(periodState.textToShow),
+                                style = UiKitStyles.Body2
                             )
                         }
                     } else {
@@ -122,7 +125,7 @@ fun UpdateCategoryScreen(
                             modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "Неопределено", style = UiKitStyles.Body2
+                                text = stringResource(R.string.undefined_text), style = UiKitStyles.Body2
                             )
                         }
                     }
@@ -133,7 +136,7 @@ fun UpdateCategoryScreen(
             IconsComponent(viewModel::onIconSelected, state.iconState)
             Spacer(modifier = Modifier.height(40.dp))
 
-            ButtonComponent(viewModel::onClickSave, state, "Применить изменения")
+            ButtonComponent(viewModel::onClickSave, state, stringResource(R.string.btn_finish_update_text))
         }
     }
 }

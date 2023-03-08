@@ -13,13 +13,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.bysoft.budget.common.util.BudgetCurrency
 import ru.bysoft.budget.create_update_delete_transactions.presentation.entity.*
 import ru.bysoft.budget.create_update_delete_transactions.presentation.screen.HEIGHT_ELEMENT
 import ru.bysoft.budget.create_update_delete_transactions.presentation.screen.MAX_HEIGHT
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.budget.uikit.styles.UiKitStyles
+import ru.bysoft.budget.create_update_delete_transactions.R
 
 @Composable
 fun WalletChooserComponent(
@@ -36,8 +40,11 @@ fun WalletChooserComponent(
     }
 }
 
+//@Preview
 @Composable
-private fun WalletSuccessComponent(state: WalletSuccessState, onClick: (String) -> Unit) {
+private fun WalletSuccessComponent(state: WalletSuccessState = WalletSuccessState(listOf(
+    WalletInfo("dfvhjkhbkvksjhgblasdhbglkadshfbglkdfbglkdjfgbnjhbsfv", "1234.5", "", BudgetCurrency("₽", "RUB")),
+)), onClick: (String) -> Unit) {
     val scrollState = rememberScrollState()
     Column(
         Modifier
@@ -67,20 +74,15 @@ private fun WalletSuccessComponent(state: WalletSuccessState, onClick: (String) 
                 Text(
                     text = wallet.name,
                     style = UiKitStyles.Body2,
-                    modifier = Modifier.padding(start = 5.dp),
+                    modifier = Modifier.weight(1f).padding(start = 10.dp, end = 5.dp),
                     maxLines = 2
                 )
-
-                Box(
-                    modifier = Modifier.weight(1f),
-                    contentAlignment = Alignment.CenterEnd
-                ) {
-                    Text(
-                        text = wallet.balance,
-                        style = UiKitStyles.Body2,
-                        modifier = Modifier.padding(end = 5.dp)
-                    )
-                }
+                Text(
+                    text = wallet.balance,
+                    style = UiKitStyles.Body2,
+                    modifier = Modifier.padding(end = 10.dp),
+                    maxLines = 1
+                )
             }
         }
     }
@@ -104,13 +106,12 @@ private fun WalletWaitingComponent() {
             )
         }
     }
-
 }
 
 @Composable
 private fun WalletErrorComponent() {
     Text(
-        text = "Не удалось загрузить список категорий",
+        text = stringResource(R.string.error_loading_wallets),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 20.dp, horizontal = 5.dp)

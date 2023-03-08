@@ -35,7 +35,7 @@ class AuthViewModel @Inject constructor(
     private val handler = CoroutineExceptionHandler { _, t ->
         errorLogger.logError(t)
         state.value = state.value.copy(
-            toastText = "Не предвиденная ошибка...",
+            toastText = R.string.unexpected_error,
             isLoading = false
         )
     }

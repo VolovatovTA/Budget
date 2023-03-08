@@ -27,13 +27,9 @@ class StatisticPresentationMapper @Inject constructor() {
             amount = amountInfo,
             icon = UiKitIcons.getByName(categoryData.iconName),
             subtitle = categoryData.limitAmount?.let {
-                "Лимит ${
-                    getBeautifulAmount(
-                        it,
-                        categoryData.currency
-                    )
-                } ${categoryData.limitType?.textToShow}"
+                "${getBeautifulAmount(it, categoryData.currency)} "
             },
+            subtitleAddition = categoryData.limitType?.textToShow,
             name = categoryData.name,
             id = categoryData.id,
             progressInfo = progress

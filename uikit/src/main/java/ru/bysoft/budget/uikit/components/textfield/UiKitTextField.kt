@@ -16,7 +16,7 @@ import ru.bysoft.budget.uikit.styles.UiKitStyles
 
 data class TextFieldState(
     val text: String = "",
-    val errorText: String? = null,
+    val errorText: Int? = null,
 )
 
 @Composable
@@ -25,7 +25,8 @@ fun UiKitTextField(
     onValueChange: (String) -> Unit,
     label: String,
     inputType: KeyboardType,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    maxLines: Int = 1
 ) {
     OutlinedTextField(
         value = state.text,
@@ -39,8 +40,9 @@ fun UiKitTextField(
         ),
         shape = RoundedCornerShape(10.dp),
         colors = UiKitColors.colors.textFieldColors,
-        label = { Text(label) },
+        label = { Text(label, maxLines = maxLines,) },
         isError = state.errorText != null,
-        textStyle = UiKitStyles.Body2
+        textStyle = UiKitStyles.Body2,
+//        singleLine = true
     )
 }

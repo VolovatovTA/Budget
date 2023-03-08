@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_text_per_day">"в день"</string>
+    <string name="add_text_per_week">"в неделю"</string>
+    <string name="add_text_per_some_days">"дней"</string>
+    <string name="add_text_per_mont">"в месяц"</string>
+    <string name="add_text_whole_time">"на всё время"</string>
+
+    <string name="btn_expense_text">"Расход"</string>
+    <string name="btn_income_text">"Доход"</string>
+    <string name="btn_transfer_text">"Перевод"</string>
+</resources>

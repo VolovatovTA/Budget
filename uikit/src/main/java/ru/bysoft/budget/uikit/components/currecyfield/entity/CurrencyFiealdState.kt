@@ -6,7 +6,7 @@ import ru.bysoft.budget.common.util.getAvailableCurrency
 data class CurrencyFieldState(
     val selectedCurrency: BudgetCurrency?,
     val list: List<BudgetCurrency> = getAvailableCurrency(),
-    val errorText: String? = null
+    val errorText: Int? = null
 )
 
 data class PopupFieldState <T> (

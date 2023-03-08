@@ -10,6 +10,7 @@ import ru.bysoft.budget.common.errors.IErrorLogger
 import ru.bysoft.budget.common.errors.exceptionHandler
 import ru.bysoft.budget.common.me_info.IMeInfo
 import ru.bysoft.budget.common.util.getCurrency
+import ru.bysoft.budget.create_udate_category.R
 import ru.bysoft.budget.create_udate_category.data.ICategoryRepo
 import ru.bysoft.budget.create_udate_category.data.entity.ErrorCategoryCreate
 import ru.bysoft.budget.create_udate_category.data.entity.SuccessCategoryCreate
@@ -68,7 +69,10 @@ class UpdateCategoryViewModel @Inject constructor(
             state.value = state.value.copy(
                 isLoading = false,
                 nameTextState = state.value.nameTextState.copy(text = data.name),
-                iconState = state.value.iconState.copy(iconName = data.iconName)
+                iconState = state.value.iconState.copy(iconName = data.iconName),
+                currencyFieldState = state.value.currencyFieldState.copy(
+                    selectedCurrency = getCurrency(data.currency)
+                ),
             )
         }
     }
@@ -78,7 +82,7 @@ class UpdateCategoryViewModel @Inject constructor(
             withContext(Dispatchers.IO){
                 state.value = state.value.copy(isLoading = true)
                 repo.delete(id, "expenses")
-                state.value = state.value.copy(toastText = "Удалили категорию")
+                state.value = state.value.copy(toastText = R.string.category_deleted)
             }
             navigate.back()
         }

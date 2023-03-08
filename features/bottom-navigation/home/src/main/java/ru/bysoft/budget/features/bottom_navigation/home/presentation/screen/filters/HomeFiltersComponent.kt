@@ -3,6 +3,7 @@ package ru.bysoft.budget.features.bottom_navigation.home.presentation.screen.fil
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.filters.FilterData
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.filters.FilterState
@@ -22,7 +23,7 @@ fun HomeFiltersComponent(filtersState: FilterState, onCheckChanged: (Boolean, Fi
         filtersState.listFilters.forEach { filterData ->
             UiKitToggleButton(
                 UiKitButtonInfo(
-                    text = filterData.type.text, type = ButtonType.SMALL
+                    text = stringResource(filterData.type.text), type = ButtonType.SMALL
                 ),
                 checked = filterData.isChecked,
                 enabled = filterData.isEnabled,

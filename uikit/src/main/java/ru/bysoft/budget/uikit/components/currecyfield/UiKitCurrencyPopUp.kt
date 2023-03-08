@@ -16,15 +16,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import ru.bysoft.budget.R
 import ru.bysoft.budget.common.util.BudgetCurrency
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.components.currecyfield.entity.CurrencyFieldState
 import ru.bysoft.budget.uikit.components.currecyfield.entity.PopupFieldState
-import ru.bysoft.budget.uikit.icons.pack.ArrowUp
 import ru.bysoft.budget.uikit.styles.UiKitStyles
 import java.util.*
 
@@ -80,9 +80,9 @@ fun UiKitCurrencyPopUp(
                 Spacer(modifier = Modifier.width(15.dp))
             }
         }
-        if (info.errorText != null && info.errorText.isNotEmpty()) {
+        if (info.errorText != null && info.errorText != R.string.empty_text) {
             Text(
-                text = info.errorText,
+                text = stringResource(info.errorText),
                 style = UiKitStyles.Caption,
                 color = UiKitColors.colors.red,
             )
@@ -110,7 +110,7 @@ fun UiKitCurrencyPopUp(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "${item.displayName}",
+                            text = item.displayName,
                             style = UiKitStyles.H2,
                             color = UiKitColors.colors.dark,
                             modifier = Modifier

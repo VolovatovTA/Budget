@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_text_per_day">"per day"</string>
+    <string name="add_text_per_week">"per week"</string>
+    <string name="add_text_per_some_days">"per week"</string>
+    <string name="add_text_per_mont">"per month"</string>
+    <string name="add_text_whole_time">"for whole time"</string>
+
+    <string name="btn_expense_text">"Expense"</string>
+    <string name="btn_income_text">"Income"</string>
+    <string name="btn_transfer_text">"Transfer"</string>
+</resources>

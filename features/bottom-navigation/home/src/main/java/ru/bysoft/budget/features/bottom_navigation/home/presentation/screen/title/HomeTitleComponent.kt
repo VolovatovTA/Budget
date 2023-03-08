@@ -5,6 +5,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.title.IMeState
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.title.MeErrorState
@@ -13,6 +14,8 @@ import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.titl
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.budget.uikit.styles.UiKitStyles
+import ru.bysoft.budget.features.bottom_navigation.home.R
+
 
 @Composable
 fun HomeTitleComponent(
@@ -39,7 +42,7 @@ fun HomeTitleComponent(
             }
             is MeSuccessState -> {
                 Text(
-                    text = "Oh. Hi, ${meState.name}!",
+                    text = stringResource(R.string.hello_text_dashboard) + "${meState.name}!",
                     style = UiKitStyles.H1,
                     modifier = Modifier
                         .padding(top = 20.dp)
@@ -48,7 +51,7 @@ fun HomeTitleComponent(
             }
             is MeErrorState -> {
                 Text(
-                    text = "Не удалось загрузить данные о вас...",
+                    text = stringResource(R.string.error_while_loading_me_info),
                     style = UiKitStyles.Body2,
                     modifier = Modifier
                         .padding(top = 20.dp)

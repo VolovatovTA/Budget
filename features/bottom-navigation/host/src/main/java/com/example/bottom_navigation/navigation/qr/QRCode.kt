@@ -9,7 +9,7 @@ import ru.bysoft.budget.uikit.icons.another.Qrcode
 
 object QRCode : NavigationInfo("qrCode", "qrScreenName"), BottomNavigationButtonInfo {
     override val icon: ImageVector = Qrcode
-    override val label: String? = null
+    override val label: Int? = null
     @Composable
     override fun backgroundColor() = UiKitColors.colors.light
 

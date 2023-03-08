@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_main_sign_in_welcome_text">С возвращением!</string>
+    <string name="auth_btn_sign_in_text">войти</string>
+    <string name="auth_btn_sign_up_text">зарегистрироваться</string>
+    <string name="auth_main_sign_up_welcome_text">Добро пожаловать!</string>
+    <string name="auth_welcome_text">Чтобы всякие повседневные жуки не съели твой бюджет, надо его спланировать.</string>
+    <string name="your_name_label">Ваше имя</string>
+    <string name="your_email_label">Email</string>
+    <string name="password_label">Пароль</string>
+    <string name="invite_sign_in_text">Введите вашу почту и пароль для входа. Если у вас ещё нет аккаунта, </string>
+    <string name="invite_sign_up_text">Введите ваши данные для регистрации. Или, если они у вас уже есть, </string>
+    <string name="invite_sign_in_link">зарегестрируйтесь</string>
+    <string name="invite_sign_up_link">войдите</string>
+
+    <string name="field_email_invalid">Email адрес занят или введён не корректно</string>
+    <string name="field_password_invalid_length">Пароль должен содержать 5 или более символов</string>
+    <string name="invalid_credentials">Пароль или email введены неверно</string>
+    <string name="field_email_required">Нужен ваш email</string>
+    <string name="field_password_required">Без пароля не получиться зарегестрироваться</string>
+    <string name="field_name_required">Без вашего имени регистрация невозможна</string>
+    <string name="field_name_invalid_length">Имя должно содержать хотя бы один символ</string>
+    <string name="internal_server_error">Произошла ошибка сервера. Мы о ней знаем и скоро исправим</string>
+    <string name="unexpected_error">Не предвиденная ошибка</string>
+</resources>

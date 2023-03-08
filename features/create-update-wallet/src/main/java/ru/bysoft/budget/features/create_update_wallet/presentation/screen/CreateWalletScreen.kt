@@ -1,6 +1,5 @@
 package ru.bysoft.budget.features.create_update_wallet.presentation.screen
 
-import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -12,12 +11,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.bysoft.budget.features.create_update_wallet.CreateWalletViewModel
 import ru.bysoft.budget.features.create_update_wallet.ICreateWalletViewModel
 import ru.bysoft.budget.features.create_update_wallet.presentation.entity.CreateWalletState
+import ru.bysoft.budget.features.create_wallet.R
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.components.buttons.UiKitButton
 import ru.bysoft.budget.uikit.components.buttons.entity.ButtonType
@@ -25,9 +26,7 @@ import ru.bysoft.budget.uikit.components.buttons.entity.UiKitButtonInfo
 import ru.bysoft.budget.uikit.components.currecyfield.UiKitCurrencyPopUp
 import ru.bysoft.budget.uikit.components.textfield.TextFieldState
 import ru.bysoft.budget.uikit.styles.UiKitStyles
-import java.util.*
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun CreateWalletScreen() {
     val viewModel: ICreateWalletViewModel = hiltViewModel<CreateWalletViewModel>()
@@ -42,23 +41,31 @@ fun CreateWalletScreen() {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
         ) {
             CreateWalletTextField(
                 state = state.nameTextState,
                 onTextChange = viewModel::onNameChanged,
-                label = "Имя нового кошелька",
+                label = stringResource(R.string.wallet_name_text),
                 type = KeyboardType.Text,
-                errorDescription = state.nameTextState.errorText ?: ""
+                errorDescription = stringResource(state.nameTextState.errorText ?: ru.bysoft.budget.R.string.empty_text)
             )
             CreateWalletTextField(
                 state = state.balanceTextState,
                 onTextChange = viewModel::onBalanceChanged,
-                label = "Баланс нового кошелька",
+                label = stringResource(R.string.wallet_balance_text),
                 type = KeyboardType.Number,
-                errorDescription = state.balanceTextState.errorText ?: ""
+                errorDescription = stringResource(state.balanceTextState.errorText ?: ru.bysoft.budget.R.string.empty_text)
             )
-            UiKitCurrencyPopUp(state.currencyFieldState, viewModel::onCurrencySelected)
+            UiKitCurrencyPopUp(
+                state.currencyFieldState,
+                viewModel::onCurrencySelected,
+                modifier = Modifier.padding(
+                    horizontal = 30.dp
+                )
+            )
             Spacer(modifier = Modifier.height(40.dp))
             ButtonComponent(viewModel, state)
         }
@@ -72,7 +79,7 @@ private fun ButtonComponent(viewModel: ICreateWalletViewModel, state: CreateWall
             CircularProgressIndicator(modifier = Modifier.fillMaxHeight())
         } else {
             UiKitButton(
-                info = UiKitButtonInfo("Создать кошелёк", type = ButtonType.MEDIUM),
+                info = UiKitButtonInfo(stringResource(id = R.string.wallet_btn_create_text), type = ButtonType.MEDIUM),
                 onClick = viewModel::onButtonClick
             )
         }
@@ -112,7 +119,7 @@ private fun CreateWalletTextField(
             isError = state.errorText != null,
             interactionSource = source
         )
-        if (state.errorText != null && state.errorText?.isNotEmpty() == true) {
+        if (state.errorText != null && state.errorText != ru.bysoft.budget.R.string.empty_text) {
             Text(
                 text = errorDescription,
                 style = UiKitStyles.Caption,

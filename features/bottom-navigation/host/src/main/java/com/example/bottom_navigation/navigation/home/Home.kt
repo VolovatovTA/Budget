@@ -9,7 +9,7 @@ import ru.bysoft.budget.uikit.icons.another.Wallet
 
 object Home : NavigationInfo("wallet", "walletScreenName"), BottomNavigationButtonInfo {
     override val icon: ImageVector = Wallet
-    override val label: String? = null
+    override val label: Int? = null
     @Composable
     override fun backgroundColor() = UiKitColors.colors.light
 }

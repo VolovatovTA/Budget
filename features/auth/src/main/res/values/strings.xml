@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_main_sign_in_welcome_text">"Welcome back!"</string>
+    <string name="auth_btn_sign_in_text">"sign in"</string>
+    <string name="auth_btn_sign_up_text">"sign up"</string>
+    <string name="auth_main_sign_up_welcome_text">"Welcome!"</string>
+    <string name="auth_welcome_text">"To keep your finance away from the bags it needs planning"</string>
+    <string name="your_name_label">"Name"</string>
+    <string name="your_email_label">"Email"</string>
+    <string name="password_label">"Create password"</string>
+    <string name="invite_sign_in_text">"Haven't got an account? "</string>
+    <string name="invite_sign_up_text">"Fill form for sign up. Already have an account?"</string>
+    <string name="invite_sign_in_link">"Sign up!"</string>
+    <string name="invite_sign_up_link">"Sign in!"</string>
+
+    <string name="field_email_invalid">Email is incorrect</string>
+    <string name="field_password_invalid_length">Password must contains at least 5 letters</string>
+    <string name="empty_text" translatable="false" />
+    <string name="invalid_credentials">Password or email is incorrect</string>
+    <string name="field_email_required">Email is required</string>
+    <string name="field_password_required">Password is required</string>
+    <string name="field_name_required">Name is required</string>
+    <string name="field_name_invalid_length">Name must contains at least one letter</string>
+    <string name="internal_server_error">Internal server error happened. We know about it and fix it as soon as possible</string>
+    <string name="unexpected_error">Unexpected error</string>
+</resources>

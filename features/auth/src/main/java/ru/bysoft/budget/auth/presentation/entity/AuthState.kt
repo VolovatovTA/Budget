@@ -9,7 +9,7 @@ data class AuthState(
     val isButtonEnabled: Boolean = false,
     val type: AuthActionType,
     val isLoading: Boolean,
-    val toastText: String?,
+    val toastText: Int?,
 )
 
 enum class AuthActionType {

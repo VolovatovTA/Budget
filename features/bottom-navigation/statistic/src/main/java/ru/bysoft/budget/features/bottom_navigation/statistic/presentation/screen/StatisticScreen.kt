@@ -15,11 +15,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.bysoft.budget.features.bottom_navigation.statistic.IStatisticViewModel
 import ru.bysoft.budget.features.bottom_navigation.statistic.presentation.entity.StatisticErrorState
 import ru.bysoft.budget.features.bottom_navigation.statistic.presentation.entity.StatisticSuccessState
 import ru.bysoft.budget.features.bottom_navigation.statistic.presentation.entity.StatisticWaitingState
+import ru.bysoft.budget.statistic.R
 import ru.bysoft.budget.uikit.components.listItem.UiKitListItem
 import ru.bysoft.budget.uikit.components.listItem.entity.UiKitAmountInfoSuccess
 import ru.bysoft.budget.uikit.icons.pack.Plus
@@ -68,7 +70,7 @@ fun StatisticScreen(
 @Composable
 fun AddCategoryElement(onClick: () -> Unit) {
     UiKitListItem(
-        title = "Сздать новую категорию",
+        title = stringResource(R.string.create_new_category),
         icons = listOf(Plus),
         amount = UiKitAmountInfoSuccess(""),
         amountColor = Color.Transparent,

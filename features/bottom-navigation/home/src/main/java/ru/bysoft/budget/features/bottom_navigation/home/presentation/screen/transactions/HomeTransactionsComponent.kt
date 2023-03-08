@@ -19,8 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import ru.bysoft.budget.features.bottom_navigation.home.R
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.transactions.*
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.components.listItem.UiKitListItem
@@ -75,12 +77,11 @@ private fun LazyListScope.transactionsSuccessComponent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "У вас пока нет ни одной транзакции...",
+                    text = stringResource(R.string.empty_transactions_list),
                     textAlign = TextAlign.Center
                 )
             }
         }
-
     } else {
 
         items(
@@ -239,7 +240,7 @@ private fun LazyListScope.transactionErrorComponent() {
                 .height(50.dp)
         ) {
             Text(
-                text = "Не удалось загрузить данные",
+                text = stringResource(R.string.error_while_loading_some_data),
                 modifier = Modifier
                     .padding(
                         horizontal = 30.dp, vertical = 30.dp

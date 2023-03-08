@@ -117,7 +117,8 @@ class StatisticViewModel @Inject constructor(
                                     filledCategory.currency
                                 )
                             ) to ProgressInfoSuccess(
-                                filledCategory.amount / (filledCategory.limitAmount ?: Float.MAX_VALUE)
+                                if (filledCategory.amount == 0f && filledCategory.limitAmount == 0f) 0f else
+                                    filledCategory.amount / (filledCategory.limitAmount ?: Float.MAX_VALUE)
                             )
                         } else UiKitAmountInfoError to ProgressInfoError
                     mapper.getCategoryState(

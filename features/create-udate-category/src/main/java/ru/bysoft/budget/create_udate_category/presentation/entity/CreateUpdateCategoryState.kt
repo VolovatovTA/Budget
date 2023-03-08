@@ -1,6 +1,8 @@
 package ru.bysoft.budget.create_udate_category.presentation.entity
 
+import ru.bysoft.budget.common.util.CategoryTypeEnum
 import ru.bysoft.budget.common.util.PeriodState
+import ru.bysoft.budget.create_udate_category.R
 import ru.bysoft.budget.uikit.components.currecyfield.entity.CurrencyFieldState
 import ru.bysoft.budget.uikit.components.currecyfield.entity.PopupFieldState
 import ru.bysoft.budget.uikit.components.textfield.TextFieldState
@@ -20,15 +22,11 @@ data class CreateUpdateCategoryState(
             PeriodState.NO_PERIOD,
         ),
     ),
-    val toastText: String? = null,
+    val toastText: Int? = null,
     val typeCategory: CategoryTypeEnum = CategoryTypeEnum.EXPENSE
 )
 
 data class IconState(
     val iconName: String?
 )
-
-enum class CategoryTypeEnum(val text: String) {
-    INCOME("Доход"), EXPENSE("Расход");
-}
 

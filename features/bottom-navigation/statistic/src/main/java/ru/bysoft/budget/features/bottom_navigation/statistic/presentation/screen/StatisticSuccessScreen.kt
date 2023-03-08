@@ -8,6 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.bysoft.budget.features.bottom_navigation.statistic.IStatisticViewModel
@@ -16,6 +17,7 @@ import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.components.listItem.UiKitListItem
 import ru.bysoft.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.budget.uikit.styles.UiKitStyles
+import ru.bysoft.budget.statistic.R
 
 @Composable
 fun StatisticSuccessScreen(
@@ -38,9 +40,9 @@ fun StatisticSuccessScreen(
                         icons = listOfNotNull(it.icon),
                         amount = it.amount,
                         amountColor = UiKitColors.colors.dark,
-                        subTitle = it.subtitle,
                         modifier = Modifier
-                            .padding(end = 30.dp)
+                            .padding(end = 30.dp),
+                        subTitle = stringResource(R.string.text_limit) + it.subtitle + it.subtitleAddition?.let { stringResource(it) },
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     StatisticProgressIndicator(it.progressInfo)
@@ -87,7 +89,9 @@ private fun StatisticProgressIndicator(progress: ProgressInfo) {
                     text = "Не удалось загрузить данные",
                     style = UiKitStyles.Caption,
                     color = UiKitColors.colors.red,
-                    modifier = Modifier.padding(horizontal = 10.dp).padding(bottom = 2.dp)
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .padding(bottom = 2.dp)
                 )
                 Spacer(
                     Modifier

@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.bysoft.budget.common.errors.IErrorLogger
 import ru.bysoft.budget.common.util.BudgetCurrency
+import ru.bysoft.budget.common.util.TransactionTypeEnum
 import ru.bysoft.budget.create_update_delete_transactions.data.network.ITransactionsCategoryApi
 import ru.bysoft.budget.create_update_delete_transactions.data.network.ITransactionsWalletApi
 import ru.bysoft.budget.create_update_delete_transactions.navigation.ITransactionNavigation

@@ -1,7 +1,6 @@
 package ru.bysoft.budget.features.bottom_navigation.home.presentation.screen.wallets
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,15 +14,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.*
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
+import ru.bysoft.budget.features.bottom_navigation.home.R
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.*
 import ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.wallets.*
 import ru.bysoft.budget.uikit.colors.UiKitColors
-import ru.bysoft.budget.uikit.components.expandablecontetn.defaultAnimationSpec
 import ru.bysoft.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.budget.uikit.icons.pack.Edit
 import ru.bysoft.budget.uikit.icons.pack.Plus
@@ -96,7 +96,7 @@ private fun ErrorWallets() {
             .fillMaxWidth(), contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "Не удалось загрузить данные...",
+            text = stringResource(R.string.error_while_loading_some_data),
             style = UiKitStyles.Body2,
             textAlign = TextAlign.Center
         )
@@ -199,7 +199,7 @@ private fun WalletCardCreateNewWallet(onClick: () -> Unit) {
         ) {
             Text(
                 modifier = Modifier.padding(20.dp),
-                text = "Создайте новую карту",
+                text = stringResource(R.string.create_new_wallet),
                 style = UiKitStyles.Body2,
             )
             Icon(

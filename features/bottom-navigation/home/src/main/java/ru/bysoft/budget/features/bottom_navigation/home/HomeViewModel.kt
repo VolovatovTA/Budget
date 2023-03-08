@@ -188,7 +188,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getWallets(isRefresh: Boolean) {
-        viewModelScope.launch(homeWalletsExceptionHandler) {
+        viewModelScope.launch(homeWalletsExceptionHandler + homeTransactionExceptionHandler) {
             walletsState.value = WalletsLoadingState(isRefresh)
             val loadedData = walletsRepo.getWallets()
             walletsState.value = WalletsSuccessState(loadedData.mapToState())

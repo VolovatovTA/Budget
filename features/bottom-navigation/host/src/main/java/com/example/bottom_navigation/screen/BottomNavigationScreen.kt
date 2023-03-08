@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -26,7 +27,6 @@ import com.example.bottom_navigation.navigation.plus.Plus
 import com.example.bottom_navigation.navigation.qr.QRCode
 import com.example.bottom_navigation.navigation.statistic.Statistic
 import ru.bysoft.budget.common.navigation.NavigationInfo
-import ru.bysoft.budget.create_update_delete_transactions.presentation.entity.TransactionTypeEnum
 import ru.bysoft.budget.uikit.colors.UiKitColors
 import ru.bysoft.budget.uikit.components.expandablecontetn.VerticalExpandableContent
 import ru.bysoft.budget.uikit.styles.UiKitStyles
@@ -148,7 +148,7 @@ private fun BottomButton(
 
             screen.label?.let {
                 Text(
-                    text = it,
+                    text = stringResource(id = it),
                     style = UiKitStyles.Caption,
                     modifier = Modifier.width(40.dp),
                     overflow = TextOverflow.Ellipsis,
@@ -171,7 +171,7 @@ private fun navigateToScreen(
         // Pop up to the start destination of the graph to
         // avoid building up a large stack of destinations
         // on the back stack as users select items
-        if (needPopUp){
+        if (needPopUp) {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
             }

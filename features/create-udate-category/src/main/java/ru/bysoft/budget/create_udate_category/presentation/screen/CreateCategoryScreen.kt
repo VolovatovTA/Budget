@@ -12,13 +12,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import ru.bysoft.budget.common.util.CategoryTypeEnum
 import ru.bysoft.budget.create_udate_category.presentation.viewmodels.ICreateCategoryViewModel
 import ru.bysoft.budget.create_udate_category.presentation.components.ButtonComponent
 import ru.bysoft.budget.create_udate_category.presentation.components.CreateUpdateCategoryTextField
 import ru.bysoft.budget.create_udate_category.presentation.components.IconsComponent
-import ru.bysoft.budget.create_udate_category.presentation.entity.CategoryTypeEnum
 import ru.bysoft.budget.uikit.components.buttons.entity.ButtonType
 import ru.bysoft.budget.uikit.components.buttons.entity.UiKitButtonInfo
 import ru.bysoft.budget.uikit.components.currecyfield.UiKitCurrencyPopUp
@@ -28,6 +29,7 @@ import ru.bysoft.budget.uikit.components.rowtab.entity.UiKitRowTabState
 import ru.bysoft.budget.uikit.components.rowtab.entity.UiKitTabInfo
 import ru.bysoft.budget.uikit.icons.pack.ArrowLeft
 import ru.bysoft.budget.uikit.styles.UiKitStyles
+import ru.bysoft.budget.create_udate_category.R
 
 @Composable
 fun CreateCategoryScreen(
@@ -56,7 +58,7 @@ fun CreateCategoryScreen(
                 )
                 Spacer(modifier = Modifier.width(15.dp))
                 Text(
-                    text = "Создание категории", style = UiKitStyles.H2
+                    text = stringResource(R.string.create_category_title), style = UiKitStyles.H2
                 )
                 Spacer(modifier = Modifier.width(15.dp))
 
@@ -84,7 +86,7 @@ fun CreateCategoryScreen(
                     rowTabs.map { type ->
                         UiKitTabInfo(
                             info = UiKitButtonInfo(
-                                type.text,
+                                stringResource(type.text),
                                 type = ButtonType.SMALL
                             ),
                             isChecked = type == state.typeCategory
@@ -98,7 +100,7 @@ fun CreateCategoryScreen(
             CreateUpdateCategoryTextField(
                 state = state.nameTextState,
                 onTextChange = viewModel::onNameChanged,
-                label = "Имя новой категории",
+                label = stringResource(R.string.text_field_name_category_label),
                 type = KeyboardType.Text,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -112,7 +114,7 @@ fun CreateCategoryScreen(
                 CreateUpdateCategoryTextField(
                     state = state.amountTextState,
                     onTextChange = viewModel::onAmountChanged,
-                    label = "Можно назначить лимит",
+                    label = stringResource(R.string.text_field_limit_label),
                     type = KeyboardType.Number,
                     modifier = Modifier
                         .weight(1f)
@@ -122,7 +124,7 @@ fun CreateCategoryScreen(
                     info = state.periodState,
                     onClickItem = viewModel::onPeriodSelected,
                     modifier = Modifier
-                        .height(52.dp)
+                        .height(57.dp)
                         .weight(1f)
                 ) { periodState ->
                     if (periodState != null) {
@@ -131,7 +133,7 @@ fun CreateCategoryScreen(
                             contentAlignment = Alignment.CenterStart
                         ) {
                             Text(
-                                text = periodState.textToShow,
+                                text = stringResource(id = periodState.textToShow),
                                 style = UiKitStyles.Body2
                             )
                         }
@@ -141,7 +143,7 @@ fun CreateCategoryScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "Неопределено",
+                                text = stringResource(R.string.undefined_text),
                                 style = UiKitStyles.Body2
                             )
                         }
@@ -153,7 +155,7 @@ fun CreateCategoryScreen(
             IconsComponent(viewModel::onIconSelected, state.iconState)
             Spacer(modifier = Modifier.height(40.dp))
 
-            ButtonComponent(viewModel::onClickCreate, state, "Создать новую категорию")
+            ButtonComponent(viewModel::onClickCreate, state, stringResource(R.string.btn_finish_create_text))
         }
     }
 }

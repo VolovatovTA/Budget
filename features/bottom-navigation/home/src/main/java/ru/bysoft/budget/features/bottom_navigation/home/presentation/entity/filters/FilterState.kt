@@ -1,12 +1,14 @@
 package ru.bysoft.budget.features.bottom_navigation.home.presentation.entity.filters
 
 import androidx.compose.runtime.Stable
+import ru.bysoft.budget.features.bottom_navigation.home.R
 
 @Stable
 data class FilterState(
     val listFilters: List<FilterData>
-){
-    fun isTransfersChecked() = listFilters.find { it.type == TypeFilter.Transfer }?.isChecked ?: false
+) {
+    fun isTransfersChecked() =
+        listFilters.find { it.type == TypeFilter.Transfer }?.isChecked ?: false
 
     fun isExpensesChecked() = listFilters.find { it.type == TypeFilter.Out }?.isChecked ?: false
 
@@ -19,8 +21,8 @@ data class FilterData(
     val isEnabled: Boolean = true
 )
 
-enum class TypeFilter(val text: String, val nameForBack: String) {
-    In("доход","INCOME"),
-    Out("расход","EXPENSE"),
-    Transfer("перевод","TRANSFER"),
+enum class TypeFilter(val text: Int, val nameForBack: String) {
+    In(R.string.filter_income, "INCOME"),
+    Out(R.string.filter_expense, "EXPENSE"),
+    Transfer(R.string.filter_transfer, "TRANSFER"),
 }

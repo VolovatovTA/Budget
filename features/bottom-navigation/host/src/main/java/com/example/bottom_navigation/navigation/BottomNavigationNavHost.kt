@@ -11,7 +11,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.example.bottom_navigation.navigation.home.Home
 import com.example.bottom_navigation.navigation.qr.QRCode
@@ -61,7 +60,7 @@ object BottomNavigation : NavigationInfo("bottom navigation", "bottomNavScreen")
 
 interface BottomNavigationButtonInfo {
     val icon: ImageVector
-    val label: String?
+    val label: Int?
 
     @Composable
     fun backgroundColor(): Color

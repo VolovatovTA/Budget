@@ -175,10 +175,6 @@ data class TransactionTransferState(
         this.copy(walletToFieldState = walletFieldState)
 }
 
-enum class TransactionTypeEnum(val text: String) {
-    EXPENSE("Расход"), INCOME("Доход"), TRANSFER("Перевод");
-}
-
 sealed interface CategoryState
 
 object CategoryError : CategoryState

@@ -7,13 +7,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import ru.bysoft.budget.common.errors.IErrorLogger
 import ru.bysoft.budget.common.me_info.IMeInfo
+import ru.bysoft.budget.common.util.CategoryTypeEnum
 import ru.bysoft.budget.common.util.getCurrency
 import ru.bysoft.budget.create_udate_category.data.ICategoryRepo
 import ru.bysoft.budget.create_udate_category.data.entity.ErrorCategoryCreate
 import ru.bysoft.budget.create_udate_category.data.entity.SuccessCategoryCreate
 import ru.bysoft.budget.create_udate_category.data.network.entity.CategoryRequest
 import ru.bysoft.budget.create_udate_category.navigation.ICreateUpdateCategoryNavigation
-import ru.bysoft.budget.create_udate_category.presentation.entity.CategoryTypeEnum
 import ru.bysoft.budget.create_udate_category.presentation.entity.CreateUpdateCategoryState
 import ru.bysoft.budget.uikit.components.currecyfield.entity.CurrencyFieldState
 import javax.inject.Inject

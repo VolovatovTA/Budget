@@ -16,12 +16,14 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.bysoft.budget.auth.AuthViewModel
 import ru.bysoft.budget.auth.IAuthViewModel
+import ru.bysoft.budget.auth.R
 import ru.bysoft.budget.auth.presentation.entity.AuthActionType
 import ru.bysoft.budget.auth.presentation.entity.AuthState
 import ru.bysoft.budget.uikit.colors.UiKitColors
@@ -58,14 +60,15 @@ private fun AuthSuccessScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val welcomeText =
-            if (state.type == AuthActionType.SIGN_IN) "С возвращением!" else "Добро пожаловать!"
+            if (state.type == AuthActionType.SIGN_IN) stringResource(R.string.auth_main_sign_in_welcome_text)
+            else stringResource(R.string.auth_main_sign_up_welcome_text)
         Text(
             text = welcomeText,
             style = UiKitStyles.H2,
             modifier = Modifier.padding(30.dp)
         )
         Text(
-            text = "Чтобы всякие повседневные жуки не съели твой бюджет, надо его спланировать. ",
+            text = stringResource(R.string.auth_welcome_text),
             style = UiKitStyles.Body2,
             modifier = Modifier.padding(horizontal = 30.dp)
         )
@@ -77,8 +80,8 @@ private fun AuthSuccessScreen(
             AuthTextField(
                 state.name,
                 viewModel::setNewName,
-                "Ваше имя",
-                state.name.errorText ?: "",
+                stringResource(R.string.your_name_label),
+                stringResource(state.name.errorText ?: R.string.empty_text),
                 KeyboardType.Text,
                 Modifier.focusRequester(focusRequesterName),
                 viewModel::setNewName,
@@ -95,8 +98,8 @@ private fun AuthSuccessScreen(
         AuthTextField(
             state.email,
             viewModel::setNewEmail,
-            "Email",
-            state.email.errorText ?: "",
+            stringResource(R.string.your_email_label),
+            stringResource(state.email.errorText ?: R.string.empty_text),
             KeyboardType.Email,
             modifier = Modifier.focusRequester(focusRequesterEmail),
             viewModel::setNewEmail,
@@ -114,23 +117,21 @@ private fun AuthSuccessScreen(
         AuthTextField(
             state.password,
             viewModel::setNewPassword,
-            "Пароль",
-            state.password.errorText ?: "",
+            stringResource(R.string.password_label),
+            stringResource(state.password.errorText ?: R.string.empty_text),
             KeyboardType.Password,
             onNotFocused = viewModel::setNewPassword
         )
 
 
         val simpleText =
-            if (state.type == AuthActionType.SIGN_IN)
-                "Введите вашу почту и пароль для входа. Если у вас ещё нет аккаунта, "
-            else
-                "Введите ваши данные для регистрации. Или, если они у вас уже есть, "
+            if (state.type == AuthActionType.SIGN_IN) stringResource(R.string.invite_sign_in_text)
+            else stringResource(R.string.invite_sign_up_text)
+
         val linkText =
-            if (state.type == AuthActionType.SIGN_IN)
-                "зарегестрируйтесь"
-            else
-                "войдите"
+            if (state.type == AuthActionType.SIGN_IN) stringResource(R.string.invite_sign_in_link)
+            else stringResource(R.string.invite_sign_up_link)
+
 
         val annotatedString = buildAnnotatedString {
             append(simpleText)
@@ -164,7 +165,8 @@ private fun AuthSuccessScreen(
         )
 
         val btnText =
-            if (state.type == AuthActionType.SIGN_IN) "войти" else "зарегестрироваться"
+            if (state.type == AuthActionType.SIGN_IN) stringResource(R.string.auth_btn_sign_in_text)
+            else stringResource(R.string.auth_btn_sign_in_text)
 
         Box(
             Modifier
@@ -220,7 +222,7 @@ private fun AuthTextField(
             isError = state.errorText != null,
             interactionSource = source
         )
-        if (state.errorText != null && state.errorText?.isNotEmpty() == true) {
+        if (state.errorText != null && state.errorText != R.string.empty_text) {
             Text(
                 text = errorDescription,
                 style = UiKitStyles.Caption,
