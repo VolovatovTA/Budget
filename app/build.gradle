@@ -4,6 +4,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'com.google.gms.google-services'
+
 }
 
 android {
@@ -40,12 +42,10 @@ android {
     productFlavors {
         stand {
             dimension "backType"
-            applicationIdSuffix ".stand"
             versionNameSuffix "-stand"
         }
         mock {
             dimension "backType"
-            applicationIdSuffix ".mock"
             versionNameSuffix "-mock"
         }
     }
@@ -107,6 +107,9 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$ext_junit_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
+
+    implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
+    implementation "com.google.firebase:firebase-analytics-ktx"
 
     implementation project(':uikit')
     implementation project(':common')

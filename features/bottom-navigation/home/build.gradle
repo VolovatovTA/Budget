@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'ru.bysoft.budget.features.bottom_navigation.home'
+    namespace 'ru.bysoft.android.budget.features.bottom_navigation.home'
     compileSdk compile_sdk
 
     defaultConfig {

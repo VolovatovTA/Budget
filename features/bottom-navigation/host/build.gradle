@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.bottom_navigation'
+    namespace 'ru.bysoft.android.features.bottom_navigation.host'
     compileSdk compile_sdk
 
     defaultConfig {

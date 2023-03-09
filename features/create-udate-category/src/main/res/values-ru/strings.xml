@@ -15,7 +15,8 @@
     <string name="invalid_currency">Недопустимая валюта</string>
     <string name="null_error_server_sent">Сервер ответил ошибкой, но без подробностей..</string>
     <string name="undefined_error">Неизвестная ошибка</string>
-    <string name="technical_error">Чегот сломались...</string>
-    <string name="invalid_icon_name">Что-то не понравилось с иконкой... Хотя что там могло не понравиться</string>
+    <string name="technical_error">Чегот сломались…</string>
+    <string name="invalid_icon_name">Что-то не понравилось с иконкой… Хотя что там могло не понравиться</string>
     <string name="category_deleted">Категория удалена</string>
+    <string name="without_icon">без \nиконки</string>
 </resources>

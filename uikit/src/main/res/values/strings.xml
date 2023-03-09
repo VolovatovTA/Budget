@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="empty_text" translatable="false" />
+    <string name="without_icon">without icon</string>
+    <string name="currency_not_selected">Currency not selected</string>
 </resources>

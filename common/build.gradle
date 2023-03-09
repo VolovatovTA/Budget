@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'ru.bysoft.budget.common'
+    namespace 'ru.bysoft.android.budget.common'
     compileSdk 33
 
     defaultConfig {

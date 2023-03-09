@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'ru.bysoft.budget.create_udate_category'
+    namespace 'ru.bysoft.android.budget.features.create_udate_category'
     compileSdk compile_sdk
 
     defaultConfig {

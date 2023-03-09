@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'ru.bysoft.budget.statistic'
+    namespace 'ru.bysoft.android.budget.features.bottom_navigation.statistic'
     compileSdk compile_sdk
 
     defaultConfig {

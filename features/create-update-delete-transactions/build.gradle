@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'ru.bysoft.budget.create_update_delete_transactions'
+    namespace 'ru.bysoft.android.budget.features.create_update_delete_transactions'
     compileSdk compile_sdk
 
     defaultConfig {

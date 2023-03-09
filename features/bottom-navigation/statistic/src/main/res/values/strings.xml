@@ -3,5 +3,5 @@
     <string name="error_while_loading_some_data_statistic">"Oups.. We can't loading data.."</string>
     <string name="create_new_category">"Create new category"</string>
     <string name="text_limit">"Limit: "</string>
-    <string name="empty_transactions_list">"Your category list is empty"</string>
+    <string name="empty_category_list">Your list categories is empty</string>
 </resources>

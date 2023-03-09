@@ -16,4 +16,5 @@
     <string name="technical_error">Technical error</string>
     <string name="invalid_icon_name">Something wrong with icon.. But what may happened..</string>
     <string name="category_deleted">The category was deleted</string>
+    <string name="without_icon">без \nиконки</string>
 </resources>
