@@ -10,10 +10,11 @@ import ru.bysoft.android.budget.common.util.PeriodState
 import ru.bysoft.android.budget.features.create_udate_category.R
 import ru.bysoft.android.budget.features.create_udate_category.data.entity.CategoryErrorType
 import ru.bysoft.android.budget.features.create_udate_category.data.entity.ErrorCategoryCreate
+import ru.bysoft.android.budget.features.create_udate_category.navigation.CreateCategoryNavInfo
 import ru.bysoft.android.budget.features.create_udate_category.navigation.ICreateUpdateCategoryNavigation
 import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.CreateUpdateCategoryState
 import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.IconState
-import ru.bysoft.android.budget.uikit.components.currecyfield.entity.CurrencyFieldState
+import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 
 interface ICreateUpdateCategoryViewModel {
     val state: StateFlow<CreateUpdateCategoryState>
@@ -28,6 +29,7 @@ interface ICreateUpdateCategoryViewModel {
 
 interface ICreateCategoryViewModel : ICreateUpdateCategoryViewModel {
     fun onClickCreate()
+    fun initNavParams(typeCategory: CreateCategoryNavInfo?)
 }
 
 interface IUpdateCategoryViewModel : ICreateUpdateCategoryViewModel {

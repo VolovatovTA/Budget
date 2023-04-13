@@ -8,6 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,12 +71,12 @@ fun StatisticSuccessScreen(
 private fun StatisticProgressIndicator(progress: ProgressInfo) {
     when (progress) {
         is ProgressInfoSuccess -> LinearProgressIndicator(
-            progress = progress.progress,
+            progress = if (progress.progress > 1f) 1f else progress.progress,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp),
-            color = UiKitColors.colors.red,
-            backgroundColor = UiKitColors.colors.grey
+            color = if (progress.progress > 1f) UiKitColors.colors.red else UiKitColors.colors.col4,
+            backgroundColor = Color.Transparent
         )
         is ProgressInfoWaiting -> UiKitShimmerComponent(
             Modifier
@@ -123,6 +124,7 @@ private fun StatisticProgressIndicator(progress: ProgressInfo) {
 fun Preview() {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         StatisticProgressIndicator(ProgressInfoSuccess(0.6f))
+        StatisticProgressIndicator(ProgressInfoSuccess(1.6f))
         StatisticProgressIndicator(ProgressInfoError)
         StatisticProgressIndicator(ProgressInfoWaiting)
     }

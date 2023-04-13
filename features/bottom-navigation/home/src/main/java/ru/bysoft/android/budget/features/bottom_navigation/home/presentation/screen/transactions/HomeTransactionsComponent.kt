@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -100,7 +101,7 @@ private fun LazyListScope.transactionsSuccessComponent(
                 background = {
                     val color by animateColorAsState(
                         when (dismissState.targetValue) {
-                            DismissValue.Default -> UiKitColors.colors.light
+                            DismissValue.Default -> Color.Transparent
                             DismissValue.DismissedToEnd -> UiKitColors.colors.col4
                             DismissValue.DismissedToStart -> UiKitColors.colors.red
                             else -> UiKitColors.colors.light
@@ -165,7 +166,8 @@ private fun LazyListScope.transactionsSuccessComponent(
                 dismissContent = {
                     Box(
                         modifier = Modifier
-                            .background(UiKitColors.colors.light)
+                            .clickable {  }
+                            .background(Color.Transparent)
                             .padding(vertical = 10.dp)
                             .padding(end = 30.dp)
                     ) {
@@ -174,8 +176,7 @@ private fun LazyListScope.transactionsSuccessComponent(
                             subTitle = data.date,
                             icons = data.icons,
                             modifier = Modifier
-                                .clickable { }
-                                .background(UiKitColors.colors.light),
+                                .background(Color.Transparent),
                             amount = UiKitAmountInfoSuccess(data.amount),
                             amountColor = UiKitColors.getColorByName(data.color)
                         )

@@ -13,9 +13,10 @@ import ru.bysoft.android.budget.features.create_udate_category.data.ICategoryRep
 import ru.bysoft.android.budget.features.create_udate_category.data.entity.ErrorCategoryCreate
 import ru.bysoft.android.budget.features.create_udate_category.data.entity.SuccessCategoryCreate
 import ru.bysoft.android.budget.features.create_udate_category.data.network.entity.CategoryRequest
+import ru.bysoft.android.budget.features.create_udate_category.navigation.CreateCategoryNavInfo
 import ru.bysoft.android.budget.features.create_udate_category.navigation.ICreateUpdateCategoryNavigation
 import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.CreateUpdateCategoryState
-import ru.bysoft.android.budget.uikit.components.currecyfield.entity.CurrencyFieldState
+import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import javax.inject.Inject
 
 
@@ -38,6 +39,12 @@ class CreateCategoryViewModel @Inject constructor(
             )
         )
     )
+
+    override fun initNavParams(typeCategory: CreateCategoryNavInfo?) {
+        typeCategory?.let {
+            state.value = state.value.copy(typeCategory = typeCategory.typeCategory)
+        }
+    }
 
     override fun onClickCreate() {
         viewModelScope.launch(handler) {

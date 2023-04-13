@@ -1,17 +1,22 @@
-package ru.bysoft.android.budget.common.navigation.statistic
+package ru.bysoft.android.budget.common.navigation.create_update_transaction
 
 import androidx.navigation.NavHostController
 import ru.bysoft.android.budget.common.navigation.create_update_categiry.CreateUpdateCategory
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.toJson
-import ru.bysoft.android.budget.features.bottom_navigation.statistic.navigation.IStatisticNavigation
 import ru.bysoft.android.budget.features.create_udate_category.navigation.CreateCategoryNavInfo
+import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation
 import javax.inject.Inject
 
-class StatisticNavigation @Inject constructor(
+class TransactionNavigation @Inject constructor(
     private val navHostController: NavHostController
-) : IStatisticNavigation {
-    override fun toCreateCategory() {
+) : ITransactionNavigation {
+
+    override fun back() {
+        navHostController.popBackStack()
+    }
+
+    override fun toCreateCategoryExpense() {
         navHostController.navigate(
             "${CreateUpdateCategory.createScreenName}/${
                 CreateCategoryNavInfo(
@@ -21,7 +26,13 @@ class StatisticNavigation @Inject constructor(
         )
     }
 
-    override fun toUpdateCategory(id: String) {
-        navHostController.navigate("${CreateUpdateCategory.updateDeleteScreenName}/$id")
+    override fun toCreateCategoryIncome() {
+        navHostController.navigate(
+            "${CreateUpdateCategory.createScreenName}/${
+                CreateCategoryNavInfo(
+                    CategoryTypeEnum.INCOME
+                ).toJson()
+            }"
+        )
     }
 }

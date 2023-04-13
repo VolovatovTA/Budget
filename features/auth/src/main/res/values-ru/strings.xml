@@ -7,9 +7,10 @@
     <string name="auth_welcome_text">Чтобы всякие повседневные жуки не съели твой бюджет, надо его спланировать.</string>
     <string name="your_name_label">Ваше имя</string>
     <string name="your_email_label">Email</string>
-    <string name="password_label">Пароль</string>
-    <string name="invite_sign_in_text">Введите вашу почту и пароль для входа. Если у вас ещё нет аккаунта, </string>
-    <string name="invite_sign_up_text">Введите ваши данные для регистрации. Или, если они у вас уже есть, </string>
+    <string name="password_create_label">Придумайте пароль</string>
+    <string name="password_enter_label">Пароль</string>
+    <string name="invite_sign_in_text">"Введите вашу почту и пароль для входа. Если у вас ещё нет аккаунта, "</string>
+    <string name="invite_sign_up_text">"Введите ваши данные для регистрации. Или, если они у вас уже есть, "</string>
     <string name="invite_sign_in_link">зарегестрируйтесь</string>
     <string name="invite_sign_up_link">войдите</string>
 

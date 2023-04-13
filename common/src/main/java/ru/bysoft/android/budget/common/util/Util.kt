@@ -105,6 +105,7 @@ enum class CategoryTypeEnum(val text: Int) {
     INCOME(R.string.btn_income_text), EXPENSE(R.string.btn_expense_text);
 }
 const val dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
+const val dateFormatOutput = "d MMMM HH:mm:ss"
 
 fun getCalculatedDate(locale: Locale, days: Int): String? {
     val cal = Calendar.getInstance(locale)

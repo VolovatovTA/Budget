@@ -7,15 +7,18 @@ import androidx.compose.foundation.interaction.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.input.KeyboardType
@@ -73,18 +76,22 @@ private fun AuthSuccessScreen(
             modifier = Modifier.padding(horizontal = 30.dp)
         )
 
+        val focusManager = LocalFocusManager.current
         val focusRequesterName = remember { FocusRequester() }
         val focusRequesterEmail = remember { FocusRequester() }
 
         if (state.type == AuthActionType.SIGN_UP) {
             AuthTextField(
-                state.name,
-                viewModel::setNewName,
-                stringResource(R.string.your_name_label),
-                stringResource(state.name.errorText ?: R.string.empty_text),
-                KeyboardType.Text,
-                Modifier.focusRequester(focusRequesterName),
-                viewModel::setNewName,
+                state = state.name,
+                onTextChange = viewModel::setNewName,
+                label = stringResource(R.string.your_name_label),
+                errorDescription = stringResource(state.name.errorText ?: R.string.empty_text),
+                type = KeyboardType.Text,
+                modifier = Modifier.focusRequester(focusRequesterName),
+                onNotFocused = { },
+                keyboardActions = KeyboardActions {
+                    focusManager.moveFocus(FocusDirection.Next)
+                },
             )
         }
 
@@ -96,13 +103,16 @@ private fun AuthSuccessScreen(
         }
 
         AuthTextField(
-            state.email,
-            viewModel::setNewEmail,
-            stringResource(R.string.your_email_label),
-            stringResource(state.email.errorText ?: R.string.empty_text),
-            KeyboardType.Email,
+            state = state.email,
+            onTextChange = viewModel::setNewEmail,
+            label = stringResource(R.string.your_email_label),
+            errorDescription = stringResource(state.email.errorText ?: R.string.empty_text),
+            type = KeyboardType.Email,
             modifier = Modifier.focusRequester(focusRequesterEmail),
-            viewModel::setNewEmail,
+            onNotFocused = { },
+            keyboardActions = KeyboardActions {
+                focusManager.moveFocus(FocusDirection.Next)
+            },
         )
         LaunchedEffect(state.type) {
             if (state.type == AuthActionType.SIGN_IN) {
@@ -115,12 +125,13 @@ private fun AuthSuccessScreen(
 
 
         AuthTextField(
-            state.password,
-            viewModel::setNewPassword,
-            stringResource(R.string.password_label),
-            stringResource(state.password.errorText ?: R.string.empty_text),
-            KeyboardType.Password,
-            onNotFocused = viewModel::setNewPassword
+            state = state.password,
+            onTextChange = viewModel::setNewPassword,
+            label = stringResource(if (state.type == AuthActionType.SIGN_IN) R.string.password_enter_label else R.string.password_create_label),
+            errorDescription = stringResource(state.password.errorText ?: R.string.empty_text),
+            type = KeyboardType.Password,
+            onNotFocused = { },
+            keyboardActions = KeyboardActions { focusManager.clearFocus() }
         )
 
 
@@ -199,6 +210,7 @@ private fun AuthTextField(
     type: KeyboardType,
     modifier: Modifier = Modifier,
     onNotFocused: (lastText: String) -> Unit = {},
+    keyboardActions: KeyboardActions,
 ) {
     val source = remember { MutableInteractionSource() }
 
@@ -220,7 +232,8 @@ private fun AuthTextField(
             colors = UiKitColors.colors.textFieldColors,
             label = { Text(label) },
             isError = state.errorText != null,
-            interactionSource = source
+            interactionSource = source,
+            keyboardActions = keyboardActions
         )
         if (state.errorText != null && state.errorText != R.string.empty_text) {
             Text(

@@ -1,4 +1,4 @@
-package ru.bysoft.android.budget.uikit.components.currecyfield.entity
+package ru.bysoft.android.budget.uikit.components.currencyfield.entity
 
 import ru.bysoft.android.budget.common.util.BudgetCurrency
 import ru.bysoft.android.budget.common.util.getAvailableCurrency

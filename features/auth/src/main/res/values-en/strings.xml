@@ -7,9 +7,10 @@
     <string name="auth_welcome_text">To keep your finance away from the bags it needs planning</string>
     <string name="your_name_label">Name</string>
     <string name="your_email_label">Email</string>
-    <string name="password_label">Create password</string>
-    <string name="invite_sign_in_text">"Haven't got an account?"</string>
-    <string name="invite_sign_up_text">Fill form for sign up. Already have an account?</string>
+    <string name="password_create_label">Create password</string>
+    <string name="password_enter_label">Password</string>
+    <string name="invite_sign_in_text">"Haven't got an account? "</string>
+    <string name="invite_sign_up_text">"Already have an account? "</string>
     <string name="invite_sign_in_link">Sign up!</string>
     <string name="invite_sign_up_link">Sign in!</string>
 

@@ -14,6 +14,6 @@ class HomeMeRepo @Inject constructor(
 ) : IHomeMeRepo {
 
     override suspend fun getMeInfo(): MeData =
-        api.getMeInfo().mapToData()
+        mapToData(api.getMeInfo())
 
 }

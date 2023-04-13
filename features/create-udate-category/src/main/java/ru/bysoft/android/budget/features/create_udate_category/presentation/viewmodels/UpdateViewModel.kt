@@ -17,7 +17,7 @@ import ru.bysoft.android.budget.features.create_udate_category.data.entity.Succe
 import ru.bysoft.android.budget.features.create_udate_category.data.network.entity.CategoryRequest
 import ru.bysoft.android.budget.features.create_udate_category.navigation.ICreateUpdateCategoryNavigation
 import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.CreateUpdateCategoryState
-import ru.bysoft.android.budget.uikit.components.currecyfield.entity.CurrencyFieldState
+import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import javax.inject.Inject
 
 

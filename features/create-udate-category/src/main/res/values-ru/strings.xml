@@ -5,8 +5,9 @@
     <string name="error_loading_data">Ошибка при загрузке данных</string>
     <string name="btn_expense_text">Расход</string>
     <string name="btn_income_text">Доход</string>
-    <string name="text_field_name_category_label">Имя Новой категории</string>
+    <string name="text_field_name_category_label">Имя новой категории</string>
     <string name="text_field_limit_label">Назначить лимит</string>
+    <string name="text_limit_description">Лимит будет показан на экране статистики и может быть полезен при учёте расходов</string>
     <string name="btn_finish_update_text">Создать новую категорию</string>
     <string name="btn_finish_create_text">Применить изменения</string>
     <string name="undefined_text">Неопределено</string>

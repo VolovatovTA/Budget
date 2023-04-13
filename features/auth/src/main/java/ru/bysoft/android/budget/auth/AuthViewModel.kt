@@ -51,7 +51,7 @@ class AuthViewModel @Inject constructor(
     override fun setNewPassword(password: String) {
         state.value = state.value.copy(
             password = TextFieldState(password, null),
-            isButtonEnabled = isAllComplete(state.value),
+            isButtonEnabled = isAllComplete(password = password),
             toastText = null
         )
     }
@@ -59,7 +59,7 @@ class AuthViewModel @Inject constructor(
     override fun setNewName(name: String) {
         state.value = state.value.copy(
             name = TextFieldState(name, null),
-            isButtonEnabled = isAllComplete(state.value),
+            isButtonEnabled = isAllComplete(name = name),
             toastText = null
         )
     }
@@ -67,7 +67,7 @@ class AuthViewModel @Inject constructor(
     override fun setNewEmail(email: String) {
         state.value = state.value.copy(
             email = TextFieldState(email, null),
-            isButtonEnabled = isAllComplete(state.value),
+            isButtonEnabled = isAllComplete(email = email),
             toastText = null
         )
     }
@@ -126,14 +126,22 @@ class AuthViewModel @Inject constructor(
         )
     }
 
-    private fun isAllComplete(state: AuthState) =
-        isEmailCorrect(state.email.text) && isPasswordCorrect(state.password.text) && isNameCorrect(
-            state.name.text
-        )
+    private fun isAllComplete(
+        type: AuthActionType = state.value.type,
+        email: String = state.value.email.text,
+        name: String = state.value.name.text,
+        password: String = state.value.password.text
+    ) =
+        when (type) {
+            AuthActionType.SIGN_IN -> isEmailCorrect(email) && isPasswordCorrect(password)
+            AuthActionType.SIGN_UP -> isEmailCorrect(email) && isPasswordCorrect(password)
+                    && isNameCorrect(name)
+        }
+
 
     private fun isEmailCorrect(email: String) = email.contains('@') && email.contains('.')
 
-    private fun isPasswordCorrect(password: String) = password.length >= 5
+    private fun isPasswordCorrect(password: String) = password.count() >= 5
 
     private fun isNameCorrect(name: String) = name.isNotEmpty()
 }

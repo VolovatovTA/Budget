@@ -32,11 +32,13 @@ class TransactionRepo @Inject constructor(
         walletId: List<String>?,
         transferType: TransferTypeEnum
     ): ListTransactionsData {
-        return api.getTransactions(
-            type = type,
-            wallet_ids = walletId,
-            transferType = transferType.nameToBack
-        ).mapToData(locale)
+        return mapToData(
+            api.getTransactions(
+                type = type,
+                wallet_ids = walletId,
+                transferType = transferType.nameToBack
+            ), locale
+        )
     }
 
     override suspend fun deleteTransaction(id: String): Result<Unit> {

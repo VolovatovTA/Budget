@@ -26,6 +26,7 @@ interface ITransactionsViewModel {
     fun setCategoriesIds(categoryPresentation: CategoryPresentation)
     fun setComment(comment: String)
     fun setTypeTransactions(type: TransactionTypeEnum)
+    fun onEmptyCategoryClick()
     fun setExchangeAmount(currency: BudgetCurrency, amount: String)
     fun back()
 }
@@ -88,6 +89,14 @@ abstract class TransactionsCommonViewModel(
                 text = comment
             )
         )
+    }
+
+    override fun onEmptyCategoryClick() {
+        when (state.value) {
+            is TransactionExpenseState -> navigate.toCreateCategoryExpense()
+            is TransactionIncomeState -> navigate.toCreateCategoryIncome()
+            is TransactionTransferState -> {}
+        }
     }
 
     override fun setTypeTransactions(type: TransactionTypeEnum) {
@@ -232,7 +241,7 @@ abstract class TransactionsCommonViewModel(
             }
             val response = walletApi.getWallets()
             state.update { iTransactionState ->
-                when(iTransactionState) {
+                when (iTransactionState) {
                     is TransactionTransferState -> {
                         iTransactionState.copyWithWalletFromState(
                             walletFieldState = walletMapper.toPresentation(response)

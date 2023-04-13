@@ -23,7 +23,7 @@ import ru.bysoft.android.budget.features.create_update_delete_transactions.navig
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.ITransactionPresentationMapper
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.ITransactionWalletPresentationMapper
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.ITransactionsCategoryPresentationMapper
-import ru.bysoft.android.budget.uikit.components.currecyfield.entity.CurrencyFieldState
+import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import javax.inject.Inject
 
 @HiltViewModel

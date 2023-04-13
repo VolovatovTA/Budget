@@ -2,21 +2,24 @@ package ru.bysoft.android.budget.features.create_update_delete_transactions.pres
 
 import android.content.res.Configuration.UI_MODE_TYPE_NORMAL
 import android.widget.Toast
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -34,7 +37,7 @@ import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
 import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonType
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
-import ru.bysoft.android.budget.uikit.components.currecyfield.UiKitCurrencyPopUp
+import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitCurrencyPopUp
 import ru.bysoft.android.budget.uikit.components.rowtab.UiKitRowTab
 import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitTabInfo
 import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitRowTabState
@@ -42,6 +45,7 @@ import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextField
 import ru.bysoft.android.budget.uikit.icons.pack.ArrowLeft
 import ru.bysoft.android.budget.uikit.styles.UiKitStyles
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.components.ShortSuccessCategoryComponent
 
 internal val HEIGHT_ELEMENT = 60.dp
 internal val MAX_HEIGHT = 200.dp
@@ -71,11 +75,26 @@ fun TransactionScreen(
                     setCurrency = viewModel::setCurrency,
                     setExchangeAmount = viewModel::setExchangeAmount,
                     setTransactionType = viewModel::setTypeTransactions,
+                    onEmptyCategoryClick = viewModel::onEmptyCategoryClick,
                 )
+
+                val isCategoryLoadedAndNotEmptyAndSelectedAtLeastOne =
+                    (transactionState.categoryState as? CategorySuccess)?.listCategory?.any { it.isChosen }
+                        ?: false
+                val isWalletToLoadedAndNotEmptyAndSelectedAtLeastOne =
+                    (transactionState.walletToFieldState as? WalletSuccessState)?.selectedWalletId != null
+                val isWalletFromLoadedAndNotEmptyAndSelectedAtLeastOne =
+                    (transactionState.walletFromFieldState as? WalletSuccessState)?.selectedWalletId != null
+                val isButtonEnabled = when (transactionState) {
+                    is TransactionExpenseState -> isCategoryLoadedAndNotEmptyAndSelectedAtLeastOne && isWalletFromLoadedAndNotEmptyAndSelectedAtLeastOne
+                    is TransactionIncomeState -> isCategoryLoadedAndNotEmptyAndSelectedAtLeastOne && isWalletToLoadedAndNotEmptyAndSelectedAtLeastOne
+                    is TransactionTransferState -> isWalletFromLoadedAndNotEmptyAndSelectedAtLeastOne && isWalletToLoadedAndNotEmptyAndSelectedAtLeastOne
+                }
                 TransactionButtonComponent(
-                    transactionState.isLoading,
-                    viewModel::create,
-                    Modifier.weight(1f)
+                    isLoading = transactionState.isLoading,
+                    enabled = isButtonEnabled,
+                    onClick = viewModel::create,
+                    modifier = Modifier.weight(1f)
                 )
             }
         }
@@ -109,6 +128,7 @@ private fun TransactionCreateScreenMain(
     onButtonClick: () -> Unit = {},
     setExchangeAmount: (BudgetCurrency, String) -> Unit = { _, _ -> },
     setTransactionType: (TransactionTypeEnum) -> Unit = { },
+    onEmptyCategoryClick: () -> Unit = {},
 ) {
     Column(
         modifier
@@ -117,7 +137,9 @@ private fun TransactionCreateScreenMain(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-
+        val focusManager = LocalFocusManager.current
+        val focusRequester = remember { FocusRequester() }
+        LaunchedEffect(Unit) { focusRequester.requestFocus() }
         val rowTabs = listOf(
             TransactionTypeEnum.EXPENSE,
             TransactionTypeEnum.TRANSFER,
@@ -146,7 +168,11 @@ private fun TransactionCreateScreenMain(
             }
         )
 
-        Row(Modifier.padding(horizontal = 25.dp)) {
+        Row(
+            Modifier
+                .padding(horizontal = 25.dp)
+                .animateContentSize()
+        ) {
             transactionState.walletFromFieldState?.let { iWalletFieldState ->
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
@@ -154,7 +180,7 @@ private fun TransactionCreateScreenMain(
                         style = UiKitStyles.Body2,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .padding(top = 20.dp, start = 10.dp, end = 10.dp)
+                            .padding(top = 20.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)
                             .fillMaxWidth()
                     )
                     WalletChooserComponent(
@@ -170,7 +196,7 @@ private fun TransactionCreateScreenMain(
                         style = UiKitStyles.Body2,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .padding(top = 20.dp, start = 10.dp, end = 10.dp)
+                            .padding(top = 20.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)
                             .fillMaxWidth()
                     )
                     WalletChooserComponent(
@@ -194,6 +220,10 @@ private fun TransactionCreateScreenMain(
                     .padding(start = 30.dp, top = 5.dp, end = 5.dp)
                     .weight(1f)
                     .height(HEIGHT_ELEMENT)
+                    .focusRequester(focusRequester),
+                keyboardActions = KeyboardActions {
+                    focusManager.moveFocus(FocusDirection.Next)
+                },
             )
             UiKitCurrencyPopUp(
                 info = transactionState.currencyFieldState,
@@ -211,40 +241,64 @@ private fun TransactionCreateScreenMain(
             inputType = KeyboardType.Text,
             modifier = Modifier
                 .padding(horizontal = 30.dp, vertical = 5.dp)
-                .height(HEIGHT_ELEMENT)
+                .height(HEIGHT_ELEMENT),
+            keyboardActions = KeyboardActions {
+                focusManager.moveFocus(FocusDirection.Next)
+            }
         )
 
         ExchangesComponent(
             transactionState.exchangeFieldState,
             setAmount = setExchangeAmount,
             mainCurrency = transactionState.currencyFieldState.selectedCurrency,
+            focusManager = focusManager,
         )
 
-        when (transactionState) {
-            is TransactionIncomeState -> {
-                Text(
-                    stringResource(R.string.title_categories_incomes),
-                    style = UiKitStyles.Body2,
-                    modifier = Modifier
-                        .padding(top = 10.dp, start = 40.dp, end = 30.dp)
-                        .fillMaxWidth()
-                )
-                CategoryChooserComponent(transactionState, setCategoriesIds)
+        Column(modifier = Modifier.animateContentSize()) {
+            when (transactionState) {
+                is TransactionIncomeState -> {
+                    Text(
+                        stringResource(R.string.title_categories_incomes),
+                        style = UiKitStyles.Body2,
+                        modifier = Modifier
+                            .padding(top = 10.dp, start = 40.dp, end = 30.dp)
+                            .fillMaxWidth()
+                    )
+                    CategoryChooserComponent(
+                        transactionState,
+                        setCategoriesIds,
+                        onEmptyCategoryClick
+                    )
+                    if (transactionState.categoryState is CategorySuccess && transactionState.categoryState.listCategory.isEmpty()) {
+                        ShortSuccessCategoryComponent(
+                            stringResource(R.string.no_categories_income),
+                            onEmptyCategoryClick
+                        )
+                    }
+                }
+                is TransactionExpenseState -> {
+                    Text(
+                        stringResource(R.string.title_categories_expense),
+                        style = UiKitStyles.Body2,
+                        modifier = Modifier
+                            .padding(top = 10.dp, start = 40.dp, end = 30.dp)
+                            .fillMaxWidth()
+                    )
+                    CategoryChooserComponent(
+                        transactionState,
+                        setCategoriesIds,
+                        onEmptyCategoryClick
+                    )
+                    if (transactionState.categoryState is CategorySuccess && transactionState.categoryState.listCategory.isEmpty()) {
+                        ShortSuccessCategoryComponent(
+                            stringResource(R.string.no_categories_expense),
+                            onEmptyCategoryClick
+                        )
+                    }
+                }
+                is TransactionTransferState -> {}
             }
-            is TransactionExpenseState -> {
-                Text(
-                    stringResource(R.string.title_categories_expense),
-                    style = UiKitStyles.Body2,
-                    modifier = Modifier
-                        .padding(top = 10.dp, start = 40.dp, end = 30.dp)
-                        .fillMaxWidth()
-                )
-                CategoryChooserComponent(transactionState, setCategoriesIds)
-            }
-            is TransactionTransferState -> {}
         }
-
-
     }
 
 }
@@ -252,6 +306,7 @@ private fun TransactionCreateScreenMain(
 @Composable
 private fun TransactionButtonComponent(
     isLoading: Boolean,
+    enabled: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -271,7 +326,8 @@ private fun TransactionButtonComponent(
                     type = ButtonType.MEDIUM
                 ),
                 onClick = onClick,
-                modifier = Modifier.padding(bottom = 30.dp)
+                modifier = Modifier.padding(bottom = 30.dp),
+                enabled = enabled
             )
         }
     }

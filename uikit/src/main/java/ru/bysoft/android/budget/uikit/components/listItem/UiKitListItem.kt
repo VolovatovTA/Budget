@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
@@ -37,27 +38,36 @@ fun UiKitListItem(
 
     Row(
         modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.End
     ) {
         UiKitListItemIcons(icons)
-        Column(modifier = Modifier.padding(start = 20.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(start = 20.dp)
+        ) {
             Text(
                 text = title,
                 style = UiKitStyles.Body2,
-                modifier = Modifier.padding(bottom = 9.dp)
+                modifier = Modifier.padding(bottom = 9.dp),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1
+
             )
             subTitle?.let {
                 Text(
                     text = subTitle,
                     style = UiKitStyles.Caption,
-                    modifier = Modifier.padding()
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
                 )
             }
         }
 
         UiKitListItemAmount(
             info = amount,
-            amountColor = amountColor
+            amountColor = amountColor,
+            modifier = Modifier.weight(1f)
         )
     }
 }
@@ -124,10 +134,11 @@ private fun UiKitListItemIcons(icons: List<ImageVector>) {
 @Composable
 fun UiKitListItemAmount(
     info: UiKitAmountInfo,
-    amountColor: Color
+    amountColor: Color,
+    modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         contentAlignment = Alignment.CenterEnd
     ) {
         when (info) {
@@ -136,7 +147,9 @@ fun UiKitListItemAmount(
                     text = info.amount,
                     style = UiKitStyles.Body2,
                     modifier = Modifier,
-                    color = amountColor
+                    color = amountColor,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
             is UiKitAmountInfoError -> {
@@ -164,15 +177,16 @@ fun UiKitListItemAmount(
 fun UiKitListItemPreview() {
     Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
         UiKitListItem(
-            title = "Title",
+            title = "Title kblyvliylhblkjhblkjblkjblkhjb",
             icons = listOf(),
             amount = UiKitAmountInfoWaiting,
             amountColor = UiKitColors.colors.dark
         )
         UiKitListItem(
-            title = "Title",
+            title = "Titlevfdjdkfjnbdfkjbdf",
+            subTitle = "ksjdvnskdvsdovunsodvinsodvunsodvinsodvnsodvunso",
             icons = listOf(Wallet),
-            amount = UiKitAmountInfoSuccess("1000"),
+            amount = UiKitAmountInfoSuccess("1000 000 000"),
             amountColor = UiKitColors.colors.dark
         )
         UiKitListItem(

@@ -4,13 +4,18 @@ import android.widget.Toast
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -23,21 +28,26 @@ import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
 import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonType
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
-import ru.bysoft.android.budget.uikit.components.currecyfield.UiKitCurrencyPopUp
+import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitCurrencyPopUp
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 import ru.bysoft.android.budget.uikit.styles.UiKitStyles
 
 typealias UiKitStrings = ru.bysoft.android.budget.uikit.R.string
+
 @Composable
 fun CreateWalletScreen() {
     val viewModel: ICreateWalletViewModel = hiltViewModel<CreateWalletViewModel>()
     val state = viewModel.state.collectAsState().value
+    val focusManager = LocalFocusManager.current
+    val focusRequester = remember { FocusRequester() }
+
     state.toastText?.let {
         val context = LocalContext.current
         LaunchedEffect(Unit) {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         }
     }
+    LaunchedEffect(Unit) { focusRequester.requestFocus() }
     Scaffold {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,14 +61,26 @@ fun CreateWalletScreen() {
                 onTextChange = viewModel::onNameChanged,
                 label = stringResource(R.string.wallet_name_text),
                 type = KeyboardType.Text,
-                errorDescription = stringResource(state.nameTextState.errorText ?: UiKitStrings.empty_text)
+                errorDescription = stringResource(
+                    state.nameTextState.errorText ?: UiKitStrings.empty_text
+                ),
+                keyboardActions = KeyboardActions {
+                    focusManager.moveFocus(FocusDirection.Next)
+                },
+                modifier = Modifier
+                    .focusRequester(focusRequester)
             )
             CreateWalletTextField(
                 state = state.balanceTextState,
                 onTextChange = viewModel::onBalanceChanged,
                 label = stringResource(R.string.wallet_balance_text),
+                errorDescription = stringResource(
+                    state.balanceTextState.errorText ?: UiKitStrings.empty_text
+                ),
                 type = KeyboardType.Number,
-                errorDescription = stringResource(state.balanceTextState.errorText ?: UiKitStrings.empty_text)
+                keyboardActions = KeyboardActions {
+                    focusManager.clearFocus()
+                },
             )
             UiKitCurrencyPopUp(
                 state.currencyFieldState,
@@ -80,7 +102,10 @@ private fun ButtonComponent(viewModel: ICreateWalletViewModel, state: CreateWall
             CircularProgressIndicator(modifier = Modifier.fillMaxHeight())
         } else {
             UiKitButton(
-                info = UiKitButtonInfo(stringResource(id = R.string.wallet_btn_create_text), type = ButtonType.MEDIUM),
+                info = UiKitButtonInfo(
+                    stringResource(id = R.string.wallet_btn_create_text),
+                    type = ButtonType.MEDIUM
+                ),
                 onClick = viewModel::onButtonClick
             )
         }
@@ -97,6 +122,7 @@ private fun CreateWalletTextField(
     type: KeyboardType,
     modifier: Modifier = Modifier,
     onNotFocused: (lastText: String) -> Unit = {},
+    keyboardActions: KeyboardActions,
 ) {
     val source = remember { MutableInteractionSource() }
 
@@ -118,7 +144,8 @@ private fun CreateWalletTextField(
             colors = UiKitColors.colors.textFieldColors,
             label = { Text(label) },
             isError = state.errorText != null,
-            interactionSource = source
+            interactionSource = source,
+            keyboardActions = keyboardActions
         )
         if (state.errorText != null && state.errorText != UiKitStrings.empty_text) {
             Text(

@@ -1,4 +1,4 @@
-package ru.bysoft.android.budget.uikit.components.currecyfield
+package ru.bysoft.android.budget.uikit.components.currencyfield
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.uikit.R
 import ru.bysoft.android.budget.common.util.BudgetCurrency
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
-import ru.bysoft.android.budget.uikit.components.currecyfield.entity.CurrencyFieldState
-import ru.bysoft.android.budget.uikit.components.currecyfield.entity.PopupFieldState
+import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
+import ru.bysoft.android.budget.uikit.components.currencyfield.entity.PopupFieldState
 import ru.bysoft.android.budget.uikit.styles.UiKitStyles
 import java.util.*
 
@@ -41,7 +41,6 @@ fun UiKitCurrencyPopUp(
         modifier = modifier
             .heightIn(min = 50.dp, max = 100.dp)
             .fillMaxWidth()
-            .clickable { showMenu.value = !showMenu.value }
     ) {
         Surface(
             shape = RoundedCornerShape(10.dp),
@@ -51,6 +50,11 @@ fun UiKitCurrencyPopUp(
                 .fillMaxWidth(),
             color = Color.Transparent
         ) {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .clickable { showMenu.value = !showMenu.value }
+                .background(Color.Transparent)
+            )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Spacer(modifier = Modifier.width(15.dp))
                 val text =

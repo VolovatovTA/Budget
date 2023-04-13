@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.OutlinedTextField
@@ -117,6 +118,7 @@ fun CreateUpdateCategoryTextField(
     type: KeyboardType,
     modifier: Modifier = Modifier,
     onNotFocused: (lastText: String) -> Unit = {},
+    keyboardActions: KeyboardActions,
 ) {
     val source = remember { MutableInteractionSource() }
 
@@ -145,7 +147,8 @@ fun CreateUpdateCategoryTextField(
             },
             isError = state.errorText != null,
             interactionSource = source,
-            textStyle = UiKitStyles.Body2
+            textStyle = UiKitStyles.Body2,
+            keyboardActions = keyboardActions
         )
         if (state.errorText != null && state.errorText != R.string.empty_text) {
             Text(

@@ -3,6 +3,7 @@ package ru.bysoft.android.budget.features.create_udate_category.presentation.scr
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -12,17 +13,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.features.create_udate_category.R
 import ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels.IUpdateCategoryViewModel
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.ButtonComponent
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.CreateUpdateCategoryTextField
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.IconsComponent
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
-import ru.bysoft.android.budget.uikit.components.currecyfield.UiKitCurrencyPopUp
-import ru.bysoft.android.budget.uikit.components.currecyfield.UiKitPopUp
+import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitCurrencyPopUp
 import ru.bysoft.android.budget.uikit.icons.pack.ArrowLeft
 import ru.bysoft.android.budget.uikit.icons.pack.Delete
 import ru.bysoft.android.budget.uikit.styles.UiKitStyles
@@ -31,6 +33,7 @@ import ru.bysoft.android.budget.uikit.styles.UiKitStyles
 fun UpdateCategoryScreen(
     viewModel: IUpdateCategoryViewModel, id: String
 ) {
+    val focusManager = LocalFocusManager.current
     LaunchedEffect(Unit) { viewModel.initId(id) }
     val state = viewModel.state.collectAsState().value
     state.toastText?.let {
@@ -87,56 +90,27 @@ fun UpdateCategoryScreen(
                 onTextChange = viewModel::onNameChanged,
                 label = stringResource(R.string.text_field_name_category_label),
                 type = KeyboardType.Text,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                keyboardActions = KeyboardActions { focusManager.clearFocus() }
             )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(70.dp),
-                verticalAlignment = Alignment.Bottom
-            ) {
-                CreateUpdateCategoryTextField(
-                    state = state.amountTextState,
-                    onTextChange = viewModel::onAmountChanged,
-                    label = stringResource(R.string.text_field_limit_label),
-                    type = KeyboardType.Number,
-                    modifier = Modifier.weight(1f)
+            if (state.typeCategory == CategoryTypeEnum.EXPENSE) {
+                CreateCategoryLimitComponent(
+                    state = state,
+                    onAmountChanged = viewModel::onAmountChanged,
+                    onPeriodSelected = viewModel::onPeriodSelected,
+                    focusManager = focusManager
                 )
-                Spacer(modifier = Modifier.width(10.dp))
-                UiKitPopUp(
-                    info = state.periodState,
-                    onClickItem = viewModel::onPeriodSelected,
-                    modifier = Modifier
-                        .height(57.dp)
-                        .weight(1f)
-                ) { periodState ->
-                    if (periodState != null) {
-                        Box(
-                            modifier = Modifier.padding(start = 15.dp),
-                            contentAlignment = Alignment.CenterStart
-                        ) {
-                            Text(
-                                text = stringResource(periodState.textToShow),
-                                style = UiKitStyles.Body2
-                            )
-                        }
-                    } else {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = stringResource(R.string.undefined_text), style = UiKitStyles.Body2
-                            )
-                        }
-                    }
-                }
             }
 
             UiKitCurrencyPopUp(state.currencyFieldState, viewModel::onCurrencySelected)
             IconsComponent(viewModel::onIconSelected, state.iconState)
             Spacer(modifier = Modifier.height(40.dp))
 
-            ButtonComponent(viewModel::onClickSave, state, stringResource(R.string.btn_finish_update_text))
+            ButtonComponent(
+                viewModel::onClickSave,
+                state,
+                stringResource(R.string.btn_finish_update_text)
+            )
         }
     }
 }

@@ -2,6 +2,7 @@ package ru.bysoft.android.budget.uikit.components.textfield
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -25,7 +26,8 @@ fun UiKitTextField(
     label: String,
     inputType: KeyboardType,
     modifier: Modifier = Modifier,
-    maxLines: Int = 1
+    maxLines: Int = 1,
+    keyboardActions: KeyboardActions
 ) {
     OutlinedTextField(
         value = state.text,
@@ -42,6 +44,7 @@ fun UiKitTextField(
         label = { Text(label, maxLines = maxLines,) },
         isError = state.errorText != null,
         textStyle = UiKitStyles.Body2,
+        keyboardActions = keyboardActions
 //        singleLine = true
     )
 }

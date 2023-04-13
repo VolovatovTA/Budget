@@ -17,6 +17,8 @@ import ru.bysoft.android.budget.common.navigation.auth.Auth
 import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.create_wallet.CreateWalletNavigation
 import ru.bysoft.android.budget.common.navigation.create_update_categiry.CreateUpdateCategory
 import ru.bysoft.android.budget.common.navigation.splash.Splash
+import ru.bysoft.android.budget.common.util.restore
+import ru.bysoft.android.budget.features.create_udate_category.navigation.CreateCategoryNavInfo
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.transaction.Transaction
 import ru.bysoft.android.budget.features.create_udate_category.presentation.screen.CreateCategoryScreen
 import ru.bysoft.android.budget.features.create_udate_category.presentation.screen.UpdateCategoryScreen
@@ -67,8 +69,11 @@ fun MainNavigationHost(mainNavController: NavHostController) {
             route = CreateUpdateCategory.route,
             startDestination = CreateUpdateCategory.screenName
         ) {
-            composable(CreateUpdateCategory.createScreenName) {
-                CreateCategoryScreen(hiltViewModel<CreateCategoryViewModel>())
+            composable("${CreateUpdateCategory.createScreenName}/{arguments}") {
+                val typeCategory = it.arguments?.getString("arguments")?.restore<CreateCategoryNavInfo>()
+                val viewModel = hiltViewModel<CreateCategoryViewModel>()
+                viewModel.initNavParams(typeCategory)
+                CreateCategoryScreen(viewModel)
             }
             composable("${CreateUpdateCategory.updateDeleteScreenName}/{arguments}") {
                 val id = it.arguments?.getString("arguments")!!

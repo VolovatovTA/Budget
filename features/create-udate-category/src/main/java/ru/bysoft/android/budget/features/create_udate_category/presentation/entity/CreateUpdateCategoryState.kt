@@ -2,8 +2,8 @@ package ru.bysoft.android.budget.features.create_udate_category.presentation.ent
 
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.PeriodState
-import ru.bysoft.android.budget.uikit.components.currecyfield.entity.CurrencyFieldState
-import ru.bysoft.android.budget.uikit.components.currecyfield.entity.PopupFieldState
+import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
+import ru.bysoft.android.budget.uikit.components.currencyfield.entity.PopupFieldState
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 
 data class CreateUpdateCategoryState(

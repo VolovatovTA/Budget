@@ -13,4 +13,7 @@
     <string name="text_field_exchange_not_empty">Because currency of transaction is not the same with currencies of wallet(s)/category(ies) you need to enter exchanges</string>
     <string name="error_loading_wallets">Error occurred while loading wallets</string>
     <string name="error_loading_categories">Error occurred while loading categories</string>
+    <string name="add_category">Add</string>
+    <string name="no_categories_expense">To create expense you need create at least one category of expense</string>
+    <string name="no_categories_income">To create income you need create at least one category of incomes</string>
 </resources>

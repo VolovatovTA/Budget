@@ -1,7 +1,7 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity
 
 import ru.bysoft.android.budget.common.util.BudgetCurrency
-import ru.bysoft.android.budget.uikit.components.currecyfield.entity.CurrencyFieldState
+import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 
 sealed class ITransactionState(
@@ -187,13 +187,17 @@ data class CategorySuccess(
     val listCategory: List<CategoryPresentation>
 ) : CategoryState
 
+
+sealed interface ICategoryPresentation
+
+object CategoryAdd: ICategoryPresentation
 data class CategoryPresentation(
     val iconName: String?,
     val name: String,
     val isChosen: Boolean = false,
     val id: String,
     val currency: String
-)
+): ICategoryPresentation
 
 sealed interface IWalletFieldState
 

@@ -15,7 +15,7 @@ import ru.bysoft.android.budget.features.create_update_wallet.data.ICreateWallet
 import ru.bysoft.android.budget.features.create_update_wallet.data.entity.CreateWalletErrorData
 import ru.bysoft.android.budget.features.create_update_wallet.navigation.ICreateWalletNavigation
 import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.CreateWalletState
-import ru.bysoft.android.budget.uikit.components.currecyfield.entity.CurrencyFieldState
+import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 import javax.inject.Inject
 

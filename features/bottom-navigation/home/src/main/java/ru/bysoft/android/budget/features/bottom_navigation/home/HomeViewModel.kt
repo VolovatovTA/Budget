@@ -30,8 +30,7 @@ import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.ent
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletsErrorState
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletsLoadingState
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletsSuccessState
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.mapper.mapToInfo
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.mapper.mapToState
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.mapper.IHomePresentationMapper
 import javax.inject.Inject
 
 interface IHomeViewModel {
@@ -57,7 +56,8 @@ class HomeViewModel @Inject constructor(
     private val meRepo: IHomeMeRepo,
     private val transactionsRepo: ITransactionsRepo,
     private val navigate: IHomeNavigation,
-    private val meInfo: IMeInfo
+    private val meInfo: IMeInfo,
+    private val mapper: IHomePresentationMapper
 ) : ViewModel(), IHomeViewModel {
 
     override fun loadData(isRefresh: Boolean) {
@@ -191,7 +191,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(homeWalletsExceptionHandler) {
             walletsState.value = WalletsLoadingState(isRefresh)
             val loadedData = walletsRepo.getWallets()
-            walletsState.value = WalletsSuccessState(loadedData.mapToState())
+            walletsState.value = WalletsSuccessState(mapper.mapToState(loadedData))
             currentWalletId = loadedData.firstOrNull()?.id ?: ""
             if (walletsState.value is WalletsSuccessState){
                 getTransactions(isRefresh)
@@ -235,7 +235,7 @@ class HomeViewModel @Inject constructor(
                 },
                 walletId = listOf(currentWalletId)
             )
-            transactionsState.value = TransactionSuccess(transactions.mapToInfo(deleteLambda))
+            transactionsState.value = TransactionSuccess(mapper.mapToInfo(transactions, deleteLambda))
         }
     }
 

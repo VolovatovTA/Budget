@@ -14,11 +14,11 @@ import ru.bysoft.android.budget.auth.navigation.IAuthNavigation
 import ru.bysoft.android.budget.common.navigation.auth.AuthNavigation
 import ru.bysoft.android.budget.common.navigation.common.CommonNavigation
 import ru.bysoft.android.budget.common.navigation.create_update_categiry.CreateUpdateCategoryNavigation
+import ru.bysoft.android.budget.common.navigation.create_update_transaction.TransactionNavigation
 import ru.bysoft.android.budget.common.navigation.create_wallet.CreateWalletNavigation
 import ru.bysoft.android.budget.common.navigation.home.HomeNavigation
 import ru.bysoft.android.budget.common.navigation.splash.SplashNavigation
 import ru.bysoft.android.budget.common.navigation.statistic.StatisticNavigation
-import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.transaction.TransactionNavigation
 import ru.bysoft.android.budget.common.network.authentificator.ICommonNavigation
 import ru.bysoft.android.budget.features.create_udate_category.navigation.ICreateUpdateCategoryNavigation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation

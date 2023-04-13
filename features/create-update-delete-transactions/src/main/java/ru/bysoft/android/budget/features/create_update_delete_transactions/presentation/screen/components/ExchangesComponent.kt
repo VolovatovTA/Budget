@@ -1,12 +1,16 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.components
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -28,11 +32,13 @@ fun ExchangesComponent(
     ),
     setAmount: (BudgetCurrency, String) -> Unit = { _, _ -> },
     mainCurrency: BudgetCurrency?,
+    focusManager: FocusManager,
 ) {
     Column(
         modifier = Modifier
             .heightIn(max = MAX_HEIGHT)
             .verticalScroll(rememberScrollState())
+            .animateContentSize()
     ) {
         if (exchangeFieldState.isNotEmpty()) {
             Text(
@@ -41,7 +47,7 @@ fun ExchangesComponent(
                 style = UiKitStyles.Body2,
             )
         }
-        exchangeFieldState.forEach { exchangeState ->
+        exchangeFieldState.forEachIndexed { index, exchangeState ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 val text = Currency
                     .getInstance(
@@ -71,6 +77,13 @@ fun ExchangesComponent(
                         .padding(horizontal = 5.dp)
                         .weight(2f)
                         .height(HEIGHT_ELEMENT),
+                    keyboardActions = KeyboardActions {
+                        if (index == exchangeFieldState.lastIndex){
+                            focusManager.clearFocus()
+                        } else {
+                            focusManager.moveFocus(FocusDirection.Next)
+                        }
+                    },
                 )
                 mainCurrency?.displayName?.let {
                     Text(

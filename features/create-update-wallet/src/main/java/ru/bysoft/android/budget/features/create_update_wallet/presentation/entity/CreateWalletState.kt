@@ -1,6 +1,6 @@
 package ru.bysoft.android.budget.features.create_update_wallet.presentation.entity
 
-import ru.bysoft.android.budget.uikit.components.currecyfield.entity.CurrencyFieldState
+import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 
 data class CreateWalletState(

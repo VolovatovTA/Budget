@@ -21,12 +21,13 @@ class CreateWalletRepository @Inject constructor(
 ) : ICreateWalletRepository {
     override suspend fun createWallet(state: CreateWalletState): CreateWalletData {
         return try {
-            api.createWallet(state.mapToRequest()).mapToData()
+            mapToData(api.createWallet(mapToRequest(state)))
         } catch (t: HttpException) {
             t.response()?.let { response ->
                 response.errorBody()?.let { responseBody ->
-                    responseBody.string()
-                                        .restore<CreateWalletErrorResponse>()?.mapToData()
+                    mapToData(
+                        responseBody.string().restore<CreateWalletErrorResponse>()
+                    )
                 }
             }.onNull { throw Throwable("can't recognize $t as CreateWalletErrorResponse") }
         }

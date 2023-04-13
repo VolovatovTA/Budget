@@ -3,39 +3,51 @@ package ru.bysoft.android.budget.features.create_udate_category.presentation.scr
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
+import ru.bysoft.android.budget.common.util.PeriodState
 import ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels.ICreateCategoryViewModel
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.ButtonComponent
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.CreateUpdateCategoryTextField
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.IconsComponent
 import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonType
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
-import ru.bysoft.android.budget.uikit.components.currecyfield.UiKitCurrencyPopUp
-import ru.bysoft.android.budget.uikit.components.currecyfield.UiKitPopUp
+import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitCurrencyPopUp
+import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitPopUp
 import ru.bysoft.android.budget.uikit.components.rowtab.UiKitRowTab
 import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitRowTabState
 import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitTabInfo
 import ru.bysoft.android.budget.uikit.icons.pack.ArrowLeft
 import ru.bysoft.android.budget.uikit.styles.UiKitStyles
 import ru.bysoft.android.budget.features.create_udate_category.R
+import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.CreateUpdateCategoryState
 
 @Composable
 fun CreateCategoryScreen(
     viewModel: ICreateCategoryViewModel
 ) {
     val state = viewModel.state.collectAsState().value
+    val focusManager = LocalFocusManager.current
+    val focusRequester = remember { FocusRequester() }
+    LaunchedEffect(Unit) { focusRequester.requestFocus() }
     state.toastText?.let {
         val context = LocalContext.current
         LaunchedEffect(Unit) {
@@ -60,8 +72,6 @@ fun CreateCategoryScreen(
                 Text(
                     text = stringResource(R.string.create_category_title), style = UiKitStyles.H2
                 )
-                Spacer(modifier = Modifier.width(15.dp))
-
                 Spacer(modifier = Modifier.width(15.dp))
 
             }
@@ -104,58 +114,90 @@ fun CreateCategoryScreen(
                 type = KeyboardType.Text,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .focusRequester(focusRequester),
+                keyboardActions = KeyboardActions { focusManager.moveFocus(FocusDirection.Next) }
             )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(70.dp),
-                verticalAlignment = Alignment.Bottom
-            ) {
-                CreateUpdateCategoryTextField(
-                    state = state.amountTextState,
-                    onTextChange = viewModel::onAmountChanged,
-                    label = stringResource(R.string.text_field_limit_label),
-                    type = KeyboardType.Number,
-                    modifier = Modifier
-                        .weight(1f)
+            if (state.typeCategory == CategoryTypeEnum.EXPENSE) {
+                CreateCategoryLimitComponent(
+                    state = state,
+                    onAmountChanged = viewModel::onAmountChanged,
+                    onPeriodSelected = viewModel::onPeriodSelected,
+                    focusManager = focusManager
                 )
-                Spacer(modifier = Modifier.width(10.dp))
-                UiKitPopUp(
-                    info = state.periodState,
-                    onClickItem = viewModel::onPeriodSelected,
-                    modifier = Modifier
-                        .height(57.dp)
-                        .weight(1f)
-                ) { periodState ->
-                    if (periodState != null) {
-                        Box(
-                            modifier = Modifier.padding(start = 15.dp),
-                            contentAlignment = Alignment.CenterStart
-                        ) {
-                            Text(
-                                text = stringResource(id = periodState.textToShow),
-                                style = UiKitStyles.Body2
-                            )
-                        }
-                    } else {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = stringResource(R.string.undefined_text),
-                                style = UiKitStyles.Body2
-                            )
-                        }
-                    }
-                }
             }
 
             UiKitCurrencyPopUp(state.currencyFieldState, viewModel::onCurrencySelected)
             IconsComponent(viewModel::onIconSelected, state.iconState)
             Spacer(modifier = Modifier.height(40.dp))
 
-            ButtonComponent(viewModel::onClickCreate, state, stringResource(R.string.btn_finish_create_text))
+            ButtonComponent(
+                onClickCreateUpdate = viewModel::onClickCreate,
+                state = state,
+                text = stringResource(R.string.btn_finish_create_text)
+            )
         }
     }
+}
+
+@Composable
+fun CreateCategoryLimitComponent(
+    state: CreateUpdateCategoryState,
+    onAmountChanged: (String) -> Unit,
+    onPeriodSelected: (PeriodState) -> Unit,
+    focusManager: FocusManager
+) {
+    Column {
+        Text(
+            text = stringResource(R.string.text_limit_description),
+            style = UiKitStyles.Body2,
+            modifier = Modifier.fillMaxWidth().padding(top = 15.dp)
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(70.dp),
+            verticalAlignment = Alignment.Bottom
+        ) {
+            CreateUpdateCategoryTextField(
+                state = state.amountTextState,
+                onTextChange = onAmountChanged,
+                label = stringResource(R.string.text_field_limit_label),
+                type = KeyboardType.Number,
+                modifier = Modifier
+                    .weight(1f),
+                keyboardActions = KeyboardActions { focusManager.clearFocus() }
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            UiKitPopUp(
+                info = state.periodState,
+                onClickItem = onPeriodSelected,
+                modifier = Modifier
+                    .height(57.dp)
+                    .weight(1f)
+            ) { periodState ->
+                if (periodState != null) {
+                    Box(
+                        modifier = Modifier.padding(start = 15.dp),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        Text(
+                            text = stringResource(id = periodState.textToShow),
+                            style = UiKitStyles.Body2
+                        )
+                    }
+                } else {
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.undefined_text),
+                            style = UiKitStyles.Body2
+                        )
+                    }
+                }
+            }
+        }
+    }
+
 }

@@ -13,14 +13,14 @@ class UnknownTypeTransaction(type: String) :
 
 class UnknownCurrencyException(currency: String) : Throwable(currency)
 
-fun ListTransactionsResponse.mapToData(locale: Locale) =
-    ListTransactionsData(listTransactions = this.data.map { it.mapToData(locale) })
+fun mapToData(response: ListTransactionsResponse, locale: Locale) =
+    ListTransactionsData(listTransactions = response.data.map { mapToData(locale, it) })
 
-private fun TransactionResponse.mapToData(locale: Locale) = when (type) {
-    "EXPENSE" -> getExpenseTransaction(this, locale = locale)
-    "INCOME" -> getIncomeTransaction(this, locale = locale)
-    "TRANSFER" -> getTransferTransaction(this, locale = locale)
-    else -> throw UnknownTypeTransaction(type)
+private fun mapToData(locale: Locale, response: TransactionResponse) = when (response.type) {
+    "EXPENSE" -> getExpenseTransaction(response, locale = locale)
+    "INCOME" -> getIncomeTransaction(response, locale = locale)
+    "TRANSFER" -> getTransferTransaction(response, locale = locale)
+    else -> throw UnknownTypeTransaction(response.type)
 }
 
 private fun getExpenseTransaction(transactionResponse: TransactionResponse, locale: Locale): TransactionExpense =

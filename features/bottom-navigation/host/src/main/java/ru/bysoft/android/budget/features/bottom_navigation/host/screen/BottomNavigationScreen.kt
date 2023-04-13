@@ -27,7 +27,7 @@ import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.plus.
 import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.qr.QRCode
 import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.statistic.Statistic
 import ru.bysoft.android.budget.common.navigation.NavigationInfo
-import ru.bysoft.android.budget.uikit.components.expandablecontetn.VerticalExpandableContent
+import ru.bysoft.android.budget.uikit.components.expandablecontent.VerticalExpandableContent
 import ru.bysoft.android.budget.uikit.styles.UiKitStyles
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

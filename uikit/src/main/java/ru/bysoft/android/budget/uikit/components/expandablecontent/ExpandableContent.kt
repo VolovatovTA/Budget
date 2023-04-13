@@ -1,4 +1,4 @@
-package ru.bysoft.android.budget.uikit.components.expandablecontetn
+package ru.bysoft.android.budget.uikit.components.expandablecontent
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
