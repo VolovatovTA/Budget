@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.bysoft.android.budget.features.create_update_wallet.R
 import ru.bysoft.android.budget.features.create_update_wallet.CreateWalletViewModel
-import ru.bysoft.android.budget.features.create_update_wallet.ICreateWalletViewModel
 import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.CreateWalletState
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
@@ -36,7 +35,7 @@ typealias UiKitStrings = ru.bysoft.android.budget.uikit.R.string
 
 @Composable
 fun CreateWalletScreen() {
-    val viewModel: ICreateWalletViewModel = hiltViewModel<CreateWalletViewModel>()
+    val viewModel = hiltViewModel<CreateWalletViewModel>()
     val state = viewModel.state.collectAsState().value
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
@@ -96,7 +95,7 @@ fun CreateWalletScreen() {
 }
 
 @Composable
-private fun ButtonComponent(viewModel: ICreateWalletViewModel, state: CreateWalletState) {
+private fun ButtonComponent(viewModel: CreateWalletViewModel, state: CreateWalletState) {
     Box(modifier = Modifier.height(50.dp)) {
         if (state.isLoading) {
             CircularProgressIndicator(modifier = Modifier.fillMaxHeight())

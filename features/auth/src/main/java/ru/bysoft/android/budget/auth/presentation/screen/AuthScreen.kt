@@ -177,7 +177,7 @@ private fun AuthSuccessScreen(
 
         val btnText =
             if (state.type == AuthActionType.SIGN_IN) stringResource(R.string.auth_btn_sign_in_text)
-            else stringResource(R.string.auth_btn_sign_in_text)
+            else stringResource(R.string.auth_btn_sign_up_text)
 
         Box(
             Modifier

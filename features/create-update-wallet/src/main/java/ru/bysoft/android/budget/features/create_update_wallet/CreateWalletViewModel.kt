@@ -19,64 +19,58 @@ import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFi
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 import javax.inject.Inject
 
-interface ICreateWalletViewModel {
-    val state: StateFlow<CreateWalletState>
-    fun onNameChanged(name: String)
-    fun onBalanceChanged(balance: String)
-    fun onCurrencySelected(currency: BudgetCurrency)
-    fun onButtonClick()
-}
-
 @HiltViewModel
 class CreateWalletViewModel @Inject constructor(
     private val repository: ICreateWalletRepository,
     private val navigate: ICreateWalletNavigation,
     meInfo: IMeInfo,
     private val errorLogger: IErrorLogger
-) : ViewModel(), ICreateWalletViewModel {
+) : ViewModel() {
 
     private val createWalletExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         errorLogger.logError(throwable)
-        state.value = state.value.copy(
+        _state.value = _state.value.copy(
             isLoading = false,
             toastText = "Произошла непредвиденная ошибка"
         )
     }
 
-    override val state: MutableStateFlow<CreateWalletState> =
-        MutableStateFlow(
-            CreateWalletState(
-                currencyFieldState = CurrencyFieldState(
-                    selectedCurrency = getCurrency(meInfo.getCurrentMeInfo()!!.settingsData.currency)!!
-                )
+    private val _state = MutableStateFlow(
+        CreateWalletState(
+            currencyFieldState = CurrencyFieldState(
+                selectedCurrency = getCurrency(meInfo.getCurrentMeInfo()!!.settingsData.currency)!!
             )
         )
+    )
+    val state: StateFlow<CreateWalletState>
+        get() = _state
 
-    override fun onNameChanged(name: String) {
-        state.value = state.value.copy(nameTextState = TextFieldState(name))
+
+    fun onNameChanged(name: String) {
+        _state.value = _state.value.copy(nameTextState = TextFieldState(name))
     }
 
-    override fun onBalanceChanged(balance: String) {
-        state.value = state.value.copy(balanceTextState = TextFieldState(balance))
+    fun onBalanceChanged(balance: String) {
+        _state.value = _state.value.copy(balanceTextState = TextFieldState(balance))
     }
 
-    override fun onCurrencySelected(currency: BudgetCurrency) {
-        state.value = state.value.copy(
-            currencyFieldState = state.value.currencyFieldState.copy(
+    fun onCurrencySelected(currency: BudgetCurrency) {
+        _state.value = _state.value.copy(
+            currencyFieldState = _state.value.currencyFieldState.copy(
                 selectedCurrency = currency
             )
         )
     }
 
-    override fun onButtonClick() {
+    fun onButtonClick() {
         viewModelScope.launch(createWalletExceptionHandler) {
-            state.value = state.value.copy(isLoading = true)
-            val data = repository.createWallet(state.value)
+            _state.value = _state.value.copy(isLoading = true)
+            val data = repository.createWallet(_state.value)
             if (data.errorType == null) {
-                state.value = state.value.copy(isLoading = false)
+                _state.value = _state.value.copy(isLoading = false)
                 navigate.popBack()
             } else {
-                state.value = state.value.copy(
+                _state.value = _state.value.copy(
                     isLoading = false,
                     balanceTextState = getBalanceStateByErrorType(data.errorType),
                     nameTextState = getNameStateByErrorType(data.errorType),
@@ -88,28 +82,28 @@ class CreateWalletViewModel @Inject constructor(
 
     private fun getBalanceStateByErrorType(errorType: CreateWalletErrorData): TextFieldState =
         when (errorType) {
-            CreateWalletErrorData.INVALID_BALANCE -> state.value.balanceTextState.copy(
+            CreateWalletErrorData.INVALID_BALANCE -> _state.value.balanceTextState.copy(
                 errorText = CreateWalletErrorData.INVALID_BALANCE.errorText
             )
-            else -> state.value.balanceTextState
+            else -> _state.value.balanceTextState
         }
 
     private fun getNameStateByErrorType(errorType: CreateWalletErrorData): TextFieldState =
         when (errorType) {
-            CreateWalletErrorData.INVALID_NAME -> state.value.nameTextState.copy(
+            CreateWalletErrorData.INVALID_NAME -> _state.value.nameTextState.copy(
                 errorText = CreateWalletErrorData.INVALID_NAME.errorText
             )
-            CreateWalletErrorData.NO_UNIQUE_NAME -> state.value.nameTextState.copy(
+            CreateWalletErrorData.NO_UNIQUE_NAME -> _state.value.nameTextState.copy(
                 errorText = CreateWalletErrorData.NO_UNIQUE_NAME.errorText
             )
-            else -> state.value.nameTextState
+            else -> _state.value.nameTextState
         }
 
     private fun getCurrencyStateByErrorType(errorType: CreateWalletErrorData): CurrencyFieldState =
         when (errorType) {
-            CreateWalletErrorData.INVALID_CURRENCY -> state.value.currencyFieldState.copy(
+            CreateWalletErrorData.INVALID_CURRENCY -> _state.value.currencyFieldState.copy(
                 errorText = CreateWalletErrorData.INVALID_CURRENCY.errorText
             )
-            else -> state.value.currencyFieldState
+            else -> _state.value.currencyFieldState
         }
 }
