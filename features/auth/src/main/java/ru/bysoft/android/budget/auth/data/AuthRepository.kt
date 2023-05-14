@@ -1,6 +1,7 @@
 package ru.bysoft.android.budget.auth.data
 
-import retrofit2.HttpException
+import ru.budget.android.api.data.source.network.IAuthApi
+import ru.budget.android.api.data.source.network.entity.auth.SignInGoogleRequest
 import ru.bysoft.android.budget.auth.data.entity.SignInData
 import ru.bysoft.android.budget.auth.data.entity.SignInErrorData
 import ru.bysoft.android.budget.auth.data.entity.SignUpData
@@ -8,18 +9,18 @@ import ru.bysoft.android.budget.auth.data.entity.SignUpErrorData
 import ru.bysoft.android.budget.auth.data.mapper.mapToErrorData
 import ru.bysoft.android.budget.auth.data.mapper.mapToSignInRequest
 import ru.bysoft.android.budget.auth.data.mapper.mapToSignUpRequest
-import ru.bysoft.android.budget.auth.data.network.IAuthApi
 import ru.bysoft.android.budget.common.token.ITokenRepo
 import ru.bysoft.android.budget.common.token.entity.AuthResponse
 import ru.bysoft.android.budget.common.token.entity.AuthSuccessResponse
 import ru.bysoft.android.budget.common.token.entity.SignInErrorResponse
 import ru.bysoft.android.budget.common.token.entity.SignUpErrorResponse
-import ru.bysoft.android.budget.common.util.restore
 import javax.inject.Inject
+import javax.net.ssl.SSLPeerUnverifiedException
 
 interface IAuthRepository {
     suspend fun signIn(signInData: SignInData): SignInErrorData?
     suspend fun signUp(signUpData: SignUpData): SignUpErrorData?
+    suspend fun signInByGoogle(idToken: String?)
 }
 
 class AuthRepository @Inject constructor(
@@ -30,9 +31,20 @@ class AuthRepository @Inject constructor(
     override suspend fun signIn(signInData: SignInData): SignInErrorData? {
         val authResponse: AuthResponse = try {
             api.signIn(signInData.mapToSignInRequest())
-        } catch (e: HttpException) {
-            val responseJson = e.response()?.errorBody()?.string()
-            responseJson?.restore<SignInErrorResponse>() ?: throw EmptySlugMessage(responseJson)
+        } catch (e: Throwable) {
+            when (e) {
+//                is HttpException -> {
+//                    val responseJson = e.response()?.errorBody()?.string()
+//                    responseJson?.restore<SignInErrorResponse>()
+//                        ?: throw EmptySlugMessage(responseJson)
+//                }
+                is SSLPeerUnverifiedException -> SignInErrorResponse(
+                    "error_certificate"
+                )
+                else -> SignInErrorResponse(
+                    "unknown_error"
+                )
+            }
         }
 
         return when (authResponse) {
@@ -50,9 +62,21 @@ class AuthRepository @Inject constructor(
     override suspend fun signUp(signUpData: SignUpData): SignUpErrorData? {
         val authResponse: AuthResponse = try {
             api.signUp(signUpData.mapToSignUpRequest())
-        } catch (e: HttpException) {
-            val responseJson = e.response()?.errorBody()?.string()
-            responseJson?.restore<SignUpErrorResponse>() ?: throw EmptySlugMessage(responseJson)
+        } catch (e: Throwable) {
+            when (e) {
+//                is HttpException -> {
+//                    val responseJson = e.response()?.errorBody()?.string()
+//                    responseJson?.restore<SignUpErrorResponse>() ?: throw EmptySlugMessage(
+//                        responseJson
+//                    )
+//                }
+                is SSLPeerUnverifiedException -> SignUpErrorResponse(
+                    "error_certificate"
+                )
+                else -> SignUpErrorResponse(
+                    "unknown_error"
+                )
+            }
         }
 
         return when (authResponse) {
@@ -67,6 +91,12 @@ class AuthRepository @Inject constructor(
         }
     }
 
+    override suspend fun signInByGoogle(idToken: String?) {
+        val authResponse = api.signInByGoogle(SignInGoogleRequest(idToken))
+        tokenRepo.saveTokens(authResponse)
+
+    }
+
 }
 
-class EmptySlugMessage(json: String?): Throwable(json)
+class EmptySlugMessage(json: String?) : Throwable(json)

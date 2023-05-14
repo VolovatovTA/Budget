@@ -4,4 +4,6 @@ interface IHomeNavigation {
     fun toUpdateTransaction(id: String)
     fun toCreateWallet()
     fun toAuth()
+    fun toEditWallet(walletId: String)
+    fun toSettings()
 }

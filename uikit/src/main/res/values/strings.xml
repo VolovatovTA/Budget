@@ -3,4 +3,8 @@
     <string name="empty_text" translatable="false" />
     <string name="without_icon">without icon</string>
     <string name="currency_not_selected">Currency not selected</string>
+    <string name="compose">Compose</string>
+    <string name="views">Views</string>
+    <string name="y_axis">Dollllllars</string>
+    <string name="x_axis">timie (days)</string>
 </resources>

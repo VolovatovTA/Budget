@@ -83,7 +83,7 @@ fun HomeScreen(
 
                 ) {
                     item {
-                        HomeTitleComponent(meState)
+                        HomeTitleComponent(meState, viewModel::onSettingsClick)
 
                         WalletsPagerComponent(
                             walletsState,

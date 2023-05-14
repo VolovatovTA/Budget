@@ -23,5 +23,9 @@
     <string name="field_name_required">Name is required</string>
     <string name="field_name_invalid_length">Name must contains at least one letter</string>
     <string name="internal_server_error">Internal server error happened. We know about it and fix it as soon as possible</string>
+    <string name="certificate_error">Certificate error</string>
     <string name="unexpected_error">Unexpected error</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+
+    <string name="web_client_id" translatable="false">1066386611161-v2dnh4me84ud21ncacqsk8bvm7hem0fm.apps.googleusercontent.com</string>
 </resources>

@@ -5,4 +5,5 @@
     <string name="text_limit">"Лимит: "</string>
     <string name="add_text_per_day">в день</string>
     <string name="empty_category_list">У вас пока нет ни одной категории…</string>
+    <string name="show_more_statistic">Show more statistic</string>
 </resources>

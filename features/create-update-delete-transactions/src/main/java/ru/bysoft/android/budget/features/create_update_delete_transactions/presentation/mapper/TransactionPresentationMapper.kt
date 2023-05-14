@@ -1,6 +1,6 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper
 
-import ru.bysoft.android.budget.features.create_update_delete_transactions.data.network.entity.requests.*
+import ru.budget.android.api.data.source.network.entity.transactions.*
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
 import javax.inject.Inject
 
@@ -8,8 +8,9 @@ interface ITransactionPresentationMapper {
     fun toRequest(state: ITransactionState): ITransactionCreateRequest
 }
 
-class TransactionPresentationMapper @Inject constructor() :
-    ITransactionPresentationMapper {
+class TransactionPresentationMapper @Inject constructor(
+
+) : ITransactionPresentationMapper {
     override fun toRequest(state: ITransactionState): ITransactionCreateRequest {
         return when (state) {
             is TransactionIncomeState -> transactionExpenseIncomeCreateRequest(state)

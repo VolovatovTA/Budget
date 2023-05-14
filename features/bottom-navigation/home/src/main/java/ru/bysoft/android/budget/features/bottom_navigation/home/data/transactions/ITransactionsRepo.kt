@@ -1,9 +1,9 @@
 package ru.bysoft.android.budget.features.bottom_navigation.home.data.transactions
 
-import ru.bysoft.android.budget.features.bottom_navigation.home.data.transactions.entity.ListTransactionsData
-import ru.bysoft.android.budget.features.bottom_navigation.home.data.transactions.mapper.mapToData
-import ru.bysoft.android.budget.features.bottom_navigation.home.data.transactions.network.ITransactionsApi
-import java.util.*
+import ru.budget.android.api.data.mapper.ITransactionsDataMapper
+import ru.budget.android.api.data.source.network.ITransactionsApi
+import ru.budget.android.api.data.source.network.entity.transactions.TransferTypeEnum
+import ru.bysoft.android.budget.common.data_entity.ListTransactionsData
 import javax.inject.Inject
 
 interface ITransactionsRepo {
@@ -16,15 +16,9 @@ interface ITransactionsRepo {
     suspend fun deleteTransaction(id: String): Result<Unit>
 }
 
-enum class TransferTypeEnum(val nameToBack: String?) {
-    WITH_TRANSFER(null),
-    WITHOUT_TRANSFER("WITHOUT"),
-    ONLY_TRANSFER("ONLY")
-}
-
 class TransactionRepo @Inject constructor(
     private val api: ITransactionsApi,
-    private val locale: Locale
+    private val mapper: ITransactionsDataMapper
 ) : ITransactionsRepo {
 
     override suspend fun getTransactions(
@@ -32,12 +26,12 @@ class TransactionRepo @Inject constructor(
         walletId: List<String>?,
         transferType: TransferTypeEnum
     ): ListTransactionsData {
-        return mapToData(
+        return mapper.mapToData(
             api.getTransactions(
                 type = type,
                 wallet_ids = walletId,
                 transferType = transferType.nameToBack
-            ), locale
+            )
         )
     }
 

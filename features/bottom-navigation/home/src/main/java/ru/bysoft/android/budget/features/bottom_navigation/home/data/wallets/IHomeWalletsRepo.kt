@@ -1,8 +1,8 @@
 package ru.bysoft.android.budget.features.bottom_navigation.home.data.wallets
 
-import ru.bysoft.android.budget.features.bottom_navigation.home.data.wallets.network.IHomeWalletsApi
-import ru.bysoft.android.budget.features.bottom_navigation.home.data.wallets.entity.WalletData
-import ru.bysoft.android.budget.features.bottom_navigation.home.data.wallets.mapper.mapToData
+import ru.budget.android.api.data.mapper.IWalletsDataMapper
+import ru.budget.android.api.data.source.network.IWalletApi
+import ru.bysoft.android.budget.common.data_entity.WalletData
 import javax.inject.Inject
 
 interface IHomeWalletsRepo {
@@ -10,11 +10,12 @@ interface IHomeWalletsRepo {
 }
 
 class HomeWalletsRepo @Inject constructor(
-    private val api: IHomeWalletsApi
+    private val api: IWalletApi,
+    private val mapper: IWalletsDataMapper
 ) : IHomeWalletsRepo {
 
     override suspend fun getWallets(): List<WalletData> {
-        return api.getWallets().mapToData() ?: emptyList()
+        return mapper.mapToData(api.getWallets())
     }
 
 }

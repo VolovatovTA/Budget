@@ -7,11 +7,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.budget.android.api.data.source.network.ICategoryApi
+import ru.budget.android.api.data.source.network.IWalletApi
 import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.util.BudgetCurrency
+import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
-import ru.bysoft.android.budget.features.create_update_delete_transactions.data.network.ITransactionsCategoryApi
-import ru.bysoft.android.budget.features.create_update_delete_transactions.data.network.ITransactionsWalletApi
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.TransactionsCreateNavParams
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
@@ -44,8 +45,8 @@ interface ITransactionUpdateViewModel : ITransactionsViewModel {
 abstract class TransactionsCommonViewModel(
     private val navigate: ITransactionNavigation,
     private val errorLogger: IErrorLogger,
-    private val categoryApi: ITransactionsCategoryApi,
-    private val walletApi: ITransactionsWalletApi,
+    private val categoryApi: ICategoryApi,
+    private val walletApi: IWalletApi,
     private val categoryMapperPresentation: ITransactionsCategoryPresentationMapper,
     private val walletMapper: ITransactionWalletPresentationMapper,
 ) : ViewModel(), ITransactionsViewModel {
@@ -217,13 +218,13 @@ abstract class TransactionsCommonViewModel(
                     .copyWithLoading(true)
             }
 
-            val path = when (state.value) {
-                is TransactionExpenseState -> "expenses"
-                is TransactionTransferState -> "transfer"
-                is TransactionIncomeState -> "incomes"
+            val neededCategoryType = when (state.value) {
+                is TransactionExpenseState -> CategoryTypeEnum.EXPENSE
+                is TransactionIncomeState -> CategoryTypeEnum.INCOME
+                is TransactionTransferState -> return@launch
             }
 
-            val response = categoryApi.getCategories(path)
+            val response = categoryApi.getCategories(neededCategoryType.pathToBack)
             state.update {
                 it
                     .copyWithCategory(categoryMapperPresentation.toPresentation(response))

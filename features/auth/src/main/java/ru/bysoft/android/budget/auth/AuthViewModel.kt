@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.auth.data.IAuthRepository
 import ru.bysoft.android.budget.auth.navigation.IAuthNavigation
+import ru.bysoft.android.budget.auth.presentation.SignInResult
 import ru.bysoft.android.budget.auth.presentation.entity.AuthActionType
 import ru.bysoft.android.budget.auth.presentation.entity.AuthState
 import ru.bysoft.android.budget.auth.presentation.mapper.getSignInData
@@ -24,6 +25,7 @@ interface IAuthViewModel {
     fun setNewEmail(email: String)
     fun onButtonClick(action: AuthActionType)
     fun switchAuthType(newType: AuthActionType)
+    fun onGoogleSignInResult(account: SignInResult)
 }
 
 @HiltViewModel
@@ -124,6 +126,13 @@ class AuthViewModel @Inject constructor(
             type = newType,
             toastText = null
         )
+    }
+
+    override fun onGoogleSignInResult(account: SignInResult) {
+        viewModelScope.launch(handler) {
+            repository.signInByGoogle(account.data?.idToken)
+            navigate.toBottomNavigation()
+        }
     }
 
     private fun isAllComplete(

@@ -1,28 +1,31 @@
 package ru.bysoft.android.budget.features.bottom_navigation.statistic.data
 
-import ru.bysoft.android.budget.features.bottom_navigation.statistic.data.entity.CategoryData
-import ru.bysoft.android.budget.features.bottom_navigation.statistic.data.entity.StatisticData
-import ru.bysoft.android.budget.features.bottom_navigation.statistic.data.mapper.StatisticDataMapper
-import ru.bysoft.android.budget.features.bottom_navigation.statistic.data.network.IStatisticApi
+import ru.budget.android.api.data.source.network.ICategoryApi
+import ru.bysoft.android.budget.common.data_entity.StatisticData
+import ru.budget.android.api.data.mapper.CategoryDataMapper
+import ru.budget.android.api.data.source.network.ITransactionsApi
+import ru.bysoft.android.budget.common.data_entity.ExpenseCategory
+import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import javax.inject.Inject
 
 interface IStatisticRepo {
-    suspend fun getCategories(): StatisticData
-    suspend fun getUpdatedCategoryData(id: String, dateFrom: String?, dateTo: String?, oldCategoryData: CategoryData): CategoryData
+    suspend fun getExpenses(): StatisticData
+    suspend fun getUpdatedCategoryData(id: String, dateFrom: String?, dateTo: String?, oldCategoryData: ExpenseCategory): ExpenseCategory
 }
 
 class StatisticRepo @Inject constructor(
-    private val api: IStatisticApi,
-    private val mapper: StatisticDataMapper
+    private val categoryApi: ICategoryApi,
+    private val transactionApi: ITransactionsApi,
+    private val mapper: CategoryDataMapper
 ) : IStatisticRepo {
 
-    override suspend fun getCategories(): StatisticData {
-        val response = api.getExpenses()
+    override suspend fun getExpenses(): StatisticData {
+        val response = categoryApi.getCategories(CategoryTypeEnum.EXPENSE.pathToBack)
         return mapper.mapToData(response)
     }
 
-    override suspend fun getUpdatedCategoryData(id: String, dateFrom: String?, dateTo: String?, oldCategoryData: CategoryData): CategoryData {
-        val response = api.getExpensesTransactions(
+    override suspend fun getUpdatedCategoryData(id: String, dateFrom: String?, dateTo: String?, oldCategoryData: ExpenseCategory): ExpenseCategory {
+        val response = transactionApi.getExpensesTransactions(
             expenseIds = listOf(id),
             dateFrom = dateFrom,
             dateTo = dateTo

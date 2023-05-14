@@ -3,11 +3,10 @@ package ru.bysoft.android.budget.features.bottom_navigation.home.presentation.ma
 import androidx.compose.material.DismissState
 import androidx.compose.material.DismissValue
 import androidx.compose.material.ExperimentalMaterialApi
+import ru.bysoft.android.budget.common.data_entity.*
 import ru.bysoft.android.budget.common.util.dateFormatOutput
 import ru.bysoft.android.budget.common.util.getBeautifulAmount
 import ru.bysoft.android.budget.common.util.getCurrency
-import ru.bysoft.android.budget.features.bottom_navigation.home.data.transactions.entity.*
-import ru.bysoft.android.budget.features.bottom_navigation.home.data.wallets.entity.WalletData
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionInfo
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.IWalletPresentation
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletCardPresentation
@@ -18,26 +17,25 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import javax.inject.Inject
 
-interface IHomePresentationMapper{
-    fun mapToState(data: List<WalletData>) : List<IWalletPresentation>
+interface IHomePresentationMapper {
+    fun mapToState(data: List<WalletData>): List<IWalletPresentation>
     fun mapToInfo(
         data: ListTransactionsData,
         confirmStateChange: (value: DismissValue, data: String) -> Boolean
     ): List<TransactionInfo>
 }
+
 class HomePresentationMapper @Inject constructor(
     private val locale: Locale
-):IHomePresentationMapper{
+) : IHomePresentationMapper {
 
-    override fun mapToState(data: List<WalletData>) = data.map { mapToState(it) }.plus(WalletCreateNewPresentation)
+    override fun mapToState(data: List<WalletData>) =
+        data.map { mapToState(it) }.plus(WalletCreateNewPresentation)
 
     private fun mapToState(data: WalletData) = WalletCardPresentation(
         name = data.name,
-        balance = getBeautifulAmount(
-            data.balance,
-            getCurrency(data.currency) ?: throw Throwable("UnknownCurrency")
-        ),
-        currency = getCurrency(data.currency)?.displayName ?: "*",
+        balance = data.balance,
+        currency = data.currency,
         backgroundColor = "col3",
         walletId = data.id
     )

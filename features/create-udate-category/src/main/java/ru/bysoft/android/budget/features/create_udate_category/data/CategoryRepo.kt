@@ -1,36 +1,33 @@
 package ru.bysoft.android.budget.features.create_udate_category.data
 
 import retrofit2.HttpException
-import ru.bysoft.android.budget.features.create_udate_category.data.entity.CategoryData
-import ru.bysoft.android.budget.features.create_udate_category.data.entity.ErrorCategoryCreate
-import ru.bysoft.android.budget.features.create_udate_category.data.entity.SuccessCategoryCreate
-import ru.bysoft.android.budget.features.create_udate_category.data.mapper.ICategoryMapper
-import ru.bysoft.android.budget.features.create_udate_category.data.network.ICategoryApi
-import ru.bysoft.android.budget.features.create_udate_category.data.network.entity.CategoryRequest
-import ru.bysoft.android.budget.features.create_udate_category.data.network.entity.CategoryResponse
+import ru.budget.android.api.data.mapper.CategoryDataMapper
+import ru.budget.android.api.data.source.network.ICategoryApi
+import ru.budget.android.api.data.source.network.entity.category.CategoryItemResponse
+import ru.budget.android.api.data.source.network.entity.category.CategoryRequest
 import javax.inject.Inject
 
 interface ICategoryRepo {
-    suspend fun createCategory(categoryRequest: CategoryRequest, name: String): CategoryData
-    suspend fun updateCategory(categoryRequest: CategoryRequest, name: String, id: String): CategoryData
-    suspend fun getCategoryInfo(id: String, path: String): CategoryResponse
-    suspend fun delete(id: String, path: String): CategoryData
+    suspend fun createCategory(categoryRequest: CategoryRequest, name: String): Result<Unit>
+    suspend fun updateCategory(categoryRequest: CategoryRequest, name: String, id: String): Result<Unit>
+    suspend fun getCategoryInfo(id: String, path: String): CategoryItemResponse
+    suspend fun delete(id: String, path: String): Result<Unit>
 }
 
 class CategoryRepo @Inject constructor(
     private val api: ICategoryApi,
-    private val mapper: ICategoryMapper
+    private val mapper: CategoryDataMapper
 ) : ICategoryRepo {
 
     override suspend fun createCategory(
         categoryRequest: CategoryRequest,
         name: String
-    ): CategoryData {
+    ): Result<Unit> {
         return try {
             api.createCategory(categoryRequest, name)
-            SuccessCategoryCreate
+            Result.success(Unit)
         } catch (e: HttpException) {
-            ErrorCategoryCreate(mapper.getCategoryErrorType(e.response()?.errorBody()?.string()))
+            Result.failure(mapper.getCategoryErrorType(e.response()?.errorBody()?.string()))
         }
 
     }
@@ -39,22 +36,23 @@ class CategoryRepo @Inject constructor(
         categoryRequest: CategoryRequest,
         name: String,
         id: String
-    ): CategoryData {
+    ): Result<Unit> {
+
         return try {
             api.updateCategory(categoryRequest, name, id)
-            SuccessCategoryCreate
+            Result.success(Unit)
         } catch (e: HttpException) {
-            ErrorCategoryCreate(mapper.getCategoryErrorType(e.response()?.errorBody()?.string()))
+            Result.failure(mapper.getCategoryErrorType(e.response()?.errorBody()?.string()))
         }
     }
 
-    override suspend fun getCategoryInfo(id: String, path: String): CategoryResponse {
+    override suspend fun getCategoryInfo(id: String, path: String): CategoryItemResponse {
         return api.getCategory(id, path)
     }
 
-    override suspend fun delete(id: String, path: String): CategoryData {
-        api.delete(id, path).execute()
-        return SuccessCategoryCreate
+    override suspend fun delete(id: String, path: String): Result<Unit>  {
+        api.delete(id, path)
+        return Result.success(Unit)
     }
 
 }

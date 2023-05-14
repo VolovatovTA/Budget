@@ -9,12 +9,11 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import retrofit2.HttpException
+import ru.budget.android.api.data.source.network.entity.transactions.TransferTypeEnum
 import ru.bysoft.android.budget.common.errors.errorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.me.IHomeMeRepo
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.transactions.ITransactionsRepo
-import ru.bysoft.android.budget.features.bottom_navigation.home.data.transactions.TransferTypeEnum
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.wallets.IHomeWalletsRepo
 import ru.bysoft.android.budget.features.bottom_navigation.home.navigation.IHomeNavigation
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.ToastInfo
@@ -26,10 +25,7 @@ import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.ent
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.title.MeLoadingState
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.title.MeSuccessState
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.transactions.*
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.IWalletsState
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletsErrorState
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletsLoadingState
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletsSuccessState
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.*
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.mapper.IHomePresentationMapper
 import javax.inject.Inject
 
@@ -48,6 +44,7 @@ interface IHomeViewModel {
     fun onClickFilter(newValue: Boolean, filter: FilterData)
     fun updateTransaction(id: String)
     fun deleteTransaction(id: String)
+    fun onSettingsClick()
 }
 
 @HiltViewModel
@@ -127,7 +124,7 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onClickEditWallet(walletId: String) {
-
+        navigate.toEditWallet(walletId)
     }
 
     override fun onPositionChanged(walletId: String) {
@@ -163,6 +160,16 @@ class HomeViewModel @Inject constructor(
                         list = transactionState.list.filterNot { it.id == id }
                     ) ?: transactionState
                 }
+                val data = walletsRepo.getWallets()
+                walletsState.update { state ->
+                    (state as? WalletsSuccessState)?.copy(
+                        list = state.list.map { wallet ->
+                            (wallet as? WalletCardPresentation)?.copy(
+                                balance = data.firstOrNull { it.id == wallet.walletId }?.balance ?: wallet.balance
+                            ) ?: wallet
+                        }
+                    ) ?: state
+                }
             } else {
                 transactionsState.update { transactionState ->
                     (transactionState as? TransactionSuccess)?.copy(
@@ -172,19 +179,55 @@ class HomeViewModel @Inject constructor(
                     ) ?: transactionState
                 }
                 toastState.update {
-                    if (result.exceptionOrNull() is HttpException) {
-                        ToastInfo(it?.keyLaunchedEffect?.not() ?: true, "Произошла ошибка на бэке")
-                    } else {
-                        ToastInfo(
-                            it?.keyLaunchedEffect?.not() ?: true,
-                            "Произошла ошибка на фронте"
-                        )
-                    }
+//                    if (result.exceptionOrNull() is HttpException) {
+//                        ToastInfo(it?.keyLaunchedEffect?.not() ?: true, "Произошла ошибка на бэке")
+//                    } else {
+//                        ToastInfo(
+//                            it?.keyLaunchedEffect?.not() ?: true,
+//                            "Произошла ошибка на фронте"
+//                        )
+//                    }
+                    ToastInfo(
+                        it?.keyLaunchedEffect?.not() ?: true,
+                        "Произошла ошибка"
+                    )
                 }
                 errorLogger.logError(result.exceptionOrNull() ?: Exception("Unknown error"))
             }
         }
 
+    }
+
+    override fun onSettingsClick() {
+        navigate.toSettings()
+    }
+
+    private fun updateBalancesOnWalletsAfterSuccessfullDeleteTransaction(
+        walletIdFrom: String?,
+        walletIdTo: String?,
+        amount: Float
+    ) {
+        walletsState.update { walletsState ->
+            (walletsState as? WalletsSuccessState)?.copy(
+                list = walletsState.list.map { wallet ->
+                    if (wallet is WalletCardPresentation) {
+                        when (wallet.walletId) {
+                            walletIdFrom -> wallet.copy(
+                                balance = wallet.balance + amount
+                            )
+
+                            walletIdTo -> wallet.copy(
+                                balance = wallet.balance - amount
+                            )
+
+                            else -> wallet
+                        }
+                    } else {
+                        wallet
+                    }
+                }
+            ) ?: walletsState
+        }
     }
 
     private fun getWallets(isRefresh: Boolean) {
@@ -193,7 +236,7 @@ class HomeViewModel @Inject constructor(
             val loadedData = walletsRepo.getWallets()
             walletsState.value = WalletsSuccessState(mapper.mapToState(loadedData))
             currentWalletId = loadedData.firstOrNull()?.id ?: ""
-            if (walletsState.value is WalletsSuccessState){
+            if (walletsState.value is WalletsSuccessState) {
                 getTransactions(isRefresh)
             } else {
                 transactionsState.value = TransactionError
@@ -235,7 +278,8 @@ class HomeViewModel @Inject constructor(
                 },
                 walletId = listOf(currentWalletId)
             )
-            transactionsState.value = TransactionSuccess(mapper.mapToInfo(transactions, deleteLambda))
+            transactionsState.value =
+                TransactionSuccess(mapper.mapToInfo(transactions, deleteLambda))
         }
     }
 

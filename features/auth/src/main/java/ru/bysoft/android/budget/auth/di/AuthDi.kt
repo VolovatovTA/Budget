@@ -9,9 +9,9 @@ import ru.bysoft.android.budget.auth.data.IAuthRepository
 
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class AuthDi {
+interface AuthDi {
 
     @Binds
-    abstract fun bindRepo(repo: AuthRepository): IAuthRepository
+    fun bindRepo(repo: AuthRepository): IAuthRepository
 
 }

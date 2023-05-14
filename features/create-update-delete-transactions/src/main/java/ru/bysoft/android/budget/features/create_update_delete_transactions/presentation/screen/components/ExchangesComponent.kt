@@ -22,7 +22,6 @@ import ru.bysoft.android.budget.features.create_update_delete_transactions.prese
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.MAX_HEIGHT
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextField
 import ru.bysoft.android.budget.uikit.styles.UiKitStyles
-import java.util.*
 
 @Composable
 fun ExchangesComponent(
@@ -49,13 +48,10 @@ fun ExchangesComponent(
         }
         exchangeFieldState.forEachIndexed { index, exchangeState ->
             Row(verticalAlignment = Alignment.CenterVertically) {
-                val text = Currency
-                    .getInstance(
-                        exchangeState
-                            .currencyFieldState
-                            .selectedCurrency
-                            ?.iso4217 ?: "TRY"
-                    ).symbol
+                val text = exchangeState
+                    .currencyFieldState
+                    .selectedCurrency
+                    ?.displayName ?: "???"
                 Text(
                     text = "1 $text = ",
                     modifier = Modifier

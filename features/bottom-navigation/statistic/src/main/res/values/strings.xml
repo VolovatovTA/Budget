@@ -4,4 +4,5 @@
     <string name="create_new_category">"Create new category"</string>
     <string name="text_limit">"Limit: "</string>
     <string name="empty_category_list">Your list categories is empty</string>
+    <string name="show_more_statistic">Show more statistic</string>
 </resources>

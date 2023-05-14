@@ -22,12 +22,13 @@ import ru.bysoft.android.budget.features.create_udate_category.R
 import ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels.IUpdateCategoryViewModel
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.ButtonComponent
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.CreateUpdateCategoryTextField
-import ru.bysoft.android.budget.features.create_udate_category.presentation.components.IconsComponent
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitCurrencyPopUp
+import ru.bysoft.android.budget.uikit.components.icon_component.UiKitIconsComponent
 import ru.bysoft.android.budget.uikit.icons.pack.ArrowLeft
 import ru.bysoft.android.budget.uikit.icons.pack.Delete
 import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.templates.UiKitTopBar
 
 @Composable
 fun UpdateCategoryScreen(
@@ -43,38 +44,7 @@ fun UpdateCategoryScreen(
         }
     }
     Scaffold(topBar = {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Spacer(modifier = Modifier.width(15.dp))
-            Icon(
-                imageVector = ArrowLeft,
-                contentDescription = null,
-                modifier = Modifier.clickable(onClick = viewModel::back)
-            )
-            Spacer(modifier = Modifier.width(15.dp))
-            Text(
-                text = stringResource(R.string.update_category_title), style = UiKitStyles.H2
-            )
-            Spacer(modifier = Modifier.width(15.dp))
-
-            Box(
-                modifier = Modifier.weight(1f),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                Icon(
-                    imageVector = Delete,
-                    contentDescription = null,
-                    tint = UiKitColors.colors.red,
-                    modifier = Modifier.clickable(onClick = viewModel::delete)
-                )
-            }
-            Spacer(modifier = Modifier.width(15.dp))
-
-        }
+        UiKitTopBar(R.string.update_category_title, viewModel::back, viewModel::delete)
     }
     ) {
         Column(
@@ -103,7 +73,7 @@ fun UpdateCategoryScreen(
             }
 
             UiKitCurrencyPopUp(state.currencyFieldState, viewModel::onCurrencySelected)
-            IconsComponent(viewModel::onIconSelected, state.iconState)
+            UiKitIconsComponent(viewModel::onIconSelected, state.iconState)
             Spacer(modifier = Modifier.height(40.dp))
 
             ButtonComponent(

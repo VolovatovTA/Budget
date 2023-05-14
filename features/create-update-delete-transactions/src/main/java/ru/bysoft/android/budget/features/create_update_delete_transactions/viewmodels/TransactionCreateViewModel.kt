@@ -8,16 +8,17 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import ru.budget.android.api.data.source.network.ICategoryApi
+import ru.budget.android.api.data.source.network.ITransactionsApi
+import ru.budget.android.api.data.source.network.IWalletApi
+import ru.budget.android.api.data.source.network.entity.transactions.TransactionExpenseCreateRequest
+import ru.budget.android.api.data.source.network.entity.transactions.TransactionIncomeCreateRequest
+import ru.budget.android.api.data.source.network.entity.transactions.TransactionTransferCreateRequest
+import ru.budget.android.api.data.source.network.entity.transactions.error.TransactionErrorResponse
 import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.util.*
-import ru.bysoft.android.budget.features.create_update_delete_transactions.data.network.ITransactionApi
-import ru.bysoft.android.budget.features.create_update_delete_transactions.data.network.ITransactionsCategoryApi
-import ru.bysoft.android.budget.features.create_update_delete_transactions.data.network.ITransactionsWalletApi
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
-import ru.bysoft.android.budget.features.create_update_delete_transactions.data.network.entity.requests.TransactionExpenseCreateRequest
-import ru.bysoft.android.budget.features.create_update_delete_transactions.data.network.entity.requests.TransactionIncomeCreateRequest
-import ru.bysoft.android.budget.features.create_update_delete_transactions.data.network.entity.requests.TransactionTransferCreateRequest
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.TransactionsCreateNavParams
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.ITransactionPresentationMapper
@@ -29,12 +30,12 @@ import javax.inject.Inject
 @HiltViewModel
 class TransactionCreateViewModel @Inject constructor(
     private val navigate: ITransactionNavigation,
-    private val transactionApi: ITransactionApi,
+    private val transactionApi: ITransactionsApi,
     private val transactionMapper: ITransactionPresentationMapper,
     private val errorLogger: IErrorLogger,
     private val meInfo: IMeInfo,
-    categoryApi: ITransactionsCategoryApi,
-    walletApi: ITransactionsWalletApi,
+    categoryApi: ICategoryApi,
+    walletApi: IWalletApi,
     categoryMapperPresentation: ITransactionsCategoryPresentationMapper,
     walletMapper: ITransactionWalletPresentationMapper,
     savedStateHandle: SavedStateHandle
@@ -92,9 +93,14 @@ class TransactionCreateViewModel @Inject constructor(
                 navigate.back()
             } catch (e: Throwable) {
                 if (e is HttpException) {
+                    val restoredError = e.response()?.errorBody()?.string()?.restore<TransactionErrorResponse>()
+                    val errors = restoredError?.errors?.map {
+                        it.key.split('.')
+                    }
+
                     state.update {
                         it.copyWithToast(
-                            toastText = e.response()?.errorBody()?.string()
+                            toastText = restoredError?.message
                         )
                     }
                 } else {

@@ -4,17 +4,16 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import ru.bysoft.android.budget.common.data_entity.CategoryErrorType
 import ru.bysoft.android.budget.common.util.BudgetCurrency
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.PeriodState
 import ru.bysoft.android.budget.features.create_udate_category.R
-import ru.bysoft.android.budget.features.create_udate_category.data.entity.CategoryErrorType
-import ru.bysoft.android.budget.features.create_udate_category.data.entity.ErrorCategoryCreate
 import ru.bysoft.android.budget.features.create_udate_category.navigation.CreateCategoryNavInfo
 import ru.bysoft.android.budget.features.create_udate_category.navigation.ICreateUpdateCategoryNavigation
 import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.CreateUpdateCategoryState
-import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.IconState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
+import ru.bysoft.android.budget.uikit.components.icon_component.UiKitIconState
 
 interface ICreateUpdateCategoryViewModel {
     val state: StateFlow<CreateUpdateCategoryState>
@@ -81,7 +80,7 @@ abstract class CreateUpdateCategoryViewModel(
     }
 
     override fun onIconSelected(iconName: String?) {
-        state.update { it.copy(iconState = IconState(iconName)) }
+        state.update { it.copy(iconState = UiKitIconState(iconName)) }
     }
 
     override fun onAmountChanged(newAmount: String) {
@@ -94,8 +93,8 @@ abstract class CreateUpdateCategoryViewModel(
         }
     }
 
-    fun updateState(categoryData: ErrorCategoryCreate) {
-        when (categoryData.errorType) {
+    fun updateState(categoryData: CategoryErrorType?) {
+        when (categoryData) {
             CategoryErrorType.INVALID_ICON_NAME ->
                 state.update { it.copy(toastText = R.string.invalid_icon_name) }
             CategoryErrorType.TECHNICAL_ERROR_IN_BACK ->
@@ -104,19 +103,19 @@ abstract class CreateUpdateCategoryViewModel(
                 state.update { it.copy(toastText = R.string.undefined_error) }
             CategoryErrorType.NULL_ERROR ->
                 state.update { it.copy(toastText = R.string.null_error_server_sent) }
-            CategoryErrorType.INVALID_CURRENCY_ ->
+            CategoryErrorType.INVALID_CURRENCY ->
                 state.update {
                     it.copy(
                         currencyFieldState = state.value.currencyFieldState.copy(errorText = R.string.invalid_currency)
                     )
                 }
-            CategoryErrorType.INVALID_NAME_____ ->
+            CategoryErrorType.INVALID_NAME ->
                 state.update {
                     it.copy(
                         nameTextState = state.value.nameTextState.copy(errorText = R.string.invalid_name)
                     )
                 }
-            CategoryErrorType.NO_UNIQ_NAME_____ ->
+            CategoryErrorType.NO_UNIQ_NAME ->
                 state.update {
                     it.copy(
                         nameTextState = state.value.nameTextState.copy(errorText = R.string.no_unique_name)

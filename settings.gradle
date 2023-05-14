@@ -10,19 +10,23 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io'}
     }
 }
 rootProject.name = "Budget"
 include ':app'
+include ':api'
 include ':uikit'
-include ':features'
-include ':features:auth'
 include ':common'
+include ':features'
+include ':features:splash'
+include ':features:auth'
 include ':features:bottom-navigation'
 include ':features:bottom-navigation:host'
 include ':features:bottom-navigation:home'
 include ':features:bottom-navigation:statistic'
 include ':features:create-update-wallet'
-include ':features:splash'
 include ':features:create-udate-category'
 include ':features:create-update-delete-transactions'
+include ':features:statistic-by-month'
+include ':features:settings'

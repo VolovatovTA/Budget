@@ -13,13 +13,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.*
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
+import ru.bysoft.android.budget.common.util.getBeautifulAmount
+import ru.bysoft.android.budget.common.util.getCurrency
 import ru.bysoft.android.budget.features.bottom_navigation.home.R
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.*
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.*
@@ -29,6 +33,10 @@ import ru.bysoft.android.budget.uikit.icons.pack.Edit
 import ru.bysoft.android.budget.uikit.icons.pack.Plus
 import ru.bysoft.android.budget.uikit.styles.UiKitStyles
 import kotlin.math.absoluteValue
+
+val heightWalletCard = 91.dp
+val cornersRadius = 15.dp
+val padding = 10.dp
 
 @Composable
 @OptIn(ExperimentalPagerApi::class)
@@ -42,7 +50,8 @@ fun WalletsPagerComponent(
     val pagerState = rememberPagerState(0)
 
     Box(
-        modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
     ) {
         when (state) {
             is WalletsLoadingState -> LoadingWallets(pagerState)
@@ -61,7 +70,7 @@ fun WalletsPagerComponent(
 
 @Composable
 @OptIn(ExperimentalPagerApi::class)
-private fun SuccessWallets(
+internal fun SuccessWallets(
     state: WalletsSuccessState,
     pagerState: PagerState,
     onClickSimple: () -> Unit,
@@ -76,7 +85,7 @@ private fun SuccessWallets(
         }
     }
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(15.dp))
         WalletsPagerComponent(state, pagerState, onClickSimple, onClickCreate, onClickEdit)
         Spacer(Modifier.height(10.dp))
         HorizontalPagerIndicator(
@@ -89,11 +98,12 @@ private fun SuccessWallets(
 }
 
 @Composable
-private fun ErrorWallets() {
+internal fun ErrorWallets() {
     Box(
         modifier = Modifier
-            .height(178.5.dp)
-            .fillMaxWidth(), contentAlignment = Alignment.Center
+            .height(heightWalletCard + 28.5.dp)
+            .fillMaxWidth(),
+        contentAlignment = Alignment.Center
     ) {
         Text(
             text = stringResource(R.string.error_while_loading_some_data),
@@ -105,28 +115,28 @@ private fun ErrorWallets() {
 
 @Composable
 @OptIn(ExperimentalPagerApi::class)
-private fun LoadingWallets(pagerState: PagerState) {
+internal fun LoadingWallets(pagerState: PagerState) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(padding / 2))
         HorizontalPager(
             count = 2,
             state = pagerState,
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(start = 30.dp, end = 100.dp),
-            itemSpacing = 20.dp
+            contentPadding = PaddingValues(start = 30.dp, end = heightWalletCard * 2),
+            itemSpacing = padding
         ) {
             UiKitShimmerComponent(
                 modifier = Modifier
-                    .height(150.dp)
+                    .height(heightWalletCard)
                     .fillMaxWidth(),
-                cornerRadius = 20.dp
+                cornerRadius = cornersRadius
             )
         }
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(padding / 2))
         UiKitShimmerComponent(
             modifier = Modifier
                 .height(8.dp)
-                .width(70.dp), cornerRadius = 4.dp
+                .width(70.dp), cornerRadius = cornersRadius / 2
         )
     }
 }
@@ -141,7 +151,7 @@ private fun WalletsPagerComponent(
     onClickCreate: () -> Unit,
     onClickEdit: (id: String) -> Unit,
 ) {
-    val contentPadding = PaddingValues(start = 30.dp, end = 100.dp)
+    val contentPadding = PaddingValues(start = 30.dp, end = heightWalletCard * 2)
     HorizontalPager(
         count = state.list.size,
         state = pagerState,
@@ -159,7 +169,7 @@ private fun WalletsPagerComponent(
             endContentPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
         ),
         contentPadding = contentPadding,
-        itemSpacing = 20.dp
+        itemSpacing = padding*2
     ) { page ->
         WalletCardComponent(
             info = state.list[page], onClickSimple, onClickCreate, onClickEdit
@@ -184,11 +194,11 @@ fun WalletCardComponent(
 private fun WalletCardCreateNewWallet(onClick: () -> Unit) {
     Card(
         modifier = Modifier
-            .height(150.dp)
+            .height(heightWalletCard)
             .fillMaxWidth(),
         elevation = 5.dp,
         backgroundColor = UiKitColors.colors.light,
-        shape = RoundedCornerShape(20.dp)
+        shape = RoundedCornerShape(cornersRadius)
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -198,7 +208,7 @@ private fun WalletCardCreateNewWallet(onClick: () -> Unit) {
                 .clickable { onClick.invoke() }
         ) {
             Text(
-                modifier = Modifier.padding(20.dp),
+                modifier = Modifier.padding(),
                 text = stringResource(R.string.create_new_wallet),
                 style = UiKitStyles.Body2,
             )
@@ -216,11 +226,11 @@ fun WalletSimpleCard(
 ) {
     Surface(
         modifier = Modifier
-            .height(150.dp)
+            .height(heightWalletCard)
             .fillMaxWidth(),
 //        elevation = 5.dp,
         color = UiKitColors.colors.col3,
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(cornersRadius),
     ) {
         Row(
             Modifier
@@ -236,48 +246,51 @@ fun WalletSimpleCard(
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(20.dp)
+                        .padding(horizontal = padding)
+                        .padding(top = padding, end = padding*3)
                         .fillMaxHeight()
                         .weight(1f),
                     text = info.name,
-                    style = UiKitStyles.Body2,
+                    style = UiKitStyles.Caption,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Box(
                     modifier = Modifier
-                        .padding(20.dp)
+                        .padding(horizontal = padding)
+                        .padding(bottom = padding)
                         .fillMaxHeight()
                         .weight(1f),
                     contentAlignment = Alignment.BottomStart
                 ) {
                     Text(
-                        modifier = Modifier,
-                        text = info.balance,
-                        style = UiKitStyles.H1,
+                        text = getBeautifulAmount(
+                            info.balance,
+                            getCurrency(info.currency) ?: throw Throwable("UnknownCurrency")
+                        ),
+                        style = UiKitStyles.H2,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
-            Box(
+        }
+        Box(
+            modifier = Modifier
+                .background(Color.Transparent)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.TopEnd
+        ) {
+            Icon(
+                imageVector = Edit,
+                contentDescription = null,
                 modifier = Modifier
-                    .background(Color.Transparent)
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.TopEnd
-            ) {
-                Surface(
-                    shape = RoundedCornerShape(10.dp),
-                    modifier = Modifier
-                        .padding(10.dp),
-                    color = Color.Transparent
-                ) {
-                    Icon(
-                        imageVector = Edit,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .clickable { onClickEdit(info.walletId) }
-                            .padding(10.dp),
-                        tint = UiKitColors.colors.dark
-                    )
-                }
-            }
+                    .padding(padding / 2)
+                    .clip(RoundedCornerShape(cornersRadius / 2))
+                    .clickable { onClickEdit(info.walletId) }
+                    .padding(padding / 2),
+                tint = UiKitColors.colors.dark
+            )
         }
     }
 }

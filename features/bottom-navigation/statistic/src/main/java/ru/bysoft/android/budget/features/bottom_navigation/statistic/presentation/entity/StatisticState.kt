@@ -21,7 +21,7 @@ data class CategoryInfo(
     val subtitle: String?,
     val subtitleAddition: Int?,
     val amount: UiKitAmountInfo,
-    val progressInfo: ProgressInfo,
+    val progressInfo: ProgressInfo?,
     val id: String
 )
 

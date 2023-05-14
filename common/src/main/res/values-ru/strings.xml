@@ -9,4 +9,15 @@
     <string name="btn_expense_text">"Расход"</string>
     <string name="btn_income_text">"Доход"</string>
     <string name="btn_transfer_text">"Перевод"</string>
+    <string name="wallet_name_text">"Имя нового кошелька"</string>
+    <string name="wallet_balance_text">"Баланс нового кошелька"</string>
+    <string name="wallet_btn_create_text">"Создать кошелёк"</string>
+    <string name="invalid_currency">Данная валюта не поддерживается нашим бэкендом. Странно что она вообще сюда попала…</string>
+    <string name="invalid_balance">Неверный баланс. Попробуйте заменить его</string>
+    <string name="invalid_name">Имя не должно быть пустым</string>
+    <string name="wallet_name_must_be_unique">Имя кошелька должно отличаться от существующих</string>
+    <string name="wallet_btn_update_text">Подтвердить</string>
+    <string name="wallet_title_create">Создайте кошелёк</string>
+    <string name="wallet_title_update">Отредактируйте кошелёк</string>
+
 </resources>

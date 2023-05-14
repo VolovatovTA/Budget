@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="your_email">"Ваш e-mail: "</string>
+    <string name="your_name">"Ваше имя: "</string>
+    <string name="your_currency">"Валюта по умолчанию: "</string>
+    <string name="icon_description">Загружаем ваше фото</string>
+    <string name="logout">Выйти из профиля</string>
+</resources>

@@ -20,6 +20,10 @@ import ru.bysoft.android.budget.uikit.components.listItem.UiKitListItem
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.android.budget.uikit.styles.UiKitStyles
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.R
+import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
+import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonType
+import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
+import ru.bysoft.android.budget.uikit.templates.ShowcaseScreen
 
 @Composable
 fun StatisticSuccessScreen(
@@ -31,7 +35,9 @@ fun StatisticSuccessScreen(
             .fillMaxWidth()
     ) {
         Column {
-            if (state.listInfo.isEmpty()){
+            ShowMoreStatisticButton(viewModel::toDetailStatistic)
+
+            if (state.listInfo.isEmpty()) {
                 Text(
                     text = stringResource(R.string.empty_category_list),
                     style = UiKitStyles.Body2,
@@ -42,29 +48,45 @@ fun StatisticSuccessScreen(
                         .padding(horizontal = 30.dp, vertical = 10.dp)
                 )
             }
-            state.listInfo.forEach {
+            state.listInfo.forEach { categoryInfo ->
                 Column(
                     Modifier
-                        .clickable { viewModel.updateCategory(it.id) }
-                        ) {
+                        .clickable { viewModel.updateCategory(categoryInfo.id) }
+                ) {
                     Spacer(modifier = Modifier.height(15.dp))
                     UiKitListItem(
-                        title = it.name,
-                        icons = listOfNotNull(it.icon),
-                        amount = it.amount,
+                        title = categoryInfo.name,
+                        icons = listOfNotNull(categoryInfo.icon),
+                        amount = categoryInfo.amount,
                         amountColor = UiKitColors.colors.dark,
                         modifier = Modifier
                             .padding(end = 30.dp),
-                        subTitle = stringResource(R.string.text_limit) + it.subtitle + it.subtitleAddition?.let { stringResource(it) },
+                        subTitle = categoryInfo.subtitle?.let { stringResource(R.string.text_limit) + categoryInfo.subtitle + categoryInfo.subtitleAddition?.let { stringResource(it) } },
                     )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    StatisticProgressIndicator(it.progressInfo)
-                    Spacer(modifier = Modifier.height(15.dp))
+                    categoryInfo.progressInfo?.let { progress ->
+                        Spacer(modifier = Modifier.height(10.dp))
+                        StatisticProgressIndicator(progress)
+                        Spacer(modifier = Modifier.height(15.dp))                    }
+
                 }
             }
         }
     }
 
+}
+
+@Composable
+fun ShowMoreStatisticButton(onClick: () -> Unit) {
+    UiKitButton(
+        info = UiKitButtonInfo(
+            text = stringResource(R.string.show_more_statistic),
+            type = ButtonType.MEDIUM
+        ),
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 30.dp)
+    )
 }
 
 @Composable

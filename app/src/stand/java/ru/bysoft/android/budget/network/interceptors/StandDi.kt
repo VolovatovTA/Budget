@@ -16,6 +16,7 @@ import ru.bysoft.android.budget.common.token.network.ITokenRefreshApi
 import javax.inject.Named
 
 const val MAIN_BASE_URL_NAME = "mainBaseUrl"
+const val WALLET_BASE_URL_NAME = "walletBaseUrl"
 const val AUTH_INTERCEPTOR_NAME = "authInterceptor"
 const val AUTH_CLIENT_NAME = "clientWithAuth"
 const val NO_AUTH_CLIENT_NAME = "clientWithoutAuth"
@@ -28,7 +29,10 @@ abstract class StandDi {
 
         @Provides
         @Named(MAIN_BASE_URL_NAME)
-        fun provideBaseUrl(): String = "https://bysoft.ru/"
+        fun provideMainBaseUrl(): String = "https://it-bears.com"
+        @Provides
+        @Named(WALLET_BASE_URL_NAME)
+        fun provideWalletBaseUrl(): String = "https://wallet.it-bears.com"
 
         @Provides
         fun provideRefreshApi(

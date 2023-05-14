@@ -1,8 +1,13 @@
 package ru.bysoft.android.budget.auth.presentation.screen
 
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.interaction.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,14 +24,18 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.auth.api.identity.Identity
+import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.auth.AuthViewModel
 import ru.bysoft.android.budget.auth.IAuthViewModel
 import ru.bysoft.android.budget.auth.R
+import ru.bysoft.android.budget.auth.presentation.GoogleAuthUiClient
 import ru.bysoft.android.budget.auth.presentation.entity.AuthActionType
 import ru.bysoft.android.budget.auth.presentation.entity.AuthState
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
@@ -179,10 +188,31 @@ private fun AuthSuccessScreen(
             if (state.type == AuthActionType.SIGN_IN) stringResource(R.string.auth_btn_sign_in_text)
             else stringResource(R.string.auth_btn_sign_up_text)
 
+        val context = LocalContext.current
+        val googleAuthUiClient = remember {
+            GoogleAuthUiClient(
+                context = context,
+                oneTapClient = Identity.getSignInClient(context)
+            )
+        }
+        val scope = rememberCoroutineScope()
+        val launcher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartIntentSenderForResult(),
+            onResult = { result ->
+                if(result.resultCode == RESULT_OK) {
+                    scope.launch {
+                        val signInResult = googleAuthUiClient.signInWithIntent(
+                            intent = result.data ?: return@launch
+                        )
+                        viewModel.onGoogleSignInResult(signInResult)
+                    }
+                }
+            }
+        )
+
         Box(
             Modifier
-                .padding(vertical = 26.dp)
-                .height(35.dp),
+                .padding(vertical = 30.dp),
             contentAlignment = Alignment.Center
         ) {
             if (state.isLoading) {
@@ -190,14 +220,45 @@ private fun AuthSuccessScreen(
                     color = UiKitColors.colors.grey,
                 )
             } else {
-                UiKitButton(
-                    info = UiKitButtonInfo(text = btnText, type = ButtonType.LARGE),
-                    enabled = state.isButtonEnabled,
-                    onClick = { viewModel.onButtonClick(state.type) }
-                )
+
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+                    Button(
+                        onClick = {
+                            scope.launch {
+                                val signInIntentSender = googleAuthUiClient.signIn()
+                                launcher.launch(
+                                    IntentSenderRequest.Builder(
+                                        signInIntentSender ?: return@launch
+                                    ).build()
+                                )
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 30.dp)
+                            .height(50.dp),
+                        shape = RoundedCornerShape(6.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = UiKitColors.colors.dark40,
+                            contentColor = UiKitColors.colors.dark
+                        )
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.logo_google),
+                            contentDescription = null
+                        )
+                        Text(text = stringResource(id = R.string.sign_in_with_google), modifier = Modifier.padding(6.dp))
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    UiKitButton(
+                        info = UiKitButtonInfo(text = btnText, type = ButtonType.LARGE),
+                        enabled = state.isButtonEnabled,
+                        onClick = { viewModel.onButtonClick(state.type) }
+                    )
+                }
             }
         }
-
     }
 }
 

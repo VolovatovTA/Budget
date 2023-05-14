@@ -9,4 +9,16 @@
     <string name="btn_expense_text">"Expense"</string>
     <string name="btn_income_text">"Income"</string>
     <string name="btn_transfer_text">"Transfer"</string>
+
+    <string name="wallet_name_text">"Name of new wallet"</string>
+    <string name="wallet_balance_text">"Balance"</string>
+    <string name="wallet_btn_create_text">"Create"</string>
+    <string name="invalid_currency">"Our server doesn't support this currency . How is it placed here…?"</string>
+    <string name="invalid_balance">Invalid balance. Please change it</string>
+    <string name="invalid_name">Name must not be empty</string>
+    <string name="wallet_name_must_be_unique">Wallet name must be unique</string>
+    <string name="wallet_btn_update_text">Confirm</string>
+    <string name="wallet_title_create">Creating wallet</string>
+    <string name="wallet_title_update">Edit wallet</string>
+
 </resources>

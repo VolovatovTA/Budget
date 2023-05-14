@@ -109,10 +109,13 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
 
     implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
+
     implementation "com.google.firebase:firebase-analytics-ktx"
 
     implementation project(':uikit')
     implementation project(':common')
+    implementation project(':api')
     implementation project(':features:splash')
     implementation project(':features:auth')
     implementation project(':features:create-udate-category')
@@ -121,4 +124,6 @@ dependencies {
     implementation project(':features:bottom-navigation:host')
     implementation project(':features:bottom-navigation:home')
     implementation project(':features:bottom-navigation:statistic')
+    implementation project(':features:statistic-by-month')
+    implementation project(':features:settings')
 }

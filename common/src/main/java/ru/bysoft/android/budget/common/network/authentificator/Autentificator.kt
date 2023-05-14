@@ -9,6 +9,7 @@ import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
+import retrofit2.Call
 import ru.bysoft.android.budget.common.token.ITokenRepo
 import ru.bysoft.android.budget.common.token.entity.AuthSuccessResponse
 import ru.bysoft.android.budget.common.token.entity.TokenRefreshRequest
@@ -71,7 +72,7 @@ class AuthenticationInterceptorRefreshToken @Inject constructor(
                 return Response.Builder()
                     .body("{\"goToAuth\": true}".toResponseBody("application/json; charset=utf-8".toMediaType()))
                     .code(200)
-                    .request(getNewTokens().request())
+                    .request(request)
                     .protocol(Protocol.HTTP_1_0)
                     .message("OK")
                     .build()
@@ -97,7 +98,7 @@ class AuthenticationInterceptorRefreshToken @Inject constructor(
                     Response.Builder()
                         .body("{\"goToAuth\": true}".toResponseBody("application/json; charset=utf-8".toMediaType()))
                         .code(200)
-                        .request(getNewTokens().request())
+                        .request(originalRequest)
                         .protocol(Protocol.HTTP_1_0)
                         .message("OK")
                         .build()
@@ -118,7 +119,7 @@ class AuthenticationInterceptorRefreshToken @Inject constructor(
         }
     }
 
-    private fun getNewTokens() =
+    private fun getNewTokens(): Call<AuthSuccessResponse> =
         refreshApi
             .refresh(
                 TokenRefreshRequest(

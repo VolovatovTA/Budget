@@ -15,8 +15,9 @@ import ru.bysoft.android.budget.common.navigation.auth.AuthNavigation
 import ru.bysoft.android.budget.common.navigation.common.CommonNavigation
 import ru.bysoft.android.budget.common.navigation.create_update_categiry.CreateUpdateCategoryNavigation
 import ru.bysoft.android.budget.common.navigation.create_update_transaction.TransactionNavigation
-import ru.bysoft.android.budget.common.navigation.create_wallet.CreateWalletNavigation
+import ru.bysoft.android.budget.common.navigation.create_wallet.WalletNavigation
 import ru.bysoft.android.budget.common.navigation.home.HomeNavigation
+import ru.bysoft.android.budget.common.navigation.settings.SettingsNavigation
 import ru.bysoft.android.budget.common.navigation.splash.SplashNavigation
 import ru.bysoft.android.budget.common.navigation.statistic.StatisticNavigation
 import ru.bysoft.android.budget.common.network.authentificator.ICommonNavigation
@@ -24,7 +25,8 @@ import ru.bysoft.android.budget.features.create_udate_category.navigation.ICreat
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation
 import ru.bysoft.android.budget.features.bottom_navigation.home.navigation.IHomeNavigation
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.navigation.IStatisticNavigation
-import ru.bysoft.android.budget.features.create_update_wallet.navigation.ICreateWalletNavigation
+import ru.bysoft.android.budget.features.create_update_wallet.navigation.IWalletNavigation
+import ru.bysoft.android.budget.features.settings.presentation.navigation.ISettingsNavigation
 import ru.bysoft.android.budget.features.splash.navigation.ISplashNavigation
 import javax.inject.Singleton
 
@@ -48,7 +50,7 @@ abstract class NavigationDi {
     abstract fun bindHomeNavigation(navigation: HomeNavigation): IHomeNavigation
 
     @Binds
-    abstract fun bindCreateWalletNavigation(navigation: CreateWalletNavigation): ICreateWalletNavigation
+    abstract fun bindCreateWalletNavigation(navigation: WalletNavigation): IWalletNavigation
 
     @Binds
     abstract fun bindSplashNavigation(navigation: SplashNavigation): ISplashNavigation
@@ -65,4 +67,6 @@ abstract class NavigationDi {
     @Binds
     abstract fun bindTransactionNavigation(navigation: TransactionNavigation): ITransactionNavigation
 
+    @Binds
+    abstract fun bindSettingsNavigation(navigation: SettingsNavigation): ISettingsNavigation
 }

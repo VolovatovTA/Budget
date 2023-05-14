@@ -19,7 +19,7 @@ data class WalletCardPresentation(
     val name: String,
     val backgroundColor: String,
     val currency: String,
-    val balance: String
+    val balance: Float
 ) : IWalletPresentation
 
 object WalletCreateNewPresentation : IWalletPresentation

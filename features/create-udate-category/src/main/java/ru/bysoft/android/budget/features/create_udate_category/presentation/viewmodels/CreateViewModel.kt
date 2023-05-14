@@ -10,9 +10,8 @@ import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.getCurrency
 import ru.bysoft.android.budget.features.create_udate_category.data.ICategoryRepo
-import ru.bysoft.android.budget.features.create_udate_category.data.entity.ErrorCategoryCreate
-import ru.bysoft.android.budget.features.create_udate_category.data.entity.SuccessCategoryCreate
-import ru.bysoft.android.budget.features.create_udate_category.data.network.entity.CategoryRequest
+import ru.budget.android.api.data.source.network.entity.category.CategoryRequest
+import ru.bysoft.android.budget.common.data_entity.CategoryErrorType
 import ru.bysoft.android.budget.features.create_udate_category.navigation.CreateCategoryNavInfo
 import ru.bysoft.android.budget.features.create_udate_category.navigation.ICreateUpdateCategoryNavigation
 import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.CreateUpdateCategoryState
@@ -64,13 +63,10 @@ class CreateCategoryViewModel @Inject constructor(
                 path
             )
             state.value = state.value.copy(isLoading = false)
-            when (categoryData) {
-                is SuccessCategoryCreate -> {
-                    navigate.back()
-                }
-                is ErrorCategoryCreate -> {
-                    updateState(categoryData)
-                }
+            if (categoryData.isSuccess) {
+                navigate.back()
+            } else {
+                updateState(categoryData.exceptionOrNull() as? CategoryErrorType)
             }
         }
     }

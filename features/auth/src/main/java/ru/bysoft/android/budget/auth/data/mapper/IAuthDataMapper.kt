@@ -1,11 +1,11 @@
 package ru.bysoft.android.budget.auth.data.mapper
 
+import ru.budget.android.api.data.source.network.entity.auth.SignInRequest
+import ru.budget.android.api.data.source.network.entity.auth.SignUpRequest
 import ru.bysoft.android.budget.auth.data.entity.SignInData
 import ru.bysoft.android.budget.auth.data.entity.SignInErrorData
 import ru.bysoft.android.budget.auth.data.entity.SignUpData
 import ru.bysoft.android.budget.auth.data.entity.SignUpErrorData
-import ru.bysoft.android.budget.auth.data.network.entity.SignInRequest
-import ru.bysoft.android.budget.auth.data.network.entity.SignUpRequest
 import ru.bysoft.android.budget.auth.R
 import ru.bysoft.android.budget.common.token.entity.SignInErrorResponse
 import ru.bysoft.android.budget.common.token.entity.SignUpErrorResponse
@@ -31,6 +31,7 @@ fun SignInErrorResponse.mapToErrorData() =
             "invalid-credentials" ->
                 SignInErrorData(errorToastText = R.string.invalid_credentials, errorPasswordText = R.string.empty_text, errorEmailText = R.string.empty_text)
             "invalid-input" -> SignInErrorData()
+            "error_certificate" -> SignInErrorData(errorToastText = R.string.certificate_error)
             else -> throw Throwable()
         }
     } else {
@@ -57,6 +58,7 @@ fun SignUpErrorResponse.mapToErrorData() =
             "internal-server-error" ->
                 SignUpErrorData(errorToastText = R.string.internal_server_error)
             "invalid-input" -> SignUpErrorData()
+            "error_certificate" -> SignUpErrorData(errorToastText = R.string.certificate_error)
             else -> throw Throwable()
         }
     } else {

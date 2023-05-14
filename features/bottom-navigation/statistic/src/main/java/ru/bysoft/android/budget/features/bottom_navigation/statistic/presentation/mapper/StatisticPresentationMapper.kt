@@ -1,8 +1,9 @@
 package ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.mapper
 
+import ru.bysoft.android.budget.common.data_entity.CategoryData
+import ru.bysoft.android.budget.common.data_entity.ExpenseCategory
 import ru.bysoft.android.budget.common.util.getBeautifulAmount
-import ru.bysoft.android.budget.features.bottom_navigation.statistic.data.entity.CategoryData
-import ru.bysoft.android.budget.features.bottom_navigation.statistic.data.entity.StatisticData
+import ru.bysoft.android.budget.common.data_entity.StatisticData
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.CategoryInfo
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.ProgressInfo
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.ProgressInfoWaiting
@@ -19,9 +20,9 @@ class StatisticPresentationMapper @Inject constructor() {
         )
 
     fun getCategoryState(
-        categoryData: CategoryData,
+        categoryData: ExpenseCategory,
         amountInfo: UiKitAmountInfo,
-        progress: ProgressInfo
+        progress: ProgressInfo?
     ): CategoryInfo =
         CategoryInfo(
             amount = amountInfo,

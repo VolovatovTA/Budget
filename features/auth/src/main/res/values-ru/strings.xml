@@ -22,5 +22,7 @@
     <string name="field_name_required">Без вашего имени регистрация невозможна</string>
     <string name="field_name_invalid_length">Имя должно содержать хотя бы один символ</string>
     <string name="internal_server_error">Произошла ошибка сервера. Мы о ней знаем и скоро исправим</string>
-    <string name="unexpected_error">Не предвиденная ошибка</string>
+    <string name="certificate_error">Ошибка сертификата. Обратитесь в службу поддержки</string>
+    <string name="unexpected_error">Непредвиденная ошибка</string>
+    <string name="sign_in_with_google">Войти через Google</string>
 </resources>

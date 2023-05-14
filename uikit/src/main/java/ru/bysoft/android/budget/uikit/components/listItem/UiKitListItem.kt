@@ -39,7 +39,7 @@ fun UiKitListItem(
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.End
+//        horizontalArrangement = Arrangement.End
     ) {
         UiKitListItemIcons(icons)
         Column(
@@ -50,7 +50,7 @@ fun UiKitListItem(
                 text = title,
                 style = UiKitStyles.Body2,
                 modifier = Modifier.padding(bottom = 9.dp),
-                overflow = TextOverflow.Ellipsis,
+//                overflow = TextOverflow.Ellipsis,
                 maxLines = 1
 
             )

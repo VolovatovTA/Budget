@@ -1,6 +1,7 @@
 package ru.bysoft.android.budget.common.navigation.statistic
 
 import androidx.navigation.NavHostController
+import ru.bysoft.android.budget.common.navigation.DetailStatistic
 import ru.bysoft.android.budget.common.navigation.create_update_categiry.CreateUpdateCategory
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.toJson
@@ -23,5 +24,9 @@ class StatisticNavigation @Inject constructor(
 
     override fun toUpdateCategory(id: String) {
         navHostController.navigate("${CreateUpdateCategory.updateDeleteScreenName}/$id")
+    }
+
+    override fun toDetailStatistic() {
+        navHostController.navigate(DetailStatistic.screenName)
     }
 }

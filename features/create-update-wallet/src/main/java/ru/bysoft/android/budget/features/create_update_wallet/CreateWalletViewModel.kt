@@ -8,24 +8,44 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.common.errors.IErrorLogger
-import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.util.BudgetCurrency
-import ru.bysoft.android.budget.common.util.getCurrency
-import ru.bysoft.android.budget.features.create_update_wallet.data.ICreateWalletRepository
-import ru.bysoft.android.budget.features.create_update_wallet.data.entity.CreateWalletErrorData
-import ru.bysoft.android.budget.features.create_update_wallet.navigation.ICreateWalletNavigation
-import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.CreateWalletState
-import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
-import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
+import ru.bysoft.android.budget.features.create_update_wallet.data.IWalletRepository
+import ru.bysoft.android.budget.common.data_entity.CreateWalletErrorData
+import ru.bysoft.android.budget.features.create_update_wallet.navigation.IWalletNavigation
+import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.ControllerWalletState
+import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.ViewModelWalletState
 import javax.inject.Inject
+
+interface IWalletScreenController {
+    val state: StateFlow<ControllerWalletState>
+
+    fun onNameChanged(name: String)
+    fun onBalanceChanged(balance: String)
+    fun onCurrencySelected(currency: BudgetCurrency)
+    fun onIconSelected(iconName: String?)
+    fun showError(errorType: CreateWalletErrorData?)
+}
+
+sealed interface IWalletViewModel {
+    fun onButtonClick()
+
+    fun onBackClick()
+}
+
+interface ICreateWalletViewModel : IWalletViewModel
+
+interface IUpdateWalletViewModel : IWalletViewModel {
+    fun init(walletId: String?)
+    fun onWalletDeleteClick(walletId: String)
+}
 
 @HiltViewModel
 class CreateWalletViewModel @Inject constructor(
-    private val repository: ICreateWalletRepository,
-    private val navigate: ICreateWalletNavigation,
-    meInfo: IMeInfo,
-    private val errorLogger: IErrorLogger
-) : ViewModel() {
+    private val repository: IWalletRepository,
+    private val navigate: IWalletNavigation,
+    private val errorLogger: IErrorLogger,
+    val walletScreenController: IWalletScreenController
+) : ViewModel(), ICreateWalletViewModel {
 
     private val createWalletExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         errorLogger.logError(throwable)
@@ -36,74 +56,28 @@ class CreateWalletViewModel @Inject constructor(
     }
 
     private val _state = MutableStateFlow(
-        CreateWalletState(
-            currencyFieldState = CurrencyFieldState(
-                selectedCurrency = getCurrency(meInfo.getCurrentMeInfo()!!.settingsData.currency)!!
-            )
-        )
+        ViewModelWalletState()
     )
-    val state: StateFlow<CreateWalletState>
+    val state: StateFlow<ViewModelWalletState>
         get() = _state
 
-
-    fun onNameChanged(name: String) {
-        _state.value = _state.value.copy(nameTextState = TextFieldState(name))
-    }
-
-    fun onBalanceChanged(balance: String) {
-        _state.value = _state.value.copy(balanceTextState = TextFieldState(balance))
-    }
-
-    fun onCurrencySelected(currency: BudgetCurrency) {
-        _state.value = _state.value.copy(
-            currencyFieldState = _state.value.currencyFieldState.copy(
-                selectedCurrency = currency
-            )
-        )
-    }
-
-    fun onButtonClick() {
+    override fun onButtonClick() {
         viewModelScope.launch(createWalletExceptionHandler) {
             _state.value = _state.value.copy(isLoading = true)
-            val data = repository.createWallet(_state.value)
-            if (data.errorType == null) {
+            val result = repository.createWallet(walletScreenController.state.value)
+            if (result.isSuccess) {
                 _state.value = _state.value.copy(isLoading = false)
                 navigate.popBack()
             } else {
+                walletScreenController.showError(result.exceptionOrNull() as? CreateWalletErrorData)
                 _state.value = _state.value.copy(
-                    isLoading = false,
-                    balanceTextState = getBalanceStateByErrorType(data.errorType),
-                    nameTextState = getNameStateByErrorType(data.errorType),
-                    currencyFieldState = getCurrencyStateByErrorType(data.errorType),
+                    isLoading = false
                 )
             }
         }
     }
 
-    private fun getBalanceStateByErrorType(errorType: CreateWalletErrorData): TextFieldState =
-        when (errorType) {
-            CreateWalletErrorData.INVALID_BALANCE -> _state.value.balanceTextState.copy(
-                errorText = CreateWalletErrorData.INVALID_BALANCE.errorText
-            )
-            else -> _state.value.balanceTextState
-        }
-
-    private fun getNameStateByErrorType(errorType: CreateWalletErrorData): TextFieldState =
-        when (errorType) {
-            CreateWalletErrorData.INVALID_NAME -> _state.value.nameTextState.copy(
-                errorText = CreateWalletErrorData.INVALID_NAME.errorText
-            )
-            CreateWalletErrorData.NO_UNIQUE_NAME -> _state.value.nameTextState.copy(
-                errorText = CreateWalletErrorData.NO_UNIQUE_NAME.errorText
-            )
-            else -> _state.value.nameTextState
-        }
-
-    private fun getCurrencyStateByErrorType(errorType: CreateWalletErrorData): CurrencyFieldState =
-        when (errorType) {
-            CreateWalletErrorData.INVALID_CURRENCY -> _state.value.currencyFieldState.copy(
-                errorText = CreateWalletErrorData.INVALID_CURRENCY.errorText
-            )
-            else -> _state.value.currencyFieldState
-        }
+    override fun onBackClick() {
+        navigate.popBack()
+    }
 }

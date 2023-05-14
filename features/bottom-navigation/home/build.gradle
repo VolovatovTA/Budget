@@ -23,9 +23,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug {
-            debuggable true
-        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -57,11 +54,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$view_model_compose_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_systemui_controller_version"
     implementation "androidx.navigation:navigation-compose:$nav_version"
-    implementation "androidx.compose.material:material:$compose_version"
-
-    // retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     //hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
@@ -72,8 +64,6 @@ dependencies {
 
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
-    implementation "androidx.core:core-splashscreen:$splash_screen_version"
-    implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
 
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     implementation "androidx.compose.runtime:runtime-rxjava2:$compose_version"
@@ -86,5 +76,6 @@ dependencies {
 
     implementation project(":common")
     implementation project(":uikit")
+    implementation project(":api")
     implementation project(":features:create-update-delete-transactions")
 }

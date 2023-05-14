@@ -23,9 +23,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug {
-            debuggable true
-        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -59,10 +56,6 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$nav_version"
     implementation "androidx.compose.material:material:$compose_version"
 
-    // retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-
     //hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
@@ -86,4 +79,5 @@ dependencies {
 
     implementation project(":common")
     implementation project(":uikit")
+    implementation project(":api")
 }

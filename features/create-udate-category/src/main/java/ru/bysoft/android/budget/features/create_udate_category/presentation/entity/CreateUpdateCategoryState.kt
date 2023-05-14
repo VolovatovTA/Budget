@@ -4,16 +4,17 @@ import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.PeriodState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.PopupFieldState
+import ru.bysoft.android.budget.uikit.components.icon_component.UiKitIconState
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 
 data class CreateUpdateCategoryState(
     val nameTextState: TextFieldState = TextFieldState(),
     val amountTextState: TextFieldState = TextFieldState(),
     val currencyFieldState: CurrencyFieldState,
-    val iconState: IconState = IconState(null),
+    val iconState: UiKitIconState = UiKitIconState(null),
     val isLoading: Boolean = false,
     val periodState: PopupFieldState<PeriodState> = PopupFieldState(
-        selectedValue = PeriodState.NO_PERIOD,
+        selectedValue = null,
         list = listOf(
             PeriodState.DAY,
             PeriodState.WEEK,
@@ -24,8 +25,3 @@ data class CreateUpdateCategoryState(
     val toastText: Int? = null,
     val typeCategory: CategoryTypeEnum = CategoryTypeEnum.EXPENSE
 )
-
-data class IconState(
-    val iconName: String?
-)
-

@@ -1,0 +1,68 @@
+package ru.budget.android.api.data.source.mock
+
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
+import ru.budget.android.api.data.source.network.ICategoryApi
+import ru.budget.android.api.data.source.network.entity.category.*
+import ru.bysoft.android.budget.common.network.MOCK_DELAY_NAME
+import ru.bysoft.android.budget.common.util.getStringFromAsset
+import ru.bysoft.android.budget.common.util.restore
+import java.util.*
+import javax.inject.Inject
+import javax.inject.Named
+
+class CategoryApiMock @Inject constructor(
+    @ApplicationContext private val context: Context,
+    @Named(MOCK_DELAY_NAME) private val delayMock: Long
+) : ICategoryApi {
+
+    override suspend fun getCategories(name: String): CategoryResponse {
+        delay(delayMock)
+        return context.getStringFromAsset("").restore()
+    }
+
+
+    override suspend fun createCategory(
+        request: CategoryRequest,
+        path: String
+    ): CategoryItemResponse =
+        CategoryItemResponse(
+            currency = request.currency,
+            id = UUID.randomUUID().toString(),
+            name = request.name,
+            iconName = "",
+            limitAmount = "",
+            limitType = "",
+        )
+
+    override suspend fun updateCategory(
+        request: CategoryRequest,
+        path: String,
+        id: String
+    ): CategoryItemResponse =
+        CategoryItemResponse(
+            currency = request.currency,
+            id = id,
+            name = request.name,
+            iconName = "",
+            limitAmount = "",
+            limitType = "",
+        )
+
+    override suspend fun getCategory(
+        id: String,
+        path: String
+    ): CategoryItemResponse =
+        CategoryItemResponse(
+            currency = "RUR",
+            id = UUID.randomUUID().toString(),
+            name = "Имя моковской категории",
+            iconName = "",
+            limitAmount = "",
+            limitType = "",
+        )
+
+    override suspend fun delete(id: String, path: String) = Unit
+
+}
