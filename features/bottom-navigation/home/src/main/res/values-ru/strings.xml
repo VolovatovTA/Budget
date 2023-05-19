@@ -8,4 +8,5 @@
     <string name="filter_expense">"РАСХОД"</string>
     <string name="filter_transfer">"ПЕРЕВОД"</string>
     <string name="empty_transactions_list">"У вас пока нет ни одной транзакции…"</string>
+    <string name="icon_description">Your profile photo</string>
 </resources>

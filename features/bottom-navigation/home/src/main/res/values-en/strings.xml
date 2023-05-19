@@ -8,4 +8,5 @@
     <string name="filter_expense">"EXPENSE"</string>
     <string name="filter_transfer">"TRANSFER"</string>
     <string name="empty_transactions_list">"Your transactions list is empty"</string>
+    <string name="icon_description">Your profile photo</string>
 </resources>

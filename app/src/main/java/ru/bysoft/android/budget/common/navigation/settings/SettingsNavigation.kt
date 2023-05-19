@@ -17,4 +17,8 @@ class SettingsNavigation @Inject constructor(
         }
     }
 
+    override fun popBack() {
+        navHostController.popBackStack()
+    }
+
 }

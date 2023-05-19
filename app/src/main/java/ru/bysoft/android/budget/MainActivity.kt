@@ -6,7 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import ru.bysoft.android.budget.auth.presentation.GoogleAuthUiClient
 import ru.bysoft.android.budget.common.navigation.MainNavigationHost
 import ru.bysoft.android.budget.uikit.theme.BudgetTheme.BudgetTheme
 import javax.inject.Inject

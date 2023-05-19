@@ -3,6 +3,7 @@ package ru.bysoft.android.budget.auth.presentation
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
+import android.util.Log
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -31,6 +32,7 @@ class GoogleAuthUiClient(
     }
 
     suspend fun signInWithIntent(intent: Intent): SignInResult {
+        Log.d("timvol", "AuthSuccessScreen: $this")
         val credential = oneTapClient.getSignInCredentialFromIntent(intent)
         val googleIdToken = credential.googleIdToken
 
@@ -84,7 +86,7 @@ class GoogleAuthUiClient(
                 GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
                     .setFilterByAuthorizedAccounts(false)
-                    .setServerClientId(context.getString(R.string.web_client_id))
+                    .setServerClientId(context.getString(R.string.web_client_id1))
                     .build()
             )
             .setAutoSelectEnabled(true)

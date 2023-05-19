@@ -40,11 +40,11 @@ fun HomeScreen(
 ) {
     LaunchedEffect(Unit) { viewModel.loadData() }
 
-    val toastState = viewModel.toastState.collectAsState().value
-
     val context = LocalContext.current
-    LaunchedEffect(toastState?.keyLaunchedEffect) {
-        if (toastState != null) Toast.makeText(context, toastState.text, Toast.LENGTH_SHORT).show()
+    LaunchedEffect(Unit) {
+        viewModel.toastState.collect {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
     }
     val walletsState = viewModel.walletsState.collectAsState().value
     val meState = viewModel.meState.collectAsState().value

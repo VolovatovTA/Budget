@@ -2,7 +2,6 @@ package ru.bysoft.android.budget.common.di
 
 import android.content.Context
 import android.os.Build
-import androidx.annotation.RequiresApi
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -29,12 +28,11 @@ abstract class CommonDi {
 
 
     companion object {
-        @RequiresApi(Build.VERSION_CODES.N)
         @Provides
         fun provideLocale(
             @ApplicationContext context: Context
         ): Locale {
-            return context.resources.configuration.locales[0]
+            return context.resources.configuration.locale
         }
     }
 }

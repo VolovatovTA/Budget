@@ -10,12 +10,14 @@ data class MeResponse(
     @SerializedName("settings")
     val settingsResponse: SettingsResponse,
     @SerializedName("uuid")
-    val userId: String,
-    @SerializedName("pictureUrl")
-    val pictureUrl: String?
+    val userId: String
 )
 
 data class SettingsResponse(
     @SerializedName("currency")
-    val currencyResponse: String
+    val currencyResponse: String,
+    @SerializedName("first_day_of_week")
+    val firstDayOfWeek: String,
+    @SerializedName("profile_picture_url")
+    val pictureUrl: String?
 )

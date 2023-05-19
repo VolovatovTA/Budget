@@ -19,6 +19,6 @@ data class SignInRequest(
 )
 
 data class SignInGoogleRequest(
-    @SerializedName("credentials")
+    @SerializedName("credential")
     val idToken: String?
 )

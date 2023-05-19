@@ -1,6 +1,5 @@
 package ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.mapper
 
-import ru.bysoft.android.budget.common.data_entity.CategoryData
 import ru.bysoft.android.budget.common.data_entity.ExpenseCategory
 import ru.bysoft.android.budget.common.util.getBeautifulAmount
 import ru.bysoft.android.budget.common.data_entity.StatisticData
@@ -14,9 +13,17 @@ import ru.bysoft.android.budget.uikit.icons.UiKitIcons
 import javax.inject.Inject
 
 class StatisticPresentationMapper @Inject constructor() {
-    fun getState(data: StatisticData, amountInfo: UiKitAmountInfo = UiKitAmountInfoWaiting): StatisticSuccessState =
+    fun getState(
+        data: StatisticData,
+        amountInfo: UiKitAmountInfo = UiKitAmountInfoWaiting
+    ): StatisticSuccessState =
         StatisticSuccessState(
-            listInfo = data.listCategoryData.map { getCategoryState(it, amountInfo, ProgressInfoWaiting) }
+            listInfo = data.listCategoryData.map { category ->
+                getCategoryState(
+                    category,
+                    amountInfo,
+                    ProgressInfoWaiting.takeIf { category.limitAmount != null || category.limitType != null })
+            }
         )
 
     fun getCategoryState(

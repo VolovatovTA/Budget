@@ -156,9 +156,7 @@ fun <T> UiKitPopUp(
                 if (info.errorText == null || info.errorText.isEmpty()) UiKitColors.colors.dark
                 else UiKitColors.colors.red
             ),
-            modifier = modifier
-                .height(60.dp)
-                .fillMaxWidth(),
+            modifier = modifier,
             color = Color.Transparent
         ) {
             Row(
@@ -168,7 +166,7 @@ fun <T> UiKitPopUp(
                 itemInPopup(info.selectedValue)
                 Box(
                     contentAlignment = Alignment.CenterEnd,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
                 ) {
                     Icon(
                         imageVector = if (showMenu.value) {

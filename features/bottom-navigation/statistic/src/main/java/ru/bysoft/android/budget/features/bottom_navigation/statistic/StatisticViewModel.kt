@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import ru.bysoft.android.budget.common.data_entity.ExpenseCategory
 import ru.bysoft.android.budget.common.errors.IErrorLogger
+import ru.bysoft.android.budget.common.me_info.IMeInfo
+import ru.bysoft.android.budget.common.me_info.MeInfo
 import ru.bysoft.android.budget.common.util.getBeautifulAmount
 import ru.bysoft.android.budget.common.util.getCalculatedDate
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.data.IStatisticRepo
@@ -36,7 +38,8 @@ class StatisticViewModel @Inject constructor(
     private val repo: IStatisticRepo,
     private val mapper: StatisticPresentationMapper,
     private val navigate: IStatisticNavigation,
-    private val locale: Locale
+    private val locale: Locale,
+    private val meInfo: IMeInfo
 ) : ViewModel(), IStatisticViewModel {
 
     override val state: MutableStateFlow<IStatisticState> =
@@ -80,6 +83,9 @@ class StatisticViewModel @Inject constructor(
 
             data.listCategoryData.forEach { categoryData ->
                 try {
+
+                    Calendar.getInstance(locale).firstDayOfWeek = Calendar.MONDAY
+
                     val currentDate = Calendar.getInstance(locale).time
                     val currentDayOfWeek = currentDate.day
                     launch {

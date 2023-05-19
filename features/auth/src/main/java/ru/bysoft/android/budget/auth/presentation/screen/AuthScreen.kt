@@ -2,6 +2,7 @@ package ru.bysoft.android.budget.auth.presentation.screen
 
 import android.app.Activity
 import android.app.Activity.RESULT_OK
+import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.auth.api.identity.Identity
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.auth.AuthViewModel
 import ru.bysoft.android.budget.auth.IAuthViewModel
@@ -201,11 +203,11 @@ private fun AuthSuccessScreen(
             onResult = { result ->
                 if(result.resultCode == RESULT_OK) {
                     scope.launch {
-                        val signInResult = googleAuthUiClient.signInWithIntent(
-                            intent = result.data ?: return@launch
-                        )
+                        val signInResult = googleAuthUiClient.signInWithIntent(result.data!!)
                         viewModel.onGoogleSignInResult(signInResult)
                     }
+                } else {
+                    Log.d("timvol", "AuthSuccessScreen: $result")
                 }
             }
         )
@@ -223,15 +225,23 @@ private fun AuthSuccessScreen(
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
+                    val handler = remember {
+                        CoroutineExceptionHandler { _, exception ->
+                            Log.d("timvol", "AuthSuccessScreen: $exception")
+                        }
+                    }
                     Button(
                         onClick = {
-                            scope.launch {
+                            scope.launch(handler) {
+                                Log.d("timvol", "1")
                                 val signInIntentSender = googleAuthUiClient.signIn()
+                                Log.d("timvol", "2")
                                 launcher.launch(
                                     IntentSenderRequest.Builder(
                                         signInIntentSender ?: return@launch
                                     ).build()
                                 )
+                                Log.d("timvol", "3")
                             }
                         },
                         modifier = Modifier

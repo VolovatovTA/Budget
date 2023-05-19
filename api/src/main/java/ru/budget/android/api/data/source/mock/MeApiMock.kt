@@ -11,6 +11,7 @@ import ru.bysoft.android.budget.common.util.getStringFromAsset
 import ru.bysoft.android.budget.common.util.pointJson
 import ru.bysoft.android.budget.common.util.restore
 import ru.budget.android.api.data.source.network.entity.me.MeResponse
+import ru.budget.android.api.data.source.network.entity.me.SettingsRequest
 import ru.budget.android.api.data.source.network.pathSettings
 import javax.inject.Inject
 import javax.inject.Named
@@ -24,6 +25,10 @@ class MeApiMock @Inject constructor(
         delay(delayMock)
         Log.d(TAG, "getMeInfo: $pathSettings ${context.getStringFromAsset(pathSettings + pointJson)}")
         return context.getStringFromAsset(pathSettings + pointJson).restore()
+    }
+
+    override suspend fun setMeInfo(request: SettingsRequest) {
+
     }
 
 

@@ -17,7 +17,7 @@ android {
     compileSdk compile_sdk
 
     defaultConfig {
-        applicationId "ru.bysoft.android.budget"
+        applicationId "ru.it_bears.android.budget"
         minSdk min_sdk
         targetSdk target_sdk
         versionCode 1

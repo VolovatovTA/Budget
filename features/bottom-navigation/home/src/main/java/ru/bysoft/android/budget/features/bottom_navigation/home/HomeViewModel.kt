@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import ru.budget.android.api.data.source.network.entity.transactions.TransferTypeEnum
 import ru.bysoft.android.budget.common.errors.errorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
@@ -30,7 +28,7 @@ import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.map
 import javax.inject.Inject
 
 interface IHomeViewModel {
-    val toastState: StateFlow<ToastInfo?>
+    val toastState: SharedFlow<String>
     val walletsState: StateFlow<IWalletsState>
     val meState: StateFlow<IMeState>
     val filterState: StateFlow<FilterState>
@@ -80,8 +78,8 @@ class HomeViewModel @Inject constructor(
         errorLogger.logError(t)
         transactionsState.value = TransactionError
     }
-    override val toastState: MutableStateFlow<ToastInfo?> =
-        MutableStateFlow(null)
+    override val toastState: MutableSharedFlow<String> =
+        MutableSharedFlow()
 
     override val walletsState: MutableStateFlow<IWalletsState> =
         MutableStateFlow(WalletsLoadingState(false))
@@ -178,7 +176,8 @@ class HomeViewModel @Inject constructor(
                         }
                     ) ?: transactionState
                 }
-                toastState.update {
+                toastState.emit("Произошла ошибка")
+//                {
 //                    if (result.exceptionOrNull() is HttpException) {
 //                        ToastInfo(it?.keyLaunchedEffect?.not() ?: true, "Произошла ошибка на бэке")
 //                    } else {
@@ -187,11 +186,11 @@ class HomeViewModel @Inject constructor(
 //                            "Произошла ошибка на фронте"
 //                        )
 //                    }
-                    ToastInfo(
-                        it?.keyLaunchedEffect?.not() ?: true,
-                        "Произошла ошибка"
-                    )
-                }
+//                    ToastInfo(
+//                        it?.keyLaunchedEffect?.not() ?: true,
+//                        "Произошла ошибка"
+//                    )
+//                }
                 errorLogger.logError(result.exceptionOrNull() ?: Exception("Unknown error"))
             }
         }
@@ -249,7 +248,7 @@ class HomeViewModel @Inject constructor(
             meState.value = MeLoadingState
             val meInfoData = meRepo.getMeInfo()
             meInfo.setCurrentMeInfo(meInfoData)
-            meState.value = MeSuccessState(meInfoData.name)
+            meState.value = MeSuccessState(meInfoData)
         }
     }
 

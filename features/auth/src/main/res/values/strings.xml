@@ -27,5 +27,6 @@
     <string name="unexpected_error">Unexpected error</string>
     <string name="sign_in_with_google">Sign in with Google</string>
 
-    <string name="web_client_id" translatable="false">1066386611161-v2dnh4me84ud21ncacqsk8bvm7hem0fm.apps.googleusercontent.com</string>
+    <string name="web_client_id" translatable="false">247103763456-icu4t4qtca7ans64ktl3s57ota0s80gk.apps.googleusercontent.com</string>
+    <string name="web_client_id1" translatable="false">247103763456-2083adl9jcbl11iuhjk2gshlv9vuqro8.apps.googleusercontent.com</string>
 </resources>

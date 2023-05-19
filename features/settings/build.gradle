@@ -74,4 +74,5 @@ dependencies {
 
     implementation project(":uikit")
     implementation project(':common')
+    implementation project(':api')
 }

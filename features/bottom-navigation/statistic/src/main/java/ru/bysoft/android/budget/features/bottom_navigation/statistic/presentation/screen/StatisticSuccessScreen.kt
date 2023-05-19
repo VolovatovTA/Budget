@@ -61,18 +61,23 @@ fun StatisticSuccessScreen(
                         amountColor = UiKitColors.colors.dark,
                         modifier = Modifier
                             .padding(end = 30.dp),
-                        subTitle = categoryInfo.subtitle?.let { stringResource(R.string.text_limit) + categoryInfo.subtitle + categoryInfo.subtitleAddition?.let { stringResource(it) } },
+                        subTitle = categoryInfo.subtitle?.let {
+                            stringResource(R.string.text_limit) + categoryInfo.subtitle + categoryInfo.subtitleAddition?.let {
+                                stringResource(
+                                    it
+                                )
+                            }
+                        },
                     )
                     categoryInfo.progressInfo?.let { progress ->
                         Spacer(modifier = Modifier.height(10.dp))
                         StatisticProgressIndicator(progress)
-                        Spacer(modifier = Modifier.height(15.dp))                    }
-
+                        Spacer(modifier = Modifier.height(15.dp))
+                    }
                 }
             }
         }
     }
-
 }
 
 @Composable
