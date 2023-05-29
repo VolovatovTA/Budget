@@ -6,7 +6,7 @@ import ru.budget.android.api.data.source.network.entity.wallet.WalletResponse
 
 data class TransactionResponse(
     @SerializedName("data")
-    val data: List<TransactionItemResponse>
+    val data: List<TransactionItemResponse?>?
 )
 
 data class TransactionItemResponse(

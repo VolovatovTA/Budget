@@ -71,7 +71,7 @@ abstract class StandDi {
         @IntoSet
         fun provideLoggerInterceptor(): Interceptor = HttpLoggingInterceptor()
             .apply {
-                level = HttpLoggingInterceptor.Level.BODY
+                level = HttpLoggingInterceptor.Level.BASIC
             }
     }
 

@@ -24,7 +24,7 @@ import ru.bysoft.android.budget.uikit.colors.UiKitColors
 @Composable
 fun UiKitShimmerComponent(
     modifier: Modifier = Modifier,
-    backgroundColor: Color = UiKitColors.colors.col4_inactive,
+    backgroundColor: Color = UiKitColors.colors.neutral.`200`,
     cornerRadius: Dp = 10.dp,
 ) {
     val yourShimmerTheme = defaultShimmerTheme.copy(

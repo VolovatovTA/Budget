@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.dp
 fun UiKitAvatar(
     icon: ImageVector?,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.col3,
-    tintColor: Color = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.dark,
+    backgroundColor: Color = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.primary.`100`,
+    tintColor: Color = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.primary.`1100`,
     elevation: Dp = 3.dp,
     onClick: () -> Unit = {},
     rippleEnabled: Boolean = true

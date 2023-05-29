@@ -19,22 +19,21 @@ fun SuccessPreview() {
                     name = "Очень интересное и длинное название для кошелька",
                     walletId = "sldjnvds",
                     currency = "USD",
-                    backgroundColor = "col3"
+                    backgroundColor = "primary.500"
                 ),
                 WalletCardPresentation(
                     balance = 300f,
                     name = "kjbnsv",
                     walletId = "sldjnvds",
                     currency = "USD",
-                    backgroundColor = "col3"
+                    backgroundColor = "primary.500"
                 ),
-            )
+            ),""
         ),
         pagerState = rememberPagerState(),
         {},
         {},
         {},
-        {}
     )
 }
 

@@ -11,11 +11,19 @@ class SplashNavigation @Inject constructor(private val controller: NavHostContro
     ISplashNavigation {
 
     override fun toAuth() {
-        controller.navigate(Auth.route)
+        controller.navigate(Auth.route) {
+            popUpTo(Splash.route) {
+                inclusive = true
+            }
+        }
     }
 
     override fun toBottomNavigation() {
-        controller.navigate(BottomNavigation.route)
+        controller.navigate(BottomNavigation.route){
+            popUpTo(Splash.route) {
+                inclusive = true
+            }
+        }
     }
 
 }

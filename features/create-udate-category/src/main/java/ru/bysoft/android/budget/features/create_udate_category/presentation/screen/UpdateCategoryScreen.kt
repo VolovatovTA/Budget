@@ -1,12 +1,9 @@
 package ru.bysoft.android.budget.features.create_udate_category.presentation.screen
 
 import android.widget.Toast
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,9 +22,6 @@ import ru.bysoft.android.budget.features.create_udate_category.presentation.comp
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitCurrencyPopUp
 import ru.bysoft.android.budget.uikit.components.icon_component.UiKitIconsComponent
-import ru.bysoft.android.budget.uikit.icons.pack.ArrowLeft
-import ru.bysoft.android.budget.uikit.icons.pack.Delete
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
 import ru.bysoft.android.budget.uikit.templates.UiKitTopBar
 
 @Composable
@@ -43,9 +37,11 @@ fun UpdateCategoryScreen(
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         }
     }
-    Scaffold(topBar = {
-        UiKitTopBar(R.string.update_category_title, viewModel::back, viewModel::delete)
-    }
+    Scaffold(
+        backgroundColor = UiKitColors.colors.surface.primary,
+        topBar = {
+            UiKitTopBar(R.string.update_category_title, viewModel::back, viewModel::delete)
+        }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

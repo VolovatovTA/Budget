@@ -8,7 +8,7 @@ data class MeData(
     val email: String,
     val name: String,
     val pictureUrl: String,
-    val settingsData: SettingsData,
+    val settingsData: SettingsData?,
     val userId: String
 )
 

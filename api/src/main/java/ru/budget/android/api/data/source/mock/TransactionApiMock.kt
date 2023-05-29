@@ -43,8 +43,8 @@ class TransactionApiMock @Inject constructor(
         val response = context.getStringFromAsset("transactions/transactions.json")
             .restore<TransactionResponse>()
         return response.copy(
-            data = response.data.subList(0, Random.nextInt(0, response.data.size))
-                .map { it.copy(id = UUID.randomUUID().toString()) }
+            data = response.data?.subList(0, Random.nextInt(0, response.data.size))
+                ?.map { it?.copy(id = UUID.randomUUID().toString()) }
         )
     }
 

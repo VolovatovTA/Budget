@@ -22,15 +22,15 @@ class CategoryDataMapper @Inject constructor() {
         transactionsResponse: TransactionResponse,
         oldCategoryData: ExpenseCategory
     ): ExpenseCategory {
-        val amount = transactionsResponse.data.map { transactionResponse ->
-            if (transactionResponse.currency != oldCategoryData.currency.iso4217) {
-                transactionResponse.exchanges.firstOrNull { exchange ->
+        val amount = transactionsResponse.data?.map { transactionResponse ->
+            if (transactionResponse?.currency != oldCategoryData.currency.iso4217) {
+                transactionResponse?.exchanges?.firstOrNull { exchange ->
                     exchange.currency == oldCategoryData.currency.iso4217
                 }?.amount?.toFloatOrNull() ?: 0f
             } else {
                 transactionResponse.amount.toFloatOrNull() ?: 0f
             }
-        }.sum()
+        }?.sum()
         return oldCategoryData.copy(
             amount = amount
         )

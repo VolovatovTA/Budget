@@ -4,6 +4,7 @@ interface IWalletsState
 
 data class WalletsSuccessState(
     val list: List<IWalletPresentation>,
+    val currentWalletId: String
 ) : IWalletsState
 
 object WalletsErrorState : IWalletsState

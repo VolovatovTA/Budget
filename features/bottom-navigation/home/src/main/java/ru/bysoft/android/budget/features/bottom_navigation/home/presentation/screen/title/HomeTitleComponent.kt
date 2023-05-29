@@ -25,9 +25,8 @@ import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.ent
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.title.MeSuccessState
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.features.bottom_navigation.home.R
-import ru.bysoft.android.budget.uikit.icons.pack.Filters
 import ru.bysoft.android.budget.uikit.icons.pack.Person
 
 
@@ -49,7 +48,7 @@ fun HomeTitleComponent(
                 ) {
                     UiKitShimmerComponent(
                         modifier = Modifier.weight(1f),
-                        backgroundColor = UiKitColors.colors.col4_inactive,
+                        backgroundColor = UiKitColors.colors.neutral.`200`,
                         cornerRadius = 15.dp
                     )
                     Spacer(modifier = Modifier.weight(1f))
@@ -61,7 +60,7 @@ fun HomeTitleComponent(
             is MeErrorState -> {
                 Text(
                     text = stringResource(R.string.error_while_loading_me_info),
-                    style = UiKitStyles.Body2,
+                    style = UiKitTypography.TextMD.Regular,
                     modifier = Modifier
                         .padding(top = 20.dp)
                         .padding(horizontal = 30.dp)
@@ -101,7 +100,7 @@ private fun TitleSuccessComponent(meState: MeSuccessState, onSettingsClick: () -
                     imageVector = Person,
                     contentDescription = null,
                     modifier = modifier
-                        .background(UiKitColors.colors.col4_inactive)
+                        .background(UiKitColors.colors.neutral.`200`)
                         .padding(7.dp),
                 )
             }
@@ -109,7 +108,7 @@ private fun TitleSuccessComponent(meState: MeSuccessState, onSettingsClick: () -
         meState.meData?.name?.let{
             Text(
                 text = it,
-                style = UiKitStyles.H2,
+                style = UiKitTypography.DisplayXS.Regular,
                 modifier = Modifier
                     .padding(end = 30.dp, start = 5.dp),
                 maxLines = 1,

@@ -27,7 +27,7 @@ import ru.bysoft.android.budget.common.util.PeriodState
 import ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels.ICreateCategoryViewModel
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.ButtonComponent
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.CreateUpdateCategoryTextField
-import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonType
+import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitCurrencyPopUp
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitPopUp
@@ -35,9 +35,10 @@ import ru.bysoft.android.budget.uikit.components.rowtab.UiKitRowTab
 import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitRowTabState
 import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitTabInfo
 import ru.bysoft.android.budget.uikit.icons.pack.ArrowLeft
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.features.create_udate_category.R
 import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.CreateUpdateCategoryState
+import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.icon_component.UiKitIconsComponent
 
 @Composable
@@ -55,6 +56,7 @@ fun CreateCategoryScreen(
         }
     }
     Scaffold(
+        backgroundColor = UiKitColors.colors.surface.primary,
         topBar = {
             Row(
                 modifier = Modifier
@@ -70,7 +72,7 @@ fun CreateCategoryScreen(
                 )
                 Spacer(modifier = Modifier.width(15.dp))
                 Text(
-                    text = stringResource(R.string.create_category_title), style = UiKitStyles.H2
+                    text = stringResource(R.string.create_category_title), style = UiKitTypography.DisplayXS.Regular
                 )
                 Spacer(modifier = Modifier.width(15.dp))
 
@@ -97,7 +99,7 @@ fun CreateCategoryScreen(
                         UiKitTabInfo(
                             info = UiKitButtonInfo(
                                 stringResource(type.text),
-                                type = ButtonType.SMALL
+                                size = ButtonSize.SMALL
                             ),
                             isChecked = type == state.typeCategory
                         )
@@ -149,7 +151,7 @@ fun CreateCategoryLimitComponent(
     Column {
         Text(
             text = stringResource(R.string.text_limit_description),
-            style = UiKitStyles.Body2,
+            style = UiKitTypography.TextMD.Regular,
             modifier = Modifier.fillMaxWidth().padding(top = 15.dp)
         )
         Row(
@@ -182,7 +184,7 @@ fun CreateCategoryLimitComponent(
                     ) {
                         Text(
                             text = stringResource(id = periodState.textToShow),
-                            style = UiKitStyles.Body2
+                            style = UiKitTypography.TextMD.Regular
                         )
                     }
                 } else {
@@ -192,7 +194,7 @@ fun CreateCategoryLimitComponent(
                     ) {
                         Text(
                             text = stringResource(R.string.undefined_text),
-                            style = UiKitStyles.Body2
+                            style = UiKitTypography.TextMD.Regular
                         )
                     }
                 }

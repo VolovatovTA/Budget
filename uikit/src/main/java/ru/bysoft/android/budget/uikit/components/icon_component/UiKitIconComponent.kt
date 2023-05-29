@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.uikit.R
 import ru.bysoft.android.budget.uikit.components.avatar.UiKitAvatar
 import ru.bysoft.android.budget.uikit.icons.UiKitIcons
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 
 
 data class UiKitIconState(
@@ -60,7 +60,7 @@ fun UiKitIconsComponent(onClick: (String?) -> Unit, selectedIcon: UiKitIconState
                 } else {
                     Text(
                         text = stringResource(R.string.without_icon),
-                        style = UiKitStyles.Caption,
+                        style = UiKitTypography.TextXS.Regular,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .size(40.dp)

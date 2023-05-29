@@ -21,6 +21,8 @@ import javax.inject.Inject
 interface IAuthViewModel {
     val state: StateFlow<AuthState>
     fun setNewPassword(password: String)
+    fun setNewConfirmPassword(password: String)
+    fun onCheckBoxClicked(value: Boolean)
     fun setNewName(name: String)
     fun setNewEmail(email: String)
     fun onButtonClick(action: AuthActionType)
@@ -54,6 +56,22 @@ class AuthViewModel @Inject constructor(
         state.value = state.value.copy(
             password = TextFieldState(password, null),
             isButtonEnabled = isAllComplete(password = password),
+            toastText = null
+        )
+    }
+
+    override fun setNewConfirmPassword(password: String) {
+        state.value = state.value.copy(
+            confirmPassword = TextFieldState(password, null),
+            isButtonEnabled = isAllComplete(password = password),
+            toastText = null
+        )
+    }
+
+    override fun onCheckBoxClicked(value: Boolean) {
+        state.value = state.value.copy(
+            isCheckBoxChecked = value,
+            isButtonEnabled = isAllComplete(isCheckBoxChecked = value),
             toastText = null
         )
     }
@@ -139,11 +157,12 @@ class AuthViewModel @Inject constructor(
         type: AuthActionType = state.value.type,
         email: String = state.value.email.text,
         name: String = state.value.name.text,
-        password: String = state.value.password.text
+        password: String = state.value.password.text,
+        isCheckBoxChecked: Boolean = state.value.isCheckBoxChecked
     ) =
         when (type) {
             AuthActionType.SIGN_IN -> isEmailCorrect(email) && isPasswordCorrect(password)
-            AuthActionType.SIGN_UP -> isEmailCorrect(email) && isPasswordCorrect(password)
+            AuthActionType.SIGN_UP -> isCheckBoxChecked && isEmailCorrect(email) && isPasswordCorrect(password)
                     && isNameCorrect(name)
         }
 

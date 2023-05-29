@@ -20,8 +20,9 @@ import ru.bysoft.android.budget.features.create_update_delete_transactions.R
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.ExchangeFieldState
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.HEIGHT_ELEMENT
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.MAX_HEIGHT
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.padding
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextField
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 
 @Composable
 fun ExchangesComponent(
@@ -42,8 +43,8 @@ fun ExchangesComponent(
         if (exchangeFieldState.isNotEmpty()) {
             Text(
                 text = stringResource(R.string.text_field_exchange_not_empty),
-                modifier = Modifier.padding(horizontal = 30.dp, vertical = 10.dp),
-                style = UiKitStyles.Body2,
+                modifier = Modifier.padding(horizontal = padding, vertical = padding / 2),
+                style = UiKitTypography.TextMD.Regular,
             )
         }
         exchangeFieldState.forEachIndexed { index, exchangeState ->
@@ -54,8 +55,9 @@ fun ExchangesComponent(
                     ?.displayName ?: "???"
                 Text(
                     text = "1 $text = ",
+                    style = UiKitTypography.TextMD.Regular,
                     modifier = Modifier
-                        .padding(start = 30.dp, top = 9.dp)
+                        .padding(start = padding, top = padding / 2)
                 )
                 UiKitTextField(
                     state = exchangeState.amount,
@@ -70,11 +72,11 @@ fun ExchangesComponent(
                     label = stringResource(R.string.text_field_exchange_label),
                     inputType = KeyboardType.Number,
                     modifier = Modifier
-                        .padding(horizontal = 5.dp)
+                        .padding(horizontal = padding / 2)
                         .weight(2f)
                         .height(HEIGHT_ELEMENT),
                     keyboardActions = KeyboardActions {
-                        if (index == exchangeFieldState.lastIndex){
+                        if (index == exchangeFieldState.lastIndex) {
                             focusManager.clearFocus()
                         } else {
                             focusManager.moveFocus(FocusDirection.Next)
@@ -85,7 +87,8 @@ fun ExchangesComponent(
                     Text(
                         text = it,
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(end = 30.dp, top = 9.dp)
+                        style = UiKitTypography.TextMD.Regular,
+                        modifier = Modifier.padding(end = padding, top = padding / 2)
                     )
                 }
             }

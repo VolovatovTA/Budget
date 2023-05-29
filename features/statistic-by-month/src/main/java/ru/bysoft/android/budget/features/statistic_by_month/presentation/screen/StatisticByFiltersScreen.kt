@@ -10,10 +10,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import ru.bysoft.android.budget.features.statistic_by_month.presentation.*
+import ru.bysoft.android.budget.uikit.colors.UiKitColors
 
 @Composable
 fun StatisticByFiltersScreen(viewModel: StatisticByFiltersViewModel) {
-    Scaffold {
+    Scaffold(
+        backgroundColor = UiKitColors.colors.surface.primary,
+
+        ) {
         val state = viewModel.state.collectAsState().value
         StatisticScreenContent(it, state)
     }

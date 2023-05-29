@@ -20,7 +20,7 @@ class WalletScreenController @Inject constructor(
     private val _state = MutableStateFlow(
         ControllerWalletState(
             currencyFieldState = CurrencyFieldState(
-                selectedCurrency = getCurrency(meInfo.getCurrentMeInfo()!!.settingsData.currency)!!
+                selectedCurrency = getCurrency(meInfo.getCurrentMeInfo()!!.settingsData?.currency)!!
             )
         )
     )

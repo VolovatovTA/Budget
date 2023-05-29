@@ -8,5 +8,5 @@ import ru.bysoft.android.budget.common.token.entity.TokenRefreshRequest
 
 interface ITokenRefreshApi {
     @POST("auth/api/v1/refresh")
-    fun refresh(@Body refreshToken: TokenRefreshRequest): Call<AuthSuccessResponse>
+    suspend fun refresh(@Body refreshToken: TokenRefreshRequest): AuthSuccessResponse
 }

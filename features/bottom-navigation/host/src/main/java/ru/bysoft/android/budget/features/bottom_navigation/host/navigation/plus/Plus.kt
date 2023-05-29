@@ -18,7 +18,7 @@ object Plus : BottomNavigationButtonInfo {
     override val label: Int? = null
 
     @Composable
-    override fun backgroundColor() = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.col4
+    override fun backgroundColor() = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.neutral.`800`
     val entireList: List<BottomNavigationButtonInfo> = listOf(
         EntirePlus,
         EntireTransfer,
@@ -34,7 +34,7 @@ object EntirePlus : NavigationInfo(
     override val label: Int = R.string.filter_income
 
     @Composable
-    override fun backgroundColor() = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.col4
+    override fun backgroundColor() = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.neutral.`800`
 }
 
 object EntireMinus : NavigationInfo(
@@ -45,7 +45,7 @@ object EntireMinus : NavigationInfo(
     override val label: Int = R.string.filter_expense
 
     @Composable
-    override fun backgroundColor() = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.col4
+    override fun backgroundColor() = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.neutral.`800`
 }
 
 object EntireTransfer : NavigationInfo(
@@ -56,5 +56,5 @@ object EntireTransfer : NavigationInfo(
     override val label: Int = R.string.filter_transfer
 
     @Composable
-    override fun backgroundColor() = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.col4
+    override fun backgroundColor() = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.neutral.`800`
 }

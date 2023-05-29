@@ -35,7 +35,7 @@ import ru.bysoft.android.budget.features.create_update_delete_transactions.viewm
 import ru.bysoft.android.budget.features.create_update_delete_transactions.viewmodels.TransactionCreateViewModel
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
-import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonType
+import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitCurrencyPopUp
 import ru.bysoft.android.budget.uikit.components.rowtab.UiKitRowTab
@@ -43,12 +43,13 @@ import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitTabInfo
 import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitRowTabState
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextField
 import ru.bysoft.android.budget.uikit.icons.pack.ArrowLeft
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.components.ShortSuccessCategoryComponent
 
 internal val HEIGHT_ELEMENT = 60.dp
 internal val MAX_HEIGHT = 200.dp
+internal val padding = 12.dp
 
 @Composable
 fun TransactionScreen(
@@ -61,7 +62,10 @@ fun TransactionScreen(
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         }
     }
-    Scaffold(topBar = transactionTopBar(viewModel)) { paddingValues ->
+    Scaffold(
+        backgroundColor = UiKitColors.colors.surface.primary,
+        topBar = transactionTopBar(viewModel)
+    ) { paddingValues ->
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             if (viewModel is TransactionCreateViewModel) {
                 TransactionCreateScreenMain(
@@ -119,7 +123,24 @@ fun TransactionScreen(
 private fun TransactionCreateScreenMain(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues(0.dp),
-    transactionState: ITransactionState = TransactionExpenseState(),
+    transactionState: ITransactionState = TransactionTransferState(
+        walletFromFieldState = WalletSuccessState(
+            list = listOf(
+                WalletInfo(
+                    "1",
+                    "1",
+                    "1",
+                    BudgetCurrency.Unkcnown
+                ),
+                WalletInfo(
+                    "1",
+                    "1",
+                    "1",
+                    BudgetCurrency.Unkcnown
+                )
+            )
+        ),
+    ),
     setCategoriesIds: (CategoryPresentation) -> Unit = {},
     setWalletId: (fromId: String?, toId: String?) -> Unit = { _, _ -> },
     setComment: (String) -> Unit = {},
@@ -156,7 +177,7 @@ private fun TransactionCreateScreenMain(
                     UiKitTabInfo(
                         info = UiKitButtonInfo(
                             stringResource(it.text),
-                            type = ButtonType.SMALL
+                            size = ButtonSize.SMALL
                         ),
                         isChecked = it == selectedType,
                         isEnabled = true
@@ -170,17 +191,22 @@ private fun TransactionCreateScreenMain(
 
         Row(
             Modifier
-                .padding(horizontal = 25.dp)
+                .padding(horizontal = padding / 2)
                 .animateContentSize()
         ) {
             transactionState.walletFromFieldState?.let { iWalletFieldState ->
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         stringResource(R.string.wallet_from_title_text),
-                        style = UiKitStyles.Body2,
+                        style = UiKitTypography.TextMD.Regular,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .padding(top = 20.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)
+                            .padding(
+                                top = padding,
+                                start = padding / 2,
+                                end = padding / 2,
+                                bottom = padding
+                            )
                             .fillMaxWidth()
                     )
                     WalletChooserComponent(
@@ -193,10 +219,15 @@ private fun TransactionCreateScreenMain(
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         stringResource(R.string.wallet_to_text),
-                        style = UiKitStyles.Body2,
+                        style = UiKitTypography.TextMD.Regular,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .padding(top = 20.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)
+                            .padding(
+                                top = padding,
+                                start = padding / 2,
+                                end = padding / 2,
+                                bottom = padding
+                            )
                             .fillMaxWidth()
                     )
                     WalletChooserComponent(
@@ -217,7 +248,7 @@ private fun TransactionCreateScreenMain(
                 label = stringResource(R.string.text_field_amount_label),
                 inputType = KeyboardType.Number,
                 modifier = Modifier
-                    .padding(start = 30.dp, top = 5.dp, end = 5.dp)
+                    .padding(start = padding, top = padding / 2, end = padding / 2)
                     .weight(1f)
                     .height(HEIGHT_ELEMENT)
                     .focusRequester(focusRequester),
@@ -229,7 +260,12 @@ private fun TransactionCreateScreenMain(
                 info = transactionState.currencyFieldState,
                 onNameChanged = setCurrency,
                 modifier = Modifier
-                    .padding(end = 30.dp, top = 18.dp, bottom = 5.dp, start = 5.dp)
+                    .padding(
+                        end = padding,
+                        top = padding + 8.dp,
+                        bottom = padding / 2,
+                        start = padding / 2
+                    )
                     .weight(1f)
                     .height(HEIGHT_ELEMENT - 8.dp)
             )
@@ -240,7 +276,7 @@ private fun TransactionCreateScreenMain(
             label = stringResource(R.string.text_field_comment_label),
             inputType = KeyboardType.Text,
             modifier = Modifier
-                .padding(horizontal = 30.dp, vertical = 5.dp)
+                .padding(horizontal = padding, vertical = padding / 2)
                 .height(HEIGHT_ELEMENT),
             keyboardActions = KeyboardActions {
                 focusManager.moveFocus(FocusDirection.Next)
@@ -259,9 +295,9 @@ private fun TransactionCreateScreenMain(
                 is TransactionIncomeState -> {
                     Text(
                         stringResource(R.string.title_categories_incomes),
-                        style = UiKitStyles.Body2,
+                        style = UiKitTypography.TextMD.Regular,
                         modifier = Modifier
-                            .padding(top = 10.dp, start = 40.dp, end = 30.dp)
+                            .padding(top = padding, start = padding, end = padding)
                             .fillMaxWidth()
                     )
                     CategoryChooserComponent(
@@ -279,9 +315,9 @@ private fun TransactionCreateScreenMain(
                 is TransactionExpenseState -> {
                     Text(
                         stringResource(R.string.title_categories_expense),
-                        style = UiKitStyles.Body2,
+                        style = UiKitTypography.TextMD.Regular,
                         modifier = Modifier
-                            .padding(top = 10.dp, start = 40.dp, end = 30.dp)
+                            .padding(top = padding, start = padding, end = padding)
                             .fillMaxWidth()
                     )
                     CategoryChooserComponent(
@@ -316,18 +352,18 @@ private fun TransactionButtonComponent(
     ) {
         if (isLoading) {
             CircularProgressIndicator(
-                color = UiKitColors.colors.grey,
+                color = UiKitColors.colors.neutral.`1100`,
                 modifier = Modifier.padding(bottom = 30.dp)
             )
         } else {
             UiKitButton(
                 info = UiKitButtonInfo(
                     text = stringResource(R.string.btn_text_create),
-                    type = ButtonType.MEDIUM
+                    size = ButtonSize.MEDIUM
                 ),
                 onClick = onClick,
                 modifier = Modifier.padding(bottom = 30.dp),
-                enabled = enabled
+                isButtonEnabled = enabled
             )
         }
     }
@@ -350,7 +386,8 @@ fun transactionTopBar(viewModel: ITransactionsViewModel) = @Composable {
         )
         Spacer(modifier = Modifier.width(15.dp))
         Text(
-            text = stringResource(R.string.create_screen_title), style = UiKitStyles.H2
+            text = stringResource(R.string.create_screen_title),
+            style = UiKitTypography.DisplayXS.Regular
         )
         Spacer(modifier = Modifier.width(15.dp))
     }

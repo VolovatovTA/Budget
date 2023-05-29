@@ -7,15 +7,15 @@ import ru.bysoft.android.budget.common.util.restore
 import ru.bysoft.android.budget.common.util.toJson
 import javax.inject.Inject
 
-interface ITokenRepo {
+interface ITokenStorage {
     fun saveTokens(tokenData: AuthSuccessResponse)
     fun getTokens(): AuthSuccessResponse?
     fun clearTokens()
 }
 
-class TokenRepo @Inject constructor(
+class TokenStorage @Inject constructor(
     @ApplicationContext private val context: Context
-) : ITokenRepo {
+) : ITokenStorage {
     private val tableName = "tokenTableName"
     private val tokenKey = "tokenKey"
     private val shredPrefs = context.getSharedPreferences(tableName, Context.MODE_PRIVATE)

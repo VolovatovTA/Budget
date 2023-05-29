@@ -6,7 +6,7 @@ import ru.bysoft.android.budget.common.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-const val TAG = "Timofey"
+const val TAG = "OkHttp"
 
 fun Context.getStringFromAsset(filePath: String) =
     this.assets.open(filePath).bufferedReader().use { it.readText() }

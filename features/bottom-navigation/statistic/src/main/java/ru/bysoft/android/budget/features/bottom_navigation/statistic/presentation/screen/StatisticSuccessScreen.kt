@@ -18,12 +18,11 @@ import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentatio
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.listItem.UiKitListItem
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.R
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
-import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonType
+import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
-import ru.bysoft.android.budget.uikit.templates.ShowcaseScreen
 
 @Composable
 fun StatisticSuccessScreen(
@@ -40,8 +39,8 @@ fun StatisticSuccessScreen(
             if (state.listInfo.isEmpty()) {
                 Text(
                     text = stringResource(R.string.empty_category_list),
-                    style = UiKitStyles.Body2,
-                    color = UiKitColors.colors.dark,
+                    style = UiKitTypography.TextMD.Regular,
+                    color = UiKitColors.colors.primary.`1100`,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -58,7 +57,7 @@ fun StatisticSuccessScreen(
                         title = categoryInfo.name,
                         icons = listOfNotNull(categoryInfo.icon),
                         amount = categoryInfo.amount,
-                        amountColor = UiKitColors.colors.dark,
+                        amountColor = UiKitColors.colors.primary.`1100`,
                         modifier = Modifier
                             .padding(end = 30.dp),
                         subTitle = categoryInfo.subtitle?.let {
@@ -85,7 +84,7 @@ fun ShowMoreStatisticButton(onClick: () -> Unit) {
     UiKitButton(
         info = UiKitButtonInfo(
             text = stringResource(R.string.show_more_statistic),
-            type = ButtonType.MEDIUM
+            size = ButtonSize.MEDIUM
         ),
         onClick = onClick,
         modifier = Modifier
@@ -102,7 +101,7 @@ private fun StatisticProgressIndicator(progress: ProgressInfo) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp),
-            color = if (progress.progress > 1f) UiKitColors.colors.red else UiKitColors.colors.col4,
+            color = if (progress.progress > 1f) UiKitColors.colors.feedbackRed.`1100` else UiKitColors.colors.neutral.`800`,
             backgroundColor = Color.Transparent
         )
         is ProgressInfoWaiting -> UiKitShimmerComponent(
@@ -125,12 +124,12 @@ private fun StatisticProgressIndicator(progress: ProgressInfo) {
                     Modifier
                         .height(4.dp)
                         .weight(1f)
-                        .background(UiKitColors.colors.red)
+                        .background(UiKitColors.colors.feedbackRed.`1100`)
                 )
                 Text(
                     text = stringResource(R.string.error_while_loading_some_data_statistic),
-                    style = UiKitStyles.Caption,
-                    color = UiKitColors.colors.red,
+                    style = UiKitTypography.TextXS.Regular,
+                    color = UiKitColors.colors.feedbackRed.`1100`,
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
                         .padding(bottom = 2.dp)
@@ -139,7 +138,7 @@ private fun StatisticProgressIndicator(progress: ProgressInfo) {
                     Modifier
                         .height(4.dp)
                         .weight(1f)
-                        .background(UiKitColors.colors.red)
+                        .background(UiKitColors.colors.feedbackRed.`1100`)
                 )
             }
     }

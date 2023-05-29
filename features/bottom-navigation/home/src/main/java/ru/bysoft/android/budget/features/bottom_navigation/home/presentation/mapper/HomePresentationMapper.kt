@@ -36,7 +36,7 @@ class HomePresentationMapper @Inject constructor(
         name = data.name,
         balance = data.balance,
         currency = data.currency,
-        backgroundColor = "col3",
+        backgroundColor = "primary.500",
         walletId = data.id
     )
     override fun mapToInfo(
@@ -66,9 +66,9 @@ class HomePresentationMapper @Inject constructor(
             else transactionData.categories.mapNotNull { UiKitIcons.getByName(it.iconName) },
             name = transactionData.comment,
             color = when (transactionData) {
-                is TransactionIncome -> "col6"
-                is TransactionExpense -> "red"
-                is TransactionTransfer -> "col1"
+                is TransactionIncome -> "feedbackGreen.500"
+                is TransactionExpense -> "feedbackRed.500"
+                is TransactionTransfer -> "primary.500"
             },
             id = transactionData.id,
             isWaiting = false,

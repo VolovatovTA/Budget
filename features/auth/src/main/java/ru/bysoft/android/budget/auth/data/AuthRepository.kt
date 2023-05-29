@@ -9,7 +9,7 @@ import ru.bysoft.android.budget.auth.data.entity.SignUpErrorData
 import ru.bysoft.android.budget.auth.data.mapper.mapToErrorData
 import ru.bysoft.android.budget.auth.data.mapper.mapToSignInRequest
 import ru.bysoft.android.budget.auth.data.mapper.mapToSignUpRequest
-import ru.bysoft.android.budget.common.token.ITokenRepo
+import ru.bysoft.android.budget.common.token.ITokenStorage
 import ru.bysoft.android.budget.common.token.entity.AuthResponse
 import ru.bysoft.android.budget.common.token.entity.AuthSuccessResponse
 import ru.bysoft.android.budget.common.token.entity.SignInErrorResponse
@@ -25,7 +25,7 @@ interface IAuthRepository {
 
 class AuthRepository @Inject constructor(
     private val api: IAuthApi,
-    private val tokenRepo: ITokenRepo
+    private val tokenRepo: ITokenStorage
 ) : IAuthRepository {
 
     override suspend fun signIn(signInData: SignInData): SignInErrorData? {

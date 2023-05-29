@@ -1,6 +1,7 @@
 package ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -21,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.*
+import ru.bysoft.android.budget.common.util.TAG
 import ru.bysoft.android.budget.features.bottom_navigation.home.IHomeViewModel
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.title.MeLoadingState
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletsLoadingState
@@ -56,12 +58,14 @@ fun HomeScreen(
 
     val pullRefreshState = rememberPullRefreshState(
         refreshing = refreshingWallets?.isRefreshing ?: false,
-        onRefresh = { viewModel.loadData(true) }
+        onRefresh = {
+            Log.d(TAG, "HomeScreen: onRefresh: ")
+            viewModel.loadData(true) }
     )
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        backgroundColor = Color.Transparent,
+        backgroundColor = UiKitColors.colors.surface.primary,
         bottomBar = {}
     ) {
         Column(
@@ -87,10 +91,9 @@ fun HomeScreen(
 
                         WalletsPagerComponent(
                             walletsState,
-                            viewModel::onClickSimpleWallet,
+                            viewModel::onPositionSelected,
                             viewModel::onClickCreateWallet,
                             viewModel::onClickEditWallet,
-                            viewModel::onPositionChanged
                         )
 
                         HomeFiltersComponent(filtersState, viewModel::onClickFilter)
@@ -99,7 +102,7 @@ fun HomeScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(1.dp)
-                                .background(UiKitColors.colors.dark40)
+                                .background(UiKitColors.colors.primary.`400`)
                         )
                     }
                 }

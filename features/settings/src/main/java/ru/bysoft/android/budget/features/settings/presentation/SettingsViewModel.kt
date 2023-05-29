@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.common.errors.errorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.me_info.entity.DayOfWeek
-import ru.bysoft.android.budget.common.token.ITokenRepo
+import ru.bysoft.android.budget.common.token.ITokenStorage
 import ru.bysoft.android.budget.common.util.BudgetCurrency
 import ru.bysoft.android.budget.common.util.getCurrency
 import ru.bysoft.android.budget.features.settings.data.SettingsRepository
@@ -26,7 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     meInfo: IMeInfo,
-    private val tokenRepo: ITokenRepo,
+    private val tokenRepo: ITokenStorage,
     private val navigate: ISettingsNavigation,
     private val repo: SettingsRepository
 ) : ViewModel() {

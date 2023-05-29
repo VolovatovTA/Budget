@@ -10,6 +10,6 @@ object QRCode : NavigationInfo("qrCode", "qrScreenName"), BottomNavigationButton
     override val icon: ImageVector = Qrcode
     override val label: Int? = null
     @Composable
-    override fun backgroundColor() = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.light
+    override fun backgroundColor() = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.primary.`100`
 
 }

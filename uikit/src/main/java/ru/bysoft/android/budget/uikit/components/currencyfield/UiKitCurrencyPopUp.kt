@@ -25,7 +25,7 @@ import ru.bysoft.android.budget.common.util.BudgetCurrency
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.PopupFieldState
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import java.util.*
 
 @Composable
@@ -44,7 +44,7 @@ fun UiKitCurrencyPopUp(
     ) {
         Surface(
             shape = RoundedCornerShape(10.dp),
-            border = BorderStroke(0.8.dp, UiKitColors.colors.dark),
+            border = BorderStroke(0.8.dp, UiKitColors.colors.primary.`1100`),
             modifier = Modifier
                 .height(50.dp)
                 .fillMaxWidth(),
@@ -64,8 +64,8 @@ fun UiKitCurrencyPopUp(
 
                 Text(
                     text = text,
-                    style = UiKitStyles.Body2,
-                    color = UiKitColors.colors.dark,
+                    style = UiKitTypography.TextMD.Regular,
+                    color = UiKitColors.colors.primary.`1100`,
                     modifier = Modifier.weight(1f)
                 )
                 Box(
@@ -78,7 +78,7 @@ fun UiKitCurrencyPopUp(
                             Icons.Filled.ArrowDropDown
                         },
                         contentDescription = null,
-                        tint = UiKitColors.colors.dark
+                        tint = UiKitColors.colors.primary.`1100`,
                     )
                 }
                 Spacer(modifier = Modifier.width(15.dp))
@@ -87,8 +87,8 @@ fun UiKitCurrencyPopUp(
         if (info.errorText != null && info.errorText != R.string.empty_text) {
             Text(
                 text = stringResource(info.errorText),
-                style = UiKitStyles.Caption,
-                color = UiKitColors.colors.red,
+                style = UiKitTypography.TextXS.Regular,
+                color = UiKitColors.colors.feedbackRed.`1100`,
             )
         }
         DropdownMenu(
@@ -104,19 +104,19 @@ fun UiKitCurrencyPopUp(
                         showMenu.value = false
                     },
                     modifier = Modifier
-                        .background(UiKitColors.colors.light40)
+                        .background(UiKitColors.colors.surface.primary)
                 ) {
                     Box(
                         modifier = Modifier
                             .size(30.dp)
                             .clip(CircleShape)
-                            .background(UiKitColors.colors.col3),
+                            .background(UiKitColors.colors.surface.primary),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = item.displayName,
-                            style = UiKitStyles.H2,
-                            color = UiKitColors.colors.dark,
+                            style = UiKitTypography.DisplayXS.Regular,
+                            color = UiKitColors.surface.tintPrimary,
                             modifier = Modifier
                                 .fillMaxSize(),
                             textAlign = TextAlign.Center
@@ -126,8 +126,8 @@ fun UiKitCurrencyPopUp(
 
                     Text(
                         text = Currency.getInstance(item.iso4217).displayName,
-                        style = UiKitStyles.Body2,
-                        color = UiKitColors.colors.dark,
+                        style = UiKitTypography.TextMD.Regular,
+                        color = UiKitColors.surface.tintPrimary,
                         modifier = Modifier
                     )
                 }
@@ -153,8 +153,8 @@ fun <T> UiKitPopUp(
             shape = RoundedCornerShape(10.dp),
             border = BorderStroke(
                 0.8.dp,
-                if (info.errorText == null || info.errorText.isEmpty()) UiKitColors.colors.dark
-                else UiKitColors.colors.red
+                if (info.errorText == null || info.errorText.isEmpty()) UiKitColors.colors.primary.`1100`
+                else UiKitColors.colors.feedbackRed.`500`
             ),
             modifier = modifier,
             color = Color.Transparent
@@ -175,7 +175,7 @@ fun <T> UiKitPopUp(
                             Icons.Filled.ArrowDropDown
                         },
                         contentDescription = null,
-                        tint = UiKitColors.colors.dark
+                        tint = UiKitColors.colors.primary.`1100`,
                     )
                 }
                 Spacer(modifier = Modifier.width(10.dp))
@@ -184,8 +184,8 @@ fun <T> UiKitPopUp(
         if (info.errorText != null && info.errorText.isNotEmpty()) {
             Text(
                 text = info.errorText,
-                style = UiKitStyles.Caption,
-                color = UiKitColors.colors.red,
+                style = UiKitTypography.TextXS.Regular,
+                color = UiKitColors.colors.feedbackRed.`1100`,
             )
         }
         DropdownMenu(

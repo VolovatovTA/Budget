@@ -42,26 +42,20 @@ import ru.bysoft.android.budget.features.statistic_by_month.presentation.screen.
 fun MainNavigationHost(mainNavController: NavHostController) {
     NavHost(navController = mainNavController, startDestination = Splash.route) {
 
-        navigation(route = Splash.route, startDestination = Splash.screenName) {
-            composable(Splash.screenName) {
-                SplashScreen()
-            }
+        composable(Splash.route) {
+            SplashScreen()
         }
 
-        navigation(route = BottomNavigation.route, startDestination = BottomNavigation.screenName) {
-            composable(BottomNavigation.screenName) {
-                val bottomNavigationController = rememberNavController()
-                BottomNavigationScreen(
-                    bottomNavigateionNavController = bottomNavigationController,
-                    mainNavController = mainNavController
-                )
-            }
+        composable(BottomNavigation.route) {
+            val bottomNavigationController = rememberNavController()
+            BottomNavigationScreen(
+                bottomNavigateionNavController = bottomNavigationController,
+                mainNavController = mainNavController
+            )
         }
 
-        navigation(route = Auth.route, startDestination = Auth.screenName) {
-            composable(Auth.screenName) {
-                AuthScreen()
-            }
+        composable(Auth.route) {
+            AuthScreen()
         }
 
         navigation(

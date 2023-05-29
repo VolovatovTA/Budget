@@ -8,7 +8,7 @@ data class MeResponse(
     @SerializedName("name")
     val name: String,
     @SerializedName("settings")
-    val settingsResponse: SettingsResponse,
+    val settingsResponse: SettingsResponse?,
     @SerializedName("uuid")
     val userId: String
 )

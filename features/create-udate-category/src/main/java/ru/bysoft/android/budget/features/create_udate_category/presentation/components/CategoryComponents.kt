@@ -19,10 +19,10 @@ import ru.bysoft.android.budget.features.create_udate_category.presentation.enti
 import ru.bysoft.android.budget.uikit.R
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
-import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonType
+import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 
 @Composable
 fun ButtonComponent(
@@ -35,7 +35,7 @@ fun ButtonComponent(
             CircularProgressIndicator(modifier = Modifier.fillMaxHeight())
         } else {
             UiKitButton(
-                info = UiKitButtonInfo(text, type = ButtonType.MEDIUM),
+                info = UiKitButtonInfo(text, size = ButtonSize.MEDIUM),
                 onClick = onClickCreateUpdate
             )
         }
@@ -71,23 +71,23 @@ fun CreateUpdateCategoryTextField(
                 keyboardType = type
             ),
             shape = RoundedCornerShape(10.dp),
-            colors = UiKitColors.colors.textFieldColors,
+            colors = UiKitColors.textField,
             label = {
                 Text(
                     text = label,
-                    style = UiKitStyles.Body2
+                    style = UiKitTypography.TextMD.Regular
                 )
             },
             isError = state.errorText != null,
             interactionSource = source,
-            textStyle = UiKitStyles.Body2,
+            textStyle = UiKitTypography.TextMD.Regular,
             keyboardActions = keyboardActions
         )
         if (state.errorText != null && state.errorText != R.string.empty_text) {
             Text(
                 text = stringResource(state.errorText!!),
-                style = UiKitStyles.Caption,
-                color = UiKitColors.colors.red
+                style = UiKitTypography.TextXS.Regular,
+                color = UiKitColors.colors.feedbackRed.`1100`
             )
         }
     }

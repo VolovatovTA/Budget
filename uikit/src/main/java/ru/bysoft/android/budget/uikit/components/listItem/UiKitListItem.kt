@@ -13,9 +13,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.times
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfo
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfoError
@@ -24,7 +27,7 @@ import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfo
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.android.budget.uikit.icons.another.Wallet
 import ru.bysoft.android.budget.uikit.icons.pack.Recycle
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 
 @Composable
 fun UiKitListItem(
@@ -39,38 +42,48 @@ fun UiKitListItem(
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-//        horizontalArrangement = Arrangement.End
+        horizontalArrangement = Arrangement.End
     ) {
         UiKitListItemIcons(icons)
         Column(
             modifier = Modifier
                 .padding(start = 20.dp)
+                .weight(1f)
         ) {
             Text(
                 text = title,
-                style = UiKitStyles.Body2,
+                style = UiKitTypography.TextMD.Regular,
                 modifier = Modifier.padding(bottom = 9.dp),
-//                overflow = TextOverflow.Ellipsis,
+                overflow = TextOverflow.Ellipsis,
                 maxLines = 1
 
             )
             subTitle?.let {
                 Text(
                     text = subTitle,
-                    style = UiKitStyles.Caption,
+                    style = UiKitTypography.TextXS.Regular,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1
                 )
             }
         }
 
-        UiKitListItemAmount(
-            info = amount,
-            amountColor = amountColor,
-            modifier = Modifier.weight(1f)
-        )
+        val width = if (amount is UiKitAmountInfoSuccess) {
+            amount.amount.length * lengthOneLetter
+        } else {
+            Dp.Unspecified
+        }
+        Box(modifier = Modifier.width(width),) {
+            UiKitListItemAmount(
+                info = amount,
+                amountColor = amountColor,
+                modifier = Modifier.align(Alignment.CenterEnd)
+            )
+        }
     }
 }
+
+val lengthOneLetter = 9.dp
 
 const val count = 3
 
@@ -94,14 +107,14 @@ private fun UiKitListItemIcons(icons: List<ImageVector>) {
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .background(UiKitColors.colors.col3),
+                        .background(UiKitColors.colors.neutral.`500`),
                     contentAlignment = Alignment.Center
                 ) {
                     icons.getOrNull(index)?.let {
                         Icon(
                             it,
                             contentDescription = null,
-                            tint = UiKitColors.colors.dark
+                            tint = UiKitColors.colors.primary.`1100`
                         )
                     }
                 }
@@ -117,13 +130,13 @@ private fun UiKitListItemIcons(icons: List<ImageVector>) {
                 Box(
                     modifier = Modifier
                         .size(30.dp, 40.dp)
-                        .background(UiKitColors.colors.col3),
+                        .background(UiKitColors.colors.neutral.`500`),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "+${icons.size - count}",
-                        style = UiKitStyles.Body2,
-                        color = UiKitColors.colors.dark
+                        style = UiKitTypography.TextMD.Regular,
+                        color = UiKitColors.colors.primary.`1100`
                     )
                 }
             }
@@ -145,18 +158,19 @@ fun UiKitListItemAmount(
             is UiKitAmountInfoSuccess -> {
                 Text(
                     text = info.amount,
-                    style = UiKitStyles.Body2,
+                    style = UiKitTypography.TextMD.Regular,
                     modifier = Modifier,
                     color = amountColor,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.End
                 )
             }
             is UiKitAmountInfoError -> {
                 Icon(
                     imageVector = Icons.Filled.Warning,
                     contentDescription = null,
-                    tint = UiKitColors.colors.red
+                    tint = UiKitColors.colors.feedbackRed.`1100`
                 )
             }
             is UiKitAmountInfoWaiting -> {
@@ -180,32 +194,32 @@ fun UiKitListItemPreview() {
             title = "Title kblyvliylhblkjhblkjblkjblkhjb",
             icons = listOf(),
             amount = UiKitAmountInfoWaiting,
-            amountColor = UiKitColors.colors.dark
+            amountColor = UiKitColors.colors.primary.`1100`
         )
         UiKitListItem(
             title = "Titlevfdjdkfjnbdfkjbdf",
-            subTitle = "ksjdvnskdvsdovunsodvinsodvunsodvinsodvnsodvunso",
+            subTitle = "ksjdvnskdvvgvgvygvygvinsodvnsodvunso",
             icons = listOf(Wallet),
-            amount = UiKitAmountInfoSuccess("1000 000 000"),
-            amountColor = UiKitColors.colors.dark
+            amount = UiKitAmountInfoSuccess("1000 000 000 $"),
+            amountColor = UiKitColors.colors.primary.`1100`
         )
         UiKitListItem(
             title = "Title",
             icons = listOf(Wallet, Recycle),
             amount = UiKitAmountInfoSuccess("1000"),
-            amountColor = UiKitColors.colors.dark
+            amountColor = UiKitColors.colors.primary.`1100`
         )
         UiKitListItem(
             title = "Title",
             icons = listOf(Wallet, Recycle, Recycle),
             amount = UiKitAmountInfoSuccess("1000"),
-            amountColor = UiKitColors.colors.dark
+            amountColor = UiKitColors.colors.primary.`1100`
         )
         UiKitListItem(
             title = "Title",
             icons = listOf(Wallet, Wallet, Wallet, Wallet),
             amount = UiKitAmountInfoError,
-            amountColor = UiKitColors.colors.dark
+            amountColor = UiKitColors.colors.primary.`1100`
         )
     }
 

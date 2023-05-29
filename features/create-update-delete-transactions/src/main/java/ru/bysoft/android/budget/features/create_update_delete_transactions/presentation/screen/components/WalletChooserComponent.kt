@@ -19,8 +19,9 @@ import ru.bysoft.android.budget.features.create_update_delete_transactions.prese
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.MAX_HEIGHT
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.padding
 
 
 @Composable
@@ -61,8 +62,8 @@ private fun WalletSuccessComponent(
     ) {
         state.list.forEach { wallet ->
             val backgroundColor =
-                if (wallet.id == state.selectedWalletId) UiKitColors.colors.col4_inactive
-                else UiKitColors.colors.light
+                if (wallet.id == state.selectedWalletId) UiKitColors.colors.neutral.`300`
+                else UiKitColors.colors.surface.primary
 
             Spacer(modifier = Modifier.height(10.dp))
             Row(
@@ -71,7 +72,7 @@ private fun WalletSuccessComponent(
                     .height(HEIGHT_ELEMENT - 10.dp)
                     .clip(RoundedCornerShape(10.dp))
                     .background(backgroundColor)
-                    .border(0.1.dp, UiKitColors.colors.dark, RoundedCornerShape(10.dp))
+                    .border(0.1.dp, UiKitColors.colors.primary.`1100`, RoundedCornerShape(10.dp))
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
@@ -82,16 +83,16 @@ private fun WalletSuccessComponent(
             ) {
                 Text(
                     text = wallet.name,
-                    style = UiKitStyles.Body2,
+                    style = UiKitTypography.TextMD.Regular,
                     modifier = Modifier
                         .weight(1f)
-                        .padding(start = 15.dp, end = 5.dp),
+                        .padding(start = padding, end = padding / 2),
                     maxLines = 2
                 )
                 Text(
                     text = wallet.balance,
-                    style = UiKitStyles.Body2,
-                    modifier = Modifier.padding(end = 15.dp),
+                    style = UiKitTypography.TextMD.Regular,
+                    modifier = Modifier.padding(end = padding),
                     maxLines = 1
                 )
             }
@@ -104,7 +105,7 @@ private fun WalletWaitingComponent() {
     Column(
         modifier = Modifier
             .heightIn(max = MAX_HEIGHT)
-            .padding(horizontal = 5.dp)
+            .padding(horizontal = padding / 2)
             .verticalScroll(rememberScrollState())
     ) {
         (0..1).forEach { _ ->
@@ -122,6 +123,7 @@ private fun WalletWaitingComponent() {
 private fun WalletErrorComponent() {
     Text(
         text = stringResource(R.string.error_loading_wallets),
+        style = UiKitTypography.TextMD.Regular,
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 20.dp, horizontal = 5.dp)

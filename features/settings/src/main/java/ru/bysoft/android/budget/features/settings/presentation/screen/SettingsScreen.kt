@@ -1,6 +1,5 @@
 package ru.bysoft.android.budget.features.settings.presentation.screen
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,10 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import coil.compose.SubcomposeAsyncImage
-import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.common.me_info.entity.DayOfWeek
 import ru.bysoft.android.budget.common.me_info.entity.MeData
 import ru.bysoft.android.budget.common.me_info.entity.SettingsData
@@ -32,13 +28,13 @@ import ru.bysoft.android.budget.features.settings.presentation.SettingsViewModel
 import ru.bysoft.android.budget.features.settings.presentation.entity.SettingsState
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
-import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonType
+import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitPopUp
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.PopupFieldState
 import ru.bysoft.android.budget.uikit.icons.pack.Person
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.settings.R
 
 @Composable
@@ -70,6 +66,7 @@ private fun SettingsScreenContent(
     onConfirm: () -> Unit
 ) {
     Scaffold(
+        backgroundColor = UiKitColors.colors.surface.primary,
         topBar = {
             Row(
                 horizontalArrangement = Arrangement.End,
@@ -83,7 +80,7 @@ private fun SettingsScreenContent(
                         modifier = Modifier
                             .padding(16.dp)
                             .clickable(onClick = onConfirm),
-                        style = UiKitStyles.Body2
+                        style = UiKitTypography.TextMD.Regular
                     )
                 }
             }
@@ -142,7 +139,7 @@ private fun SettingsScreenContent(
                     UiKitButton(
                         info = UiKitButtonInfo(
                             text = stringResource(R.string.logout),
-                            type = ButtonType.MEDIUM
+                            size = ButtonSize.MEDIUM
                         ),
                         onClick = onLogoutClick,
                     )
@@ -161,7 +158,7 @@ private fun SettingsScreenContent(
                             .size(50.dp),
                         strokeCap = StrokeCap.Round,
                         strokeWidth = 5.dp,
-                        color = UiKitColors.colors.col4
+                        color = UiKitColors.colors.neutral.`800`
                     )
                 }
             }
@@ -181,7 +178,7 @@ private fun DataElement(key: Int, value: String?) {
                 text = stringResource(id = key),
                 modifier = Modifier
                     .align(Alignment.CenterVertically),
-                style = UiKitStyles.Caption
+                style = UiKitTypography.TextXS.Regular
             )
             Box(
                 modifier = Modifier.weight(1f),
@@ -191,7 +188,7 @@ private fun DataElement(key: Int, value: String?) {
                     text = value,
                     modifier = Modifier
                         .padding(start = 10.dp),
-                    style = UiKitStyles.Body2
+                    style = UiKitTypography.TextMD.Regular
                 )
             }
         }
@@ -213,7 +210,7 @@ private fun CurrencyField(
             text = stringResource(id = key),
             modifier = Modifier
                 .align(Alignment.CenterVertically),
-            style = UiKitStyles.Caption
+            style = UiKitTypography.TextXS.Regular
         )
         Box(
             modifier = Modifier.weight(1f),
@@ -235,14 +232,14 @@ private fun CurrencyField(
                         text = it.displayName,
                         modifier = Modifier
                             .padding(start = 10.dp),
-                        style = UiKitStyles.Body2
+                        style = UiKitTypography.TextMD.Regular
                     )
                 } else {
                     Text(
                         text = stringResource(R.string.not_loaded),
                         modifier = Modifier
                             .padding(start = 10.dp),
-                        style = UiKitStyles.Body2
+                        style = UiKitTypography.TextMD.Regular
                     )
                 }
             }
@@ -265,7 +262,7 @@ private fun DataElementWithEditingByPopUp(
             text = stringResource(id = key),
             modifier = Modifier
                 .align(Alignment.CenterVertically),
-            style = UiKitStyles.Caption
+            style = UiKitTypography.TextXS.Regular
         )
         Box(
             modifier = Modifier.weight(1f),
@@ -287,14 +284,14 @@ private fun DataElementWithEditingByPopUp(
                         text = stringResource(it.resId),
                         modifier = Modifier
                             .padding(start = 10.dp),
-                        style = UiKitStyles.Body2
+                        style = UiKitTypography.TextMD.Regular
                     )
                 } else {
                     Text(
                         text = stringResource(R.string.not_loaded),
                         modifier = Modifier
                             .padding(start = 10.dp),
-                        style = UiKitStyles.Body2
+                        style = UiKitTypography.TextMD.Regular
                     )
                 }
             }

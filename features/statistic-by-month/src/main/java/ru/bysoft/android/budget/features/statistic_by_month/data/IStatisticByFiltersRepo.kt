@@ -31,11 +31,11 @@ class StatisticByFiltersRepo @Inject constructor(
             transferType = transferType.nameToBack
         )
 
-        return response.data.groupBy { it.listTransactionExpenseResponse }.values.map {
+        return response.data?.groupBy { it?.listTransactionExpenseResponse }?.values?.map {
             TransactionResponse(it)
-        }.map {
+        }?.map {
             mapper.mapToData(it)
-        }
+        }.orEmpty()
     }
 
 }

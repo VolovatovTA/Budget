@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.icons.pack.ArrowLeft
 import ru.bysoft.android.budget.uikit.icons.pack.Delete
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 
 @Composable
 fun UiKitTopBar(id: Int, onClickBack: () -> Unit, onClickDelete: (() -> Unit)?) {
@@ -30,7 +30,7 @@ fun UiKitTopBar(id: Int, onClickBack: () -> Unit, onClickDelete: (() -> Unit)?) 
         )
         Spacer(modifier = Modifier.width(15.dp))
         Text(
-            text = stringResource(id), style = UiKitStyles.H2
+            text = stringResource(id), style = UiKitTypography.DisplayXS.Regular
         )
         Spacer(modifier = Modifier.width(15.dp))
 
@@ -42,7 +42,7 @@ fun UiKitTopBar(id: Int, onClickBack: () -> Unit, onClickDelete: (() -> Unit)?) 
                 Icon(
                     imageVector = Delete,
                     contentDescription = null,
-                    tint = UiKitColors.colors.red,
+                    tint = UiKitColors.colors.feedbackRed.`1100`,
                     modifier = Modifier.clickable(onClick = onClickDelete)
                 )
             }

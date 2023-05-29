@@ -10,7 +10,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,7 +30,7 @@ import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.android.budget.uikit.icons.pack.Edit
 import ru.bysoft.android.budget.uikit.icons.pack.Plus
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import kotlin.math.absoluteValue
 
 val heightWalletCard = 91.dp
@@ -42,10 +41,9 @@ val padding = 10.dp
 @OptIn(ExperimentalPagerApi::class)
 fun WalletsPagerComponent(
     state: IWalletsState,
-    onClickSimple: () -> Unit,
+    onClickSimple: (String) -> Unit,
     onClickCreate: () -> Unit,
     onClickEdit: (id: String) -> Unit,
-    onPositionChanged: (String) -> Unit,
 ) {
     val pagerState = rememberPagerState(0)
 
@@ -59,10 +57,9 @@ fun WalletsPagerComponent(
             is WalletsSuccessState -> SuccessWallets(
                 state,
                 pagerState,
-                onClickSimple,
                 onClickCreate,
                 onClickEdit,
-                onPositionChanged
+                onClickSimple,
             )
         }
     }
@@ -73,26 +70,19 @@ fun WalletsPagerComponent(
 internal fun SuccessWallets(
     state: WalletsSuccessState,
     pagerState: PagerState,
-    onClickSimple: () -> Unit,
     onClickCreate: () -> Unit,
     onClickEdit: (id: String) -> Unit,
-    onPositionChanged: (id: String) -> Unit
+    onPositionSelected: (id: String) -> Unit
 ) {
-    LaunchedEffect(pagerState.currentPage) {
-        val currentWallet = state.list[pagerState.currentPage]
-        if (currentWallet is WalletCardPresentation) {
-            onPositionChanged(currentWallet.walletId)
-        }
-    }
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(Modifier.height(15.dp))
-        WalletsPagerComponent(state, pagerState, onClickSimple, onClickCreate, onClickEdit)
+        WalletsPagerComponent(state, pagerState, onPositionSelected, onClickCreate, onClickEdit)
         Spacer(Modifier.height(10.dp))
         HorizontalPagerIndicator(
             pagerState,
             pageCount = state.list.size,
-            activeColor = UiKitColors.colors.col1,
-            inactiveColor = UiKitColors.colors.col5
+            activeColor = UiKitColors.colors.neutral.`800`,
+            inactiveColor = UiKitColors.colors.neutral.`400`
         )
     }
 }
@@ -107,7 +97,7 @@ internal fun ErrorWallets() {
     ) {
         Text(
             text = stringResource(R.string.error_while_loading_some_data),
-            style = UiKitStyles.Body2,
+            style = UiKitTypography.TextMD.Regular,
             textAlign = TextAlign.Center
         )
     }
@@ -147,7 +137,7 @@ internal fun LoadingWallets(pagerState: PagerState) {
 private fun WalletsPagerComponent(
     state: WalletsSuccessState,
     pagerState: PagerState,
-    onClickSimple: () -> Unit,
+    onPositionSelected: (id: String) -> Unit,
     onClickCreate: () -> Unit,
     onClickEdit: (id: String) -> Unit,
 ) {
@@ -169,10 +159,14 @@ private fun WalletsPagerComponent(
             endContentPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
         ),
         contentPadding = contentPadding,
-        itemSpacing = padding*2
+        itemSpacing = padding * 2
     ) { page ->
         WalletCardComponent(
-            info = state.list[page], onClickSimple, onClickCreate, onClickEdit
+            info = state.list[page],
+            onPositionSelected,
+            onClickCreate,
+            onClickEdit,
+            state.currentWalletId
         )
     }
 }
@@ -180,12 +174,17 @@ private fun WalletsPagerComponent(
 @Composable
 fun WalletCardComponent(
     info: IWalletPresentation,
-    onClickSimple: () -> Unit,
+    onClickSimple: (id: String) -> Unit,
     onClickCreate: () -> Unit,
-    onClickEdit: (id: String) -> Unit
+    onClickEdit: (id: String) -> Unit,
+    currentWalletId: String
 ) {
     when (info) {
-        is WalletCardPresentation -> WalletSimpleCard(info, onClickSimple, onClickEdit)
+        is WalletCardPresentation -> WalletSimpleCard(
+            info, onClickSimple,
+            onClickEdit,
+            currentWalletId == info.walletId
+        )
         is WalletCreateNewPresentation -> WalletCardCreateNewWallet(onClickCreate)
     }
 }
@@ -197,7 +196,7 @@ private fun WalletCardCreateNewWallet(onClick: () -> Unit) {
             .height(heightWalletCard)
             .fillMaxWidth(),
         elevation = 5.dp,
-        backgroundColor = UiKitColors.colors.light,
+        backgroundColor = UiKitColors.card.primaryBackground,
         shape = RoundedCornerShape(cornersRadius)
     ) {
         Column(
@@ -210,7 +209,7 @@ private fun WalletCardCreateNewWallet(onClick: () -> Unit) {
             Text(
                 modifier = Modifier.padding(),
                 text = stringResource(R.string.create_new_wallet),
-                style = UiKitStyles.Body2,
+                style = UiKitTypography.TextMD.Regular,
             )
             Icon(
                 imageVector = Plus, contentDescription = null
@@ -222,21 +221,23 @@ private fun WalletCardCreateNewWallet(onClick: () -> Unit) {
 @SuppressLint("RestrictedApi")
 @Composable
 fun WalletSimpleCard(
-    info: WalletCardPresentation, onClick: () -> Unit, onClickEdit: (id: String) -> Unit
+    info: WalletCardPresentation,
+    onClick: (String) -> Unit,
+    onClickEdit: (id: String) -> Unit,
+    isSelected: Boolean
 ) {
     Surface(
         modifier = Modifier
             .height(heightWalletCard)
             .fillMaxWidth(),
-//        elevation = 5.dp,
-        color = UiKitColors.colors.col3,
+        elevation = if (isSelected) 10.dp else 5.dp,
+        color = if (isSelected) UiKitColors.card.secondaryBackground else UiKitColors.card.primaryBackground,
         shape = RoundedCornerShape(cornersRadius),
     ) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .background(UiKitColors.colors.col3)
-                .clickable { onClick.invoke() },
+                .clickable { onClick.invoke(info.walletId) },
             verticalAlignment = Alignment.Top,
         ) {
             Column(
@@ -247,11 +248,11 @@ fun WalletSimpleCard(
                 Text(
                     modifier = Modifier
                         .padding(horizontal = padding)
-                        .padding(top = padding, end = padding*3)
+                        .padding(top = padding, end = padding * 3)
                         .fillMaxHeight()
                         .weight(1f),
                     text = info.name,
-                    style = UiKitStyles.Caption,
+                    style = UiKitTypography.TextXS.Regular,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -268,7 +269,7 @@ fun WalletSimpleCard(
                             info.balance,
                             getCurrency(info.currency) ?: throw Throwable("UnknownCurrency")
                         ),
-                        style = UiKitStyles.H2,
+                        style = UiKitTypography.DisplayXS.Regular,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -289,7 +290,7 @@ fun WalletSimpleCard(
                     .clip(RoundedCornerShape(cornersRadius / 2))
                     .clickable { onClickEdit(info.walletId) }
                     .padding(padding / 2),
-                tint = UiKitColors.colors.dark
+                tint = UiKitColors.colors.primary.`1100`
             )
         }
     }

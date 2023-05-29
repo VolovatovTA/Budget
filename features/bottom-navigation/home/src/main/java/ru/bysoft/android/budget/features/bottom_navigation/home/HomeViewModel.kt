@@ -1,5 +1,6 @@
 package ru.bysoft.android.budget.features.bottom_navigation.home
 
+import android.util.Log
 import androidx.compose.material.DismissValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.lifecycle.ViewModel
@@ -10,11 +11,11 @@ import kotlinx.coroutines.flow.*
 import ru.budget.android.api.data.source.network.entity.transactions.TransferTypeEnum
 import ru.bysoft.android.budget.common.errors.errorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
+import ru.bysoft.android.budget.common.util.TAG
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.me.IHomeMeRepo
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.transactions.ITransactionsRepo
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.wallets.IHomeWalletsRepo
 import ru.bysoft.android.budget.features.bottom_navigation.home.navigation.IHomeNavigation
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.ToastInfo
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.filters.FilterData
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.filters.FilterState
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.filters.TypeFilter
@@ -38,7 +39,7 @@ interface IHomeViewModel {
     fun onClickSimpleWallet()
     fun onClickCreateWallet()
     fun onClickEditWallet(walletId: String)
-    fun onPositionChanged(walletId: String)
+    fun onPositionSelected(walletId: String)
     fun onClickFilter(newValue: Boolean, filter: FilterData)
     fun updateTransaction(id: String)
     fun deleteTransaction(id: String)
@@ -56,11 +57,13 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel(), IHomeViewModel {
 
     override fun loadData(isRefresh: Boolean) {
+        Log.d(TAG, "loadData: ")
         getMeInfo()
         getWallets(isRefresh)
     }
 
     override fun loadTransactions(isRefresh: Boolean) {
+        Log.d(TAG, "loadTransactions: ")
         getTransactions(isRefresh)
     }
 
@@ -125,8 +128,12 @@ class HomeViewModel @Inject constructor(
         navigate.toEditWallet(walletId)
     }
 
-    override fun onPositionChanged(walletId: String) {
-        currentWalletId = walletId
+    override fun onPositionSelected(walletId: String) {
+        walletsState.update {
+            (it as? WalletsSuccessState)?.copy(
+                currentWalletId = walletId
+            ) ?: it
+        }
         getTransactions(false)
     }
 
@@ -163,7 +170,8 @@ class HomeViewModel @Inject constructor(
                     (state as? WalletsSuccessState)?.copy(
                         list = state.list.map { wallet ->
                             (wallet as? WalletCardPresentation)?.copy(
-                                balance = data.firstOrNull { it.id == wallet.walletId }?.balance ?: wallet.balance
+                                balance = data.firstOrNull { it.id == wallet.walletId }?.balance
+                                    ?: wallet.balance
                             ) ?: wallet
                         }
                     ) ?: state
@@ -201,39 +209,14 @@ class HomeViewModel @Inject constructor(
         navigate.toSettings()
     }
 
-    private fun updateBalancesOnWalletsAfterSuccessfullDeleteTransaction(
-        walletIdFrom: String?,
-        walletIdTo: String?,
-        amount: Float
-    ) {
-        walletsState.update { walletsState ->
-            (walletsState as? WalletsSuccessState)?.copy(
-                list = walletsState.list.map { wallet ->
-                    if (wallet is WalletCardPresentation) {
-                        when (wallet.walletId) {
-                            walletIdFrom -> wallet.copy(
-                                balance = wallet.balance + amount
-                            )
-
-                            walletIdTo -> wallet.copy(
-                                balance = wallet.balance - amount
-                            )
-
-                            else -> wallet
-                        }
-                    } else {
-                        wallet
-                    }
-                }
-            ) ?: walletsState
-        }
-    }
-
     private fun getWallets(isRefresh: Boolean) {
         viewModelScope.launch(homeWalletsExceptionHandler) {
             walletsState.value = WalletsLoadingState(isRefresh)
             val loadedData = walletsRepo.getWallets()
-            walletsState.value = WalletsSuccessState(mapper.mapToState(loadedData))
+            walletsState.value = WalletsSuccessState(
+                mapper.mapToState(loadedData),
+                loadedData.firstOrNull()?.id ?: ""
+            )
             currentWalletId = loadedData.firstOrNull()?.id ?: ""
             if (walletsState.value is WalletsSuccessState) {
                 getTransactions(isRefresh)
@@ -244,6 +227,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getMeInfo() {
+        Log.d(TAG, "getMeInfo: ")
         viewModelScope.launch(homeMeExceptionHandler) {
             meState.value = MeLoadingState
             val meInfoData = meRepo.getMeInfo()
@@ -253,6 +237,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getTransactions(isRefresh: Boolean) {
+        Log.d(TAG, "getTransactions: ")
         viewModelScope.launch(homeTransactionExceptionHandler) {
             transactionsState.value = TransactionLoading(isRefresh)
             val filters = filterState.value
@@ -275,7 +260,9 @@ class HomeViewModel @Inject constructor(
                     !filters.isTransfersChecked() -> TransferTypeEnum.WITHOUT_TRANSFER
                     else -> TransferTypeEnum.WITHOUT_TRANSFER
                 },
-                walletId = listOf(currentWalletId)
+                walletId = listOf(
+                    (walletsState.value as? WalletsSuccessState)?.currentWalletId ?: ""
+                )
             )
             transactionsState.value =
                 TransactionSuccess(mapper.mapToInfo(transactions, deleteLambda))

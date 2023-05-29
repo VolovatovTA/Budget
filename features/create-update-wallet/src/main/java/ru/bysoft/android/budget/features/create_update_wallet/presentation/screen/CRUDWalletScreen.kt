@@ -23,17 +23,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.common.R
-import ru.bysoft.android.budget.common.util.onNull
 import ru.bysoft.android.budget.features.create_update_wallet.*
 import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.ViewModelWalletState
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
-import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonType
+import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitCurrencyPopUp
 import ru.bysoft.android.budget.uikit.components.icon_component.UiKitIconsComponent
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.templates.UiKitTopBar
 
 typealias UiKitStrings = ru.bysoft.android.budget.uikit.R.string
@@ -57,6 +56,7 @@ fun CRUDWalletScreen(
     }
     LaunchedEffect(Unit) { focusRequester.requestFocus() }
     Scaffold(
+        backgroundColor = UiKitColors.colors.surface.primary,
         topBar = {
             UiKitTopBar(
                 id = if (viewModel is CreateWalletViewModel) R.string.wallet_title_create else R.string.wallet_title_update,
@@ -126,7 +126,7 @@ private fun ButtonComponent(viewModel: IWalletViewModel, state: ViewModelWalletS
                     if (viewModel is CreateWalletViewModel) stringResource(id = R.string.wallet_btn_create_text) else stringResource(
                         id = R.string.wallet_btn_update_text
                     ),
-                    type = ButtonType.MEDIUM
+                    size = ButtonSize.MEDIUM
                 ),
                 onClick = viewModel::onButtonClick
             )
@@ -163,7 +163,7 @@ private fun CreateWalletTextField(
                 keyboardType = type
             ),
             shape = RoundedCornerShape(10.dp),
-            colors = UiKitColors.colors.textFieldColors,
+            colors = UiKitColors.textField,
             label = { Text(label) },
             isError = state.errorText != null,
             interactionSource = source,
@@ -172,8 +172,8 @@ private fun CreateWalletTextField(
         if (state.errorText != null && state.errorText != UiKitStrings.empty_text) {
             Text(
                 text = errorDescription,
-                style = UiKitStyles.Caption,
-                color = UiKitColors.colors.red,
+                style = UiKitTypography.TextXS.Regular,
+                color = UiKitColors.colors.feedbackRed.`1100`,
                 modifier = Modifier.padding(horizontal = 30.dp)
             )
         }

@@ -10,7 +10,7 @@ class CommonNavigation @Inject constructor(
 ) : ICommonNavigation {
     override fun navigateToAuth() {
         navHostController.navigate(Auth.route) {
-            popUpTo(Auth.route) {
+            popUpTo(navHostController.graph.id) {
                 inclusive = false
             }
         }

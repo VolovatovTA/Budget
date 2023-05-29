@@ -20,19 +20,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
-import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.HEIGHT_ELEMENT
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.MAX_HEIGHT
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.avatar.UiKitAvatar
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.android.budget.uikit.icons.UiKitIcons
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.padding
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
-import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonType
+import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
 
 val HEIGHT_CATEGORY = 40.dp
+val paddingBetweenElement = padding / 2
+
 @Composable
 fun CategoryChooserComponent(
     state: TransactionExpenseState,
@@ -84,21 +86,21 @@ fun ShortSuccessCategoryComponent(
     onClick: () -> Unit
 ) {
     Row(
-        Modifier.padding(horizontal = 25.dp, vertical = 10.dp)
+        Modifier.padding(horizontal = padding, vertical = padding / 2)
     ) {
         Text(
             text = text,
-            style = UiKitStyles.Caption,
+            style = UiKitTypography.TextXS.Regular,
             textAlign = TextAlign.Start,
             maxLines = 3,
             modifier = Modifier
                 .weight(1f)
-                .padding(5.dp)
+                .padding(paddingBetweenElement / 2)
         )
         UiKitButton(
             info = UiKitButtonInfo(
                 text = stringResource(R.string.add_category),
-                type = ButtonType.MEDIUM
+                size = ButtonSize.MEDIUM
             ),
             onClick = onClick
         )
@@ -115,7 +117,10 @@ private fun NotEmptySuccessCategoryComponent(
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier
-            .padding(horizontal = 25.dp, vertical = 10.dp)
+            .padding(
+                horizontal = padding - paddingBetweenElement,
+                vertical = paddingBetweenElement
+            )
             .heightIn(max = 300.dp)
     ) {
         items(
@@ -136,8 +141,8 @@ fun PreviewCategory() {
     NotEmptySuccessCategoryComponent(
         CategorySuccess(
             listOf(
-                CategoryPresentation("Card", "dshb", false, "", "RUR"),
-                CategoryPresentation("Card", "dshb", true, "", "RUR"),
+                CategoryPresentation("Card", "dshb", false, "", "RUB"),
+                CategoryPresentation("Card", "dshb", true, "", "GEL"),
             )
         ),
         {},
@@ -155,17 +160,17 @@ private fun CategoryAddItem(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .padding(5.dp)
+            .padding(paddingBetweenElement / 2)
             .fillMaxWidth()
             .height(HEIGHT_CATEGORY)
             .clip(RoundedCornerShape(10.dp))
-            .background(UiKitColors.colors.light)
-            .border(0.1.dp, UiKitColors.colors.dark, RoundedCornerShape(10.dp))
+            .background(UiKitColors.colors.feedbackGreen.`300`)
+            .border(0.1.dp, UiKitColors.colors.primary.`1100`, RoundedCornerShape(10.dp))
     ) {
         UiKitButton(
             info = UiKitButtonInfo(
                 text = stringResource(R.string.add_category),
-                type = ButtonType.MEDIUM
+                size = ButtonSize.MEDIUM
             ),
             onClick = onClick,
             modifier = Modifier.fillMaxSize()
@@ -179,16 +184,16 @@ private fun CategoryItem(
     onClick: (CategoryPresentation) -> Unit
 ) {
     val backgroundColor =
-        if (category.isChosen) UiKitColors.colors.col4_inactive
-        else UiKitColors.colors.light
+        if (category.isChosen) UiKitColors.colors.neutral.`400`
+        else UiKitColors.colors.surface.primary
     Row(
         Modifier
-            .padding(5.dp)
+            .padding(paddingBetweenElement / 2)
             .fillMaxWidth()
             .height(HEIGHT_CATEGORY)
             .clip(RoundedCornerShape(10.dp))
             .background(backgroundColor)
-            .border(0.1.dp, UiKitColors.colors.dark, RoundedCornerShape(10.dp))
+            .border(0.1.dp, UiKitColors.colors.primary.`1100`, RoundedCornerShape(10.dp))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
@@ -207,21 +212,21 @@ private fun CategoryItem(
         )
         Text(
             text = category.name,
-            style = UiKitStyles.Caption,
+            style = UiKitTypography.TextXS.Regular,
             textAlign = TextAlign.Start,
             maxLines = 3,
             modifier = Modifier
                 .weight(1f)
-                .padding(5.dp)
+                .padding(paddingBetweenElement / 2)
         )
         Box(contentAlignment = Alignment.Center) {
             Text(
                 text = category.currency,
-                style = UiKitStyles.Caption,
+                style = UiKitTypography.TextXS.Regular,
                 textAlign = TextAlign.End,
                 maxLines = 1,
                 modifier = Modifier
-                    .padding(end = 15.dp)
+                    .padding(end = padding / 2)
             )
         }
     }
@@ -232,14 +237,14 @@ private fun WaitingCategoryComponent() {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier
-            .padding(horizontal = 25.dp, vertical = 10.dp)
+            .padding(horizontal = padding - paddingBetweenElement, vertical = paddingBetweenElement)
             .heightIn(max = MAX_HEIGHT)
     ) {
         items(3) {
             UiKitShimmerComponent(
                 Modifier
                     .fillMaxWidth()
-                    .padding(5.dp)
+                    .padding(paddingBetweenElement / 2)
                     .height(HEIGHT_CATEGORY)
             )
         }
@@ -253,6 +258,6 @@ private fun ErrorCategoryComponent() {
         text = stringResource(R.string.error_loading_categories),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 20.dp, horizontal = 30.dp)
+            .padding(vertical = padding, horizontal = padding)
     )
 }

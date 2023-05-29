@@ -21,7 +21,7 @@ class TransactionsDataMapper @Inject constructor(
     private val locale: Locale
 ) : ITransactionsDataMapper {
     override fun mapToData(response: TransactionResponse) =
-        ListTransactionsData(listTransactions = response.data.map { mapToData(it) })
+        ListTransactionsData(listTransactions = response.data?.mapNotNull { it?.let{mapToData(it)} }.orEmpty())
 
     private fun mapToData(response: TransactionItemResponse): TransactionData =
         when (response.type) {

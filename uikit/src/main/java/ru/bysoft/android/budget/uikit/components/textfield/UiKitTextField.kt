@@ -6,12 +6,14 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
+import ru.bysoft.android.budget.uikit.styles.text.BaseTextFieldColors
 
 
 data class TextFieldState(
@@ -40,10 +42,16 @@ fun UiKitTextField(
             keyboardType = inputType
         ),
         shape = RoundedCornerShape(10.dp),
-        colors = UiKitColors.colors.textFieldColors,
-        label = { Text(label, maxLines = maxLines,) },
+        colors = UiKitColors.textField,
+        label = {
+            Text(
+                label,
+                style = UiKitTypography.TextMD.Regular,
+                maxLines = maxLines,
+            )
+        },
         isError = state.errorText != null,
-        textStyle = UiKitStyles.Body2,
+        textStyle = UiKitTypography.TextMD.Regular,
         keyboardActions = keyboardActions
 //        singleLine = true
     )

@@ -11,6 +11,6 @@ object Statistic : NavigationInfo(route = "statistic", screenName = "statisticSc
     override val label: Int? = null
 
     @Composable
-    override fun backgroundColor() = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.light
+    override fun backgroundColor() = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.primary.`100`
 
 }

@@ -30,7 +30,7 @@ import ru.bysoft.android.budget.uikit.components.listItem.UiKitListItem
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfoSuccess
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.android.budget.uikit.icons.pack.*
-import ru.bysoft.android.budget.uikit.styles.UiKitStyles
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -102,9 +102,9 @@ private fun LazyListScope.transactionsSuccessComponent(
                     val color by animateColorAsState(
                         when (dismissState.targetValue) {
                             DismissValue.Default -> Color.Transparent
-                            DismissValue.DismissedToEnd -> UiKitColors.colors.col4
-                            DismissValue.DismissedToStart -> UiKitColors.colors.red
-                            else -> UiKitColors.colors.light
+                            DismissValue.DismissedToEnd -> UiKitColors.colors.feedbackGreen.`500`
+                            DismissValue.DismissedToStart -> UiKitColors.colors.feedbackRed.`500`
+                            else -> UiKitColors.colors.primary.`100`
                         }
                     )
                     val alignment = Alignment.CenterEnd
@@ -246,7 +246,7 @@ private fun LazyListScope.transactionErrorComponent() {
                     .padding(
                         horizontal = 30.dp, vertical = 30.dp
                     ),
-                style = UiKitStyles.Body2
+                style = UiKitTypography.TextMD.Regular
             )
         }
     }

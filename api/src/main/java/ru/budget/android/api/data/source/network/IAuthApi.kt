@@ -8,7 +8,7 @@ import ru.budget.android.api.data.source.network.entity.auth.SignUpRequest
 import ru.bysoft.android.budget.common.token.entity.AuthSuccessResponse
 
 const val postSignInRoute = "auth/api/v1/signIn"
-const val postSignUpRoute = "auth//signUp"
+const val postSignUpRoute = "auth/api/v1/signUp"
 const val postSignInGoogleRoute = "auth/api/v1/google-signIn"
 
 interface IAuthApi {

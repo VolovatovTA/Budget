@@ -9,9 +9,9 @@ import ru.bysoft.android.budget.common.me_info.entity.DayOfWeek
 fun mapToData(response: MeResponse) = MeData(
     name = response.name,
     email = response.email,
-    settingsData = mapToSettings(response.settingsResponse),
+    settingsData = response.settingsResponse?.let { mapToSettings(it) },
     userId = response.userId,
-    pictureUrl = response.settingsResponse.pictureUrl.orEmpty()
+    pictureUrl = response.settingsResponse?.pictureUrl.orEmpty()
 )
 
 fun mapToSettings(response: SettingsResponse) =

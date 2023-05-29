@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Scaffold
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -22,6 +23,7 @@ import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentatio
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.StatisticSuccessState
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.StatisticWaitingState
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.R
+import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.listItem.UiKitListItem
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfoSuccess
 import ru.bysoft.android.budget.uikit.icons.pack.Plus
@@ -38,32 +40,38 @@ fun StatisticScreen(
         refreshing = isRefreshing,
         onRefresh = { viewModel.loadData(true) }
     )
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .pullRefresh(
-                pullRefreshState,
-                enabled = state !is StatisticWaitingState
-            )
+    Scaffold(
+        backgroundColor = UiKitColors.colors.surface.primary,
     ) {
-        LazyColumn(Modifier.fillMaxSize()) {
-            item {
-                AddCategoryElement(viewModel::addCategory)
-                when (state) {
-                    is StatisticWaitingState -> StatisticWaitingScreen()
-                    is StatisticErrorState -> StatisticErrorScreen()
-                    is StatisticSuccessState -> StatisticSuccessScreen(state, viewModel)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+                .pullRefresh(
+                    pullRefreshState,
+                    enabled = state !is StatisticWaitingState
+                )
+        ) {
+            LazyColumn(Modifier.fillMaxSize()) {
+                item {
+                    AddCategoryElement(viewModel::addCategory)
+                    when (state) {
+                        is StatisticWaitingState -> StatisticWaitingScreen()
+                        is StatisticErrorState -> StatisticErrorScreen()
+                        is StatisticSuccessState -> StatisticSuccessScreen(state, viewModel)
+                    }
                 }
             }
+
+            PullRefreshIndicator(
+                refreshing = isRefreshing,
+                state = pullRefreshState,
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
         }
 
-        PullRefreshIndicator(
-            refreshing = isRefreshing,
-            state = pullRefreshState,
-            modifier = Modifier.align(Alignment.TopCenter)
-        )
-    }
 
+    }
 
 }
 

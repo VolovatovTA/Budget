@@ -10,5 +10,5 @@ object Home : NavigationInfo("wallet", "walletScreenName"), BottomNavigationButt
     override val icon: ImageVector = Wallet
     override val label: Int? = null
     @Composable
-    override fun backgroundColor() = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.light
+    override fun backgroundColor() = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.primary.`100`
 }
