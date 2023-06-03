@@ -15,6 +15,7 @@ import ru.budget.android.api.data.source.network.entity.transactions.Transaction
 import ru.budget.android.api.data.source.network.entity.transactions.TransactionIncomeCreateRequest
 import ru.budget.android.api.data.source.network.entity.transactions.TransactionTransferCreateRequest
 import ru.budget.android.api.data.source.network.entity.transactions.error.TransactionErrorResponse
+import ru.bysoft.android.budget.common.data_entity.CurrencyRateData
 import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.util.*
@@ -24,8 +25,10 @@ import ru.bysoft.android.budget.features.create_update_delete_transactions.navig
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.ITransactionPresentationMapper
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.ITransactionWalletPresentationMapper
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.ITransactionsCategoryPresentationMapper
-import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
+import ru.bysoft.android.budget.features.currency_rates.data.ICurrencyRatesRepo
+import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 import javax.inject.Inject
+import kotlin.math.pow
 
 @HiltViewModel
 class TransactionCreateViewModel @Inject constructor(
@@ -34,6 +37,7 @@ class TransactionCreateViewModel @Inject constructor(
     private val transactionMapper: ITransactionPresentationMapper,
     private val errorLogger: IErrorLogger,
     private val meInfo: IMeInfo,
+    private val currencyRatesRepo: ICurrencyRatesRepo,
     categoryApi: ICategoryApi,
     walletApi: IWalletApi,
     categoryMapperPresentation: ITransactionsCategoryPresentationMapper,
@@ -48,9 +52,21 @@ class TransactionCreateViewModel @Inject constructor(
     walletMapper = walletMapper
 ), ITransactionCreateViewModel {
 
+    private var currencyRates: CurrencyRateData? = null
+
+    private val handlerTransaction = CoroutineExceptionHandler { _, t ->
+        errorLogger.logError(t)
+        state.update {
+            it.copyWithToast("Произошла ошибка запроса")
+        }
+    }
+
     init {
-        val argument = savedStateHandle.get<String>("argument")?.restore<TransactionsCreateNavParams>()!!
-        Log.d(TAG, "init: $argument")
+        viewModelScope.launch(handlerTransaction) {
+            currencyRates = currencyRatesRepo.getCurrencyRates()
+        }
+        val argument =
+            savedStateHandle.get<String>("argument")?.restore<TransactionsCreateNavParams>()!!
         setTypeTransactions(argument.type)
         state.update {
             it.copyWithCurrency(
@@ -61,12 +77,6 @@ class TransactionCreateViewModel @Inject constructor(
         }
     }
 
-    private val handlerTransaction = CoroutineExceptionHandler { _, t ->
-        errorLogger.logError(t)
-        state.update {
-            it.copyWithToast("Произошла ошибка запроса")
-        }
-    }
 
     override fun create() {
         viewModelScope.launch(handlerTransaction) {
@@ -93,7 +103,8 @@ class TransactionCreateViewModel @Inject constructor(
                 navigate.back()
             } catch (e: Throwable) {
                 if (e is HttpException) {
-                    val restoredError = e.response()?.errorBody()?.string()?.restore<TransactionErrorResponse>()
+                    val restoredError =
+                        e.response()?.errorBody()?.string()?.restore<TransactionErrorResponse>()
                     val errors = restoredError?.errors?.map {
                         it.key.split('.')
                     }
@@ -135,8 +146,9 @@ class TransactionCreateViewModel @Inject constructor(
             (currentState.walletFromFieldState as? WalletSuccessState)?.selectedWalletId
         )
 
-        val listWalletsInfo = (currentState.walletToFieldState as? WalletSuccessState)?.list.orEmpty()
-            .plus((currentState.walletFromFieldState as? WalletSuccessState)?.list.orEmpty())
+        val listWalletsInfo =
+            (currentState.walletToFieldState as? WalletSuccessState)?.list.orEmpty()
+                .plus((currentState.walletFromFieldState as? WalletSuccessState)?.list.orEmpty())
 
         // List of currency in selected wallets except selected currency in currency field
         val listWalletCurrencyExceptSelectedCurrency = listWalletsInfo
@@ -145,24 +157,40 @@ class TransactionCreateViewModel @Inject constructor(
             .map { it.currency }
 
 
-        val finalListCurrency =
+        val finalTargetListCurrency =
             (categoryWithCurrencyDiffWithTransactionCurrency + listWalletCurrencyExceptSelectedCurrency)
                 .filterSameCurrency()
                 .takeIf { currentState.currencyFieldState.selectedCurrency != null }
                 .orEmpty()
 
-        state.update {
-            it.copyWithExchanges(
-                exchangeFieldState = finalListCurrency.map { currency ->
+        state.update { iTransactionState ->
+            iTransactionState.copyWithExchanges(
+                exchangeFieldState = finalTargetListCurrency.map { targetCurrency ->
                     ExchangeFieldState(
-                        currencyFieldState = CurrencyFieldState(
-                            selectedCurrency = currency,
-                            list = finalListCurrency
+                        baseCurrency = currentState.currencyFieldState.selectedCurrency!!,
+                        targetCurrency = targetCurrency,
+                        enteredAmount = TextFieldState(
+                            text = getRateByStateAndCurrency(
+                                currentState.currencyFieldState.selectedCurrency!!,
+                                targetCurrency,
+                            )
                         )
                     )
                 }
             )
         }
+    }
+
+    private fun getRateByStateAndCurrency(
+        baseCurrency: BudgetCurrency,
+        targetCurrency: BudgetCurrency
+    ): String {
+
+        val rate = currencyRates?.map?.get(baseCurrency)
+            ?.firstOrNull { rate -> rate.currency == targetCurrency }
+            ?.rate ?: 0.0
+
+        return roundToSixSignificantDigits(rate).toString()
     }
 
     private fun List<BudgetCurrency>.filterSameCurrency(): List<BudgetCurrency> =
@@ -184,4 +212,13 @@ class TransactionCreateViewModel @Inject constructor(
         super.setWalletId(fromId, toId)
         showExchangesIfNeed()
     }
+}
+
+fun roundToSixSignificantDigits(value: Double): Double {
+    if (value == 0.0) {
+        return 0.0
+    }
+
+    val magnitude = 10.0.pow(6 - value.toInt().toString().length)
+    return Math.round(value * magnitude) / magnitude
 }

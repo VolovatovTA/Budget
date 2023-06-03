@@ -40,7 +40,7 @@ fun SplashScreen() {
 @Composable
 private fun SplashContent(
     animatedState: MutableState<Int> = mutableStateOf(0),
-    viewModel: () -> Unit = {}
+    onAnimationFinished: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -54,7 +54,7 @@ private fun SplashContent(
             finishedListener = {
                 animatedState.value++
                 if (animatedState.value >= 2)
-                    viewModel.invoke()
+                    onAnimationFinished.invoke()
             }
         )
 

@@ -80,6 +80,8 @@ fun TransactionScreen(
                     setExchangeAmount = viewModel::setExchangeAmount,
                     setTransactionType = viewModel::setTypeTransactions,
                     onEmptyCategoryClick = viewModel::onEmptyCategoryClick,
+                    setFullAmount = viewModel::setFullAmount,
+                    setRevert = viewModel::setRevert,
                 )
 
                 val isCategoryLoadedAndNotEmptyAndSelectedAtLeastOne =
@@ -150,6 +152,8 @@ private fun TransactionCreateScreenMain(
     setExchangeAmount: (BudgetCurrency, String) -> Unit = { _, _ -> },
     setTransactionType: (TransactionTypeEnum) -> Unit = { },
     onEmptyCategoryClick: () -> Unit = {},
+    setFullAmount: (BudgetCurrency, Boolean) -> Unit = { _, _ ->},
+    setRevert: (BudgetCurrency, Boolean) -> Unit = {_, _ ->},
 ) {
     Column(
         modifier
@@ -279,15 +283,20 @@ private fun TransactionCreateScreenMain(
                 .padding(horizontal = padding, vertical = padding / 2)
                 .height(HEIGHT_ELEMENT),
             keyboardActions = KeyboardActions {
-                focusManager.moveFocus(FocusDirection.Next)
+                if (transactionState.exchangeFieldState.isEmpty()){
+                    focusManager.clearFocus()
+                } else {
+                    focusManager.moveFocus(FocusDirection.Next)
+                }
             }
         )
 
         ExchangesComponent(
             transactionState.exchangeFieldState,
             setAmount = setExchangeAmount,
-            mainCurrency = transactionState.currencyFieldState.selectedCurrency,
             focusManager = focusManager,
+            setFullAmount = setFullAmount,
+            setRevert = setRevert
         )
 
         Column(modifier = Modifier.animateContentSize()) {

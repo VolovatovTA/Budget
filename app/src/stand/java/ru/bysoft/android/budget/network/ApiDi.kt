@@ -72,4 +72,14 @@ class ApiDi {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(IMeApi::class.java)
+
+    @Provides
+    fun provideCurrencyRatesApi(
+        @Named(AUTH_CLIENT_NAME) client: OkHttpClient
+    ): ICurrencyRatesApi = Retrofit.Builder()
+            .baseUrl("https://v6.exchangerate-api.com/v6/4352975908f4e056a01a0f38/latest/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ICurrencyRatesApi::class.java)
 }

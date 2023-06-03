@@ -78,8 +78,8 @@ private val listCurrency = listOf(
 //    BudgetCurrency("₣", "CHF"),
 )
 
-fun getCurrency(iso4217: String?): BudgetCurrency? =
-    listCurrency.firstOrNull { it.iso4217 == iso4217 }
+fun getCurrency(iso4217: String?): BudgetCurrency =
+    listCurrency.firstOrNull { it.iso4217 == iso4217 }?: BudgetCurrency.Unkcnown
 
 fun getCurrencyByDisplayName(displayName: String?): BudgetCurrency? =
     listCurrency.firstOrNull { it.displayName == displayName }

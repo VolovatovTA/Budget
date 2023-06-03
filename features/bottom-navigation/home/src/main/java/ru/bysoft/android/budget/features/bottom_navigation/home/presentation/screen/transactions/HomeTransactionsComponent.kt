@@ -48,9 +48,7 @@ fun HomeTransactionsComponent(
     Box(modifier = Modifier.pullRefresh(pullRefreshState)) {
         LazyColumn(modifier) {
             when (state) {
-                is TransactionSuccess -> transactionsSuccessComponent(
-                    state = state
-                )
+                is TransactionSuccess -> transactionsSuccessComponent(state)
                 is TransactionLoading -> transactionLoadingComponent()
                 is TransactionError -> transactionErrorComponent()
             }

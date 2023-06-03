@@ -1,38 +1,65 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.components
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.times
 import ru.bysoft.android.budget.common.util.BudgetCurrency
+import ru.bysoft.android.budget.common.util.getCurrency
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.ExchangeFieldState
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.HEIGHT_ELEMENT
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.MAX_HEIGHT
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.padding
+import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextField
+import ru.bysoft.android.budget.uikit.icons.pack.Recycle
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
+import ru.bysoft.android.budget.uikit.styles.halfPadding
+import ru.bysoft.android.budget.uikit.styles.quarterPadding
 
+@Preview(backgroundColor = 0xFFFFFFFF)
 @Composable
 fun ExchangesComponent(
     exchangeFieldState: List<ExchangeFieldState> = listOf(
-        ExchangeFieldState(),
-        ExchangeFieldState(),
+        ExchangeFieldState(baseCurrency = getCurrency("USD"), targetCurrency = getCurrency("RUB")),
+        ExchangeFieldState(baseCurrency = getCurrency("USD"), targetCurrency = getCurrency("RUB")),
+        ExchangeFieldState(
+            baseCurrency = getCurrency("USD"),
+            targetCurrency = getCurrency("RUB"),
+            isFullAmount = true
+        ),
+        ExchangeFieldState(
+            baseCurrency = getCurrency("USD"),
+            targetCurrency = getCurrency("RUB"),
+            isRevert = true
+        ),
     ),
     setAmount: (BudgetCurrency, String) -> Unit = { _, _ -> },
-    mainCurrency: BudgetCurrency?,
-    focusManager: FocusManager,
+    focusManager: FocusManager = LocalFocusManager.current,
+    setFullAmount: (BudgetCurrency, Boolean) -> Unit = { _, _ -> },
+    setRevert: (BudgetCurrency, Boolean) -> Unit = { _, _ -> },
 ) {
     Column(
         modifier = Modifier
@@ -48,48 +75,157 @@ fun ExchangesComponent(
             )
         }
         exchangeFieldState.forEachIndexed { index, exchangeState ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                val text = exchangeState
-                    .currencyFieldState
-                    .selectedCurrency
-                    ?.displayName ?: "???"
-                Text(
-                    text = "1 $text = ",
-                    style = UiKitTypography.TextMD.Regular,
-                    modifier = Modifier
-                        .padding(start = padding, top = padding / 2)
-                )
-                UiKitTextField(
-                    state = exchangeState.amount,
-                    onValueChange = { amount ->
-                        exchangeState.currencyFieldState.selectedCurrency?.let { currency ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(padding),
+                modifier = Modifier
+                    .height(HEIGHT_ELEMENT)
+                    .padding(horizontal = padding)
+                    .fillMaxWidth()
+            ) {
+
+                val baseCurrencyName = exchangeState
+                    .baseCurrency
+                    .displayName
+
+                val shownAmount = exchangeState.shownAmount.toString()
+                if (exchangeState.isRevert){
+                    UiKitTextField(
+                        state = exchangeState.enteredAmount,
+                        onValueChange = { amount ->
                             setAmount(
-                                currency,
+                                exchangeState.targetCurrency,
                                 amount
                             )
-                        }
-                    },
-                    label = stringResource(R.string.text_field_exchange_label),
-                    inputType = KeyboardType.Number,
-                    modifier = Modifier
-                        .padding(horizontal = padding / 2)
-                        .weight(2f)
-                        .height(HEIGHT_ELEMENT),
-                    keyboardActions = KeyboardActions {
-                        if (index == exchangeFieldState.lastIndex) {
-                            focusManager.clearFocus()
-                        } else {
-                            focusManager.moveFocus(FocusDirection.Next)
-                        }
-                    },
-                )
-                mainCurrency?.displayName?.let {
+                        },
+                        label = stringResource(R.string.text_field_exchange_label),
+                        inputType = KeyboardType.Number,
+                        modifier = Modifier
+                            .weight(2f),
+                        keyboardActions = KeyboardActions {
+                            if (index == exchangeFieldState.lastIndex) {
+                                focusManager.clearFocus()
+                            } else {
+                                focusManager.moveFocus(FocusDirection.Next)
+                            }
+                        },
+                    )
                     Text(
-                        text = it,
+                        text = "$baseCurrencyName = $shownAmount ${exchangeState.targetCurrency.displayName}",
+                        style = UiKitTypography.TextMD.Regular,
+                        modifier = Modifier
+                            .padding(top = halfPadding)
+                    )
+                } else {
+                    Text(
+                        text = "$shownAmount $baseCurrencyName = ",
+                        style = UiKitTypography.TextMD.Regular,
+                        modifier = Modifier
+                            .padding(top = halfPadding)
+                    )
+                    UiKitTextField(
+                        state = exchangeState.enteredAmount,
+                        onValueChange = { amount ->
+                            setAmount(
+                                exchangeState.targetCurrency,
+                                amount
+                            )
+                        },
+                        label = stringResource(R.string.text_field_exchange_label),
+                        inputType = KeyboardType.Number,
+                        modifier = Modifier
+                            .weight(2f),
+                        keyboardActions = KeyboardActions {
+                            if (index == exchangeFieldState.lastIndex) {
+                                focusManager.clearFocus()
+                            } else {
+                                focusManager.moveFocus(FocusDirection.Next)
+                            }
+                        },
+                    )
+
+                    Text(
+                        text = exchangeState.targetCurrency.displayName,
                         textAlign = TextAlign.Center,
                         style = UiKitTypography.TextMD.Regular,
-                        modifier = Modifier.padding(end = padding, top = padding / 2)
+                        modifier = Modifier
+                            .padding(top = halfPadding)
                     )
+                }
+
+                val backgroundIcon =
+                    if (exchangeState.isRevert) UiKitColors.colors.type.medium
+                    else UiKitColors.colors.surface.primary
+
+                val backgroundText =
+                    if (exchangeState.isFullAmount) UiKitColors.colors.type.medium
+                    else UiKitColors.colors.surface.primary
+
+                val height = 0.8f * HEIGHT_ELEMENT
+                val shape = RoundedCornerShape(8.dp)
+
+                if (!exchangeState.isRevert){
+                    Surface(
+                        shape = shape,
+                        modifier = Modifier
+                            .height(height)
+                            .padding(top = halfPadding),
+                        color = backgroundText,
+                        border = BorderStroke(0.1.dp, UiKitColors.colors.type.high)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .padding(quarterPadding)
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null,
+                                    onClick = {
+                                        setFullAmount(
+                                            exchangeState.targetCurrency,
+                                            exchangeState.isFullAmount.not()
+                                        )
+                                    }
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.full_amount),
+                                textAlign = TextAlign.Center,
+                                style = UiKitTypography.TextXS.Regular,
+                                color = UiKitColors.colors.type.high
+                            )
+                        }
+                    }
+                }
+
+
+                if (!exchangeState.isFullAmount){
+                    Surface(
+                        shape = shape,
+                        modifier = Modifier
+                            .size(height)
+                            .padding(top = halfPadding),
+                        color = backgroundIcon,
+                        border = BorderStroke(0.1.dp, UiKitColors.colors.type.high)
+                    ) {
+                        Icon(
+                            imageVector = Recycle,
+                            contentDescription = null,
+                            tint = UiKitColors.colors.type.high,
+                            modifier = Modifier
+                                .padding(halfPadding)
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null,
+                                    onClick = {
+                                        setRevert(
+                                            exchangeState.targetCurrency,
+                                            exchangeState.isRevert.not()
+                                        )
+                                    }
+                                )
+                        )
+                    }
                 }
             }
         }

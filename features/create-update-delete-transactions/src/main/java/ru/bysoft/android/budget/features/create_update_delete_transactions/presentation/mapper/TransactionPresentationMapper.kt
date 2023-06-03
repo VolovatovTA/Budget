@@ -30,8 +30,13 @@ class TransactionPresentationMapper @Inject constructor(
             walletId = (state.walletToFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
             exchanges = state.exchangeFieldState.map {
                 Exchange(
-                    (state.amountState.text.toFloatOrNull() ?: 0f)/(it.amount.text.toFloatOrNull() ?: 0f),
-                    it.currencyFieldState.selectedCurrency?.iso4217 ?: ""
+                    if (it.isFullAmount) {
+                        it.enteredAmount.text.toFloatOrNull() ?: 0f
+                    } else {
+                        (state.amountState.text.toFloatOrNull()
+                            ?: 0f) * (it.enteredAmount.text.toFloatOrNull() ?: 0f)
+                    },
+                    it.targetCurrency.iso4217
                 )
             }
         )
@@ -49,8 +54,13 @@ class TransactionPresentationMapper @Inject constructor(
             walletId = (state.walletFromFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
             exchanges = state.exchangeFieldState.map {
                 Exchange(
-                    (state.amountState.text.toFloatOrNull() ?: 0f)/(it.amount.text.toFloatOrNull() ?: 0f),
-                    it.currencyFieldState.selectedCurrency?.iso4217 ?: ""
+                    if (it.isFullAmount) {
+                        it.enteredAmount.text.toFloatOrNull() ?: 0f
+                    } else {
+                        (state.amountState.text.toFloatOrNull()
+                            ?: 0f) * (it.enteredAmount.text.toFloatOrNull() ?: 0f)
+                    },
+                    it.targetCurrency.iso4217
                 )
             }
         )
@@ -66,8 +76,13 @@ class TransactionPresentationMapper @Inject constructor(
                 ?: "",
             exchanges = state.exchangeFieldState.map {
                 Exchange(
-                    (state.amountState.text.toFloatOrNull() ?: 0f)/(it.amount.text.toFloatOrNull() ?: 0f),
-                    it.currencyFieldState.selectedCurrency?.iso4217 ?: ""
+                    if (it.isFullAmount) {
+                        it.enteredAmount.text.toFloatOrNull() ?: 0f
+                    } else {
+                        (state.amountState.text.toFloatOrNull()
+                            ?: 0f) * (it.enteredAmount.text.toFloatOrNull() ?: 0f)
+                    },
+                    it.targetCurrency.iso4217
                 )
             }
         )

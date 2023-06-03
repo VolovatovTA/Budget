@@ -219,6 +219,10 @@ data class WalletInfo(
 )
 
 data class ExchangeFieldState(
-    val amount: TextFieldState = TextFieldState(),
-    val currencyFieldState: CurrencyFieldState = CurrencyFieldState(selectedCurrency = null)
+    val enteredAmount: TextFieldState = TextFieldState(),
+    val shownAmount: Double = 1.0,
+    val baseCurrency: BudgetCurrency,
+    val targetCurrency: BudgetCurrency,
+    val isRevert: Boolean = false,
+    val isFullAmount: Boolean = false
 )

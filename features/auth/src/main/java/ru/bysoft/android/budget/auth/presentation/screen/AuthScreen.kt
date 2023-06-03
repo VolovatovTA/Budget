@@ -8,7 +8,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.*
 import androidx.compose.foundation.layout.*
@@ -35,8 +36,11 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.auth.AuthViewModel
 import ru.bysoft.android.budget.auth.IAuthViewModel
@@ -116,6 +120,7 @@ private fun AuthSuccessScreen(
         if (state.type == AuthActionType.SIGN_IN) {
             focusRequesterEmail.requestFocus()
         } else {
+            delay(duration.toLong())
             focusRequesterEmail.freeFocus()
             focusRequesterName.requestFocus()
         }
@@ -162,7 +167,6 @@ private fun AuthSuccessScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(padding + halfPadding)
     ) {
 
         Column {
@@ -183,13 +187,13 @@ private fun AuthSuccessScreen(
                     .padding(horizontal = padding)
             )
         }
+        Spacer(modifier = Modifier.height(padding + halfPadding))
 
         Column(
-            modifier = Modifier.animateContentSize(),
-            verticalArrangement = Arrangement.spacedBy(padding)
+            modifier = Modifier,
         ) {
 
-            if (state.type == AuthActionType.SIGN_UP) {
+            ExpandVertically(state.type == AuthActionType.SIGN_UP) {
                 AuthTextField(
                     state = state.name,
                     onTextChange = viewModel::setNewName,
@@ -202,6 +206,9 @@ private fun AuthSuccessScreen(
                         focusManager.moveFocus(FocusDirection.Next)
                     },
                 )
+            }
+            ExpandVertically(state.type == AuthActionType.SIGN_UP) {
+                Spacer(modifier = Modifier.height(padding))
             }
 
             AuthTextField(
@@ -216,6 +223,7 @@ private fun AuthSuccessScreen(
                     focusManager.moveFocus(FocusDirection.Next)
                 },
             )
+            Spacer(modifier = Modifier.height(padding))
 
             AuthTextField(
                 state = state.password,
@@ -230,7 +238,10 @@ private fun AuthSuccessScreen(
                 }
             )
 
-            if (state.type == AuthActionType.SIGN_UP) {
+            ExpandVertically(state.type == AuthActionType.SIGN_UP) {
+                Spacer(modifier = Modifier.height(padding))
+            }
+            ExpandVertically(state.type == AuthActionType.SIGN_UP) {
                 AuthTextField(
                     state = state.confirmPassword,
                     onTextChange = viewModel::setNewConfirmPassword,
@@ -244,7 +255,11 @@ private fun AuthSuccessScreen(
                 )
             }
         }
-        if (state.type == AuthActionType.SIGN_UP) {
+
+        ExpandVertically(state.type == AuthActionType.SIGN_UP) {
+            Spacer(Modifier.height(padding + halfPadding))
+        }
+        ExpandVertically(state.type == AuthActionType.SIGN_UP) {
             Row(
                 modifier = Modifier
                     .padding(horizontal = padding)
@@ -267,6 +282,8 @@ private fun AuthSuccessScreen(
             }
         }
 
+        Spacer(modifier = Modifier.height(padding + halfPadding))
+
         UiKitButton(
             info = UiKitButtonInfo(text = btnText, size = ButtonSize.MEDIUM),
             isButtonEnabled = state.isButtonEnabled,
@@ -275,6 +292,7 @@ private fun AuthSuccessScreen(
                 .fillMaxWidth()
                 .padding(horizontal = padding)
         )
+        Spacer(modifier = Modifier.height(padding + halfPadding))
 
         UiKitDivider(
             text = stringResource(id = R.string.or_continue_with),
@@ -282,6 +300,7 @@ private fun AuthSuccessScreen(
                 horizontal = padding,
             )
         )
+        Spacer(modifier = Modifier.height(padding + halfPadding))
 
         Column(verticalArrangement = Arrangement.spacedBy(halfPadding)) {
 
@@ -304,6 +323,8 @@ private fun AuthSuccessScreen(
                     .padding(horizontal = padding)
             )
         }
+
+        Spacer(modifier = Modifier.height(padding + halfPadding))
 
         ClickableText(
             text = annotatedString,
@@ -335,14 +356,16 @@ private fun AuthSuccessScreen(
 fun AuthPreview() {
     val viewModel = remember {
         object : IAuthViewModel {
-            override val state: StateFlow<AuthState>
-                get() = MutableStateFlow(
-                    AuthState(
-                        isLoading = false,
-                        toastText = null,
-                        type = AuthActionType.SIGN_UP
-                    )
+            val _state = MutableStateFlow(
+                AuthState(
+                    isLoading = false,
+                    toastText = null,
+                    type = AuthActionType.SIGN_IN
                 )
+            )
+
+            override val state: StateFlow<AuthState>
+                get() = _state.asStateFlow()
 
             override fun setNewPassword(password: String) = Unit
 
@@ -356,7 +379,9 @@ fun AuthPreview() {
 
             override fun onButtonClick(action: AuthActionType) = Unit
 
-            override fun switchAuthType(newType: AuthActionType) = Unit
+            override fun switchAuthType(newType: AuthActionType) {
+                _state.update { it.copy(type = newType) }
+            }
 
             override fun onGoogleSignInResult(account: SignInResult) = Unit
 
@@ -375,5 +400,29 @@ fun AuthPreview() {
         )
     }
 
+}
+
+const val duration = 300
+
+@Composable
+fun ExpandVertically(visible: Boolean, function: @Composable () -> Unit) {
+    val enter = fadeIn(
+        animationSpec = tween(delayMillis = duration)
+    ) + expandVertically(
+        animationSpec = tween(durationMillis = duration)
+    )
+    val exit = fadeOut(
+        animationSpec = tween(durationMillis = duration)
+    ) + shrinkVertically(
+        animationSpec = tween(delayMillis = duration),
+    )
+
+    AnimatedVisibility(
+        visible = visible,
+        enter = enter,
+        exit = exit
+    ) {
+        function()
+    }
 }
 

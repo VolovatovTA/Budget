@@ -28,6 +28,8 @@ interface ITransactionsViewModel {
     fun setComment(comment: String)
     fun setTypeTransactions(type: TransactionTypeEnum)
     fun onEmptyCategoryClick()
+    fun setFullAmount(currency: BudgetCurrency, newValue: Boolean)
+    fun setRevert(currency: BudgetCurrency, newValueIsRevert: Boolean)
     fun setExchangeAmount(currency: BudgetCurrency, amount: String)
     fun back()
 }
@@ -195,8 +197,67 @@ abstract class TransactionsCommonViewModel(
         state.update { transactionState ->
             transactionState.copyWithExchanges(
                 exchangeFieldState = transactionState.exchangeFieldState.map { ex ->
-                    if (ex.currencyFieldState.selectedCurrency == currency) {
-                        ex.copy(amount = ex.amount.copy(text = amount))
+                    if (ex.targetCurrency == currency) {
+                        ex.copy(enteredAmount = ex.enteredAmount.copy(text = amount))
+                    } else {
+                        ex
+                    }
+                }
+            )
+        }
+    }
+
+    override fun setFullAmount(currency: BudgetCurrency, newValue: Boolean) {
+        state.update { transactionState ->
+            transactionState.copyWithExchanges(
+                exchangeFieldState = transactionState.exchangeFieldState.map { ex ->
+                    if (ex.targetCurrency == currency) {
+                        val currentMainAmount = state.value.amountState.text.toDoubleOrNull()
+                            ?: if (newValue) 0.0 else Double.MAX_VALUE
+
+                        val shownAmount = if (ex.isRevert) ex.shownAmount else currentMainAmount
+                        val multipliedEnteredAmount = ex.enteredAmount.text.toDoubleOrNull()
+                            ?.times(if (newValue) shownAmount else 1 / shownAmount)
+                            ?: 0.0
+                        ex.copy(
+                            isFullAmount = newValue,
+                            enteredAmount = ex.enteredAmount.copy(
+                                text = roundToSixSignificantDigits(multipliedEnteredAmount).toString()
+                            ),
+                            shownAmount = if (newValue) shownAmount else 1.0
+                        )
+                    } else {
+                        ex
+                    }
+                }
+            )
+        }
+    }
+
+    override fun setRevert(currency: BudgetCurrency, newValueIsRevert: Boolean) {
+        state.update { transactionState ->
+            transactionState.copyWithExchanges(
+                exchangeFieldState = transactionState.exchangeFieldState.map { ex ->
+                    if (ex.targetCurrency == currency) {
+                        val shownAmount =
+                            if (ex.isFullAmount) {
+                                state.value.amountState.text.toDoubleOrNull() ?: 0.0
+                            } else {
+                                1.0
+                            }
+                        val enteredAmount =
+                            roundToSixSignificantDigits(
+                                shownAmount /
+                                        (ex.enteredAmount.text.toDoubleOrNull() ?: Double.MAX_VALUE)
+
+                            )
+                        ex.copy(
+                            isRevert = newValueIsRevert,
+                            enteredAmount = ex.enteredAmount.copy(
+                                text = enteredAmount.toString()
+                            ),
+                            shownAmount = shownAmount
+                        )
                     } else {
                         ex
                     }

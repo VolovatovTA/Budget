@@ -113,6 +113,11 @@ dependencies {
 
     implementation "com.google.firebase:firebase-analytics-ktx"
 
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+    kapt "androidx.room:room-compiler:$room_version"
+
     implementation project(':uikit')
     implementation project(':common')
     implementation project(':api')
@@ -126,4 +131,5 @@ dependencies {
     implementation project(':features:bottom-navigation:statistic')
     implementation project(':features:statistic-by-month')
     implementation project(':features:settings')
+    implementation project(path: ':features:currency-rates')
 }

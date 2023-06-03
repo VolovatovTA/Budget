@@ -16,4 +16,5 @@
     <string name="add_category">Add</string>
     <string name="no_categories_expense">To create expense you need create at least one category of expense</string>
     <string name="no_categories_income">To create income you need create at least one category of incomes</string>
+    <string name="full_amount">full \namount</string>
 </resources>
