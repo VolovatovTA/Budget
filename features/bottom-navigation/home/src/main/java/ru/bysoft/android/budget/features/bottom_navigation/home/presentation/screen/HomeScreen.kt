@@ -64,7 +64,7 @@ fun HomeScreen(
     )
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().safeDrawingPadding(),
         backgroundColor = UiKitColors.colors.surface.primary,
         bottomBar = {}
     ) {

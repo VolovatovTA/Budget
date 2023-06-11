@@ -41,7 +41,7 @@ object UiKitTypography {
                 fontSize = 72.sp,
                 fontFamily = PublicSans,
                 fontStyle = FontStyle.Normal,
-                lineHeight = 90.sp,
+                lineHeight = 84.sp,
                 letterSpacing = (-0.02).sp,
             )
             return BudgetTypography(
@@ -60,7 +60,7 @@ object UiKitTypography {
                 fontSize = 60.sp,
                 fontFamily = PublicSans,
                 fontStyle = FontStyle.Normal,
-                lineHeight = 72.sp,
+                lineHeight = 68.sp,
                 letterSpacing = (-0.02).sp,
             )
             return BudgetTypography(
@@ -78,7 +78,7 @@ object UiKitTypography {
                 fontSize = 48.sp,
                 fontFamily = PublicSans,
                 fontStyle = FontStyle.Normal,
-                lineHeight = 60.sp,
+                lineHeight = 56.sp,
                 letterSpacing = (-0.02).sp,
             )
             return BudgetTypography(
@@ -106,7 +106,7 @@ object UiKitTypography {
                 fontSize = 36.sp,
                 fontFamily = PublicSans,
                 fontStyle = FontStyle.Normal,
-                lineHeight = 44.sp,
+                lineHeight = 40.sp,
                 letterSpacing = (-0.02).sp,
             )
             return BudgetTypography(
@@ -125,7 +125,7 @@ object UiKitTypography {
                 fontSize = 30.sp,
                 fontFamily = PublicSans,
                 fontStyle = FontStyle.Normal,
-                lineHeight = 38.sp,
+                lineHeight = 34.sp,
                 letterSpacing = (-0.02).sp,
             )
             return BudgetTypography(
@@ -144,7 +144,7 @@ object UiKitTypography {
                 fontSize = 24.sp,
                 fontFamily = PublicSans,
                 fontStyle = FontStyle.Normal,
-                lineHeight = 32.sp,
+                lineHeight = 28.sp,
                 letterSpacing = (-0.02).sp,
             )
             return BudgetTypography(
@@ -163,7 +163,7 @@ object UiKitTypography {
                 fontSize = 20.sp,
                 fontFamily = PublicSans,
                 fontStyle = FontStyle.Normal,
-                lineHeight = 30.sp,
+                lineHeight = 26.sp,
             )
             return BudgetTypography(
                 Regular = base.copy(fontWeight = FontWeight(400)),
@@ -181,7 +181,7 @@ object UiKitTypography {
                 fontSize = 18.sp,
                 fontFamily = PublicSans,
                 fontStyle = FontStyle.Normal,
-                lineHeight = 28.sp,
+                lineHeight = 24.sp,
             )
             return BudgetTypography(
                 Regular = base.copy(fontWeight = FontWeight(400)),
@@ -199,7 +199,7 @@ object UiKitTypography {
                 fontSize = 16.sp,
                 fontFamily = PublicSans,
                 fontStyle = FontStyle.Normal,
-                lineHeight = 24.sp,
+                lineHeight = 20.sp,
             )
             return BudgetTypography(
                 Regular = base.copy(fontWeight = FontWeight(400)),
@@ -217,7 +217,7 @@ object UiKitTypography {
                 fontSize = 14.sp,
                 fontFamily = PublicSans,
                 fontStyle = FontStyle.Normal,
-                lineHeight = 20.sp,
+                lineHeight = 16.sp,
             )
             return BudgetTypography(
                 Regular = base.copy(fontWeight = FontWeight(400)),
@@ -236,7 +236,8 @@ object UiKitTypography {
                 fontSize = 12.sp,
                 fontFamily = PublicSans,
                 fontStyle = FontStyle.Normal,
-                lineHeight = 18.sp,
+                lineHeight = 14.sp,
+                letterSpacing = (-0.02).sp,
             )
             return BudgetTypography(
                 Regular = base.copy(fontWeight = FontWeight(400)),

@@ -1,38 +1,42 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.components
 
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import android.content.res.Configuration
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
-import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.MAX_HEIGHT
-import ru.bysoft.android.budget.uikit.colors.UiKitColors
-import ru.bysoft.android.budget.uikit.components.avatar.UiKitAvatar
-import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
-import ru.bysoft.android.budget.uikit.icons.UiKitIcons
-import ru.bysoft.android.budget.uikit.styles.UiKitTypography
+import androidx.compose.ui.unit.times
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.padding
+import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
 import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
+import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
+import ru.bysoft.android.budget.uikit.icons.UiKitIcons
+import ru.bysoft.android.budget.uikit.icons.pack.Plus
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
+import ru.bysoft.android.budget.uikit.styles.corner
+import ru.bysoft.android.budget.uikit.styles.halfPadding
+import ru.bysoft.android.budget.uikit.styles.quarterPadding
 
-val HEIGHT_CATEGORY = 40.dp
+val HEIGHT_CATEGORY = 95.dp
+val WIDTH_CATEGORY = 75.dp
 val paddingBetweenElement = padding / 2
 
 @Composable
@@ -99,7 +103,7 @@ fun ShortSuccessCategoryComponent(
         )
         UiKitButton(
             info = UiKitButtonInfo(
-                text = stringResource(R.string.add_category),
+                text = stringResource(R.string.add_category2),
                 size = ButtonSize.MEDIUM
             ),
             onClick = onClick
@@ -108,41 +112,76 @@ fun ShortSuccessCategoryComponent(
 
 }
 
+const val countRows = 2
+
 @Composable
 private fun NotEmptySuccessCategoryComponent(
     state: CategorySuccess,
     onClick: (CategoryPresentation) -> Unit,
     onClickAdd: () -> Unit,
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = Modifier
-            .padding(
-                horizontal = padding - paddingBetweenElement,
-                vertical = paddingBetweenElement
-            )
-            .heightIn(max = 300.dp)
+    val list = state.listCategory.plus(CategoryAdd)
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(countRows),
+        modifier = Modifier.height(countRows * HEIGHT_CATEGORY + padding * 3),
+        verticalArrangement = Arrangement.spacedBy(padding),
+        horizontalArrangement = Arrangement.spacedBy(padding),
+        contentPadding = PaddingValues(start = padding, end = padding, bottom = halfPadding)
     ) {
         items(
-            items = state.listCategory.plus(CategoryAdd),
-            itemContent = { category ->
-                when (category) {
+            count = list.size,
+            itemContent = { index ->
+                when (val category = list[index]) {
                     is CategoryPresentation -> CategoryItem(category, onClick)
                     is CategoryAdd -> CategoryAddItem(onClickAdd)
                 }
+                Spacer(Modifier.width(if (index > list.size - countRows) halfPadding else 0.dp))
+
             }
         )
     }
 }
 
-@Preview
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFFFFFFFF,
+    locale = "ru"
+)
 @Composable
 fun PreviewCategory() {
     NotEmptySuccessCategoryComponent(
         CategorySuccess(
             listOf(
                 CategoryPresentation("Card", "dshb", false, "", "RUB"),
-                CategoryPresentation("Card", "dshb", true, "", "GEL"),
+                CategoryPresentation("Card", "dshfldjb", true, "", "GEL"),
+                CategoryPresentation("Card", "dsh", true, "", "GEL"),
+                CategoryPresentation("Card", "dshb df dff", true, "", "GEL"),
+                CategoryPresentation("Card", "dshb dfdfdfdfdfdf", true, "", "GEL"),
+            )
+        ),
+        {},
+        {}
+    )
+
+    WaitingCategoryComponent()
+
+}
+
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E1216,
+)
+@Composable
+fun PreviewCategoryNight() {
+    NotEmptySuccessCategoryComponent(
+        CategorySuccess(
+            listOf(
+                CategoryPresentation("Card", "dshb", false, "", "RUB"),
+                CategoryPresentation("Card", "dshfldjb", true, "", "GEL"),
+                CategoryPresentation("Card", "dsh", true, "", "GEL"),
+                CategoryPresentation("Card", "dshb df dff", true, "", "GEL"),
+                CategoryPresentation("Card", "dshb dfdfdfdfdfdf", true, "", "GEL"),
             )
         ),
         {},
@@ -157,24 +196,60 @@ fun PreviewCategory() {
 private fun CategoryAddItem(
     onClick: () -> Unit
 ) {
-    Box(
-        contentAlignment = Alignment.Center,
+    val stroke = Stroke(
+        width = 2f,
+        pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
+    )
+    val borderColor = UiKitColors.colors.type.high
+    Surface(
+        shape = RoundedCornerShape(corner),
+        color = UiKitColors.card.secondaryBackground,
         modifier = Modifier
-            .padding(paddingBetweenElement / 2)
-            .fillMaxWidth()
-            .height(HEIGHT_CATEGORY)
-            .clip(RoundedCornerShape(10.dp))
-            .background(UiKitColors.colors.feedbackGreen.`300`)
-            .border(0.1.dp, UiKitColors.colors.primary.`1100`, RoundedCornerShape(10.dp))
+            .size(WIDTH_CATEGORY, HEIGHT_CATEGORY),
+        elevation = 3.dp
     ) {
-        UiKitButton(
-            info = UiKitButtonInfo(
-                text = stringResource(R.string.add_category),
-                size = ButtonSize.MEDIUM
-            ),
-            onClick = onClick,
-            modifier = Modifier.fillMaxSize()
-        )
+        Column(
+            Modifier
+                .clickable {
+                    onClick()
+                },
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(R.string.add_category1),
+                style = UiKitTypography.TextXS.Regular,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(quarterPadding)
+            )
+            Box(
+                modifier = Modifier
+                    .size(32.dp)
+                    .drawBehind {
+                        drawCircle(color = borderColor, style = stroke)
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    Plus,
+                    contentDescription = null,
+                    tint = UiKitColors.colors.type.high
+                )
+            }
+            Text(
+                text = stringResource(R.string.add_category2),
+                style = UiKitTypography.TextXS.Regular,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(quarterPadding)
+            )
+
+        }
     }
 }
 
@@ -184,71 +259,76 @@ private fun CategoryItem(
     onClick: (CategoryPresentation) -> Unit
 ) {
     val backgroundColor =
-        if (category.isChosen) UiKitColors.colors.neutral.`400`
-        else UiKitColors.colors.surface.primary
-    Row(
-        Modifier
-            .padding(paddingBetweenElement / 2)
-            .fillMaxWidth()
-            .height(HEIGHT_CATEGORY)
-            .clip(RoundedCornerShape(10.dp))
-            .background(backgroundColor)
-            .border(0.1.dp, UiKitColors.colors.primary.`1100`, RoundedCornerShape(10.dp))
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = { onClick(category) },
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start
+        if (category.isChosen) UiKitColors.card.primaryBackground
+        else UiKitColors.card.secondaryBackground
+    Surface(
+        shape = RoundedCornerShape(corner),
+        color = backgroundColor,
+        modifier = Modifier
+            .size(WIDTH_CATEGORY, HEIGHT_CATEGORY),
+        elevation = 3.dp
     ) {
-
-        UiKitAvatar(
-            icon = UiKitIcons.getByName(category.iconName),
-            backgroundColor = backgroundColor,
-            elevation = 0.dp,
-            rippleEnabled = false,
-            onClick = { onClick(category) },
-        )
-        Text(
-            text = category.name,
-            style = UiKitTypography.TextXS.Regular,
-            textAlign = TextAlign.Start,
-            maxLines = 3,
-            modifier = Modifier
-                .weight(1f)
-                .padding(paddingBetweenElement / 2)
-        )
-        Box(contentAlignment = Alignment.Center) {
+        Column(
+            Modifier
+                .clickable {
+                    onClick(category)
+                },
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                UiKitIcons.getByName(category.iconName)?.let {
+                    Icon(
+                        it,
+                        contentDescription = null,
+                        tint = UiKitColors.colors.type.high
+                    )
+                }
+            }
             Text(
-                text = category.currency,
+                text = category.name,
                 style = UiKitTypography.TextXS.Regular,
-                textAlign = TextAlign.End,
+                textAlign = TextAlign.Center,
                 maxLines = 1,
                 modifier = Modifier
-                    .padding(end = padding / 2)
+                    .fillMaxWidth()
+                    .padding(horizontal = halfPadding)
             )
+            Box(contentAlignment = Alignment.Center) {
+                Text(
+                    text = category.currency,
+                    style = UiKitTypography.TextXS.Regular,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = halfPadding)
+                )
+            }
         }
     }
 }
 
 @Composable
 private fun WaitingCategoryComponent() {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = Modifier
-            .padding(horizontal = padding - paddingBetweenElement, vertical = paddingBetweenElement)
-            .heightIn(max = MAX_HEIGHT)
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(countRows),
+        modifier = Modifier.height(countRows * HEIGHT_CATEGORY + padding * 3),
+        verticalArrangement = Arrangement.spacedBy(padding),
+        horizontalArrangement = Arrangement.spacedBy(padding),
+        contentPadding = PaddingValues(start = padding, end = padding, bottom = halfPadding)
     ) {
-        items(3) {
+        val countElement = 10
+        items(countElement) {
             UiKitShimmerComponent(
                 Modifier
-                    .fillMaxWidth()
-                    .padding(paddingBetweenElement / 2)
-                    .height(HEIGHT_CATEGORY)
+                    .size(WIDTH_CATEGORY, HEIGHT_CATEGORY)
             )
         }
-
     }
 }
 

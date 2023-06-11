@@ -9,7 +9,6 @@ sealed class ITransactionState(
     open val amountState: TextFieldState = TextFieldState(),
     open val currencyFieldState: CurrencyFieldState = CurrencyFieldState(selectedCurrency = null),
     open val categoryState: CategoryState?,
-    open val toastText: String? = null,
     open val exchangeFieldState: List<ExchangeFieldState> = emptyList(),
     open val isLoading: Boolean = false,
     open val walletFromFieldState: IWalletFieldState?,
@@ -21,7 +20,6 @@ sealed class ITransactionState(
     abstract fun copyWithCurrency(currencyFieldState: CurrencyFieldState): ITransactionState
     abstract fun copyWithExchanges(exchangeFieldState: List<ExchangeFieldState>): ITransactionState
     abstract fun copyWithLoading(isLoading: Boolean): ITransactionState
-    abstract fun copyWithToast(toastText: String?): ITransactionState
     abstract fun copyWithCategory(categoryState: CategoryState): ITransactionState
     abstract fun copyWithWalletFromState(walletFieldState: IWalletFieldState): ITransactionState
     abstract fun copyWithWalletToState(walletFieldState: IWalletFieldState): ITransactionState
@@ -33,7 +31,6 @@ data class TransactionExpenseState(
     override val amountState: TextFieldState = TextFieldState(),
     override val currencyFieldState: CurrencyFieldState = CurrencyFieldState(selectedCurrency = null),
     override val categoryState: CategoryState = CategoryWaiting,
-    override val toastText: String? = null,
     override val exchangeFieldState: List<ExchangeFieldState> = emptyList(),
     override val isLoading: Boolean = false,
     override val walletFromFieldState: IWalletFieldState = WalletWaitingState,
@@ -42,7 +39,6 @@ data class TransactionExpenseState(
     amountState = amountState,
     currencyFieldState = currencyFieldState,
     categoryState = categoryState,
-    toastText = toastText,
     exchangeFieldState = exchangeFieldState,
     isLoading = isLoading,
     walletFromFieldState = walletFromFieldState,
@@ -63,9 +59,6 @@ data class TransactionExpenseState(
     override fun copyWithLoading(isLoading: Boolean): TransactionExpenseState =
         this.copy(isLoading = isLoading)
 
-    override fun copyWithToast(toastText: String?): TransactionExpenseState =
-        this.copy(toastText = toastText)
-
     override fun copyWithCategory(categoryState: CategoryState): TransactionExpenseState =
         this.copy(categoryState = categoryState)
 
@@ -82,7 +75,6 @@ data class TransactionIncomeState(
     override val amountState: TextFieldState = TextFieldState(),
     override val currencyFieldState: CurrencyFieldState = CurrencyFieldState(selectedCurrency = null),
     override val categoryState: CategoryState = CategoryWaiting,
-    override val toastText: String? = null,
     override val exchangeFieldState: List<ExchangeFieldState> = emptyList(),
     override val isLoading: Boolean = false,
     override val walletToFieldState: IWalletFieldState = WalletWaitingState,
@@ -91,7 +83,6 @@ data class TransactionIncomeState(
     amountState = amountState,
     currencyFieldState = currencyFieldState,
     categoryState = categoryState,
-    toastText = toastText,
     exchangeFieldState = exchangeFieldState,
     isLoading = isLoading,
     walletFromFieldState = null,
@@ -112,9 +103,6 @@ data class TransactionIncomeState(
     override fun copyWithLoading(isLoading: Boolean): TransactionIncomeState =
         this.copy(isLoading = isLoading)
 
-    override fun copyWithToast(toastText: String?): TransactionIncomeState =
-        this.copy(toastText = toastText)
-
     override fun copyWithCategory(categoryState: CategoryState): TransactionIncomeState =
         this.copy(categoryState = categoryState)
 
@@ -131,7 +119,6 @@ data class TransactionTransferState(
     override val amountState: TextFieldState = TextFieldState(),
     override val currencyFieldState: CurrencyFieldState = CurrencyFieldState(selectedCurrency = null),
     override val categoryState: CategoryState? = null,
-    override val toastText: String? = null,
     override val exchangeFieldState: List<ExchangeFieldState> = emptyList(),
     override val isLoading: Boolean = false,
     override val walletToFieldState: IWalletFieldState = WalletWaitingState,
@@ -141,7 +128,6 @@ data class TransactionTransferState(
     amountState = amountState,
     currencyFieldState = currencyFieldState,
     categoryState = categoryState,
-    toastText = toastText,
     exchangeFieldState = exchangeFieldState,
     isLoading = isLoading,
     walletFromFieldState = walletFromFieldState,
@@ -161,9 +147,6 @@ data class TransactionTransferState(
 
     override fun copyWithLoading(isLoading: Boolean): TransactionTransferState =
         this.copy(isLoading = isLoading)
-
-    override fun copyWithToast(toastText: String?): TransactionTransferState =
-        this.copy(toastText = toastText)
 
     override fun copyWithCategory(categoryState: CategoryState): TransactionTransferState =
         this

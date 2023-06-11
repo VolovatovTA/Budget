@@ -259,38 +259,25 @@ object UiKitColors {
         @Composable
         get() = getColorsBySystemTheme()
 
-    val surface: BudgetColors
-        @Composable
-        get() =
-            if (isSystemInDarkTheme())
-                BudgetColors(
-                    primaryBackground = colors.neutral.`100`,
-                    secondaryBackground = colors.neutral.`200`,
-                    tertiaryBackground = colors.primary.`300`,
-                    tintPrimary = colors.primary.`1100`,
-                    tintSecondary = colors.primary.`1000`,
-                    tintTertiary = colors.primary.`900`,
-                )
-            else
-                BudgetColors(
-                    primaryBackground = colors.neutral.`100`,
-                    secondaryBackground = colors.neutral.`200`,
-                    tertiaryBackground = colors.primary.`300`,
-                    tintPrimary = colors.primary.`1100`,
-                    tintSecondary = colors.primary.`1000`,
-                    tintTertiary = colors.primary.`900`,
-                )
-
     val card: BudgetColors
         @Composable
-        get() = BudgetColors(
-            primaryBackground = colors.neutral.`100`,
-            secondaryBackground = colors.neutral.`300`,
-            tertiaryBackground = colors.neutral.`100`,
-            tintPrimary = colors.primary.`100`,
-            tintSecondary = colors.primary.`200`,
-            tintTertiary = colors.primary.`300`,
-        )
+        get() = if (isSystemInDarkTheme())
+            BudgetColors(
+                primaryBackground = colors.neutral.`400`,
+                secondaryBackground = colors.neutral.`800`,
+                tertiaryBackground = colors.neutral.`100`,
+                tintPrimary = colors.primary.`100`,
+                tintSecondary = colors.primary.`200`,
+                tintTertiary = colors.primary.`300`,
+            ) else
+            BudgetColors(
+                primaryBackground = colors.neutral.`400`,
+                secondaryBackground = colors.surface.primary,
+                tertiaryBackground = colors.neutral.`100`,
+                tintPrimary = colors.primary.`100`,
+                tintSecondary = colors.primary.`200`,
+                tintTertiary = colors.primary.`300`,
+            )
 
     val textField
         @Composable

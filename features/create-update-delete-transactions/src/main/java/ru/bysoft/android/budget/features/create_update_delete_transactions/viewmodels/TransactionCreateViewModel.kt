@@ -19,6 +19,7 @@ import ru.bysoft.android.budget.common.data_entity.CurrencyRateData
 import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.util.*
+import ru.bysoft.android.budget.features.create_update_delete_transactions.R
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.TransactionsCreateNavParams
@@ -56,9 +57,7 @@ class TransactionCreateViewModel @Inject constructor(
 
     private val handlerTransaction = CoroutineExceptionHandler { _, t ->
         errorLogger.logError(t)
-        state.update {
-            it.copyWithToast("Произошла ошибка запроса")
-        }
+        viewModelScope.launch { toastState.emit(R.string.error_answer) }
     }
 
     init {
@@ -105,15 +104,18 @@ class TransactionCreateViewModel @Inject constructor(
                 if (e is HttpException) {
                     val restoredError =
                         e.response()?.errorBody()?.string()?.restore<TransactionErrorResponse>()
+                    // TODO: till 01.07.2023 Do the correct error handling
                     val errors = restoredError?.errors?.map {
                         it.key.split('.')
                     }
 
-                    state.update {
-                        it.copyWithToast(
-                            toastText = restoredError?.message
-                        )
-                    }
+                    viewModelScope.launch { toastState.emit(R.string.error_answer) }
+
+//                    state.update {
+//                        it.copyWithToast(
+//                            toastText = restoredError?.message
+//                        )
+//                    }
                 } else {
                     Log.d(TAG, e.toString())
                 }

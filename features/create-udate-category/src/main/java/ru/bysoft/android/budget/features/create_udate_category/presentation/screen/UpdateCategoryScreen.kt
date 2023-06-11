@@ -41,8 +41,9 @@ fun UpdateCategoryScreen(
         backgroundColor = UiKitColors.colors.surface.primary,
         topBar = {
             UiKitTopBar(R.string.update_category_title, viewModel::back, viewModel::delete)
-        }
-    ) {
+        },
+        modifier = Modifier.safeDrawingPadding(),
+        ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,

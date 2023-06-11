@@ -28,15 +28,17 @@ class TransactionPresentationMapper @Inject constructor(
                 .firstOrNull { it.isChosen }
                 ?.id,
             walletId = (state.walletToFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
-            exchanges = state.exchangeFieldState.map {
+            exchanges = state.exchangeFieldState.map { exchangeFieldState ->
+                val enteredAmount = if (exchangeFieldState.isRevert) 1 / (exchangeFieldState.enteredAmount.text.toFloatOrNull()
+                    ?: Float.MAX_VALUE) else exchangeFieldState.enteredAmount.text.toFloatOrNull() ?: 0f
                 Exchange(
-                    if (it.isFullAmount) {
-                        it.enteredAmount.text.toFloatOrNull() ?: 0f
+                    if (exchangeFieldState.isFullAmount) {
+                        enteredAmount.takeIf { it != Float.MAX_VALUE } ?: 0f
                     } else {
                         (state.amountState.text.toFloatOrNull()
-                            ?: 0f) * (it.enteredAmount.text.toFloatOrNull() ?: 0f)
+                            ?: 0f) * (enteredAmount)
                     },
-                    it.targetCurrency.iso4217
+                    exchangeFieldState.targetCurrency.iso4217
                 )
             }
         )
@@ -52,15 +54,17 @@ class TransactionPresentationMapper @Inject constructor(
                     else null
                 }?.ifEmpty { null },
             walletId = (state.walletFromFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
-            exchanges = state.exchangeFieldState.map {
+            exchanges = state.exchangeFieldState.map { exchangeFieldState ->
+                val enteredAmount = if (exchangeFieldState.isRevert) 1 / (exchangeFieldState.enteredAmount.text.toFloatOrNull()
+                    ?: Float.MAX_VALUE) else exchangeFieldState.enteredAmount.text.toFloatOrNull() ?: 0f
                 Exchange(
-                    if (it.isFullAmount) {
-                        it.enteredAmount.text.toFloatOrNull() ?: 0f
+                    if (exchangeFieldState.isFullAmount) {
+                        enteredAmount.takeIf { it != Float.MAX_VALUE } ?: 0f
                     } else {
                         (state.amountState.text.toFloatOrNull()
-                            ?: 0f) * (it.enteredAmount.text.toFloatOrNull() ?: 0f)
+                            ?: 0f) * (enteredAmount)
                     },
-                    it.targetCurrency.iso4217
+                    exchangeFieldState.targetCurrency.iso4217
                 )
             }
         )
@@ -74,15 +78,17 @@ class TransactionPresentationMapper @Inject constructor(
             walletIdTo = (state.walletToFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
             walletIdFrom = (state.walletFromFieldState as? WalletSuccessState)?.selectedWalletId
                 ?: "",
-            exchanges = state.exchangeFieldState.map {
+            exchanges = state.exchangeFieldState.map { exchangeFieldState ->
+                val enteredAmount = if (exchangeFieldState.isRevert) 1 / (exchangeFieldState.enteredAmount.text.toFloatOrNull()
+                    ?: Float.MAX_VALUE) else exchangeFieldState.enteredAmount.text.toFloatOrNull() ?: 0f
                 Exchange(
-                    if (it.isFullAmount) {
-                        it.enteredAmount.text.toFloatOrNull() ?: 0f
+                    if (exchangeFieldState.isFullAmount) {
+                        enteredAmount.takeIf { it != Float.MAX_VALUE } ?: 0f
                     } else {
                         (state.amountState.text.toFloatOrNull()
-                            ?: 0f) * (it.enteredAmount.text.toFloatOrNull() ?: 0f)
+                            ?: 0f) * (enteredAmount)
                     },
-                    it.targetCurrency.iso4217
+                    exchangeFieldState.targetCurrency.iso4217
                 )
             }
         )

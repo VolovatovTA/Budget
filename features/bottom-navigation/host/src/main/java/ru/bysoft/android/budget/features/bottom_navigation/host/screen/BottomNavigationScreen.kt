@@ -2,7 +2,6 @@ package ru.bysoft.android.budget.features.bottom_navigation.host.screen
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,16 +22,15 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
+import ru.bysoft.android.budget.common.navigation.NavigationInfo
 import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.BottomNavigationButtonInfo
 import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.BottomNavigationNavHost
 import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.home.Home
 import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.plus.Plus
 import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.qr.QRCode
 import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.statistic.Statistic
-import ru.bysoft.android.budget.common.navigation.NavigationInfo
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.expandablecontent.VerticalExpandableContent
-import ru.bysoft.android.budget.uikit.icons.another.Wallet
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -83,7 +81,10 @@ fun BottomNavigationScreen(
                     )
                 }
             }
-        }
+        },
+        modifier = Modifier
+            .fillMaxSize()
+            .safeDrawingPadding()
     ) {
         BottomNavigationNavHost(bottomNavigateionNavController)
     }

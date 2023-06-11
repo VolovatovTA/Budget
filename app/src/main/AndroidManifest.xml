@@ -13,8 +13,9 @@
         android:usesCleartextTraffic="true"
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/BudgetTheme"
+        android:theme="@style/Theme.BudgetTheme"
         android:name=".common.BudgetApplication"
+        android:windowSoftInputMode="adjustResize"
         tools:targetApi="33">
         <activity
             android:name=".MainActivity"

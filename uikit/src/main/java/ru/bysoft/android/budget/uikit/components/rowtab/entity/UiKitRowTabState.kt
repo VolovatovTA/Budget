@@ -1,7 +1,6 @@
 package ru.bysoft.android.budget.uikit.components.rowtab.entity
 
 import androidx.compose.runtime.Stable
-import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
 
 @Stable
 data class UiKitRowTabState(
@@ -9,7 +8,7 @@ data class UiKitRowTabState(
 )
 
 data class UiKitTabInfo(
-    val info: UiKitButtonInfo,
+    val text: String,
     val isChecked: Boolean = false,
     val isEnabled: Boolean = true
 )

@@ -13,7 +13,9 @@
     <string name="text_field_exchange_not_empty">Так как валюта транзакции отличается от валют кошелька(ов)/категори(ий), необходимо ввести курс конвертации валют</string>
     <string name="error_loading_wallets">Не удалось загрузить список кошельков</string>
     <string name="error_loading_categories">Не удалось загрузить список категорий</string>
-    <string name="add_category">Добавить</string>
+    <string name="error_answer">"Произошла ошибка запроса"</string>
+    <string name="add_category1">Добавить</string>
+    <string name="add_category2">категорию</string>
     <string name="no_categories_expense">Для создания расхода вам сначала нужно создать хотя бы одну категорию расходов</string>
     <string name="no_categories_income">Для создания дохода вам сначала нужно создать хотя бы одну категорию доходов</string>
     <string name="full_amount">полная \nсумма</string>

@@ -15,19 +15,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.valentinilk.shimmer.LocalShimmerTheme
 import com.valentinilk.shimmer.defaultShimmerTheme
 import com.valentinilk.shimmer.shimmer
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
+import ru.bysoft.android.budget.uikit.styles.corner
 
 @Composable
 fun UiKitShimmerComponent(
     modifier: Modifier = Modifier,
-    backgroundColor: Color = UiKitColors.colors.neutral.`200`,
-    cornerRadius: Dp = 10.dp,
+    backgroundColor: Color = UiKitColors.colors.type.medium,
+    cornerRadius: Dp = corner,
 ) {
-    val yourShimmerTheme = defaultShimmerTheme.copy(
+    val budgetShimmerTheme = defaultShimmerTheme.copy(
         animationSpec = infiniteRepeatable(
             animation = tween(
                 800,
@@ -39,7 +39,7 @@ fun UiKitShimmerComponent(
     )
 
     CompositionLocalProvider(
-        LocalShimmerTheme provides yourShimmerTheme
+        LocalShimmerTheme provides budgetShimmerTheme
     ) {
         Box(
             modifier = modifier

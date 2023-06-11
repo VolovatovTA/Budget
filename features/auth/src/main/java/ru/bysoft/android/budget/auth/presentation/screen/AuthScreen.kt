@@ -9,7 +9,6 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.*
 import androidx.compose.foundation.layout.*
@@ -58,6 +57,8 @@ import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
 import ru.bysoft.android.budget.uikit.components.checkbox.UiKitCheckBox
 import ru.bysoft.android.budget.uikit.components.devider.UiKitDivider
 import ru.bysoft.android.budget.uikit.styles.*
+import ru.bysoft.android.budget.uikit.utils.ExpandVertically
+import ru.bysoft.android.budget.uikit.utils.duration
 
 @Composable
 fun AuthScreen() {
@@ -92,6 +93,7 @@ fun AuthScreen() {
     )
     Scaffold(
         backgroundColor = UiKitColors.colors.surface.primary,
+        modifier = Modifier.safeDrawingPadding()
     ) {
         AuthSuccessScreen(it, state, viewModel, googleAuthUiClient, launcher, scope)
     }
@@ -389,7 +391,9 @@ fun AuthPreview() {
     }
     val state = viewModel.state.collectAsState()
 
-    Scaffold {
+    Scaffold(
+        modifier = Modifier.safeDrawingPadding(),
+    ) {
         AuthSuccessScreen(
             paddingValues = it,
             state = state.value,
@@ -400,29 +404,5 @@ fun AuthPreview() {
         )
     }
 
-}
-
-const val duration = 300
-
-@Composable
-fun ExpandVertically(visible: Boolean, function: @Composable () -> Unit) {
-    val enter = fadeIn(
-        animationSpec = tween(delayMillis = duration)
-    ) + expandVertically(
-        animationSpec = tween(durationMillis = duration)
-    )
-    val exit = fadeOut(
-        animationSpec = tween(durationMillis = duration)
-    ) + shrinkVertically(
-        animationSpec = tween(delayMillis = duration),
-    )
-
-    AnimatedVisibility(
-        visible = visible,
-        enter = enter,
-        exit = exit
-    ) {
-        function()
-    }
 }
 

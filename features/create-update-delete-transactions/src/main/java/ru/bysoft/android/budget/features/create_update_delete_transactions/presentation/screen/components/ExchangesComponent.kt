@@ -1,14 +1,11 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.components
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -30,7 +27,6 @@ import ru.bysoft.android.budget.common.util.getCurrency
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.ExchangeFieldState
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.HEIGHT_ELEMENT
-import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.MAX_HEIGHT
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.padding
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextField
@@ -39,9 +35,13 @@ import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.styles.halfPadding
 import ru.bysoft.android.budget.uikit.styles.quarterPadding
 
-@Preview(backgroundColor = 0xFFFFFFFF)
+@Preview(
+    backgroundColor = 0xFFFFFFFF,
+    showBackground = true
+)
 @Composable
 fun ExchangesComponent(
+    modifier: Modifier = Modifier,
     exchangeFieldState: List<ExchangeFieldState> = listOf(
         ExchangeFieldState(baseCurrency = getCurrency("USD"), targetCurrency = getCurrency("RUB")),
         ExchangeFieldState(baseCurrency = getCurrency("USD"), targetCurrency = getCurrency("RUB")),
@@ -63,9 +63,8 @@ fun ExchangesComponent(
 ) {
     Column(
         modifier = Modifier
-            .heightIn(max = MAX_HEIGHT)
-            .verticalScroll(rememberScrollState())
-            .animateContentSize()
+            .animateContentSize(),
+        verticalArrangement = Arrangement.spacedBy(padding)
     ) {
         if (exchangeFieldState.isNotEmpty()) {
             Text(
@@ -89,27 +88,28 @@ fun ExchangesComponent(
                     .displayName
 
                 val shownAmount = exchangeState.shownAmount.toString()
-                if (exchangeState.isRevert){
-                    UiKitTextField(
-                        state = exchangeState.enteredAmount,
-                        onValueChange = { amount ->
-                            setAmount(
-                                exchangeState.targetCurrency,
-                                amount
-                            )
-                        },
-                        label = stringResource(R.string.text_field_exchange_label),
-                        inputType = KeyboardType.Number,
-                        modifier = Modifier
-                            .weight(2f),
-                        keyboardActions = KeyboardActions {
-                            if (index == exchangeFieldState.lastIndex) {
-                                focusManager.clearFocus()
-                            } else {
-                                focusManager.moveFocus(FocusDirection.Next)
-                            }
-                        },
-                    )
+                if (exchangeState.isRevert) {
+                    Box(modifier = Modifier.weight(1f)) {
+                        UiKitTextField(
+                            state = exchangeState.enteredAmount,
+                            onValueChange = { amount ->
+                                setAmount(
+                                    exchangeState.targetCurrency,
+                                    amount
+                                )
+                            },
+                            label = stringResource(R.string.text_field_exchange_label),
+                            inputType = KeyboardType.Number,
+                            modifier = modifier,
+                            keyboardActions = KeyboardActions {
+                                if (index == exchangeFieldState.lastIndex) {
+                                    focusManager.clearFocus()
+                                } else {
+                                    focusManager.moveFocus(FocusDirection.Next)
+                                }
+                            },
+                        )
+                    }
                     Text(
                         text = "$baseCurrencyName = $shownAmount ${exchangeState.targetCurrency.displayName}",
                         style = UiKitTypography.TextMD.Regular,
@@ -123,26 +123,26 @@ fun ExchangesComponent(
                         modifier = Modifier
                             .padding(top = halfPadding)
                     )
-                    UiKitTextField(
-                        state = exchangeState.enteredAmount,
-                        onValueChange = { amount ->
-                            setAmount(
-                                exchangeState.targetCurrency,
-                                amount
-                            )
-                        },
-                        label = stringResource(R.string.text_field_exchange_label),
-                        inputType = KeyboardType.Number,
-                        modifier = Modifier
-                            .weight(2f),
-                        keyboardActions = KeyboardActions {
-                            if (index == exchangeFieldState.lastIndex) {
-                                focusManager.clearFocus()
-                            } else {
-                                focusManager.moveFocus(FocusDirection.Next)
-                            }
-                        },
-                    )
+                    Box(modifier = Modifier.weight(1f)) {
+                        UiKitTextField(
+                            state = exchangeState.enteredAmount,
+                            onValueChange = { amount ->
+                                setAmount(
+                                    exchangeState.targetCurrency,
+                                    amount
+                                )
+                            },
+                            label = stringResource(R.string.text_field_exchange_label),
+                            inputType = KeyboardType.Number,
+                            keyboardActions = KeyboardActions {
+                                if (index == exchangeFieldState.lastIndex) {
+                                    focusManager.clearFocus()
+                                } else {
+                                    focusManager.moveFocus(FocusDirection.Next)
+                                }
+                            },
+                        )
+                    }
 
                     Text(
                         text = exchangeState.targetCurrency.displayName,
@@ -154,24 +154,23 @@ fun ExchangesComponent(
                 }
 
                 val backgroundIcon =
-                    if (exchangeState.isRevert) UiKitColors.colors.type.medium
-                    else UiKitColors.colors.surface.primary
+                    if (exchangeState.isRevert) UiKitColors.card.primaryBackground
+                    else UiKitColors.card.secondaryBackground
 
                 val backgroundText =
-                    if (exchangeState.isFullAmount) UiKitColors.colors.type.medium
-                    else UiKitColors.colors.surface.primary
+                    if (exchangeState.isFullAmount) UiKitColors.card.primaryBackground
+                    else UiKitColors.card.secondaryBackground
 
                 val height = 0.8f * HEIGHT_ELEMENT
                 val shape = RoundedCornerShape(8.dp)
 
-                if (!exchangeState.isRevert){
+                if (!exchangeState.isRevert) {
                     Surface(
                         shape = shape,
                         modifier = Modifier
-                            .height(height)
                             .padding(top = halfPadding),
                         color = backgroundText,
-                        border = BorderStroke(0.1.dp, UiKitColors.colors.type.high)
+                        elevation = 3.dp,
                     ) {
                         Box(
                             modifier = Modifier
@@ -199,14 +198,14 @@ fun ExchangesComponent(
                 }
 
 
-                if (!exchangeState.isFullAmount){
+                if (!exchangeState.isFullAmount) {
                     Surface(
                         shape = shape,
                         modifier = Modifier
                             .size(height)
                             .padding(top = halfPadding),
                         color = backgroundIcon,
-                        border = BorderStroke(0.1.dp, UiKitColors.colors.type.high)
+                        elevation = 3.dp,
                     ) {
                         Icon(
                             imageVector = Recycle,

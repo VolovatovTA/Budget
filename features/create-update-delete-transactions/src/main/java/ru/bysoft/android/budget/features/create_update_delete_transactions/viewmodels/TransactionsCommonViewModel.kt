@@ -3,6 +3,7 @@ package ru.bysoft.android.budget.features.create_update_delete_transactions.view
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -20,6 +21,7 @@ import ru.bysoft.android.budget.features.create_update_delete_transactions.prese
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.ITransactionsCategoryPresentationMapper
 
 interface ITransactionsViewModel {
+    val toastState: MutableSharedFlow<Int>
     val state: StateFlow<ITransactionState>
     fun setWalletId(fromId: String?, toId: String?)
     fun setAmount(amount: String)
@@ -53,6 +55,9 @@ abstract class TransactionsCommonViewModel(
     private val walletMapper: ITransactionWalletPresentationMapper,
 ) : ViewModel(), ITransactionsViewModel {
 
+
+    override val toastState = MutableSharedFlow<Int>()
+
     private val handlerCategory = CoroutineExceptionHandler { _, t ->
         errorLogger.logError(t)
         val currentState = state.value
@@ -77,12 +82,40 @@ abstract class TransactionsCommonViewModel(
         MutableStateFlow(TransactionExpenseState())
 
     override fun setAmount(amount: String) {
+        val previousAmount = state.value.amountState.text.toDoubleOrNull() ?: 0.0
         state.update {
             it.copyWithAmount(
                 amountState = it.amountState.copy(
                     text = amount
                 )
             )
+        }
+
+        state.value.exchangeFieldState.forEach { currentExchangeFieldState ->
+            if (currentExchangeFieldState.isFullAmount) {
+                val exchangeAmount =
+                    currentExchangeFieldState.enteredAmount.text.toDoubleOrNull() ?: 0.0
+                val multiplier =
+                    if (currentExchangeFieldState.isRevert) state.value.amountState.text.toDoubleOrNull()
+                        ?: Double.MAX_VALUE else state.value.amountState.text.toDoubleOrNull()
+                        ?: 0.0
+                val newAmount = exchangeAmount / previousAmount * multiplier
+                setExchangeAmount(
+                    currentExchangeFieldState.targetCurrency,
+                    roundToSixSignificantDigits(newAmount).toString()
+                )
+                state.update {
+                    it.copyWithExchanges(
+                        exchangeFieldState = it.exchangeFieldState.map { exchange ->
+                            if (exchange.targetCurrency == currentExchangeFieldState.targetCurrency) {
+                                exchange.copy(
+                                    shownAmount = amount.toDoubleOrNull() ?: 0.0,
+                                )
+                            } else exchange
+                        }
+                    )
+                }
+            }
         }
     }
 
@@ -105,9 +138,24 @@ abstract class TransactionsCommonViewModel(
     override fun setTypeTransactions(type: TransactionTypeEnum) {
         state.update {
             when (type) {
-                TransactionTypeEnum.TRANSFER -> TransactionTransferState()
-                TransactionTypeEnum.INCOME -> TransactionIncomeState()
-                TransactionTypeEnum.EXPENSE -> TransactionExpenseState()
+                TransactionTypeEnum.TRANSFER -> TransactionTransferState(
+                    isLoading = false,
+                    currencyFieldState = state.value.currencyFieldState,
+                    amountState = state.value.amountState,
+                    commentState = state.value.commentState,
+                )
+                TransactionTypeEnum.INCOME -> TransactionIncomeState(
+                    isLoading = false,
+                    currencyFieldState = state.value.currencyFieldState,
+                    amountState = state.value.amountState,
+                    commentState = state.value.commentState,
+                )
+                TransactionTypeEnum.EXPENSE -> TransactionExpenseState(
+                    isLoading = false,
+                    currencyFieldState = state.value.currencyFieldState,
+                    amountState = state.value.amountState,
+                    commentState = state.value.commentState,
+                )
             }
         }
         if (state.value !is TransactionTransferState) loadCategories()
@@ -276,7 +324,6 @@ abstract class TransactionsCommonViewModel(
             state.update {
                 it
                     .copyWithCategory(CategoryWaiting)
-                    .copyWithLoading(true)
             }
 
             val neededCategoryType = when (state.value) {
@@ -289,7 +336,6 @@ abstract class TransactionsCommonViewModel(
             state.update {
                 it
                     .copyWithCategory(categoryMapperPresentation.toPresentation(response))
-                    .copyWithLoading(false)
             }
         }
     }
@@ -299,7 +345,7 @@ abstract class TransactionsCommonViewModel(
             state.update {
                 it.copyWithWalletFromState(
                     walletFieldState = WalletWaitingState
-                ).copyWithLoading(true)
+                )
             }
             val response = walletApi.getWallets()
             state.update { iTransactionState ->
@@ -309,17 +355,17 @@ abstract class TransactionsCommonViewModel(
                             walletFieldState = walletMapper.toPresentation(response)
                         ).copyWithWalletToState(
                             walletFieldState = walletMapper.toPresentation(response)
-                        ).copyWithLoading(false)
+                        )
                     }
                     is TransactionIncomeState -> {
                         iTransactionState.copyWithWalletToState(
                             walletFieldState = walletMapper.toPresentation(response)
-                        ).copyWithLoading(false)
+                        )
                     }
                     is TransactionExpenseState -> {
                         iTransactionState.copyWithWalletFromState(
                             walletFieldState = walletMapper.toPresentation(response)
-                        ).copyWithLoading(false)
+                        )
                     }
                 }
             }

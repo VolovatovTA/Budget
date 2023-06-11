@@ -40,11 +40,10 @@ fun UiKitCurrencyPopUp(
     Column(
         modifier = modifier
             .heightIn(min = 50.dp, max = 100.dp)
-            .fillMaxWidth()
     ) {
         Surface(
             shape = RoundedCornerShape(10.dp),
-            border = BorderStroke(0.8.dp, UiKitColors.colors.primary.`1100`),
+            border = BorderStroke(0.8.dp, UiKitColors.colors.type.high),
             modifier = Modifier
                 .height(50.dp)
                 .fillMaxWidth(),
@@ -58,14 +57,13 @@ fun UiKitCurrencyPopUp(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Spacer(modifier = Modifier.width(15.dp))
                 val text =
-                    if (info.selectedCurrency != null) info.selectedCurrency.displayName +
-                            " ${Currency.getInstance(info.selectedCurrency.iso4217).displayName}"
+                    if (info.selectedCurrency != null) info.selectedCurrency.displayName
                     else stringResource(R.string.currency_not_selected)
 
                 Text(
                     text = text,
                     style = UiKitTypography.TextMD.Regular,
-                    color = UiKitColors.colors.primary.`1100`,
+                    color = UiKitColors.colors.type.high,
                     modifier = Modifier.weight(1f)
                 )
                 Box(
@@ -78,7 +76,7 @@ fun UiKitCurrencyPopUp(
                             Icons.Filled.ArrowDropDown
                         },
                         contentDescription = null,
-                        tint = UiKitColors.colors.primary.`1100`,
+                        tint = UiKitColors.colors.type.high,
                     )
                 }
                 Spacer(modifier = Modifier.width(15.dp))
@@ -116,7 +114,7 @@ fun UiKitCurrencyPopUp(
                         Text(
                             text = item.displayName,
                             style = UiKitTypography.DisplayXS.Regular,
-                            color = UiKitColors.surface.tintPrimary,
+                            color = UiKitColors.colors.type.high,
                             modifier = Modifier
                                 .fillMaxSize(),
                             textAlign = TextAlign.Center
@@ -127,7 +125,7 @@ fun UiKitCurrencyPopUp(
                     Text(
                         text = Currency.getInstance(item.iso4217).displayName,
                         style = UiKitTypography.TextMD.Regular,
-                        color = UiKitColors.surface.tintPrimary,
+                        color = UiKitColors.colors.type.high,
                         modifier = Modifier
                     )
                 }
@@ -153,7 +151,7 @@ fun <T> UiKitPopUp(
             shape = RoundedCornerShape(10.dp),
             border = BorderStroke(
                 0.8.dp,
-                if (info.errorText == null || info.errorText.isEmpty()) UiKitColors.colors.primary.`1100`
+                if (info.errorText == null || info.errorText.isEmpty()) UiKitColors.colors.type.high
                 else UiKitColors.colors.feedbackRed.`500`
             ),
             modifier = modifier,
@@ -175,7 +173,7 @@ fun <T> UiKitPopUp(
                             Icons.Filled.ArrowDropDown
                         },
                         contentDescription = null,
-                        tint = UiKitColors.colors.primary.`1100`,
+                        tint = UiKitColors.colors.type.high,
                     )
                 }
                 Spacer(modifier = Modifier.width(10.dp))

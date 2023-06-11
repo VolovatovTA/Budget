@@ -66,6 +66,7 @@ private fun SettingsScreenContent(
     onConfirm: () -> Unit
 ) {
     Scaffold(
+        modifier = Modifier.safeDrawingPadding(),
         backgroundColor = UiKitColors.colors.surface.primary,
         topBar = {
             Row(

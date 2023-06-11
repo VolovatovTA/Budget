@@ -15,9 +15,9 @@ import ru.bysoft.android.budget.uikit.colors.UiKitColors
 @Composable
 fun StatisticByFiltersScreen(viewModel: StatisticByFiltersViewModel) {
     Scaffold(
+        modifier = Modifier.safeDrawingPadding(),
         backgroundColor = UiKitColors.colors.surface.primary,
-
-        ) {
+    ) {
         val state = viewModel.state.collectAsState().value
         StatisticScreenContent(it, state)
     }

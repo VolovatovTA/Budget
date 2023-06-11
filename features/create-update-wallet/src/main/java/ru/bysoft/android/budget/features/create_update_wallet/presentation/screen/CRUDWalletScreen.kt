@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -23,16 +26,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.common.R
-import ru.bysoft.android.budget.features.create_update_wallet.*
+import ru.bysoft.android.budget.features.create_update_wallet.CreateWalletViewModel
+import ru.bysoft.android.budget.features.create_update_wallet.IUpdateWalletViewModel
+import ru.bysoft.android.budget.features.create_update_wallet.IWalletScreenController
+import ru.bysoft.android.budget.features.create_update_wallet.IWalletViewModel
 import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.ViewModelWalletState
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
 import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
-import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitCurrencyPopUp
 import ru.bysoft.android.budget.uikit.components.icon_component.UiKitIconsComponent
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
+import ru.bysoft.android.budget.uikit.components.textfield.UiKitCurrencyPopUpTextField
+import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextFieldWithCurrency
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
+import ru.bysoft.android.budget.uikit.styles.padding
 import ru.bysoft.android.budget.uikit.templates.UiKitTopBar
 
 typealias UiKitStrings = ru.bysoft.android.budget.uikit.R.string
@@ -56,6 +64,7 @@ fun CRUDWalletScreen(
     }
     LaunchedEffect(Unit) { focusRequester.requestFocus() }
     Scaffold(
+        modifier = Modifier.safeDrawingPadding(),
         backgroundColor = UiKitColors.colors.surface.primary,
         topBar = {
             UiKitTopBar(
@@ -89,22 +98,25 @@ fun CRUDWalletScreen(
                     .focusRequester(focusRequester)
             )
             if (viewModel is CreateWalletViewModel) {
-                CreateWalletTextField(
+                UiKitTextFieldWithCurrency(
                     state = controllerWalletState.balanceTextState,
-                    onTextChange = screenController::onBalanceChanged,
+                    onValueChange = screenController::onBalanceChanged,
                     label = stringResource(R.string.wallet_balance_text),
-                    errorDescription = stringResource(
-                        controllerWalletState.balanceTextState.errorText ?: UiKitStrings.empty_text
-                    ),
-                    type = KeyboardType.Number,
+                    inputType = KeyboardType.Number,
+                    modifier = Modifier
+                        .padding(horizontal = padding)
+                        .fillMaxWidth()
+                        .focusRequester(focusRequester),
                     keyboardActions = KeyboardActions {
-                        focusManager.clearFocus()
+                        focusManager.moveFocus(FocusDirection.Next)
                     },
-                )
-                UiKitCurrencyPopUp(
-                    controllerWalletState.currencyFieldState,
-                    screenController::onCurrencySelected,
-                    modifier = Modifier.padding(horizontal = 30.dp)
+                    popUpList = controllerWalletState.currencyFieldState,
+                    popUpItem = { t ->
+                        t?.let {
+                            UiKitCurrencyPopUpTextField(t)
+                        }
+                    },
+                    onSelectPopUpItem = screenController::onCurrencySelected
                 )
             }
             UiKitIconsComponent(screenController::onIconSelected, controllerWalletState.iconState)
@@ -155,7 +167,7 @@ private fun CreateWalletTextField(
             onValueChange = onTextChange,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 30.dp)
+                .padding(horizontal = padding)
                 .onFocusChanged { if (!it.isFocused) onNotFocused(state.text) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(

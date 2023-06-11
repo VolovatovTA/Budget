@@ -23,9 +23,11 @@
             <option value="$PROJECT_DIR$/features/create-udate-category" />
             <option value="$PROJECT_DIR$/features/create-update-delete-transactions" />
             <option value="$PROJECT_DIR$/features/create-update-wallet" />
+            <option value="$PROJECT_DIR$/features/currency-rates" />
             <option value="$PROJECT_DIR$/features/settings" />
             <option value="$PROJECT_DIR$/features/splash" />
             <option value="$PROJECT_DIR$/features/statistic-by-month" />
+            <option value="$PROJECT_DIR$/features/transaction-detail" />
             <option value="$PROJECT_DIR$/uikit" />
           </set>
         </option>

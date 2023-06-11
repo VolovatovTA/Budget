@@ -24,22 +24,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.PeriodState
-import ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels.ICreateCategoryViewModel
+import ru.bysoft.android.budget.features.create_udate_category.R
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.ButtonComponent
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.CreateUpdateCategoryTextField
-import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
-import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
+import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.CreateUpdateCategoryState
+import ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels.ICreateCategoryViewModel
+import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitCurrencyPopUp
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitPopUp
+import ru.bysoft.android.budget.uikit.components.icon_component.UiKitIconsComponent
 import ru.bysoft.android.budget.uikit.components.rowtab.UiKitRowTab
 import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitRowTabState
 import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitTabInfo
 import ru.bysoft.android.budget.uikit.icons.pack.ArrowLeft
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
-import ru.bysoft.android.budget.features.create_udate_category.R
-import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.CreateUpdateCategoryState
-import ru.bysoft.android.budget.uikit.colors.UiKitColors
-import ru.bysoft.android.budget.uikit.components.icon_component.UiKitIconsComponent
 
 @Composable
 fun CreateCategoryScreen(
@@ -56,6 +54,7 @@ fun CreateCategoryScreen(
         }
     }
     Scaffold(
+        modifier = Modifier.safeDrawingPadding(),
         backgroundColor = UiKitColors.colors.surface.primary,
         topBar = {
             Row(
@@ -97,10 +96,7 @@ fun CreateCategoryScreen(
                 startState = UiKitRowTabState(
                     rowTabs.map { type ->
                         UiKitTabInfo(
-                            info = UiKitButtonInfo(
-                                stringResource(type.text),
-                                size = ButtonSize.SMALL
-                            ),
+                            text = stringResource(type.text),
                             isChecked = type == state.typeCategory
                         )
                     }
