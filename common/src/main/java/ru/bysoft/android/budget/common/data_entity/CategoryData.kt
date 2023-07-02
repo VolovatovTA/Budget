@@ -1,6 +1,6 @@
 package ru.bysoft.android.budget.common.data_entity
 
-import ru.bysoft.android.budget.common.util.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrency
 import ru.bysoft.android.budget.common.util.PeriodState
 
 sealed class CategoryData(

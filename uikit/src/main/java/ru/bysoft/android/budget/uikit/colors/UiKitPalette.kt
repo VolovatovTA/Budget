@@ -29,15 +29,6 @@ data class BudgetTone(
     val `100`: Color,
 )
 
-data class BudgetColors(
-    val primaryBackground: Color,
-    val secondaryBackground: Color,
-    val tertiaryBackground: Color,
-    val tintPrimary: Color,
-    val tintSecondary: Color,
-    val tintTertiary: Color,
-)
-
 data class BudgetSurfaceColors(
     val primary: Color,
     val secondary: Color,
@@ -259,25 +250,12 @@ object UiKitColors {
         @Composable
         get() = getColorsBySystemTheme()
 
-    val card: BudgetColors
-        @Composable
-        get() = if (isSystemInDarkTheme())
-            BudgetColors(
-                primaryBackground = colors.neutral.`400`,
-                secondaryBackground = colors.neutral.`800`,
-                tertiaryBackground = colors.neutral.`100`,
-                tintPrimary = colors.primary.`100`,
-                tintSecondary = colors.primary.`200`,
-                tintTertiary = colors.primary.`300`,
-            ) else
-            BudgetColors(
-                primaryBackground = colors.neutral.`400`,
-                secondaryBackground = colors.surface.primary,
-                tertiaryBackground = colors.neutral.`100`,
-                tintPrimary = colors.primary.`100`,
-                tintSecondary = colors.primary.`200`,
-                tintTertiary = colors.primary.`300`,
-            )
+    @Composable
+    fun card(isSelected: Boolean): Color = if (isSystemInDarkTheme()) {
+        if (isSelected) colors.neutral.`300` else colors.surface.tertiary
+    } else {
+        if (isSelected) colors.neutral.`300` else colors.surface.primary
+    }
 
     val textField
         @Composable

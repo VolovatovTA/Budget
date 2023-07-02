@@ -2,7 +2,7 @@ package ru.budget.android.api.data.mapper
 
 import ru.bysoft.android.budget.common.data_entity.*
 import ru.bysoft.android.budget.common.util.dateFormat
-import ru.bysoft.android.budget.common.util.getCurrency
+import ru.bysoft.android.budget.currency.getCurrency
 import ru.budget.android.api.data.source.network.entity.transactions.TransactionResponse
 import ru.budget.android.api.data.source.network.entity.transactions.TransactionItemResponse
 import java.text.SimpleDateFormat
@@ -16,7 +16,6 @@ interface ITransactionsDataMapper {
 class UnknownTypeTransaction(type: String) :
     Throwable("Allowed EXPENSE, INCOME, TRANSFER, but came: $type")
 
-class UnknownCurrencyException(currency: String) : Throwable(currency)
 class TransactionsDataMapper @Inject constructor(
     private val locale: Locale
 ) : ITransactionsDataMapper {
@@ -24,10 +23,10 @@ class TransactionsDataMapper @Inject constructor(
         ListTransactionsData(listTransactions = response.data?.mapNotNull { it?.let{mapToData(it)} }.orEmpty())
 
     private fun mapToData(response: TransactionItemResponse): TransactionData =
-        when (response.type) {
-            "EXPENSE" -> getExpenseTransaction(response, locale = locale)
-            "INCOME" -> getIncomeTransaction(response, locale = locale)
-            "TRANSFER" -> getTransferTransaction(response, locale = locale)
+        when  {
+            response.type == "EXPENSE" && response.transfer == null-> getExpenseTransaction(response, locale = locale)
+            response.type == "INCOME"  && response.transfer == null-> getIncomeTransaction(response, locale = locale)
+            response.transfer != null-> getTransferTransaction(response, locale = locale)
             else -> throw UnknownTypeTransaction(response.type)
         }
 
@@ -39,8 +38,7 @@ class TransactionsDataMapper @Inject constructor(
             amount = transactionItemResponse.amount.toFloatOrNull() ?: 0f,
             categories = getCategories(transactionItemResponse),
             comment = transactionItemResponse.comment,
-            currency = getCurrency(transactionItemResponse.currency)
-                ?: throw UnknownCurrencyException(transactionItemResponse.currency),
+            currency = getCurrency(transactionItemResponse.currency),
             date = SimpleDateFormat(dateFormat, locale).parse(transactionItemResponse.createdAt),
             id = transactionItemResponse.id
         )
@@ -53,8 +51,7 @@ class TransactionsDataMapper @Inject constructor(
             amount = transactionItemResponse.amount.toFloatOrNull() ?: 0f,
             categories = getCategories(transactionItemResponse),
             comment = transactionItemResponse.comment,
-            currency = getCurrency(transactionItemResponse.currency)
-                ?: throw UnknownCurrencyException(transactionItemResponse.currency),
+            currency = getCurrency(transactionItemResponse.currency),
             date = SimpleDateFormat(dateFormat, locale).parse(transactionItemResponse.createdAt),
             id = transactionItemResponse.id
         )
@@ -66,8 +63,7 @@ class TransactionsDataMapper @Inject constructor(
         TransactionTransfer(
             amount = transactionItemResponse.amount.toFloatOrNull() ?: 0f,
             comment = transactionItemResponse.comment,
-            currency = getCurrency(transactionItemResponse.currency)
-                ?: throw UnknownCurrencyException(transactionItemResponse.currency),
+            currency = getCurrency(transactionItemResponse.currency),
             date = SimpleDateFormat(dateFormat, locale).parse(transactionItemResponse.createdAt),
             id = transactionItemResponse.id
         )
@@ -76,8 +72,7 @@ class TransactionsDataMapper @Inject constructor(
         when {
             !transactionItemResponse.listTransactionExpenseResponse.isNullOrEmpty() -> transactionItemResponse.listTransactionExpenseResponse.map {
                 ExpenseCategory(
-                    currency = getCurrency(it.currency)
-                        ?: throw UnknownCurrencyException(it.currency),
+                    currency = getCurrency(it.currency),
                     id = it.id,
                     name = it.name,
                     iconName = it.iconName,
@@ -85,8 +80,7 @@ class TransactionsDataMapper @Inject constructor(
             }
             transactionItemResponse.transactionIncomeResponse != null -> listOf(
                 IncomeCategory(
-                    currency = getCurrency(transactionItemResponse.transactionIncomeResponse.currency)
-                        ?: throw UnknownCurrencyException(transactionItemResponse.transactionIncomeResponse.currency),
+                    currency = getCurrency(transactionItemResponse.transactionIncomeResponse.currency),
                     id = transactionItemResponse.transactionIncomeResponse.id,
                     name = transactionItemResponse.transactionIncomeResponse.name,
                     iconName = transactionItemResponse.transactionIncomeResponse.iconName

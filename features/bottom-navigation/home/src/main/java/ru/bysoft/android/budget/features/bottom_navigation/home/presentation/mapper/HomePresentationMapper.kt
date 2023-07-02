@@ -5,8 +5,7 @@ import androidx.compose.material.DismissValue
 import androidx.compose.material.ExperimentalMaterialApi
 import ru.bysoft.android.budget.common.data_entity.*
 import ru.bysoft.android.budget.common.util.dateFormatOutput
-import ru.bysoft.android.budget.common.util.getBeautifulAmount
-import ru.bysoft.android.budget.common.util.getCurrency
+import ru.bysoft.android.budget.currency.getBeautifulAmount
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionInfo
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.IWalletPresentation
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletCardPresentation
@@ -14,6 +13,7 @@ import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.ent
 import ru.bysoft.android.budget.uikit.icons.UiKitIcons
 import ru.bysoft.android.budget.uikit.icons.pack.Recycle
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
 
@@ -37,7 +37,9 @@ class HomePresentationMapper @Inject constructor(
         balance = data.balance,
         currency = data.currency,
         backgroundColor = "primary.500",
-        walletId = data.id
+        walletId = data.id,
+        icon = data.iconName,
+        lastOperationDate = SimpleDateFormat(dateFormatOutput, locale).format(Calendar.getInstance().time)
     )
     override fun mapToInfo(
         data: ListTransactionsData,

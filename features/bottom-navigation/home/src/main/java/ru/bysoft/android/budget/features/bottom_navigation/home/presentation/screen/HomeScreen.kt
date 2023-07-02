@@ -1,7 +1,5 @@
 package ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen
 
-import android.annotation.SuppressLint
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,27 +13,22 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.*
-import ru.bysoft.android.budget.common.util.TAG
 import ru.bysoft.android.budget.features.bottom_navigation.home.IHomeViewModel
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.title.MeLoadingState
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletsLoadingState
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.title.HomeTitleComponent
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.transactions.HomeTransactionsComponent
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.wallets.WalletsPagerComponent
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.filters.HomeFiltersComponent
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.title.HomeTitleComponent
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.transactions.*
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.wallets.WalletsPagerComponent
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.icons.pack.*
+import ru.bysoft.android.budget.uikit.styles.halfPadding
 import java.util.*
 
 @OptIn(ExperimentalMaterialApi::class)
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
     viewModel: IHomeViewModel,
@@ -59,14 +52,15 @@ fun HomeScreen(
     val pullRefreshState = rememberPullRefreshState(
         refreshing = refreshingWallets?.isRefreshing ?: false,
         onRefresh = {
-            Log.d(TAG, "HomeScreen: onRefresh: ")
-            viewModel.loadData(true) }
+            viewModel.loadData(true)
+        }
     )
 
     Scaffold(
-        modifier = Modifier.fillMaxSize().safeDrawingPadding(),
+        modifier = Modifier
+            .fillMaxSize()
+            .safeDrawingPadding(),
         backgroundColor = UiKitColors.colors.surface.primary,
-        bottomBar = {}
     ) {
         Column(
             modifier = Modifier
@@ -81,28 +75,32 @@ fun HomeScreen(
                     enabled = refreshEnabled
                 )
             ) {
-                LazyColumn(
-                    Modifier
-                        .bottomElevation()
-
-                ) {
-                    item {
-                        HomeTitleComponent(meState, viewModel::onSettingsClick)
-
-                        WalletsPagerComponent(
-                            walletsState,
-                            viewModel::onPositionSelected,
-                            viewModel::onClickCreateWallet,
-                            viewModel::onClickEditWallet,
-                        )
-
-                        HomeFiltersComponent(filtersState, viewModel::onClickFilter)
-
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(1.dp)
-                                .background(UiKitColors.colors.primary.`400`)
+                Column {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(halfPadding),
+                    ) {
+                        item {
+                            Column {
+                                HomeTitleComponent(meState, viewModel::onSettingsClick)
+                                Spacer(modifier = Modifier.height(halfPadding))
+                            }
+                        }
+                        item {
+                            Column {
+                                WalletsPagerComponent(
+                                    walletsState,
+                                    viewModel::onPositionSelected,
+                                    viewModel::onClickCreateWallet,
+                                    viewModel::onClickEditWallet,
+                                )
+                                Spacer(modifier = Modifier.height(halfPadding))
+                            }
+                        }
+                        item {
+                            HomeFiltersComponent(filtersState, viewModel::onClickFilter)
+                        }
+                        homeTransactionsComponent(
+                            transactionsState,
                         )
                     }
                 }
@@ -112,24 +110,6 @@ fun HomeScreen(
                     Modifier.align(Alignment.TopCenter)
                 )
             }
-
-            HomeTransactionsComponent(
-                transactionsState,
-                onRefresh = viewModel::loadTransactions,
-            )
         }
     }
 }
-
-private fun Modifier.bottomElevation(elevation: Dp = 8.dp): Modifier =
-    this.then(Modifier.drawWithContent {
-        val paddingPx = elevation.toPx()
-        clipRect(
-            left = 0f,
-            top = 0f,
-            right = size.width,
-            bottom = size.height + paddingPx
-        ) {
-            this@drawWithContent.drawContent()
-        }
-    })

@@ -45,6 +45,7 @@ object UiKitIcons {
         Wallet.name to Wallet,
         logo.name to logo,
     )
+
     fun getByName(name: String?): ImageVector? = icons[name]
 
     fun getCategories() = categories.toList()

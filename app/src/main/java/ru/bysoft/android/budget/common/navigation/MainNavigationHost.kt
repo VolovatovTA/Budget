@@ -49,7 +49,7 @@ fun MainNavigationHost(mainNavController: NavHostController) {
         composable(BottomNavigation.route) {
             val bottomNavigationController = rememberNavController()
             BottomNavigationScreen(
-                bottomNavigateionNavController = bottomNavigationController,
+                bottomNavigationNavController = bottomNavigationController,
                 mainNavController = mainNavController
             )
         }

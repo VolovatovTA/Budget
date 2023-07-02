@@ -59,4 +59,5 @@ dependencies {
 
     implementation project(path: ':api')
     implementation project(':common')
+    implementation project(':currency')
 }

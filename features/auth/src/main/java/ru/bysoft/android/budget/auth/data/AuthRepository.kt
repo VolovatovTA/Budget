@@ -9,11 +9,13 @@ import ru.bysoft.android.budget.auth.data.entity.SignUpErrorData
 import ru.bysoft.android.budget.auth.data.mapper.mapToErrorData
 import ru.bysoft.android.budget.auth.data.mapper.mapToSignInRequest
 import ru.bysoft.android.budget.auth.data.mapper.mapToSignUpRequest
+import ru.bysoft.android.budget.common.network.entity.ifHttpErrorGetErrorBody
 import ru.bysoft.android.budget.common.token.ITokenStorage
 import ru.bysoft.android.budget.common.token.entity.AuthResponse
 import ru.bysoft.android.budget.common.token.entity.AuthSuccessResponse
 import ru.bysoft.android.budget.common.token.entity.SignInErrorResponse
 import ru.bysoft.android.budget.common.token.entity.SignUpErrorResponse
+import ru.bysoft.android.budget.common.util.restore
 import javax.inject.Inject
 import javax.net.ssl.SSLPeerUnverifiedException
 
@@ -32,13 +34,15 @@ class AuthRepository @Inject constructor(
         val authResponse: AuthResponse = try {
             api.signIn(signInData.mapToSignInRequest())
         } catch (e: Throwable) {
-            when (e) {
-//                is HttpException -> {
-//                    val responseJson = e.response()?.errorBody()?.string()
-//                    responseJson?.restore<SignInErrorResponse>()
-//                        ?: throw EmptySlugMessage(responseJson)
-//                }
-                is SSLPeerUnverifiedException -> SignInErrorResponse(
+
+            val errorJson = e.ifHttpErrorGetErrorBody()
+
+            when {
+                errorJson != null -> {
+                    errorJson.restore<SignInErrorResponse>()
+                        ?: throw EmptySlugMessage(errorJson)
+                }
+                e is SSLPeerUnverifiedException -> SignInErrorResponse(
                     "error_certificate"
                 )
                 else -> SignInErrorResponse(
@@ -63,14 +67,14 @@ class AuthRepository @Inject constructor(
         val authResponse: AuthResponse = try {
             api.signUp(signUpData.mapToSignUpRequest())
         } catch (e: Throwable) {
-            when (e) {
-//                is HttpException -> {
-//                    val responseJson = e.response()?.errorBody()?.string()
-//                    responseJson?.restore<SignUpErrorResponse>() ?: throw EmptySlugMessage(
-//                        responseJson
-//                    )
-//                }
-                is SSLPeerUnverifiedException -> SignUpErrorResponse(
+
+            val errorJson = e.ifHttpErrorGetErrorBody()
+
+            when  {
+                errorJson != null -> {
+                    errorJson.restore<SignUpErrorResponse>() ?: throw EmptySlugMessage(errorJson)
+                }
+                e is SSLPeerUnverifiedException -> SignUpErrorResponse(
                     "error_certificate"
                 )
                 else -> SignUpErrorResponse(

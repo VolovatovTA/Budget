@@ -6,18 +6,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.home.Home
-import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.qr.QRCode
-import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.statistic.Statistic
 import ru.bysoft.android.budget.common.navigation.NavigationInfo
 import ru.bysoft.android.budget.features.bottom_navigation.home.HomeViewModel
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.HomeScreen
+import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.home.Home
+import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.qr.QRCode
+import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.statistic.Statistic
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.StatisticViewModel
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.screen.StatisticScreen
 
@@ -59,8 +58,8 @@ fun BottomNavigationNavHost(navController: NavHostController) {
 object BottomNavigation : NavigationInfo("bottom navigation", "bottomNavScreen")
 
 interface BottomNavigationButtonInfo {
-    val icon: ImageVector
-    val label: Int?
+    val iconId: Int
+    val label: Int
 
     @Composable
     fun backgroundColor(): Color

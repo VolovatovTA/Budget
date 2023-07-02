@@ -22,8 +22,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
-import ru.bysoft.android.budget.common.util.BudgetCurrency
-import ru.bysoft.android.budget.common.util.getCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.ExchangeFieldState
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.HEIGHT_ELEMENT
@@ -153,13 +153,9 @@ fun ExchangesComponent(
                     )
                 }
 
-                val backgroundIcon =
-                    if (exchangeState.isRevert) UiKitColors.card.primaryBackground
-                    else UiKitColors.card.secondaryBackground
+                val backgroundIcon = UiKitColors.card(isSelected = exchangeState.isRevert)
 
-                val backgroundText =
-                    if (exchangeState.isFullAmount) UiKitColors.card.primaryBackground
-                    else UiKitColors.card.secondaryBackground
+                val backgroundText = UiKitColors.card(isSelected = exchangeState.isFullAmount)
 
                 val height = 0.8f * HEIGHT_ELEMENT
                 val shape = RoundedCornerShape(8.dp)

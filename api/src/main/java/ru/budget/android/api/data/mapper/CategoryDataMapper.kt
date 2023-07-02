@@ -6,8 +6,8 @@ import ru.budget.android.api.data.source.network.entity.transactions.Transaction
 import ru.bysoft.android.budget.common.data_entity.*
 import ru.bysoft.android.budget.common.network.entity.CommonErrorBody
 import ru.bysoft.android.budget.common.util.PeriodState
-import ru.bysoft.android.budget.common.util.getCurrency
 import ru.bysoft.android.budget.common.util.restore
+import ru.bysoft.android.budget.currency.getCurrency
 import javax.inject.Inject
 
 class CategoryDataMapper @Inject constructor() {
@@ -38,7 +38,7 @@ class CategoryDataMapper @Inject constructor() {
 
     private fun getCategoryData(categoryExpense: CategoryItemResponse): ExpenseCategory =
         ExpenseCategory(
-            currency = getCurrency(categoryExpense.currency)!!,
+            currency = getCurrency(categoryExpense.currency),
             name = categoryExpense.name,
             iconName = categoryExpense.iconName,
             id = categoryExpense.id,

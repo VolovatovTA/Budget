@@ -1,6 +1,6 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity
 
-import ru.bysoft.android.budget.common.util.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrency
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 

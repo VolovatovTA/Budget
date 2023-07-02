@@ -4,7 +4,7 @@ import androidx.compose.material.DismissState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.vector.ImageVector
-import ru.bysoft.android.budget.common.util.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrency
 
 sealed interface TransactionsState
 

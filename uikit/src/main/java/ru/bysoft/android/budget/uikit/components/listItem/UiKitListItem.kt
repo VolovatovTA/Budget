@@ -28,6 +28,9 @@ import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.android.budget.uikit.icons.another.Wallet
 import ru.bysoft.android.budget.uikit.icons.pack.Recycle
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
+import ru.bysoft.android.budget.uikit.styles.halfPadding
+import ru.bysoft.android.budget.uikit.styles.padding
+import ru.bysoft.android.budget.uikit.styles.quarterPadding
 
 @Composable
 fun UiKitListItem(
@@ -47,13 +50,14 @@ fun UiKitListItem(
         UiKitListItemIcons(icons)
         Column(
             modifier = Modifier
-                .padding(start = 20.dp)
-                .weight(1f)
+                .padding(start = halfPadding)
+                .weight(1f),
+            verticalArrangement = Arrangement.spacedBy(quarterPadding)
         ) {
             Text(
                 text = title,
-                style = UiKitTypography.TextMD.Regular,
-                modifier = Modifier.padding(bottom = 9.dp),
+                style = UiKitTypography.TextMD.Medium,
+                modifier = Modifier,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
 
@@ -61,9 +65,10 @@ fun UiKitListItem(
             subTitle?.let {
                 Text(
                     text = subTitle,
-                    style = UiKitTypography.TextXS.Regular,
+                    style = UiKitTypography.TextSM.Regular,
                     overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
+                    maxLines = 1,
+                    color = UiKitColors.colors.type.medium
                 )
             }
         }
@@ -73,7 +78,7 @@ fun UiKitListItem(
         } else {
             Dp.Unspecified
         }
-        Box(modifier = Modifier.width(width),) {
+        Box(modifier = Modifier.width(width)) {
             UiKitListItemAmount(
                 info = amount,
                 amountColor = amountColor,
@@ -85,62 +90,81 @@ fun UiKitListItem(
 
 val lengthOneLetter = 9.dp
 
-const val count = 3
+val sizeIcon = 32.dp
 
 @Composable
 private fun UiKitListItemIcons(icons: List<ImageVector>) {
-    var countShowableIcons = icons.size.coerceAtMost(count)
-    if (countShowableIcons == 0) countShowableIcons = 1
-    val step = 15.dp
-    Box(
-        modifier = Modifier
-            .height(40.dp)
-            .padding(start = 30.dp * (count - countShowableIcons) / (count - 1))
-    ) {
-        (0 until countShowableIcons).forEach { index ->
-            Surface(
-                shape = RoundedCornerShape(10.dp),
-                elevation = 5.dp,
-                modifier = Modifier
-                    .padding(start = step * index)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .background(UiKitColors.colors.neutral.`500`),
-                    contentAlignment = Alignment.Center
+    when (icons.size) {
+        0 -> {
+            Spacer(modifier = Modifier.width(padding))
+        }
+        1 -> {
+            Icon(icons.first(), padding)
+
+        }
+        2 -> {
+            Box {
+                Icon(icons.first(), halfPadding)
+                Icon(icons[1], halfPadding + 20.dp)
+            }
+
+
+        }
+        3 -> {
+            Box {
+                Icon(icons.first(), padding)
+                Icon(icons[1], padding - 10.dp, 20.dp)
+                Icon(icons[2], padding + 10.dp, 20.dp)
+            }
+        }
+        else -> {
+            Box {
+                Icon(icons.first(), padding)
+                Icon(icons[1], padding - 10.dp, 20.dp)
+                Icon(icons[2], padding + 10.dp, 20.dp)
+
+                Surface(
+                    shape = RoundedCornerShape(sizeIcon),
+                    elevation = 5.dp,
+                    modifier = Modifier.padding(start = padding + 25.dp, 3.dp)
                 ) {
-                    icons.getOrNull(index)?.let {
-                        Icon(
-                            it,
-                            contentDescription = null,
-                            tint = UiKitColors.colors.primary.`1100`
+                    Box(
+                        modifier = Modifier
+                            .size(sizeIcon / 2)
+                            .background(UiKitColors.colors.feedbackGreen.`400`),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "+${icons.size - 2}",
+                            style = UiKitTypography.TextXS.Regular,
+                            color = UiKitColors.colors.type.high
                         )
                     }
                 }
             }
         }
-        if (icons.size > count) {
-            Surface(
-                shape = RoundedCornerShape(10.dp),
-                elevation = 5.dp,
-                modifier = Modifier
-                    .padding(start = step * (count + 1))
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(30.dp, 40.dp)
-                        .background(UiKitColors.colors.neutral.`500`),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "+${icons.size - count}",
-                        style = UiKitTypography.TextMD.Regular,
-                        color = UiKitColors.colors.primary.`1100`
-                    )
-                }
-            }
-        }
+
+    }
+}
+
+@Composable
+private fun Icon(icon: ImageVector, start: Dp, top: Dp = 0.dp) {
+    Surface(
+        shape = RoundedCornerShape(sizeIcon / 2),
+        elevation = 5.dp,
+        modifier = Modifier
+            .padding(start = start, top = top)
+    ) {
+        Icon(
+            icon,
+            contentDescription = null,
+            tint = UiKitColors.colors.type.high,
+            modifier = Modifier
+                .size(sizeIcon)
+                .background(UiKitColors.colors.surface.secondary)
+                .padding(halfPadding)
+        )
+
     }
 }
 

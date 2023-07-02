@@ -5,6 +5,7 @@ import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.HttpException
 import retrofit2.Response
 
 data class CommonErrorBody(
@@ -12,6 +13,12 @@ data class CommonErrorBody(
     val slug: String
 )
 
+fun Throwable.ifHttpErrorGetErrorBody(): String? {
+    if (this is HttpException) {
+        return response()?.errorBody()?.string()
+    }
+    return null
+}
 
 
 object EmptyAnswer : Call<Unit> {

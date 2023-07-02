@@ -12,13 +12,11 @@ import ru.budget.android.api.data.source.network.entity.transactions.TransferTyp
 import ru.bysoft.android.budget.common.errors.errorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.util.TAG
+import ru.bysoft.android.budget.common.util.TransactionTypeEnum
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.me.IHomeMeRepo
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.transactions.ITransactionsRepo
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.wallets.IHomeWalletsRepo
 import ru.bysoft.android.budget.features.bottom_navigation.home.navigation.IHomeNavigation
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.filters.FilterData
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.filters.FilterState
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.filters.TypeFilter
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.title.IMeState
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.title.MeErrorState
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.title.MeLoadingState
@@ -26,13 +24,15 @@ import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.ent
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.transactions.*
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.*
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.mapper.IHomePresentationMapper
+import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitRowTabState
+import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitTabInfo
 import javax.inject.Inject
 
 interface IHomeViewModel {
     val toastState: SharedFlow<String>
     val walletsState: StateFlow<IWalletsState>
     val meState: StateFlow<IMeState>
-    val filterState: StateFlow<FilterState>
+    val filterState: StateFlow<UiKitRowTabState>
     val transactionsState: StateFlow<TransactionsState>
     fun loadData(isRefresh: Boolean = false)
     fun loadTransactions(isRefresh: Boolean = false)
@@ -40,7 +40,7 @@ interface IHomeViewModel {
     fun onClickCreateWallet()
     fun onClickEditWallet(walletId: String)
     fun onPositionSelected(walletId: String)
-    fun onClickFilter(newValue: Boolean, filter: FilterData)
+    fun onClickFilter(newValue: Boolean, filter: Int)
     fun updateTransaction(id: String)
     fun deleteTransaction(id: String)
     fun onSettingsClick()
@@ -90,7 +90,7 @@ class HomeViewModel @Inject constructor(
     override val meState: MutableStateFlow<IMeState> =
         MutableStateFlow(MeLoadingState)
 
-    override val filterState: MutableStateFlow<FilterState> =
+    override val filterState: MutableStateFlow<UiKitRowTabState> =
         MutableStateFlow(getBasicFilterState())
 
     override val transactionsState: MutableStateFlow<TransactionsState> =
@@ -98,19 +98,9 @@ class HomeViewModel @Inject constructor(
 
     private var currentWalletId: String = ""
 
-    private fun getBasicFilterState() = FilterState(
-        listFilters = listOf(
-            FilterData(
-                type = TypeFilter.Out,
-                isChecked = true
-            ),
-            FilterData(
-                type = TypeFilter.Transfer
-            ),
-            FilterData(
-                type = TypeFilter.In
-            )
-        )
+    private fun getBasicFilterState() = UiKitRowTabState(
+        listFilters = TransactionTypeEnum.values()
+            .mapIndexed { index, it -> UiKitTabInfo(it.text, index == 0) }
     )
 
     override fun onClickSimpleWallet() {
@@ -137,12 +127,15 @@ class HomeViewModel @Inject constructor(
         getTransactions(false)
     }
 
-    override fun onClickFilter(newValue: Boolean, filter: FilterData) {
-        filterState.value = filterState.value.copy(
-            listFilters = filterState.value.listFilters.map {
-                if (it == filter) FilterData(it.type, isChecked = newValue, it.isEnabled) else it
-            }
-        )
+    override fun onClickFilter(newValue: Boolean, filter: Int) {
+        filterState.update {
+            it.copy(
+                listFilters = filterState.value.listFilters.mapIndexed { index, uiKitTabInfo ->
+                    if (index == filter) uiKitTabInfo.copy(isChecked = newValue) else uiKitTabInfo
+                }
+            )
+        }
+
         getTransactions(false)
     }
 
@@ -246,20 +239,22 @@ class HomeViewModel @Inject constructor(
                 transactionsState.value = TransactionSuccess(emptyList())
                 return@launch
             }
+            val filtersToBack = filters.listFilters
+                .filterNot { it.text == TransactionTypeEnum.TRANSFER.text }
+                .filter { it.isChecked }
+                .map {
+                    ",${
+                        TransactionTypeEnum.values()
+                            .first { categoryTypeEnum -> categoryTypeEnum.text == it.text }.nameForBack
+                    }"
+                }
+                .takeIf { it.isNotEmpty() }
+                ?.reduce { acc, s -> acc + s }
+                ?.drop(1)
+
             val transactions = transactionsRepo.getTransactions(
-                type = filters.listFilters
-                    .filterNot { it.type == TypeFilter.Transfer }
-                    .filter { it.isChecked }
-                    .map { ",${it.type.nameForBack}" }
-                    .takeIf { it.isNotEmpty() }
-                    ?.reduce { acc, s -> acc + s }
-                    ?.drop(1),
-                transferType = when {
-                    filters.isTransfersChecked() && !filters.isExpensesChecked() && !filters.isIncomeChecked() -> TransferTypeEnum.ONLY_TRANSFER
-                    filters.isTransfersChecked() -> TransferTypeEnum.WITH_TRANSFER
-                    !filters.isTransfersChecked() -> TransferTypeEnum.WITHOUT_TRANSFER
-                    else -> TransferTypeEnum.WITHOUT_TRANSFER
-                },
+                type = filtersToBack,
+                transferType = transferTypeEnum(filters),
                 walletId = listOf(
                     (walletsState.value as? WalletsSuccessState)?.currentWalletId ?: ""
                 )
@@ -268,6 +263,23 @@ class HomeViewModel @Inject constructor(
                 TransactionSuccess(mapper.mapToInfo(transactions, deleteLambda))
         }
     }
+
+    private fun transferTypeEnum(filters: UiKitRowTabState) =
+        when {
+            isTransfersChecked(filters) && !isExpenseChecked(filters) && !isIncomeChecked(filters) -> TransferTypeEnum.ONLY_TRANSFER
+            isTransfersChecked(filters) -> TransferTypeEnum.WITH_TRANSFER
+            !isTransfersChecked(filters) -> TransferTypeEnum.WITHOUT_TRANSFER
+            else -> TransferTypeEnum.WITHOUT_TRANSFER
+        }
+
+    private fun isTransfersChecked(filters: UiKitRowTabState) =
+        filters.listFilters.any { it.text == TransactionTypeEnum.TRANSFER.text }
+
+    private fun isExpenseChecked(filters: UiKitRowTabState) =
+        filters.listFilters.any { it.text == TransactionTypeEnum.EXPENSE.text }
+
+    private fun isIncomeChecked(filters: UiKitRowTabState) =
+        filters.listFilters.any { it.text == TransactionTypeEnum.INCOME.text }
 
     private val deleteLambda: (value: DismissValue, data: String) -> Boolean = { value, data ->
         when (value) {

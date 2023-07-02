@@ -96,7 +96,7 @@ fun CreateCategoryScreen(
                 startState = UiKitRowTabState(
                     rowTabs.map { type ->
                         UiKitTabInfo(
-                            text = stringResource(type.text),
+                            text = type.text,
                             isChecked = type == state.typeCategory
                         )
                     }

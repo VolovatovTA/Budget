@@ -3,12 +3,15 @@ package ru.bysoft.android.budget.features.bottom_navigation.statistic.presentati
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,9 +23,8 @@ import ru.bysoft.android.budget.uikit.components.listItem.UiKitListItem
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.R
-import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
-import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
-import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
+import ru.bysoft.android.budget.uikit.styles.halfPadding
+import ru.bysoft.android.budget.uikit.styles.padding
 
 @Composable
 fun StatisticSuccessScreen(
@@ -34,7 +36,6 @@ fun StatisticSuccessScreen(
             .fillMaxWidth()
     ) {
         Column {
-            ShowMoreStatisticButton(viewModel::toDetailStatistic)
 
             if (state.listInfo.isEmpty()) {
                 Text(
@@ -44,7 +45,7 @@ fun StatisticSuccessScreen(
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 30.dp, vertical = 10.dp)
+                        .padding(horizontal = padding, vertical = halfPadding)
                 )
             }
             state.listInfo.forEach { categoryInfo ->
@@ -52,26 +53,23 @@ fun StatisticSuccessScreen(
                     Modifier
                         .clickable { viewModel.updateCategory(categoryInfo.id) }
                 ) {
-                    Spacer(modifier = Modifier.height(15.dp))
+                    Spacer(modifier = Modifier.height(halfPadding))
                     UiKitListItem(
                         title = categoryInfo.name,
                         icons = listOfNotNull(categoryInfo.icon),
                         amount = categoryInfo.amount,
-                        amountColor = UiKitColors.colors.primary.`1100`,
+                        amountColor = UiKitColors.colors.type.high,
                         modifier = Modifier
-                            .padding(end = 30.dp),
+                            .padding(end = padding),
                         subTitle = categoryInfo.subtitle?.let {
                             stringResource(R.string.text_limit) + categoryInfo.subtitle + categoryInfo.subtitleAddition?.let {
-                                stringResource(
-                                    it
-                                )
+                                stringResource(it)
                             }
                         },
                     )
                     categoryInfo.progressInfo?.let { progress ->
-                        Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(halfPadding))
                         StatisticProgressIndicator(progress)
-                        Spacer(modifier = Modifier.height(15.dp))
                     }
                 }
             }
@@ -80,36 +78,27 @@ fun StatisticSuccessScreen(
 }
 
 @Composable
-fun ShowMoreStatisticButton(onClick: () -> Unit) {
-    UiKitButton(
-        info = UiKitButtonInfo(
-            text = stringResource(R.string.show_more_statistic),
-            size = ButtonSize.MEDIUM
-        ),
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 30.dp)
-    )
-}
-
-@Composable
 private fun StatisticProgressIndicator(progress: ProgressInfo) {
     when (progress) {
-        is ProgressInfoSuccess -> LinearProgressIndicator(
-            progress = if (progress.progress > 1f) 1f else progress.progress,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 30.dp),
-            color = if (progress.progress > 1f) UiKitColors.colors.feedbackRed.`1100` else UiKitColors.colors.neutral.`800`,
-            backgroundColor = Color.Transparent
-        )
+        is ProgressInfoSuccess -> {
+            val progressValue = progress.progress.coerceIn(0.01f, 1f)
+            val color = Color(progressValue, 1 - progressValue, 0f)
+            LinearProgressIndicator(
+                progress = progressValue,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = padding),
+                color = color,
+                backgroundColor = Color.Transparent,
+                strokeCap = StrokeCap.Round
+            )
+        }
         is ProgressInfoWaiting -> UiKitShimmerComponent(
             Modifier
                 .height(4.dp)
                 .fillMaxWidth()
-                .padding(horizontal = 30.dp),
-            cornerRadius = 1.dp
+                .padding(horizontal = padding),
+            cornerRadius = 4.dp
         )
         is ProgressInfoError ->
             Row(
@@ -118,12 +107,13 @@ private fun StatisticProgressIndicator(progress: ProgressInfo) {
                 modifier = Modifier
                     .height(20.dp)
                     .fillMaxWidth()
-                    .padding(horizontal = 30.dp)
+                    .padding(horizontal = padding)
             ) {
                 Spacer(
                     Modifier
                         .height(4.dp)
                         .weight(1f)
+                        .clip(RoundedCornerShape(2.dp))
                         .background(UiKitColors.colors.feedbackRed.`1100`)
                 )
                 Text(
@@ -131,13 +121,14 @@ private fun StatisticProgressIndicator(progress: ProgressInfo) {
                     style = UiKitTypography.TextXS.Regular,
                     color = UiKitColors.colors.feedbackRed.`1100`,
                     modifier = Modifier
-                        .padding(horizontal = 10.dp)
+                        .padding(horizontal = halfPadding)
                         .padding(bottom = 2.dp)
                 )
                 Spacer(
                     Modifier
                         .height(4.dp)
                         .weight(1f)
+                        .clip(RoundedCornerShape(2.dp))
                         .background(UiKitColors.colors.feedbackRed.`1100`)
                 )
             }
@@ -149,7 +140,9 @@ private fun StatisticProgressIndicator(progress: ProgressInfo) {
 @Composable
 fun Preview() {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        StatisticProgressIndicator(ProgressInfoSuccess(0.6f))
+        (0..10).forEach {
+            StatisticProgressIndicator(ProgressInfoSuccess(it.toFloat() / 10))
+        }
         StatisticProgressIndicator(ProgressInfoSuccess(1.6f))
         StatisticProgressIndicator(ProgressInfoError)
         StatisticProgressIndicator(ProgressInfoWaiting)

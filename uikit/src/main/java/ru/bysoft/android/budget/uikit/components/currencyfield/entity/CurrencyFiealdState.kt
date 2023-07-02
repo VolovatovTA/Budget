@@ -1,7 +1,7 @@
 package ru.bysoft.android.budget.uikit.components.currencyfield.entity
 
-import ru.bysoft.android.budget.common.util.BudgetCurrency
-import ru.bysoft.android.budget.common.util.getAvailableCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.getAvailableCurrency
 
 data class CurrencyFieldState(
     val selectedCurrency: BudgetCurrency?,

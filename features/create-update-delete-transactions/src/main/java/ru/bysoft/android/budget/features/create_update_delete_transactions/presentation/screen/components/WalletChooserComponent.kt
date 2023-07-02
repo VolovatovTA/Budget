@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
-import ru.bysoft.android.budget.common.util.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrency
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.padding
@@ -50,6 +50,7 @@ private fun WalletSuccessComponent(
     state: WalletSuccessState,
     onClick: (String) -> Unit = {}
 ) {
+    val countRows = if(state.list.size > 4) 2 else 1
     LazyHorizontalGrid(
         rows = GridCells.Fixed(countRows),
         modifier = modifier.height(countRows * HEIGHT_WALLET + padding * (countRows - 1)),
@@ -60,9 +61,7 @@ private fun WalletSuccessComponent(
         items(
             count = state.list.size,
             itemContent = { index ->
-                val backgroundColor =
-                    if (state.list[index].id == state.selectedWalletId) UiKitColors.card.primaryBackground
-                    else UiKitColors.card.secondaryBackground
+                val backgroundColor = UiKitColors.card(state.list[index].id == state.selectedWalletId)
                 Surface(
                     shape = RoundedCornerShape(corner),
                     color = backgroundColor,

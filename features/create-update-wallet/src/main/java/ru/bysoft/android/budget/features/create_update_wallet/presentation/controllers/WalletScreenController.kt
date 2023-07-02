@@ -5,8 +5,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import ru.bysoft.android.budget.common.data_entity.CreateWalletErrorData
 import ru.bysoft.android.budget.common.me_info.IMeInfo
-import ru.bysoft.android.budget.common.util.BudgetCurrency
-import ru.bysoft.android.budget.common.util.getCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.create_update_wallet.IWalletScreenController
 import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.ControllerWalletState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
@@ -20,7 +20,7 @@ class WalletScreenController @Inject constructor(
     private val _state = MutableStateFlow(
         ControllerWalletState(
             currencyFieldState = CurrencyFieldState(
-                selectedCurrency = getCurrency(meInfo.getCurrentMeInfo()!!.settingsData?.currency)!!
+                selectedCurrency = getCurrency(meInfo.getCurrentMeInfo()!!.settingsData?.currency)
             )
         )
     )

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.common.data_entity.CreateWalletErrorData
 import ru.bysoft.android.budget.common.errors.IErrorLogger
-import ru.bysoft.android.budget.common.util.getCurrency
+import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.create_update_wallet.data.IWalletRepository
 import ru.bysoft.android.budget.features.create_update_wallet.navigation.IWalletNavigation
 import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.ViewModelWalletState
@@ -71,7 +71,7 @@ class UpdateWalletViewModel @Inject constructor(
             walletScreenController.onIconSelected(data.iconName)
             walletScreenController.onNameChanged(data.name)
             val currency = getCurrency(data.currency)
-            walletScreenController.onCurrencySelected(currency!!)
+            walletScreenController.onCurrencySelected(currency)
         }
     }
 

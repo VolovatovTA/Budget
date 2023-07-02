@@ -5,7 +5,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import ru.bysoft.android.budget.common.util.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrency
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.TransactionsCreateNavParams
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.CategoryPresentation

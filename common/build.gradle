@@ -8,11 +8,11 @@ plugins {
 
 android {
     namespace 'ru.bysoft.android.budget.common'
-    compileSdk 33
+    compileSdk compile_sdk
 
     defaultConfig {
-        minSdk 23
-        targetSdk 33
+        minSdk min_sdk
+        targetSdk target_sdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -65,4 +65,6 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:$mockito"
     testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_kotlin"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+
+    implementation project(':currency')
 }

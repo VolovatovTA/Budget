@@ -1,11 +1,15 @@
 package ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.screen
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
+import ru.bysoft.android.budget.uikit.styles.halfPadding
+import ru.bysoft.android.budget.uikit.styles.padding
 
 @Composable
 fun StatisticWaitingScreen() {
@@ -17,9 +21,9 @@ private fun WaitingListItem() {
     Row(verticalAlignment = Alignment.CenterVertically) {
         UiKitShimmerComponent(
             Modifier
-                .padding(horizontal = 20.dp, vertical = 10.dp)
-                .padding(start = 10.dp)
-                .size(40.dp)
+                .padding(horizontal = padding, vertical = padding)
+                .clip(RoundedCornerShape(32.dp))
+                .size(32.dp)
         )
         Column(
             verticalArrangement = Arrangement.Center,
@@ -42,7 +46,7 @@ private fun WaitingListItem() {
         UiKitShimmerComponent(
             Modifier
                 .height(16.dp)
-                .padding(end = 30.dp, start = 10.dp)
+                .padding(end = padding, start = halfPadding)
                 .fillMaxWidth()
                 .weight(1f)
         )

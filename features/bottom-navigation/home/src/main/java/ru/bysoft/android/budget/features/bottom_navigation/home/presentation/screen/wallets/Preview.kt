@@ -1,14 +1,13 @@
 package ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.wallets
 
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.rememberPagerState
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletCardPresentation
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletCreateNewPresentation
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletsSuccessState
 
 @Preview
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun SuccessPreview() {
     SuccessWallets(
@@ -19,29 +18,35 @@ fun SuccessPreview() {
                     name = "Очень интересное и длинное название для кошелька",
                     walletId = "sldjnvds",
                     currency = "USD",
-                    backgroundColor = "primary.500"
+                    backgroundColor = "primary.500",
+                    lastOperationDate = "April 22, 2022",
+                    icon = "wallet"
                 ),
                 WalletCardPresentation(
                     balance = 300f,
                     name = "kjbnsv",
                     walletId = "sldjnvds",
                     currency = "USD",
-                    backgroundColor = "primary.500"
+                    backgroundColor = "primary.500",
+                    lastOperationDate = "April 22, 2022",
+                    icon = "wallet"
                 ),
+                WalletCreateNewPresentation
             ),""
         ),
-        pagerState = rememberPagerState(),
+        lazyListState = rememberLazyListState(3),
         {},
         {},
         {},
     )
+    LoadingWallets(rememberLazyListState())
+
 }
 
 @Preview
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun LoadingPreview() {
-    LoadingWallets(rememberPagerState())
+    LoadingWallets(rememberLazyListState())
 }
 
 @Preview

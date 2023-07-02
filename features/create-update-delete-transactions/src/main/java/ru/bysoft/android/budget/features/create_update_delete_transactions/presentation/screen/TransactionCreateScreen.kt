@@ -2,7 +2,6 @@ package ru.bysoft.android.budget.features.create_update_delete_transactions.pres
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
@@ -16,12 +15,13 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import ru.bysoft.android.budget.common.util.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrency
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
@@ -43,7 +43,6 @@ import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitTabInfo
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitCurrencyPopUpTextField
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextField
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextFieldWithCurrency
-import ru.bysoft.android.budget.uikit.icons.pack.ArrowLeft
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.styles.halfPadding
 import ru.bysoft.android.budget.uikit.utils.ExpandVertically
@@ -148,11 +147,7 @@ private fun TransactionCreateScreenMain(
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
     LaunchedEffect(Unit) { focusRequester.requestFocus() }
-    val rowTabs = listOf(
-        TransactionTypeEnum.EXPENSE,
-        TransactionTypeEnum.TRANSFER,
-        TransactionTypeEnum.INCOME,
-    )
+    val rowTabs = TransactionTypeEnum.values()
     val selectedType = when (transactionState) {
         is TransactionIncomeState -> TransactionTypeEnum.INCOME
         is TransactionExpenseState -> TransactionTypeEnum.EXPENSE
@@ -171,7 +166,7 @@ private fun TransactionCreateScreenMain(
         item {
             UiKitRowTab(startState = UiKitRowTabState(rowTabs.map {
                 UiKitTabInfo(
-                    text = stringResource(it.text),
+                    text = it.text,
                     isChecked = it == selectedType,
                     isEnabled = true
                 )
@@ -363,22 +358,23 @@ fun transactionTopBar(viewModel: ITransactionsViewModel) = @Composable {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .height(50.dp)
+                .padding(horizontal = padding),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(padding)
         ) {
-            Spacer(modifier = Modifier.width(15.dp))
-            Icon(
-                imageVector = ArrowLeft,
-                contentDescription = null,
-                modifier = Modifier.clickable(onClick = viewModel::back),
-                tint = UiKitColors.colors.type.high
-            )
-            Spacer(modifier = Modifier.width(15.dp))
+            IconButton(onClick = viewModel::back) {
+                Icon(
+                    painterResource(id = R.drawable.arrow_left),
+                    contentDescription = null,
+                    tint = UiKitColors.colors.type.high
+                )
+            }
+
             Text(
                 text = stringResource(R.string.create_screen_title),
-                style = UiKitTypography.DisplayXS.Regular
+                style = UiKitTypography.TextLG.Regular
             )
-            Spacer(modifier = Modifier.width(15.dp))
         }
     }
 }

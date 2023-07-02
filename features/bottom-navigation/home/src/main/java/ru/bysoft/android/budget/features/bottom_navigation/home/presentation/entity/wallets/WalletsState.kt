@@ -17,10 +17,12 @@ sealed interface IWalletPresentation
 
 data class WalletCardPresentation(
     val walletId: String,
+    val icon: String?,
     val name: String,
     val backgroundColor: String,
     val currency: String,
-    val balance: Float
+    val balance: Float,
+    val lastOperationDate: String
 ) : IWalletPresentation
 
 object WalletCreateNewPresentation : IWalletPresentation

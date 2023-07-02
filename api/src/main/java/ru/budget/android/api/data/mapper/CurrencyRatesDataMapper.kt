@@ -3,8 +3,8 @@ package ru.budget.android.api.data.mapper
 import ru.budget.android.api.data.source.network.entity.currency_rates.CurrencyRatesResponse
 import ru.bysoft.android.budget.common.data_entity.CurrencyRate
 import ru.bysoft.android.budget.common.data_entity.CurrencyRateData
-import ru.bysoft.android.budget.common.util.BudgetCurrency
-import ru.bysoft.android.budget.common.util.getAvailableCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.getAvailableCurrency
 import ru.bysoft.android.budget.common.util.onNull
 import javax.inject.Inject
 

@@ -1,36 +1,21 @@
 package ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.filters
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.filters.FilterData
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.filters.FilterState
-import ru.bysoft.android.budget.uikit.components.buttons.UiKitToggleButton
-import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
-import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
+import ru.bysoft.android.budget.uikit.components.rowtab.UiKitRowTab
+import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitRowTabState
+import ru.bysoft.android.budget.uikit.styles.padding
 
 @Composable
-fun HomeFiltersComponent(filtersState: FilterState, onCheckChanged: (Boolean, FilterData) -> Unit) {
-    Row(
-        modifier = Modifier
-            .padding(vertical = 10.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Spacer(modifier = Modifier.width(30.dp))
-        filtersState.listFilters.forEach { filterData ->
-            UiKitToggleButton(
-                UiKitButtonInfo(
-                    text = stringResource(filterData.type.text), size = ButtonSize.SMALL
-                ),
-                checked = filterData.isChecked,
-                enabled = filterData.isEnabled,
-                onCheckedChange = { onCheckChanged(it, filterData) }
-            )
-            Spacer(modifier = Modifier.width(15.dp))
-        }
-        Spacer(modifier = Modifier.width(15.dp))
-    }
+fun HomeFiltersComponent(filtersState: UiKitRowTabState, onCheckChanged: (Boolean, Int) -> Unit) {
+
+    UiKitRowTab(
+        startState = filtersState,
+        onCheckChanged = onCheckChanged,
+        isMultiplyCheckedEnabled = true,
+        modifier = Modifier.fillMaxWidth().padding(horizontal = padding)
+    )
+
 }

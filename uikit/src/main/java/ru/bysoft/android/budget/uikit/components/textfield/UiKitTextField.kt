@@ -2,6 +2,7 @@ package ru.bysoft.android.budget.uikit.components.textfield
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -23,8 +24,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.bysoft.android.budget.common.util.BudgetCurrency
-import ru.bysoft.android.budget.common.util.getAvailableCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.currencyWithFlags
+import ru.bysoft.android.budget.currency.getAvailableCurrency
 import ru.bysoft.android.budget.uikit.R
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitPopUp
@@ -91,13 +93,15 @@ fun UiKitTextFieldWithCurrency(
                     DropdownMenu(
                         expanded = expanded,
                         onDismissRequest = { expanded = false },
+                        modifier = Modifier.background(UiKitColors.colors.surface.primary)
                     ) {
                         popUpList.list.forEach {
                             DropdownMenuItem(
                                 onClick = {
                                     expanded = false
                                     onSelectPopUpItem(it)
-                                }
+                                },
+                                modifier = Modifier.background(UiKitColors.colors.surface.primary)
                             ) {
                                 popUpItem?.invoke(it)
                             }
@@ -287,6 +291,7 @@ fun PopupPreview() {
 fun UiKitCurrencyPopUpTextField(currency: BudgetCurrency) {
     Row(
         modifier = Modifier
+            .background(UiKitColors.colors.surface.primary)
             .padding(halfPadding),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -307,18 +312,5 @@ fun UiKitCurrencyPopUpTextField(currency: BudgetCurrency) {
                     .padding(end = halfPadding)
             )
         }
-    }
-}
-
-val currencyWithFlags = getAvailableCurrency().map {
-    when (it.iso4217) {
-        "RSD" -> it to R.drawable.rs_serbia
-        "EUR" -> it to R.drawable.eu_europe_big2
-        "GEL" -> it to R.drawable.ge_georgia
-        "RUB" -> it to R.drawable.ru_russia
-        "KZT" -> it to R.drawable.kz_kazakhstan
-        "AMD" -> it to R.drawable.am_armenia
-        "USD" -> it to R.drawable.us_united_states_of_america_usa
-        else -> it to R.drawable.cc_cocos_keeling_islands
     }
 }

@@ -79,5 +79,6 @@ dependencies {
     implementation project(":common")
     implementation project(":uikit")
     implementation project(":api")
+    implementation project(":currency")
     implementation project(":features:create-update-delete-transactions")
 }

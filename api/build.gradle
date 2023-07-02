@@ -53,4 +53,5 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
 
     implementation project(':common')
+    implementation project(':currency')
 }

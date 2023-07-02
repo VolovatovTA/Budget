@@ -11,9 +11,9 @@ import kotlinx.coroutines.launch
 import ru.budget.android.api.data.source.network.ICategoryApi
 import ru.budget.android.api.data.source.network.IWalletApi
 import ru.bysoft.android.budget.common.errors.IErrorLogger
-import ru.bysoft.android.budget.common.util.BudgetCurrency
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
+import ru.bysoft.android.budget.currency.BudgetCurrency
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.TransactionsCreateNavParams
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*

@@ -5,19 +5,17 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -31,35 +29,18 @@ import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfo
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.android.budget.uikit.icons.pack.*
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
+import ru.bysoft.android.budget.uikit.styles.doublePadding
+import ru.bysoft.android.budget.uikit.styles.halfPadding
+import ru.bysoft.android.budget.uikit.styles.padding
 
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun HomeTransactionsComponent(
+fun LazyListScope.homeTransactionsComponent(
     state: TransactionsState,
-    modifier: Modifier = Modifier,
-    onRefresh: (Boolean) -> Unit,
 ) {
-    val isRefreshing = (state as? TransactionLoading)?.isRefreshing ?: false
-    val pullRefreshState = rememberPullRefreshState(
-        refreshing = isRefreshing,
-        onRefresh = { onRefresh(true) }
-    )
 
-    Box(modifier = Modifier.pullRefresh(pullRefreshState)) {
-        LazyColumn(modifier) {
-            when (state) {
-                is TransactionSuccess -> transactionsSuccessComponent(state)
-                is TransactionLoading -> transactionLoadingComponent()
-                is TransactionError -> transactionErrorComponent()
-            }
-        }
-        PullRefreshIndicator(
-            isRefreshing,
-            pullRefreshState,
-            Modifier
-                .align(Alignment.TopCenter)
-                .alpha(if (isRefreshing) 1f else 0f)
-        )
+    when (state) {
+        is TransactionSuccess -> transactionsSuccessComponent(state)
+        is TransactionLoading -> transactionLoadingComponent()
+        is TransactionError -> transactionErrorComponent()
     }
 }
 
@@ -77,7 +58,8 @@ private fun LazyListScope.transactionsSuccessComponent(
             ) {
                 Text(
                     text = stringResource(R.string.empty_transactions_list),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    style = UiKitTypography.TextMD.Regular
                 )
             }
         }
@@ -85,7 +67,6 @@ private fun LazyListScope.transactionsSuccessComponent(
 
         items(
             items = state.list,
-            key = { data -> data.id }
         ) { data ->
             val dismissState = data.dismissState
 
@@ -138,7 +119,7 @@ private fun LazyListScope.transactionsSuccessComponent(
                             contentDescription = "Update Icon",
                             modifier = Modifier
                                 .scale(scale)
-                                .padding(horizontal = 30.dp)
+                                .padding(horizontal = padding)
                                 .alpha(alphaUpdateIcon)
                                 .align(Alignment.CenterStart)
                         )
@@ -148,14 +129,14 @@ private fun LazyListScope.transactionsSuccessComponent(
                             contentDescription = "Delete Icon",
                             modifier = Modifier
                                 .scale(scale)
-                                .padding(horizontal = 30.dp)
+                                .padding(horizontal = padding)
                                 .alpha(alphaDeleteIcon)
                                 .align(Alignment.CenterEnd)
                         )
                         if (data.isWaiting) {
                             CircularProgressIndicator(
                                 Modifier
-                                    .padding(horizontal = 60.dp)
+                                    .padding(horizontal = doublePadding)
                                     .align(Alignment.CenterEnd)
                             )
                         }
@@ -164,10 +145,10 @@ private fun LazyListScope.transactionsSuccessComponent(
                 dismissContent = {
                     Box(
                         modifier = Modifier
-                            .clickable {  }
+                            .clickable { }
                             .background(Color.Transparent)
-                            .padding(vertical = 10.dp)
-                            .padding(end = 30.dp)
+                            .padding(vertical = halfPadding)
+                            .padding(end = padding)
                     ) {
                         UiKitListItem(
                             title = data.name ?: "",
@@ -182,10 +163,6 @@ private fun LazyListScope.transactionsSuccessComponent(
                 }
             )
         }
-
-        item {
-            Spacer(modifier = Modifier.height(60.dp))
-        }
     }
 
 }
@@ -199,9 +176,9 @@ private fun WaitingListItem() {
     Row(verticalAlignment = Alignment.CenterVertically) {
         UiKitShimmerComponent(
             Modifier
-                .padding(horizontal = 20.dp, vertical = 10.dp)
-                .padding(start = 10.dp)
-                .size(40.dp)
+                .padding(horizontal = padding, vertical = halfPadding)
+                .size(32.dp)
+                .clip(RoundedCornerShape(16.dp))
         )
         Column(
             verticalArrangement = Arrangement.Center,
@@ -224,7 +201,7 @@ private fun WaitingListItem() {
         UiKitShimmerComponent(
             Modifier
                 .height(16.dp)
-                .padding(end = 30.dp, start = 10.dp)
+                .padding(end = padding, start = 10.dp)
                 .fillMaxWidth()
                 .weight(1f)
         )
@@ -242,7 +219,7 @@ private fun LazyListScope.transactionErrorComponent() {
                 text = stringResource(R.string.error_while_loading_some_data),
                 modifier = Modifier
                     .padding(
-                        horizontal = 30.dp, vertical = 30.dp
+                        horizontal = padding, vertical = 30.dp
                     ),
                 style = UiKitTypography.TextMD.Regular
             )

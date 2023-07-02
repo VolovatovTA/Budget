@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.uikit.R
-import ru.bysoft.android.budget.common.util.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrency
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.PopupFieldState

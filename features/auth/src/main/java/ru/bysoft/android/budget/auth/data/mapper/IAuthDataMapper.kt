@@ -32,7 +32,7 @@ fun SignInErrorResponse.mapToErrorData() =
                 SignInErrorData(errorToastText = R.string.invalid_credentials, errorPasswordText = R.string.empty_text, errorEmailText = R.string.empty_text)
             "invalid-input" -> SignInErrorData()
             "error_certificate" -> SignInErrorData(errorToastText = R.string.certificate_error)
-            else -> throw Throwable()
+            else -> SignInErrorData()
         }
     } else {
         null

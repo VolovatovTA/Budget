@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
-import ru.bysoft.android.budget.common.util.getCurrency
+import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.create_udate_category.data.ICategoryRepo
 import ru.budget.android.api.data.source.network.entity.category.CategoryRequest
 import ru.bysoft.android.budget.common.data_entity.CategoryErrorType

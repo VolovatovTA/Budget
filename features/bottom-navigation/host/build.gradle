@@ -77,4 +77,5 @@ dependencies {
     implementation project(':features:create-update-wallet')
     implementation project(':features:create-update-delete-transactions')
     implementation project(':common')
+    implementation project(':currency')
 }

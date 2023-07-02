@@ -12,7 +12,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
@@ -30,10 +32,7 @@ import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.android.budget.uikit.icons.UiKitIcons
 import ru.bysoft.android.budget.uikit.icons.pack.Plus
-import ru.bysoft.android.budget.uikit.styles.UiKitTypography
-import ru.bysoft.android.budget.uikit.styles.corner
-import ru.bysoft.android.budget.uikit.styles.halfPadding
-import ru.bysoft.android.budget.uikit.styles.quarterPadding
+import ru.bysoft.android.budget.uikit.styles.*
 
 val HEIGHT_CATEGORY = 95.dp
 val WIDTH_CATEGORY = 75.dp
@@ -120,6 +119,7 @@ private fun NotEmptySuccessCategoryComponent(
     onClick: (CategoryPresentation) -> Unit,
     onClickAdd: () -> Unit,
 ) {
+    val countRows = if (state.listCategory.size > 4) 2 else 1
     val list = state.listCategory.plus(CategoryAdd)
     LazyHorizontalGrid(
         rows = GridCells.Fixed(countRows),
@@ -203,7 +203,7 @@ private fun CategoryAddItem(
     val borderColor = UiKitColors.colors.type.high
     Surface(
         shape = RoundedCornerShape(corner),
-        color = UiKitColors.card.secondaryBackground,
+        color = UiKitColors.card(isSelected = false),
         modifier = Modifier
             .size(WIDTH_CATEGORY, HEIGHT_CATEGORY),
         elevation = 3.dp
@@ -258,14 +258,11 @@ private fun CategoryItem(
     category: CategoryPresentation,
     onClick: (CategoryPresentation) -> Unit
 ) {
-    val backgroundColor =
-        if (category.isChosen) UiKitColors.card.primaryBackground
-        else UiKitColors.card.secondaryBackground
     Surface(
         shape = RoundedCornerShape(corner),
-        color = backgroundColor,
+        color = UiKitColors.card(category.isChosen),
         modifier = Modifier
-            .size(WIDTH_CATEGORY, HEIGHT_CATEGORY),
+            .height(HEIGHT_CATEGORY),
         elevation = 3.dp
     ) {
         Column(
@@ -293,9 +290,9 @@ private fun CategoryItem(
                 text = category.name,
                 style = UiKitTypography.TextXS.Regular,
                 textAlign = TextAlign.Center,
-                maxLines = 1,
+                maxLines = 2,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .widthIn(max = WIDTH_CATEGORY)
                     .padding(horizontal = halfPadding)
             )
             Box(contentAlignment = Alignment.Center) {
@@ -305,8 +302,11 @@ private fun CategoryItem(
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = halfPadding)
+                        .padding(horizontal = halfPadding, vertical = halfPadding)
+                        .clip(RoundedCornerShape(doubleCorner))
+                        .background(UiKitColors.colors.primary.`600`)
+                        .padding(horizontal = halfPadding, vertical = quarterPadding),
+                    color = Color.White
                 )
             }
         }

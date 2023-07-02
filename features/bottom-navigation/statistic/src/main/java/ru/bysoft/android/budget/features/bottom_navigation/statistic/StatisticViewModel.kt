@@ -10,8 +10,7 @@ import kotlinx.coroutines.flow.update
 import ru.bysoft.android.budget.common.data_entity.ExpenseCategory
 import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
-import ru.bysoft.android.budget.common.me_info.MeInfo
-import ru.bysoft.android.budget.common.util.getBeautifulAmount
+import ru.bysoft.android.budget.currency.getBeautifulAmount
 import ru.bysoft.android.budget.common.util.getCalculatedDate
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.data.IStatisticRepo
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.navigation.IStatisticNavigation

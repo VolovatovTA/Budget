@@ -14,85 +14,9 @@ fun Context.getStringFromAsset(filePath: String) =
 fun <T> T.toJson() = Gson().toJson(this)
 inline fun <reified T> String.restore() = Gson().fromJson(this, T::class.java)
 
-fun getBeautifulAmount(amount: Float, currency: BudgetCurrency): String {
-    val countNumbersAfterDot = Currency.getInstance(currency.iso4217).defaultFractionDigits
-    if (countNumbersAfterDot == 0) return "${amount.toInt()} ${currency.displayName}"
-    val roundedAmount = String.format("%.${countNumbersAfterDot}f", amount).replace(',', '.')
-    val accurateAmount = roundedAmount
-        .dropLastWhile { it != '.' }
-        .dropLast(1)
-        .reversed()
-        .chunked(3)
-        .takeIf { it.isNotEmpty() }
-        ?.reduce { acc, s -> "$acc $s" }
-        ?.reversed() ?: "0"
-    val decimals = roundedAmount.dropWhile { it != '.' }.drop(1)
-    return "$accurateAmount.$decimals ${currency.displayName}"
-
-}
-
 const val pointJson = ".json"
 
-private val listCurrency = listOf(
-//    BudgetCurrency("؋", "AFN"),
-//    BudgetCurrency("฿", "THB"),
-//    BudgetCurrency("₩", "KPW"),
-//    BudgetCurrency("₴", "UAH"),
-//    BudgetCurrency("₲", "PYG"),
-//    BudgetCurrency("ƒ", "ANG"),
-//    BudgetCurrency("₫", "VND"),
-    BudgetCurrency("€", "EUR"),
-//    BudgetCurrency("¥", "JPY"),
-//    BudgetCurrency("₭", "LAK"),
-//    BudgetCurrency("₡", "CRC"),
-    BudgetCurrency("₾", "GEL"),
-//    BudgetCurrency("₺", "TRY"),
-//    BudgetCurrency("₼", "AZN"),
-//    BudgetCurrency("₦", "NGN"),
-//    BudgetCurrency("﷼", "IRR"),
-//    BudgetCurrency("៛", "KHR"),
-    BudgetCurrency("₽", "RUB"),
-//    BudgetCurrency("лв", "BGN"),
-    BudgetCurrency("дин", "RSD"),
-//    BudgetCurrency("кр", "SEK"),
-//    BudgetCurrency("₽", "RUR"),
-//    BudgetCurrency("₹", "INR"),
-//    BudgetCurrency("₵", "GHS"),
-//    BudgetCurrency("৳", "BDT"),
-    BudgetCurrency("₸", "KZT"),
-//    BudgetCurrency("₮", "MNT"),
-//    BudgetCurrency("ƒ", "AWG"),
-//    BudgetCurrency("ƒ", "HUF"),
-//    BudgetCurrency("₤", "GBP"),
-//    BudgetCurrency("₤", "GIP"),
-//    BudgetCurrency("₤", "EGP"),
-//    BudgetCurrency("₤", "LBP"),
-//    BudgetCurrency("₤", "SHP"),
-//    BudgetCurrency("₤", "SYP"),
-//    BudgetCurrency("₤", "SDG"),
-//    BudgetCurrency("₤", "FKP"),
-//    BudgetCurrency("₪", "ILS"),
-//    BudgetCurrency("¥", "CNY"),
-    BudgetCurrency("֏", "AMD"),
-    BudgetCurrency("$", "USD"),
-//    BudgetCurrency("₣", "CHF"),
-)
 
-fun getCurrency(iso4217: String?): BudgetCurrency =
-    listCurrency.firstOrNull { it.iso4217 == iso4217 }?: BudgetCurrency.Unkcnown
-
-fun getCurrencyByDisplayName(displayName: String?): BudgetCurrency? =
-    listCurrency.firstOrNull { it.displayName == displayName }
-
-fun getAvailableCurrency() = listCurrency
-data class BudgetCurrency(
-    val displayName: String,
-    val iso4217: String
-) {
-    companion object {
-        val Unkcnown = BudgetCurrency("", "")
-    }
-}
 
 inline fun <R> R?.onNull(block: () -> R): R = this ?: block()
 
@@ -108,8 +32,8 @@ enum class PeriodState(val textToShow: Int, val textToBack: String) {
     }
 }
 
-enum class TransactionTypeEnum(val text: Int) {
-    EXPENSE(R.string.btn_expense_text), INCOME(R.string.btn_income_text), TRANSFER(R.string.btn_transfer_text);
+enum class TransactionTypeEnum(val text: Int, val nameForBack: String) {
+    EXPENSE(R.string.btn_expense_text, "EXPENSE"), INCOME(R.string.btn_income_text, "INCOME"), TRANSFER(R.string.btn_transfer_text, "TRANSFER");
 }
 
 enum class CategoryTypeEnum(val text: Int, val pathToBack: String) {

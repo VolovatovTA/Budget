@@ -23,7 +23,7 @@ import coil.compose.SubcomposeAsyncImage
 import ru.bysoft.android.budget.common.me_info.entity.DayOfWeek
 import ru.bysoft.android.budget.common.me_info.entity.MeData
 import ru.bysoft.android.budget.common.me_info.entity.SettingsData
-import ru.bysoft.android.budget.common.util.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrency
 import ru.bysoft.android.budget.features.settings.presentation.SettingsViewModel
 import ru.bysoft.android.budget.features.settings.presentation.entity.SettingsState
 import ru.bysoft.android.budget.uikit.colors.UiKitColors

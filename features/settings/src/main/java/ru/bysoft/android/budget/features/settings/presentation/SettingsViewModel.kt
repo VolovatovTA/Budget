@@ -13,8 +13,8 @@ import ru.bysoft.android.budget.common.errors.errorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.me_info.entity.DayOfWeek
 import ru.bysoft.android.budget.common.token.ITokenStorage
-import ru.bysoft.android.budget.common.util.BudgetCurrency
-import ru.bysoft.android.budget.common.util.getCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.settings.data.SettingsRepository
 import ru.bysoft.android.budget.features.settings.presentation.entity.SettingsState
 import ru.bysoft.android.budget.features.settings.presentation.navigation.ISettingsNavigation
