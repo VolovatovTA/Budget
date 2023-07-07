@@ -3,7 +3,7 @@ package ru.budget.android.api.data.mapper
 import ru.budget.android.api.data.source.network.entity.currency_rates.CurrencyRatesResponse
 import ru.bysoft.android.budget.common.data_entity.CurrencyRate
 import ru.bysoft.android.budget.common.data_entity.CurrencyRateData
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getAvailableCurrency
 import ru.bysoft.android.budget.common.util.onNull
 import javax.inject.Inject
@@ -17,16 +17,16 @@ class CurrencyRatesDataMapper @Inject constructor() {
                     val availableCurrency = getAvailableCurrency()
                     val budgetCurrency =
                         availableCurrency.firstOrNull { it.iso4217 == ratesResponse.baseCode }
-                            ?: BudgetCurrency.Unkcnown
+                            ?: BudgetCurrencyEnum.UNKNOWN
                     budgetCurrency to ratesResponse.conversionRates.map { (code, rate) ->
                         val currency = availableCurrency.firstOrNull { it.iso4217 == code }
-                            ?: BudgetCurrency.Unkcnown
+                            ?: BudgetCurrencyEnum.UNKNOWN
                         CurrencyRate(currency, rate.onNull { Double.NaN })
                     }
-                        .filter { it.currency != BudgetCurrency.Unkcnown }
+                        .filter { it.currency != BudgetCurrencyEnum.UNKNOWN }
 
                 }
-                .filter { it.first != BudgetCurrency.Unkcnown }
+                .filter { it.first != BudgetCurrencyEnum.UNKNOWN }
                 .associate { it.first to it.second }
         )
     }

@@ -1,11 +1,11 @@
 package ru.bysoft.android.budget.uikit.components.currencyfield.entity
 
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getAvailableCurrency
 
 data class CurrencyFieldState(
-    val selectedCurrency: BudgetCurrency?,
-    val list: List<BudgetCurrency> = getAvailableCurrency(),
+    val selectedCurrency: BudgetCurrencyEnum?,
+    val list: List<BudgetCurrencyEnum> = getAvailableCurrency(),
     val errorText: Int? = null
 )
 

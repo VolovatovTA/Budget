@@ -1,6 +1,6 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity
 
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 
@@ -198,14 +198,14 @@ data class WalletInfo(
     val name: String,
     val balance: String,
     val id: String,
-    val currency: BudgetCurrency
+    val currency: BudgetCurrencyEnum
 )
 
 data class ExchangeFieldState(
     val enteredAmount: TextFieldState = TextFieldState(),
     val shownAmount: Double = 1.0,
-    val baseCurrency: BudgetCurrency,
-    val targetCurrency: BudgetCurrency,
+    val baseCurrency: BudgetCurrencyEnum,
+    val targetCurrency: BudgetCurrencyEnum,
     val isRevert: Boolean = false,
     val isFullAmount: Boolean = false
 )

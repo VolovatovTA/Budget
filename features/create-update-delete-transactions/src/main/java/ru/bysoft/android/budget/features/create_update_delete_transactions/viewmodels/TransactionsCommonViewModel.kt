@@ -13,7 +13,7 @@ import ru.budget.android.api.data.source.network.IWalletApi
 import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.TransactionsCreateNavParams
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
@@ -25,14 +25,14 @@ interface ITransactionsViewModel {
     val state: StateFlow<ITransactionState>
     fun setWalletId(fromId: String?, toId: String?)
     fun setAmount(amount: String)
-    fun setCurrency(currency: BudgetCurrency)
+    fun setCurrency(currency: BudgetCurrencyEnum)
     fun setCategoriesIds(categoryPresentation: CategoryPresentation)
     fun setComment(comment: String)
     fun setTypeTransactions(type: TransactionTypeEnum)
     fun onEmptyCategoryClick()
-    fun setFullAmount(currency: BudgetCurrency, newValue: Boolean)
-    fun setRevert(currency: BudgetCurrency, newValueIsRevert: Boolean)
-    fun setExchangeAmount(currency: BudgetCurrency, amount: String)
+    fun setFullAmount(currency: BudgetCurrencyEnum, newValue: Boolean)
+    fun setRevert(currency: BudgetCurrencyEnum, newValueIsRevert: Boolean)
+    fun setExchangeAmount(currency: BudgetCurrencyEnum, amount: String)
     fun back()
 }
 
@@ -162,7 +162,7 @@ abstract class TransactionsCommonViewModel(
         loadWallets()
     }
 
-    override fun setCurrency(currency: BudgetCurrency) {
+    override fun setCurrency(currency: BudgetCurrencyEnum) {
         state.update {
             it.copyWithCurrency(
                 currencyFieldState = state.value.currencyFieldState.copy(
@@ -241,7 +241,7 @@ abstract class TransactionsCommonViewModel(
         }
     }
 
-    override fun setExchangeAmount(currency: BudgetCurrency, amount: String) {
+    override fun setExchangeAmount(currency: BudgetCurrencyEnum, amount: String) {
         state.update { transactionState ->
             transactionState.copyWithExchanges(
                 exchangeFieldState = transactionState.exchangeFieldState.map { ex ->
@@ -255,7 +255,7 @@ abstract class TransactionsCommonViewModel(
         }
     }
 
-    override fun setFullAmount(currency: BudgetCurrency, newValue: Boolean) {
+    override fun setFullAmount(currency: BudgetCurrencyEnum, newValue: Boolean) {
         state.update { transactionState ->
             transactionState.copyWithExchanges(
                 exchangeFieldState = transactionState.exchangeFieldState.map { ex ->
@@ -282,7 +282,7 @@ abstract class TransactionsCommonViewModel(
         }
     }
 
-    override fun setRevert(currency: BudgetCurrency, newValueIsRevert: Boolean) {
+    override fun setRevert(currency: BudgetCurrencyEnum, newValueIsRevert: Boolean) {
         state.update { transactionState ->
             transactionState.copyWithExchanges(
                 exchangeFieldState = transactionState.exchangeFieldState.map { ex ->

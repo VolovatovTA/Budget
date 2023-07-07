@@ -4,7 +4,7 @@ import androidx.compose.material.DismissState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.vector.ImageVector
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 
 sealed interface TransactionsState
 
@@ -24,7 +24,7 @@ data class TransactionInfo @OptIn(ExperimentalMaterialApi::class) constructor(
     val icons: List<ImageVector>,
     val date: String?,
     val amount: String,
-    val currency: BudgetCurrency,
+    val currency: BudgetCurrencyEnum,
     val color: String,
     val id: String,
     val isWaiting: Boolean,

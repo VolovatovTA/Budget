@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.uikit.R
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.PopupFieldState
@@ -31,7 +31,7 @@ import java.util.*
 @Composable
 fun UiKitCurrencyPopUp(
     info: CurrencyFieldState,
-    onNameChanged: (BudgetCurrency) -> Unit,
+    onNameChanged: (BudgetCurrencyEnum) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val showMenu = remember { mutableStateOf(false) }

@@ -6,7 +6,7 @@ import ru.budget.android.api.data.source.network.ICurrencyRatesApi
 import ru.bysoft.android.budget.common.data_entity.CurrencyRate
 import ru.bysoft.android.budget.common.data_entity.CurrencyRateData
 import ru.bysoft.android.budget.common.errors.IErrorLogger
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getAvailableCurrency
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.currency_rates.data.storage.ICurrencyRatesLocalStorage
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 interface ICurrencyRatesRepo {
     suspend fun getCurrencyRates(): CurrencyRateData
-    suspend fun getCurrencyRate(base: BudgetCurrency, target: BudgetCurrency): CurrencyRate
+    suspend fun getCurrencyRate(base: BudgetCurrencyEnum, target: BudgetCurrencyEnum): CurrencyRate
 }
 
 class CurrencyRatesRepo @Inject constructor(
@@ -26,7 +26,8 @@ class CurrencyRatesRepo @Inject constructor(
 ) : ICurrencyRatesRepo {
 
     private val scope = CoroutineScope(Dispatchers.IO)
-    private val handler = CoroutineExceptionHandler { _, throwable -> errorLogger.logError(throwable) }
+    private val handler =
+        CoroutineExceptionHandler { _, throwable -> errorLogger.logError(throwable) }
 
     override suspend fun getCurrencyRates(): CurrencyRateData {
 
@@ -49,17 +50,27 @@ class CurrencyRatesRepo @Inject constructor(
 
     }
 
-    private suspend fun getCurrencyRatesFromApiAndSaveItInStorage(availableCurrency: List<BudgetCurrency>): CurrencyRateData {
+    private suspend fun getCurrencyRatesFromApiAndSaveItInStorage(availableCurrency: List<BudgetCurrencyEnum>): CurrencyRateData {
         val currencyRates = availableCurrency.map { it.iso4217 }.map {
             scope.async(handler) { api.getCurrencyRates(it) }
         }.awaitAll()
         val data = mapper.getCurrencyRates(currencyRates)
         data.map.forEach { (budgetCurrency, currencyRates) ->
             scope.launch(handler) {
-                if (currencyRatesStorage.getCurrencyRateByIso(budgetCurrency.iso4217) != null){
-                    currencyRatesStorage.updateCurrencyRate(getCurrencyRateEntities(budgetCurrency, currencyRates))
+                if (currencyRatesStorage.getCurrencyRateByIso(budgetCurrency.iso4217) != null) {
+                    currencyRatesStorage.updateCurrencyRate(
+                        getCurrencyRateEntities(
+                            budgetCurrency,
+                            currencyRates
+                        )
+                    )
                 } else {
-                    currencyRatesStorage.insertCurrencyRate(getCurrencyRateEntities(budgetCurrency, currencyRates))
+                    currencyRatesStorage.insertCurrencyRate(
+                        getCurrencyRateEntities(
+                            budgetCurrency,
+                            currencyRates
+                        )
+                    )
                 }
             }
         }
@@ -73,7 +84,7 @@ class CurrencyRatesRepo @Inject constructor(
         return CurrencyRateData(data)
     }
 
-    private fun mapToListCurrencyRatesData(list: List<CurrencyRatesEntity>): Map<BudgetCurrency, List<CurrencyRate>> {
+    private fun mapToListCurrencyRatesData(list: List<CurrencyRatesEntity>): Map<BudgetCurrencyEnum, List<CurrencyRate>> {
         val result = list
             .map { it.iso4217 to it.list.split('|')[0] }
             .associate {
@@ -84,6 +95,7 @@ class CurrencyRatesRepo @Inject constructor(
 
 
     private fun String.mapToCurrencyRateData(): List<CurrencyRate> = this
+        .split('|')[0]
         .split(";")
         .map { curWithDouble ->
             val data = curWithDouble.split(",")
@@ -91,8 +103,8 @@ class CurrencyRatesRepo @Inject constructor(
         }
 
     override suspend fun getCurrencyRate(
-        base: BudgetCurrency,
-        target: BudgetCurrency
+        base: BudgetCurrencyEnum,
+        target: BudgetCurrencyEnum
     ): CurrencyRate {
         withContext(scope.coroutineContext) {
             currencyRatesStorage.getCurrencyRateByIso(base.iso4217)
@@ -108,7 +120,10 @@ class CurrencyRatesRepo @Inject constructor(
     }
 }
 
-fun getCurrencyRateEntities(base: BudgetCurrency, rates: List<CurrencyRate>): CurrencyRatesEntity {
+fun getCurrencyRateEntities(
+    base: BudgetCurrencyEnum,
+    rates: List<CurrencyRate>
+): CurrencyRatesEntity {
     return CurrencyRatesEntity(
         iso4217 = base.iso4217,
         list = rates.joinToString(separator = ";") { "${it.currency.iso4217},${it.rate}" }

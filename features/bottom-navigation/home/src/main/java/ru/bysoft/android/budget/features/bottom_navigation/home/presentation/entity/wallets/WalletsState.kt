@@ -1,5 +1,7 @@
 package ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets
 
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
+
 interface IWalletsState
 
 data class WalletsSuccessState(
@@ -20,7 +22,7 @@ data class WalletCardPresentation(
     val icon: String?,
     val name: String,
     val backgroundColor: String,
-    val currency: String,
+    val currency: BudgetCurrencyEnum,
     val balance: Float,
     val lastOperationDate: String
 ) : IWalletPresentation

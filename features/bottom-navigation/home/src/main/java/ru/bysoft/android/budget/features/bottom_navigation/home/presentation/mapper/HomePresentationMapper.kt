@@ -6,6 +6,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import ru.bysoft.android.budget.common.data_entity.*
 import ru.bysoft.android.budget.common.util.dateFormatOutput
 import ru.bysoft.android.budget.currency.getBeautifulAmount
+import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionInfo
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.IWalletPresentation
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletCardPresentation
@@ -35,7 +36,7 @@ class HomePresentationMapper @Inject constructor(
     private fun mapToState(data: WalletData) = WalletCardPresentation(
         name = data.name,
         balance = data.balance,
-        currency = data.currency,
+        currency = getCurrency(data.currency),
         backgroundColor = "primary.500",
         walletId = data.id,
         icon = data.iconName,

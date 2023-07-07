@@ -24,7 +24,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.currencyWithFlags
 import ru.bysoft.android.budget.currency.getAvailableCurrency
 import ru.bysoft.android.budget.uikit.R
@@ -52,8 +52,8 @@ fun UiKitTextFieldWithCurrency(
     onNotFocused: (lastText: String) -> Unit = {},
     keyboardActions: KeyboardActions,
     popUpList: CurrencyFieldState? = null,
-    popUpItem: (@Composable (BudgetCurrency?) -> Unit)? = null,
-    onSelectPopUpItem: (BudgetCurrency) -> Unit = {},
+    popUpItem: (@Composable (BudgetCurrencyEnum?) -> Unit)? = null,
+    onSelectPopUpItem: (BudgetCurrencyEnum) -> Unit = {},
 ) {
     val source = remember { MutableInteractionSource() }
 
@@ -288,7 +288,7 @@ fun PopupPreview() {
 }
 
 @Composable
-fun UiKitCurrencyPopUpTextField(currency: BudgetCurrency) {
+fun UiKitCurrencyPopUpTextField(currency: BudgetCurrencyEnum) {
     Row(
         modifier = Modifier
             .background(UiKitColors.colors.surface.primary)

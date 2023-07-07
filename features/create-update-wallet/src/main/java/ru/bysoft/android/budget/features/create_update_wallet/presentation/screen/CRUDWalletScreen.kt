@@ -41,7 +41,7 @@ import ru.bysoft.android.budget.uikit.components.textfield.UiKitCurrencyPopUpTex
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextFieldWithCurrency
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.styles.padding
-import ru.bysoft.android.budget.uikit.templates.UiKitTopBar
+import ru.bysoft.android.budget.uikit.templates.topBar
 
 typealias UiKitStrings = ru.bysoft.android.budget.uikit.R.string
 
@@ -66,15 +66,13 @@ fun CRUDWalletScreen(
     Scaffold(
         modifier = Modifier.safeDrawingPadding(),
         backgroundColor = UiKitColors.colors.surface.primary,
-        topBar = {
-            UiKitTopBar(
-                id = if (viewModel is CreateWalletViewModel) R.string.wallet_title_create else R.string.wallet_title_update,
-                onClickBack = viewModel::onBackClick,
-                onClickDelete = walletId?.let {
-                    { (viewModel as? IUpdateWalletViewModel)?.onWalletDeleteClick(it) }
-                }
-            )
-        }
+        topBar = topBar(
+            title = if (viewModel is CreateWalletViewModel) R.string.wallet_title_create else R.string.wallet_title_update,
+            onBackClick = viewModel::onBackClick,
+            onClickDelete = walletId?.let {
+                { (viewModel as? IUpdateWalletViewModel)?.onWalletDeleteClick(it) }
+            }
+        )
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

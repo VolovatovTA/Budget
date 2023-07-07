@@ -28,7 +28,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.common.util.onNull
 import ru.bysoft.android.budget.currency.getBeautifulAmount
-import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.bottom_navigation.home.R
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.*
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
@@ -270,7 +269,7 @@ fun WalletSimpleCard(
                     Text(
                         text = getBeautifulAmount(
                             info.balance,
-                            getCurrency(info.currency)
+                            info.currency
                         ),
                         style = UiKitTypography.TextLG.SemiBold,
                         maxLines = 1,

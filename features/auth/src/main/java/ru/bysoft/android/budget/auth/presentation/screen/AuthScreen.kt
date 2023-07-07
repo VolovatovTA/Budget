@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -37,8 +38,6 @@ import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.auth.AuthViewModel
@@ -157,7 +156,8 @@ private fun AuthSuccessScreen(
     if (state.isLoading) {
         Dialog(onDismissRequest = { }) {
             CircularProgressIndicator(
-                color = UiKitColors.colors.neutral.`1100`,
+                color = UiKitColors.colors.primary.`300`,
+                strokeCap = StrokeCap.Round,
             )
         }
     }
@@ -276,7 +276,7 @@ private fun AuthSuccessScreen(
                 )
                 Text(
                     text = stringResource(id = R.string.agree_with_terms_and_conditions),
-                    style = UiKitTypography.TextMD.Regular,
+                    style = UiKitTypography.TextXS.Regular,
                     modifier = Modifier
                         .padding(start = halfPadding)
                         .clickable { viewModel.onCheckBoxClicked(state.isCheckBoxChecked.not()) }
@@ -312,6 +312,7 @@ private fun AuthSuccessScreen(
                 isButtonEnabled = true,
                 onClick = {
                     scope.launch {
+                        viewModel.setLoading(true)
                         val signInIntentSender = googleAuthUiClient!!.signIn()
                         launcher!!.launch(
                             IntentSenderRequest.Builder(
@@ -358,16 +359,15 @@ private fun AuthSuccessScreen(
 fun AuthPreview() {
     val viewModel = remember {
         object : IAuthViewModel {
-            val _state = MutableStateFlow(
-                AuthState(
-                    isLoading = false,
-                    toastText = null,
-                    type = AuthActionType.SIGN_IN
+            override fun setLoading(b: Boolean) = Unit
+            override val state: MutableStateFlow<AuthState>
+                get() = MutableStateFlow(
+                    AuthState(
+                        isLoading = true,
+                        toastText = null,
+                        type = AuthActionType.SIGN_IN
+                    )
                 )
-            )
-
-            override val state: StateFlow<AuthState>
-                get() = _state.asStateFlow()
 
             override fun setNewPassword(password: String) = Unit
 
@@ -382,7 +382,7 @@ fun AuthPreview() {
             override fun onButtonClick(action: AuthActionType) = Unit
 
             override fun switchAuthType(newType: AuthActionType) {
-                _state.update { it.copy(type = newType) }
+                state.update { it.copy(type = newType) }
             }
 
             override fun onGoogleSignInResult(account: SignInResult) = Unit

@@ -1,6 +1,6 @@
 package ru.bysoft.android.budget.common.data_entity
 
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import java.util.Date
 
 data class ListTransactionsData(
@@ -13,7 +13,7 @@ sealed class TransactionData(
     open val date: Date?,
     open val categories: List<CategoryData>,
     open val amount: Float,
-    open val currency: BudgetCurrency,
+    open val currency: BudgetCurrencyEnum,
 )
 
 data class TransactionExpense(
@@ -22,7 +22,7 @@ data class TransactionExpense(
     override val date: Date?,
     override val categories: List<CategoryData>,
     override val amount: Float,
-    override val currency: BudgetCurrency,
+    override val currency: BudgetCurrencyEnum,
 ) : TransactionData(id, comment, date, categories, amount, currency)
 
 data class TransactionIncome(
@@ -31,7 +31,7 @@ data class TransactionIncome(
     override val date: Date?,
     override val categories: List<CategoryData>,
     override val amount: Float,
-    override val currency: BudgetCurrency,
+    override val currency: BudgetCurrencyEnum,
 ) : TransactionData(id, comment, date, categories, amount, currency)
 
 data class TransactionTransfer(
@@ -39,5 +39,5 @@ data class TransactionTransfer(
     override val comment: String?,
     override val date: Date?,
     override val amount: Float,
-    override val currency: BudgetCurrency,
+    override val currency: BudgetCurrencyEnum,
 ) : TransactionData(id, comment, date, emptyList(), amount, currency)

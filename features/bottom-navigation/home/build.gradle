@@ -76,6 +76,7 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:2.3.0")
 
+    implementation project(":features:currency-rates")
     implementation project(":common")
     implementation project(":uikit")
     implementation project(":api")

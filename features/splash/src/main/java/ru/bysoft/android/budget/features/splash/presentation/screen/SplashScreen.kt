@@ -7,10 +7,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -19,7 +25,6 @@ import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.features.splash.ISplashViewModel
 import ru.bysoft.android.budget.features.splash.SplashViewModel
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
-import ru.bysoft.android.budget.uikit.icons.another.ItBearsLogo
 
 @Composable
 fun SplashScreen() {
@@ -59,11 +64,11 @@ private fun SplashContent(
         )
 
         Image(
-            imageVector = ItBearsLogo,
+            painter = painterResource(id = ru.bysoft.android.budget.uikit.R.drawable.logo),
             contentDescription = null,
             modifier = Modifier
-                .height(100.dp * scale)
-                .rotate((scale - 0.7f) / 0.3f * 360f)
+                .height(200.dp * scale)
+//                .rotate((scale - 0.7f) / 0.3f * 360f)
                 .fillMaxSize()
         )
     }

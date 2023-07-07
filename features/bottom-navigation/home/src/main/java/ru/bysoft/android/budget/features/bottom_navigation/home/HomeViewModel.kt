@@ -13,6 +13,8 @@ import ru.bysoft.android.budget.common.errors.errorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.util.TAG
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
+import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.me.IHomeMeRepo
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.transactions.ITransactionsRepo
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.wallets.IHomeWalletsRepo
@@ -24,6 +26,7 @@ import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.ent
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.transactions.*
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.*
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.mapper.IHomePresentationMapper
+import ru.bysoft.android.budget.features.currency_rates.data.ICurrencyRatesRepo
 import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitRowTabState
 import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitTabInfo
 import javax.inject.Inject
@@ -44,6 +47,7 @@ interface IHomeViewModel {
     fun updateTransaction(id: String)
     fun deleteTransaction(id: String)
     fun onSettingsClick()
+    fun onMainCurrencyChanged(newCurrency: BudgetCurrencyEnum)
 }
 
 @HiltViewModel
@@ -53,7 +57,8 @@ class HomeViewModel @Inject constructor(
     private val transactionsRepo: ITransactionsRepo,
     private val navigate: IHomeNavigation,
     private val meInfo: IMeInfo,
-    private val mapper: IHomePresentationMapper
+    private val mapper: IHomePresentationMapper,
+    private val currencyRatesRepo: ICurrencyRatesRepo
 ) : ViewModel(), IHomeViewModel {
 
     override fun loadData(isRefresh: Boolean) {
@@ -202,6 +207,27 @@ class HomeViewModel @Inject constructor(
         navigate.toSettings()
     }
 
+    override fun onMainCurrencyChanged(newCurrency: BudgetCurrencyEnum) {
+        viewModelScope.launch(homeMeExceptionHandler) {
+            val balance =
+                (walletsState.value as? WalletsSuccessState)?.list
+                    ?.filterIsInstance<WalletCardPresentation>()
+                    ?.sumOf {
+                        it.balance * currencyRatesRepo.getCurrencyRate(
+                            it.currency,
+                            newCurrency
+                        ).rate
+                    }
+                    ?.toFloat() ?: 0.0f
+            meState.update {
+                (it as? MeSuccessState)?.copy(
+                    currency = newCurrency,
+                    balance = balance
+                ) ?: it
+            }
+        }
+    }
+
     private fun getWallets(isRefresh: Boolean) {
         viewModelScope.launch(homeWalletsExceptionHandler) {
             walletsState.value = WalletsLoadingState(isRefresh)
@@ -212,6 +238,7 @@ class HomeViewModel @Inject constructor(
             )
             currentWalletId = loadedData.firstOrNull()?.id ?: ""
             if (walletsState.value is WalletsSuccessState) {
+                (meState.value as? MeSuccessState)?.currency?.let { onMainCurrencyChanged(it) }
                 getTransactions(isRefresh)
             } else {
                 transactionsState.value = TransactionError
@@ -226,6 +253,7 @@ class HomeViewModel @Inject constructor(
             val meInfoData = meRepo.getMeInfo()
             meInfo.setCurrentMeInfo(meInfoData)
             meState.value = MeSuccessState(meInfoData)
+            onMainCurrencyChanged(getCurrency(meInfoData.settingsData?.currency))
         }
     }
 

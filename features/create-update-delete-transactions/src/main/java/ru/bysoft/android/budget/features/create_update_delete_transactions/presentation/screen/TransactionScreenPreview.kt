@@ -5,7 +5,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.TransactionsCreateNavParams
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.CategoryPresentation
@@ -34,7 +34,7 @@ fun TransactionScreenPreview() {
 
             override fun setAmount(amount: String) = Unit
 
-            override fun setCurrency(currency: BudgetCurrency) = Unit
+            override fun setCurrency(currency: BudgetCurrencyEnum) = Unit
 
             override fun setCategoriesIds(categoryPresentation: CategoryPresentation) = Unit
 
@@ -44,11 +44,11 @@ fun TransactionScreenPreview() {
 
             override fun onEmptyCategoryClick() = Unit
 
-            override fun setFullAmount(currency: BudgetCurrency, newValue: Boolean) = Unit
+            override fun setFullAmount(currency: BudgetCurrencyEnum, newValue: Boolean) = Unit
 
-            override fun setRevert(currency: BudgetCurrency, newValueIsRevert: Boolean) = Unit
+            override fun setRevert(currency: BudgetCurrencyEnum, newValueIsRevert: Boolean) = Unit
 
-            override fun setExchangeAmount(currency: BudgetCurrency, amount: String) = Unit
+            override fun setExchangeAmount(currency: BudgetCurrencyEnum, amount: String) = Unit
 
             override fun back() = Unit
 

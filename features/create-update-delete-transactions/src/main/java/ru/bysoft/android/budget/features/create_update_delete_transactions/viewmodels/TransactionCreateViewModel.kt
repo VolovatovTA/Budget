@@ -19,7 +19,7 @@ import ru.bysoft.android.budget.common.data_entity.CurrencyRateData
 import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.util.*
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.currency.getCurrencyByDisplayName
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
@@ -187,8 +187,8 @@ class TransactionCreateViewModel @Inject constructor(
     }
 
     private fun getRateByStateAndCurrency(
-        baseCurrency: BudgetCurrency,
-        targetCurrency: BudgetCurrency
+        baseCurrency: BudgetCurrencyEnum,
+        targetCurrency: BudgetCurrencyEnum
     ): String {
 
         val rate = currencyRates?.map?.get(baseCurrency)
@@ -198,7 +198,7 @@ class TransactionCreateViewModel @Inject constructor(
         return roundToSixSignificantDigits(rate).toString()
     }
 
-    private fun List<BudgetCurrency>.filterSameCurrency(): List<BudgetCurrency> =
+    private fun List<BudgetCurrencyEnum>.filterSameCurrency(): List<BudgetCurrencyEnum> =
         this
             .groupBy { it }
             .map { it.key }
@@ -208,7 +208,7 @@ class TransactionCreateViewModel @Inject constructor(
         showExchangesIfNeed()
     }
 
-    override fun setCurrency(currency: BudgetCurrency) {
+    override fun setCurrency(currency: BudgetCurrencyEnum) {
         super.setCurrency(currency)
         showExchangesIfNeed()
     }

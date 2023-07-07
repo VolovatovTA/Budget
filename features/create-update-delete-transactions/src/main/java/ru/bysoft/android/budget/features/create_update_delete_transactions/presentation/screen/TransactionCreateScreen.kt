@@ -15,13 +15,12 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
@@ -45,6 +44,7 @@ import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextField
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextFieldWithCurrency
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.styles.halfPadding
+import ru.bysoft.android.budget.uikit.templates.topBar
 import ru.bysoft.android.budget.uikit.utils.ExpandVertically
 
 internal val HEIGHT_ELEMENT = 60.dp
@@ -65,7 +65,7 @@ fun TransactionScreen(
 
     Scaffold(
         backgroundColor = Color.Transparent,
-        topBar = transactionTopBar(viewModel),
+        topBar = topBar(R.string.create_screen_title, viewModel::back),
         modifier = Modifier
             .safeDrawingPadding()
             .fillMaxSize()
@@ -136,12 +136,12 @@ private fun TransactionCreateScreenMain(
     setWalletId: (fromId: String?, toId: String?) -> Unit,
     setComment: (String) -> Unit,
     setAmount: (String) -> Unit,
-    setCurrency: (BudgetCurrency) -> Unit,
-    setExchangeAmount: (BudgetCurrency, String) -> Unit,
+    setCurrency: (BudgetCurrencyEnum) -> Unit,
+    setExchangeAmount: (BudgetCurrencyEnum, String) -> Unit,
     setTransactionType: (TransactionTypeEnum) -> Unit,
     onEmptyCategoryClick: () -> Unit,
-    setFullAmount: (BudgetCurrency, Boolean) -> Unit,
-    setRevert: (BudgetCurrency, Boolean) -> Unit,
+    setFullAmount: (BudgetCurrencyEnum, Boolean) -> Unit,
+    setRevert: (BudgetCurrencyEnum, Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
@@ -348,33 +348,4 @@ private fun TransactionButtonComponent(
     }
 
 
-}
-
-fun transactionTopBar(viewModel: ITransactionsViewModel) = @Composable {
-    Surface(
-        color = UiKitColors.colors.surface.primary,
-        elevation = 3.dp,
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-                .padding(horizontal = padding),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(padding)
-        ) {
-            IconButton(onClick = viewModel::back) {
-                Icon(
-                    painterResource(id = R.drawable.arrow_left),
-                    contentDescription = null,
-                    tint = UiKitColors.colors.type.high
-                )
-            }
-
-            Text(
-                text = stringResource(R.string.create_screen_title),
-                style = UiKitTypography.TextLG.Regular
-            )
-        }
-    }
 }

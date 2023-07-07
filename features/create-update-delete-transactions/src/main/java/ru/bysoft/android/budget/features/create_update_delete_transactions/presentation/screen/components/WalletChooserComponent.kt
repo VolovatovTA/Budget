@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.padding
@@ -151,19 +151,19 @@ fun WalletChooserComponentPreview() {
                     "First",
                     "1234.5 ₽",
                     "",
-                    BudgetCurrency("₽", "RUB")
+                    BudgetCurrencyEnum.USD
                 ),
                 WalletInfo(
                     "Second",
                     "1234.5 ₽",
                     "",
-                    BudgetCurrency("₽", "RUB")
+                    BudgetCurrencyEnum.RUB
                 ),
                 WalletInfo(
                     "Third",
                     "1234.5 ₽",
                     "",
-                    BudgetCurrency("₽", "RUB")
+                    BudgetCurrencyEnum.BGN
                 ),
             )
         ), onClick = {})

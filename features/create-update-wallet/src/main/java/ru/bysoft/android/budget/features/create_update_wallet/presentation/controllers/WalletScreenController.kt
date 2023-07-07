@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import ru.bysoft.android.budget.common.data_entity.CreateWalletErrorData
 import ru.bysoft.android.budget.common.me_info.IMeInfo
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.create_update_wallet.IWalletScreenController
 import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.ControllerWalletState
@@ -35,7 +35,7 @@ class WalletScreenController @Inject constructor(
         _state.update { it.copy(balanceTextState = TextFieldState(balance)) }
     }
 
-    override fun onCurrencySelected(currency: BudgetCurrency) {
+    override fun onCurrencySelected(currency: BudgetCurrencyEnum) {
         _state.update {
             it.copy(
                 currencyFieldState = it.currencyFieldState.copy(

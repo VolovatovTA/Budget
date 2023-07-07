@@ -1,12 +1,12 @@
 package ru.bysoft.android.budget.common.data_entity
 
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 
 data class CurrencyRateData(
-    val map: Map<BudgetCurrency, List<CurrencyRate>>
+    val map: Map<BudgetCurrencyEnum, List<CurrencyRate>>
 )
 
 data class CurrencyRate(
-    val currency: BudgetCurrency,
+    val currency: BudgetCurrencyEnum,
     val rate: Double
 )

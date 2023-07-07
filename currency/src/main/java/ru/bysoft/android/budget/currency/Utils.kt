@@ -3,67 +3,23 @@ package ru.bysoft.android.budget.currency
 import java.util.*
 
 private val listCurrency = listOf(
-//    BudgetCurrency("؋", "AFN"),
-//    BudgetCurrency("฿", "THB"),
-//    BudgetCurrency("₩", "KPW"),
-//    BudgetCurrency("₴", "UAH"),
-//    BudgetCurrency("₲", "PYG"),
-//    BudgetCurrency("ƒ", "ANG"),
-//    BudgetCurrency("₫", "VND"),
-    BudgetCurrency("€", "EUR"),
-//    BudgetCurrency("¥", "JPY"),
-//    BudgetCurrency("₭", "LAK"),
-//    BudgetCurrency("₡", "CRC"),
-    BudgetCurrency("₾", "GEL"),
-//    BudgetCurrency("₺", "TRY"),
-//    BudgetCurrency("₼", "AZN"),
-//    BudgetCurrency("₦", "NGN"),
-//    BudgetCurrency("﷼", "IRR"),
-//    BudgetCurrency("៛", "KHR"),
-    BudgetCurrency("₽", "RUB"),
-//    BudgetCurrency("лв", "BGN"),
-    BudgetCurrency("дин", "RSD"),
-//    BudgetCurrency("кр", "SEK"),
-//    BudgetCurrency("₽", "RUR"),
-//    BudgetCurrency("₹", "INR"),
-//    BudgetCurrency("₵", "GHS"),
-//    BudgetCurrency("৳", "BDT"),
-    BudgetCurrency("₸", "KZT"),
-//    BudgetCurrency("₮", "MNT"),
-//    BudgetCurrency("ƒ", "AWG"),
-//    BudgetCurrency("ƒ", "HUF"),
-//    BudgetCurrency("₤", "GBP"),
-//    BudgetCurrency("₤", "GIP"),
-//    BudgetCurrency("₤", "EGP"),
-//    BudgetCurrency("₤", "LBP"),
-//    BudgetCurrency("₤", "SHP"),
-//    BudgetCurrency("₤", "SYP"),
-//    BudgetCurrency("₤", "SDG"),
-//    BudgetCurrency("₤", "FKP"),
-//    BudgetCurrency("₪", "ILS"),
-//    BudgetCurrency("¥", "CNY"),
-    BudgetCurrency("֏", "AMD"),
-    BudgetCurrency("$", "USD"),
-//    BudgetCurrency("₣", "CHF"),
+    BudgetCurrencyEnum.EUR,
+    BudgetCurrencyEnum.GEL,
+    BudgetCurrencyEnum.RUB,
+    BudgetCurrencyEnum.RSD,
+    BudgetCurrencyEnum.KZT,
+    BudgetCurrencyEnum.AMD,
+    BudgetCurrencyEnum.USD
 )
 
-fun getCurrency(iso4217: String?): BudgetCurrency =
-    listCurrency.firstOrNull { it.iso4217 == iso4217 } ?: BudgetCurrency.Unkcnown
+fun getCurrency(iso4217: String?): BudgetCurrencyEnum =
+    listCurrency.firstOrNull { it.iso4217 == iso4217 } ?: BudgetCurrencyEnum.UNKNOWN
 
-fun getCurrencyByDisplayName(displayName: String?): BudgetCurrency? =
+fun getCurrencyByDisplayName(displayName: String?): BudgetCurrencyEnum? =
     listCurrency.firstOrNull { it.displayName == displayName }
 
 fun getAvailableCurrency() = listCurrency
 
-data class BudgetCurrency(
-    val displayName: String,
-    val iso4217: String
-) {
-    companion object {
-        val Unkcnown = BudgetCurrency("", "")
-    }
-}
-//TODO: replace BudgetCurrency with BudgetCurrencyEnum
 enum class BudgetCurrencyEnum(
     val displayName: String,
     val iso4217: String,
@@ -111,8 +67,8 @@ enum class BudgetCurrencyEnum(
     UNKNOWN("", "", R.drawable.aw_aruba);
 }
 
-fun getBeautifulAmount(amount: Float, currency: BudgetCurrency): String {
-    if (currency == BudgetCurrency.Unkcnown) return amount.toString()
+fun getBeautifulAmount(amount: Float, currency: BudgetCurrencyEnum): String {
+    if (currency == BudgetCurrencyEnum.UNKNOWN) return amount.toString()
     val countNumbersAfterDot = Currency.getInstance(currency.iso4217).defaultFractionDigits
     if (countNumbersAfterDot == 0) return "${amount.toInt()} ${currency.displayName}"
     val roundedAmount = String.format("%.${countNumbersAfterDot}f", amount).replace(',', '.')

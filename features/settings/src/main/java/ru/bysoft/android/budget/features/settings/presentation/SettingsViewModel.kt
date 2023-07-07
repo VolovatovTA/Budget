@@ -13,7 +13,7 @@ import ru.bysoft.android.budget.common.errors.errorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.me_info.entity.DayOfWeek
 import ru.bysoft.android.budget.common.token.ITokenStorage
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.settings.data.SettingsRepository
 import ru.bysoft.android.budget.features.settings.presentation.entity.SettingsState
@@ -56,7 +56,7 @@ class SettingsViewModel @Inject constructor(
         navigate.toAuth()
     }
 
-    fun onEditCurrency(currency: BudgetCurrency) {
+    fun onEditCurrency(currency: BudgetCurrencyEnum) {
         _state.update {
             it.copy(
                 currencyFieldState = it.currencyFieldState.copy(selectedCurrency = currency)

@@ -11,7 +11,16 @@ plugins {
 android {
     signingConfigs {
         release {
+            keyAlias 'uploadKey'
+            keyPassword 'werthvfy926'
+            storeFile file("${project.rootDir}/curvaMes.jks")
             storePassword 'werthvfy926'
+        }
+        debug {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file("${project.rootDir}/debug.keystore")
+            storePassword 'android'
         }
     }
     compileSdk compile_sdk
@@ -28,11 +37,13 @@ android {
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             multiDexEnabled true
         }
         debug {
+            signingConfig signingConfigs.debug
             applicationIdSuffix ".debug"
             debuggable true
         }
@@ -40,13 +51,13 @@ android {
     // для объединения флаворов
     flavorDimensions "backType"
     productFlavors {
-        stand {
+        remoteBack {
             dimension "backType"
-            versionNameSuffix "-stand"
+            versionNameSuffix "-remoteBack"
         }
-        mock {
+        localMock {
             dimension "backType"
-            versionNameSuffix "-mock"
+            versionNameSuffix "-localMock"
         }
     }
 
@@ -60,7 +71,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion compose_compiler_version
     }
-    buildFeatures{
+    buildFeatures {
         compose true
     }
     kapt {

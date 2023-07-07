@@ -22,7 +22,7 @@ import ru.bysoft.android.budget.features.create_udate_category.presentation.comp
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitCurrencyPopUp
 import ru.bysoft.android.budget.uikit.components.icon_component.UiKitIconsComponent
-import ru.bysoft.android.budget.uikit.templates.UiKitTopBar
+import ru.bysoft.android.budget.uikit.templates.topBar
 
 @Composable
 fun UpdateCategoryScreen(
@@ -39,9 +39,7 @@ fun UpdateCategoryScreen(
     }
     Scaffold(
         backgroundColor = UiKitColors.colors.surface.primary,
-        topBar = {
-            UiKitTopBar(R.string.update_category_title, viewModel::back, viewModel::delete)
-        },
+        topBar = topBar(R.string.update_category_title, viewModel::back, viewModel::delete),
         modifier = Modifier.safeDrawingPadding(),
         ) {
         Column(

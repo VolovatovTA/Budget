@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import ru.bysoft.android.budget.common.data_entity.CategoryErrorType
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.PeriodState
 import ru.bysoft.android.budget.features.create_udate_category.R
@@ -17,7 +17,7 @@ import ru.bysoft.android.budget.uikit.components.icon_component.UiKitIconState
 
 interface ICreateUpdateCategoryViewModel {
     val state: StateFlow<CreateUpdateCategoryState>
-    fun onCurrencySelected(currency: BudgetCurrency)
+    fun onCurrencySelected(currency: BudgetCurrencyEnum)
     fun onPeriodSelected(newPeriod: PeriodState)
     fun onNameChanged(newName: String)
     fun onIconSelected(iconName: String?)
@@ -49,7 +49,7 @@ abstract class CreateUpdateCategoryViewModel(
         state.update { it.copy(typeCategory = type) }
     }
 
-    override fun onCurrencySelected(currency: BudgetCurrency) {
+    override fun onCurrencySelected(currency: BudgetCurrencyEnum) {
         state.update {
             it.copy(
                 currencyFieldState = it.currencyFieldState.copy(

@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.ExchangeFieldState
@@ -56,10 +56,10 @@ fun ExchangesComponent(
             isRevert = true
         ),
     ),
-    setAmount: (BudgetCurrency, String) -> Unit = { _, _ -> },
+    setAmount: (BudgetCurrencyEnum, String) -> Unit = { _, _ -> },
     focusManager: FocusManager = LocalFocusManager.current,
-    setFullAmount: (BudgetCurrency, Boolean) -> Unit = { _, _ -> },
-    setRevert: (BudgetCurrency, Boolean) -> Unit = { _, _ -> },
+    setFullAmount: (BudgetCurrencyEnum, Boolean) -> Unit = { _, _ -> },
+    setRevert: (BudgetCurrencyEnum, Boolean) -> Unit = { _, _ -> },
 ) {
     Column(
         modifier = Modifier

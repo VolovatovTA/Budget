@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.auth.data.IAuthRepository
 import ru.bysoft.android.budget.auth.navigation.IAuthNavigation
@@ -28,6 +29,7 @@ interface IAuthViewModel {
     fun onButtonClick(action: AuthActionType)
     fun switchAuthType(newType: AuthActionType)
     fun onGoogleSignInResult(account: SignInResult)
+    fun setLoading(b: Boolean)
 }
 
 @HiltViewModel
@@ -149,8 +151,13 @@ class AuthViewModel @Inject constructor(
     override fun onGoogleSignInResult(account: SignInResult) {
         viewModelScope.launch(handler) {
             repository.signInByGoogle(account.data?.idToken)
+            state.update { it.copy(isLoading = false) }
             navigate.toBottomNavigation()
         }
+    }
+
+    override fun setLoading(b: Boolean) {
+        state.update { it.copy(isLoading = b) }
     }
 
     private fun isAllComplete(

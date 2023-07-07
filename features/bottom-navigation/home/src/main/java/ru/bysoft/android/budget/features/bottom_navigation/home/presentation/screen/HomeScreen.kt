@@ -81,7 +81,7 @@ fun HomeScreen(
                     ) {
                         item {
                             Column {
-                                HomeTitleComponent(meState, viewModel::onSettingsClick)
+                                HomeTitleComponent(meState, viewModel::onSettingsClick, viewModel::onMainCurrencyChanged)
                                 Spacer(modifier = Modifier.height(halfPadding))
                             }
                         }

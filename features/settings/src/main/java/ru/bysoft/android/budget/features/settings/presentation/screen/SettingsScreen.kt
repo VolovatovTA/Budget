@@ -23,7 +23,7 @@ import coil.compose.SubcomposeAsyncImage
 import ru.bysoft.android.budget.common.me_info.entity.DayOfWeek
 import ru.bysoft.android.budget.common.me_info.entity.MeData
 import ru.bysoft.android.budget.common.me_info.entity.SettingsData
-import ru.bysoft.android.budget.currency.BudgetCurrency
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.features.settings.presentation.SettingsViewModel
 import ru.bysoft.android.budget.features.settings.presentation.entity.SettingsState
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
@@ -62,7 +62,7 @@ private fun SettingsScreenContent(
     state: SettingsState,
     onLogoutClick: () -> Unit,
     onEditFirstDayOfWeek: (DayOfWeek) -> Unit,
-    onEditCurrency: (BudgetCurrency) -> Unit,
+    onEditCurrency: (BudgetCurrencyEnum) -> Unit,
     onConfirm: () -> Unit
 ) {
     Scaffold(
@@ -200,7 +200,7 @@ private fun DataElement(key: Int, value: String?) {
 private fun CurrencyField(
     key: Int,
     popupFieldState: CurrencyFieldState,
-    onEdit: (BudgetCurrency) -> Unit
+    onEdit: (BudgetCurrencyEnum) -> Unit
 ) {
     Row(
         modifier = Modifier
