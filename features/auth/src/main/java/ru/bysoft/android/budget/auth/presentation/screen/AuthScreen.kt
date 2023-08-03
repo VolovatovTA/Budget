@@ -1,7 +1,6 @@
 package ru.bysoft.android.budget.auth.presentation.screen
 
 import android.app.Activity.RESULT_OK
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -86,7 +85,12 @@ fun AuthScreen() {
                     viewModel.onGoogleSignInResult(signInResult)
                 }
             } else {
-                Log.e("timvol", "AuthSuccessScreen: $result")
+                viewModel.onGoogleSignInResult(
+                    SignInResult(
+                        token = null,
+                        errorMessage = result.data?.toString()
+                    )
+                )
             }
         }
     )

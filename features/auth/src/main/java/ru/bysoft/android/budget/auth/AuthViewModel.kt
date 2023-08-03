@@ -119,6 +119,7 @@ class AuthViewModel @Inject constructor(
                     }
                 }
             }
+
             AuthActionType.SIGN_UP -> {
                 viewModelScope.launch(handler) {
                     val errorData = repository.signUp(state.value.getSignUpData())
@@ -149,11 +150,24 @@ class AuthViewModel @Inject constructor(
     }
 
     override fun onGoogleSignInResult(account: SignInResult) {
-        viewModelScope.launch(handler) {
-            repository.signInByGoogle(account.data?.idToken)
-            state.update { it.copy(isLoading = false) }
-            navigate.toBottomNavigation()
+        if (account.token != null) {
+            viewModelScope.launch(handler) {
+                repository.signInByGoogle(account.token)
+                state.update { it.copy(isLoading = false) }
+                navigate.toBottomNavigation()
+            }
+        } else {
+            state.update {
+                it.copy(
+                    toastText = R.string.unexpected_error,
+                    isLoading = false,
+                    email = it.email.copy(
+                        text = account.errorMessage.orEmpty()
+                    )
+                )
+            }
         }
+
     }
 
     override fun setLoading(b: Boolean) {
@@ -169,7 +183,9 @@ class AuthViewModel @Inject constructor(
     ) =
         when (type) {
             AuthActionType.SIGN_IN -> isEmailCorrect(email) && isPasswordCorrect(password)
-            AuthActionType.SIGN_UP -> isCheckBoxChecked && isEmailCorrect(email) && isPasswordCorrect(password)
+            AuthActionType.SIGN_UP -> isCheckBoxChecked && isEmailCorrect(email) && isPasswordCorrect(
+                password
+            )
                     && isNameCorrect(name)
         }
 

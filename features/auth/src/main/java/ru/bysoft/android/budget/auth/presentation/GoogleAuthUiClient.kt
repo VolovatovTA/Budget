@@ -3,13 +3,9 @@ package ru.bysoft.android.budget.auth.presentation
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
-import android.util.Log
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
 import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.tasks.await
 import ru.bysoft.android.budget.auth.R
@@ -18,75 +14,48 @@ class GoogleAuthUiClient(
     private val context: Context,
     private val oneTapClient: SignInClient
 ) {
-    private val auth = Firebase.auth
 
     suspend fun signIn(): IntentSender? {
         val result = try {
             oneTapClient.beginSignIn(buildSignInRequest()).await()
         } catch(e: Exception) {
             e.printStackTrace()
-            if(e is CancellationException) throw e
             null
         }
         return result?.pendingIntent?.intentSender
     }
 
-    suspend fun signInWithIntent(intent: Intent): SignInResult {
-        Log.e("timvol", "AuthSuccessScreen: $this")
-        val credential = oneTapClient.getSignInCredentialFromIntent(intent)
-        val googleIdToken = credential.googleIdToken
-
-        val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
+    fun signInWithIntent(intent: Intent?): SignInResult {
         return try {
-            val user = auth.signInWithCredential(googleCredentials).await().user
             SignInResult(
-                data = user?.run {
-                    UserData(
-                        userId = uid,
-                        username = displayName,
-                        profilePictureUrl = photoUrl?.toString(),
-                        idToken = googleIdToken
-                    )
-                },
+                token = oneTapClient.getSignInCredentialFromIntent(intent).googleIdToken,
                 errorMessage = null
             )
-        } catch(e: Exception) {
-            e.printStackTrace()
-            if(e is CancellationException) throw e
+        } catch (e: Exception) {
             SignInResult(
-                data = null,
+                token = null,
                 errorMessage = e.message
             )
         }
     }
 
+    // TODO: Разавторизовать пользователя при выходе из профиля
     suspend fun signOut() {
         try {
             oneTapClient.signOut().await()
-            auth.signOut()
         } catch(e: Exception) {
             e.printStackTrace()
             if(e is CancellationException) throw e
         }
     }
 
-    fun getSignedInUser(): UserData? = auth.currentUser?.run {
-        UserData(
-            userId = uid,
-            username = displayName,
-            profilePictureUrl = photoUrl?.toString(),
-            idToken = null,
-
-        )
-    }
-
     private fun buildSignInRequest(): BeginSignInRequest {
-        return BeginSignInRequest.Builder()
+        return BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
                 GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
                     .setFilterByAuthorizedAccounts(false)
-                    .setServerClientId(context.getString(R.string.web_client_id1))
+                    .setServerClientId(context.getString(R.string.web_client_id))
                     .build()
             )
             .setAutoSelectEnabled(true)
@@ -95,13 +64,6 @@ class GoogleAuthUiClient(
 }
 
 data class SignInResult(
-    val data: UserData?,
+    val token: String?,
     val errorMessage: String?
-)
-
-data class UserData(
-    val userId: String,
-    val username: String?,
-    val idToken: String?,
-    val profilePictureUrl: String?
 )

@@ -27,7 +27,7 @@ interface IAuthRepository {
 
 class AuthRepository @Inject constructor(
     private val api: IAuthApi,
-    private val tokenRepo: ITokenStorage
+    private val tokenRepo: ITokenStorage,
 ) : IAuthRepository {
 
     override suspend fun signIn(signInData: SignInData): SignInErrorData? {
