@@ -1,6 +1,7 @@
 package ru.bysoft.android.budget.features.bottom_navigation.home
 
 import android.util.Log
+import androidx.compose.material.DismissState
 import androidx.compose.material.DismissValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.*
 import ru.budget.android.api.data.source.network.entity.transactions.TransferTypeEnum
 import ru.bysoft.android.budget.common.errors.errorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
+import ru.bysoft.android.budget.common.network.entity.ifHttpErrorGetErrorBody
 import ru.bysoft.android.budget.common.util.TAG
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
@@ -19,6 +21,7 @@ import ru.bysoft.android.budget.features.bottom_navigation.home.data.me.IHomeMeR
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.transactions.ITransactionsRepo
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.wallets.IHomeWalletsRepo
 import ru.bysoft.android.budget.features.bottom_navigation.home.navigation.IHomeNavigation
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.DialogInfo
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.title.IMeState
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.title.MeErrorState
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.title.MeLoadingState
@@ -32,6 +35,7 @@ import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitTabInfo
 import javax.inject.Inject
 
 interface IHomeViewModel {
+    val dialogState: StateFlow<DialogInfo<String>?>
     val toastState: SharedFlow<String>
     val walletsState: StateFlow<IWalletsState>
     val meState: StateFlow<IMeState>
@@ -48,6 +52,8 @@ interface IHomeViewModel {
     fun deleteTransaction(id: String)
     fun onSettingsClick()
     fun onMainCurrencyChanged(newCurrency: BudgetCurrencyEnum)
+    fun <T> onDialogDismiss(data: T)
+    fun <T> onDialogConfirmed(data: T)
 }
 
 @HiltViewModel
@@ -86,6 +92,9 @@ class HomeViewModel @Inject constructor(
         errorLogger.logError(t)
         transactionsState.value = TransactionError
     }
+    override val dialogState: MutableStateFlow<DialogInfo<String>?> =
+        MutableStateFlow(null)
+
     override val toastState: MutableSharedFlow<String> =
         MutableSharedFlow()
 
@@ -182,21 +191,13 @@ class HomeViewModel @Inject constructor(
                         }
                     ) ?: transactionState
                 }
-                toastState.emit("Произошла ошибка")
-//                {
-//                    if (result.exceptionOrNull() is HttpException) {
-//                        ToastInfo(it?.keyLaunchedEffect?.not() ?: true, "Произошла ошибка на бэке")
-//                    } else {
-//                        ToastInfo(
-//                            it?.keyLaunchedEffect?.not() ?: true,
-//                            "Произошла ошибка на фронте"
-//                        )
-//                    }
-//                    ToastInfo(
-//                        it?.keyLaunchedEffect?.not() ?: true,
-//                        "Произошла ошибка"
-//                    )
-//                }
+
+                if (result.exceptionOrNull()?.ifHttpErrorGetErrorBody() != null) {
+                    toastState.emit("Произошла ошибка на сервере")
+                } else {
+                    toastState.emit("Произошла локальная ошибка")
+                }
+
                 errorLogger.logError(result.exceptionOrNull() ?: Exception("Unknown error"))
             }
         }
@@ -228,6 +229,43 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    @OptIn(ExperimentalMaterialApi::class)
+    override fun <T> onDialogDismiss(data: T) {
+        dialogState.value = null
+        if (data is String) {
+            transactionsState.update { transactionState ->
+                (transactionState as? TransactionSuccess)?.copy(
+                    list = transactionState.list.map { transactionInfo ->
+                        if (transactionInfo.id == data) transactionInfo.copy(
+                            isWaiting = false,
+                            dismissState = DismissState(DismissValue.Default) {
+                                deleteLambda(it, data)
+                            }
+                        ) else transactionInfo
+                    }
+                ) ?: transactionState
+            }
+        }
+
+    }
+
+    override fun <T> onDialogConfirmed(data: T) {
+        dialogState.value = null
+        if (data is String) {
+            deleteTransaction(data)
+        }
+    }
+
+    private fun showDialogConfirm(data: String) {
+        dialogState.value = DialogInfo(
+            title = R.string.dialog_delete_transaction_title,
+            message = R.string.dialog_delete_transaction_subtitle,
+            positiveButtonText = R.string.dialog_delete_transaction_positive_button,
+            negativeButtonText = R.string.dialog_delete_transaction_negative_button,
+            data = data
+        )
+    }
+
     private fun getWallets(isRefresh: Boolean) {
         viewModelScope.launch(homeWalletsExceptionHandler) {
             walletsState.value = WalletsLoadingState(isRefresh)
@@ -247,7 +285,6 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getMeInfo() {
-        Log.d(TAG, "getMeInfo: ")
         viewModelScope.launch(homeMeExceptionHandler) {
             meState.value = MeLoadingState
             val meInfoData = meRepo.getMeInfo()
@@ -258,7 +295,6 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getTransactions(isRefresh: Boolean) {
-        Log.d(TAG, "getTransactions: ")
         viewModelScope.launch(homeTransactionExceptionHandler) {
             transactionsState.value = TransactionLoading(isRefresh)
             val filters = filterState.value
@@ -311,7 +347,8 @@ class HomeViewModel @Inject constructor(
 
     private val deleteLambda: (value: DismissValue, data: String) -> Boolean = { value, data ->
         when (value) {
-            DismissValue.DismissedToStart -> deleteTransaction(data)
+            DismissValue.DismissedToStart -> showDialogConfirm(data)
+
             DismissValue.DismissedToEnd -> updateTransaction(data)
             else -> {}
         }

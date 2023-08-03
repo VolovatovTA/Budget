@@ -40,8 +40,12 @@ class HomePresentationMapper @Inject constructor(
         backgroundColor = "primary.500",
         walletId = data.id,
         icon = data.iconName,
-        lastOperationDate = SimpleDateFormat(dateFormatOutput, locale).format(Calendar.getInstance().time)
+        lastOperationDate = SimpleDateFormat(
+            dateFormatOutput,
+            locale
+        ).format(Calendar.getInstance().time)
     )
+
     override fun mapToInfo(
         data: ListTransactionsData,
         confirmStateChange: (value: DismissValue, data: String) -> Boolean
@@ -75,7 +79,9 @@ class HomePresentationMapper @Inject constructor(
             },
             id = transactionData.id,
             isWaiting = false,
-            dismissState = DismissState(DismissValue.Default, confirmStateChange = {confirmStateChange(it, transactionData.id)})
+            dismissState = DismissState(
+                DismissValue.Default,
+                confirmStateChange = { confirmStateChange(it, transactionData.id) })
         )
 }
 

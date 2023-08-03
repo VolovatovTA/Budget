@@ -9,4 +9,8 @@
     <string name="filter_transfer">"ПЕРЕВОД"</string>
     <string name="empty_transactions_list">"У вас пока нет ни одной транзакции…"</string>
     <string name="icon_description">Your profile photo</string>
+    <string name="dialog_delete_transaction_title">Удаление транзакции</string>
+    <string name="dialog_delete_transaction_subtitle">Вы действительно хотите удалить транзакцию?</string>
+    <string name="dialog_delete_transaction_positive_button">да</string>
+    <string name="dialog_delete_transaction_negative_button">нет</string>
 </resources>

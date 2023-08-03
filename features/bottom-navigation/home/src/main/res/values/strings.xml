@@ -9,4 +9,8 @@
     <string name="filter_transfer">"TRANSFER"</string>
     <string name="empty_transactions_list">"Your transactions list is empty"</string>
     <string name="icon_description">Your profile photo</string>
+    <string name="dialog_delete_transaction_title">Delete transaction</string>
+    <string name="dialog_delete_transaction_subtitle">Do you really want delete this transaction?</string>
+    <string name="dialog_delete_transaction_positive_button">yes</string>
+    <string name="dialog_delete_transaction_negative_button">no</string>
 </resources>
