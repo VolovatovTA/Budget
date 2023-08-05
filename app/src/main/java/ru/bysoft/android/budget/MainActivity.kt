@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.common.navigation.MainNavigationHost
 import ru.bysoft.android.budget.common.util.TAG
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
+import ru.bysoft.android.budget.uikit.theme.BudgetTheme
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -28,9 +29,11 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            val systemUiController = rememberSystemUiController()
-            systemUiController.setSystemBarsColor(color = UiKitColors.colors.surface.primary)
-            MainNavigationHost(navHost)
+            BudgetTheme {
+                val systemUiController = rememberSystemUiController()
+                systemUiController.setSystemBarsColor(color = UiKitColors.colors.surface.primary)
+                MainNavigationHost(navHost)
+            }
         }
         CoroutineScope(Dispatchers.Default).launch {
             navHost.currentBackStackEntryFlow.collect {

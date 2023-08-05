@@ -1,7 +1,16 @@
 package ru.bysoft.android.budget.uikit.components.listItem
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
@@ -12,21 +21,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
+import ru.bysoft.android.budget.uikit.R
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfo
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfoError
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfoSuccess
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfoWaiting
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
-import ru.bysoft.android.budget.uikit.icons.another.Wallet
-import ru.bysoft.android.budget.uikit.icons.pack.Recycle
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.styles.halfPadding
 import ru.bysoft.android.budget.uikit.styles.padding
@@ -35,7 +43,7 @@ import ru.bysoft.android.budget.uikit.styles.quarterPadding
 @Composable
 fun UiKitListItem(
     title: String,
-    icons: List<ImageVector>,
+    icons: List<Int>,
     amount: UiKitAmountInfo,
     modifier: Modifier = Modifier,
     subTitle: String? = null,
@@ -93,35 +101,35 @@ val lengthOneLetter = 9.dp
 val sizeIcon = 32.dp
 
 @Composable
-private fun UiKitListItemIcons(icons: List<ImageVector>) {
-    when (icons.size) {
+private fun UiKitListItemIcons(ides: List<Int>) {
+    when (ides.size) {
         0 -> {
             Spacer(modifier = Modifier.width(padding))
         }
         1 -> {
-            Icon(icons.first(), padding)
+            Icon(ides.first(), padding)
 
         }
         2 -> {
             Box {
-                Icon(icons.first(), halfPadding)
-                Icon(icons[1], halfPadding + 20.dp)
+                Icon(ides.first(), halfPadding)
+                Icon(ides[1], halfPadding + 20.dp)
             }
 
 
         }
         3 -> {
             Box {
-                Icon(icons.first(), padding)
-                Icon(icons[1], padding - 10.dp, 20.dp)
-                Icon(icons[2], padding + 10.dp, 20.dp)
+                Icon(ides.first(), padding)
+                Icon(ides[1], padding - 10.dp, 20.dp)
+                Icon(ides[2], padding + 10.dp, 20.dp)
             }
         }
         else -> {
             Box {
-                Icon(icons.first(), padding)
-                Icon(icons[1], padding - 10.dp, 20.dp)
-                Icon(icons[2], padding + 10.dp, 20.dp)
+                Icon(ides.first(), padding)
+                Icon(ides[1], padding - 10.dp, 20.dp)
+                Icon(ides[2], padding + 10.dp, 20.dp)
 
                 Surface(
                     shape = RoundedCornerShape(sizeIcon),
@@ -135,7 +143,7 @@ private fun UiKitListItemIcons(icons: List<ImageVector>) {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "+${icons.size - 2}",
+                            text = "+${ides.size - 2}",
                             style = UiKitTypography.TextXS.Regular,
                             color = UiKitColors.colors.type.high
                         )
@@ -148,7 +156,7 @@ private fun UiKitListItemIcons(icons: List<ImageVector>) {
 }
 
 @Composable
-private fun Icon(icon: ImageVector, start: Dp, top: Dp = 0.dp) {
+private fun Icon(id: Int, start: Dp, top: Dp = 0.dp) {
     Surface(
         shape = RoundedCornerShape(sizeIcon / 2),
         elevation = 5.dp,
@@ -156,13 +164,13 @@ private fun Icon(icon: ImageVector, start: Dp, top: Dp = 0.dp) {
             .padding(start = start, top = top)
     ) {
         Icon(
-            icon,
+            painterResource(id = id),
             contentDescription = null,
             tint = UiKitColors.colors.type.high,
             modifier = Modifier
                 .size(sizeIcon)
                 .background(UiKitColors.colors.surface.secondary)
-                .padding(halfPadding)
+                .padding(quarterPadding)
         )
 
     }
@@ -223,25 +231,25 @@ fun UiKitListItemPreview() {
         UiKitListItem(
             title = "Titlevfdjdkfjnbdfkjbdf",
             subTitle = "ksjdvnskdvvgvgvygvygvinsodvnsodvunso",
-            icons = listOf(Wallet),
+            icons = listOf(R.drawable.activity),
             amount = UiKitAmountInfoSuccess("1000 000 000 $"),
             amountColor = UiKitColors.colors.primary.`1100`
         )
         UiKitListItem(
             title = "Title",
-            icons = listOf(Wallet, Recycle),
+            icons = listOf(R.drawable.activity, R.drawable.bag),
             amount = UiKitAmountInfoSuccess("1000"),
             amountColor = UiKitColors.colors.primary.`1100`
         )
         UiKitListItem(
             title = "Title",
-            icons = listOf(Wallet, Recycle, Recycle),
+            icons = listOf(R.drawable.activity, R.drawable.bag, R.drawable.coins_rotate),
             amount = UiKitAmountInfoSuccess("1000"),
             amountColor = UiKitColors.colors.primary.`1100`
         )
         UiKitListItem(
             title = "Title",
-            icons = listOf(Wallet, Wallet, Wallet, Wallet),
+            icons = listOf(R.drawable.activity, R.drawable.bag, R.drawable.coins_rotate, R.drawable.computer),
             amount = UiKitAmountInfoError,
             amountColor = UiKitColors.colors.primary.`1100`
         )

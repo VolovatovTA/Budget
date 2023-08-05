@@ -3,7 +3,6 @@ package ru.bysoft.android.budget.features.bottom_navigation.home.presentation.en
 import androidx.compose.material.DismissState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Immutable
-import androidx.compose.ui.graphics.vector.ImageVector
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 
 sealed interface TransactionsState
@@ -21,7 +20,7 @@ object TransactionError : TransactionsState
 
 data class TransactionInfo @OptIn(ExperimentalMaterialApi::class) constructor(
     val name: String?,
-    val icons: List<ImageVector>,
+    val icons: List<Int>,
     val date: String?,
     val amount: String,
     val currency: BudgetCurrencyEnum,

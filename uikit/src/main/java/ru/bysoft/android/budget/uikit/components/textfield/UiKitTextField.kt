@@ -13,9 +13,11 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,14 +35,131 @@ import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitPopUp
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.PopupFieldState
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
+import ru.bysoft.android.budget.uikit.styles.halfCorner
 import ru.bysoft.android.budget.uikit.styles.halfPadding
 import ru.bysoft.android.budget.uikit.styles.padding
+import ru.bysoft.android.budget.uikit.theme.NoRippleTheme
 
 
 data class TextFieldState(
     val text: String = "",
     val errorText: Int? = null,
 )
+
+@Composable
+fun <T> UiKitTextFieldWithPopUpAndCurrency(
+    state: TextFieldState,
+    onValueChange: (String) -> Unit,
+    label: String,
+    inputType: KeyboardType,
+    modifier: Modifier = Modifier,
+    onNotFocused: (lastText: String) -> Unit = {},
+    keyboardActions: KeyboardActions,
+    popUpList: PopupFieldState<T>? = null,
+    popupItem: (@Composable (T?) -> Unit)? = null,
+    onSelectPopupItem: (T) -> Unit = {},
+    currencyPopUpList: CurrencyFieldState? = null,
+    currencyItem: (@Composable (BudgetCurrencyEnum?) -> Unit)? = null,
+    onSelectCurrency: (BudgetCurrencyEnum) -> Unit = {},
+) {
+    val source = remember { MutableInteractionSource() }
+
+    var expandedCurrency by remember { mutableStateOf(false) }
+    var expandedPopUp by remember { mutableStateOf(false) }
+    Box {
+        OutlinedTextField(
+            value = state.text,
+            onValueChange = onValueChange,
+            modifier = modifier
+                .onFocusChanged { if (!it.isFocused) onNotFocused(state.text) },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                autoCorrect = false,
+                keyboardType = inputType
+            ),
+            shape = RoundedCornerShape(10.dp),
+            colors = UiKitColors.textField,
+            label = {
+                Text(
+                    label,
+                    style = UiKitTypography.TextSM.Medium,
+                    color = UiKitColors.colors.type.high,
+                )
+            },
+            isError = state.errorText != null,
+            interactionSource = source,
+            keyboardActions = keyboardActions,
+            trailingIcon = {
+                CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        currencyPopUpList?.let {
+                            Box(
+                                Modifier.clickable { expandedCurrency = true }
+                            ) {
+                                currencyPopUpList.selectedCurrency?.let {
+                                    currencyItem?.invoke(it)
+                                }
+                            }
+                            DropdownMenu(
+                                expanded = expandedCurrency,
+                                onDismissRequest = { expandedCurrency = false },
+                            ) {
+                                currencyPopUpList.list.forEach {
+                                    DropdownMenuItem(
+                                        onClick = {
+                                            expandedCurrency = false
+                                            onSelectCurrency(it)
+                                        },
+                                    ) {
+                                        currencyItem?.invoke(it)
+                                    }
+                                }
+                            }
+                        }
+                        popUpList?.let {
+                            Box(
+                                Modifier.clickable { expandedPopUp = true }
+                            ) {
+                                popupItem?.invoke(popUpList.selectedValue)
+                            }
+                            DropdownMenu(
+                                expanded = expandedPopUp,
+                                onDismissRequest = { expandedPopUp = false },
+                            ) {
+                                popUpList.list.forEach {
+                                    DropdownMenuItem(
+                                        onClick = {
+                                            expandedPopUp = false
+                                            onSelectPopupItem(it)
+                                        },
+                                    ) {
+                                        popupItem?.invoke(it)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            visualTransformation = if (inputType == KeyboardType.Password) {
+                PasswordVisualTransformation()
+            } else {
+                VisualTransformation.None
+            },
+        )
+        if (state.errorText != null && state.errorText != R.string.empty_text) {
+            Text(
+                text = stringResource(id = state.errorText),
+                style = UiKitTypography.TextSM.Medium,
+                color = UiKitColors.colors.feedbackRed.`600`,
+                modifier = Modifier
+                    .offset(y = 61.dp)
+                    .padding(horizontal = padding)
+            )
+        }
+    }
+}
+
 
 @Composable
 fun UiKitTextFieldWithCurrency(
@@ -82,28 +201,30 @@ fun UiKitTextFieldWithCurrency(
             interactionSource = source,
             keyboardActions = keyboardActions,
             trailingIcon = {
-                popUpList?.let {
-                    Box(
-                        Modifier.clickable { expanded = true }
-                    ) {
-                        popUpList.selectedCurrency?.let {
-                            popUpItem?.invoke(it)
-                        }
-                    }
-                    DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false },
-                        modifier = Modifier.background(UiKitColors.colors.surface.primary)
-                    ) {
-                        popUpList.list.forEach {
-                            DropdownMenuItem(
-                                onClick = {
-                                    expanded = false
-                                    onSelectPopUpItem(it)
-                                },
-                                modifier = Modifier.background(UiKitColors.colors.surface.primary)
-                            ) {
+                CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
+                    popUpList?.let {
+                        Box(
+                            Modifier.clickable { expanded = true }
+                        ) {
+                            popUpList.selectedCurrency?.let {
                                 popUpItem?.invoke(it)
+                            }
+                        }
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false },
+                            modifier = Modifier.background(UiKitColors.colors.surface.primary)
+                        ) {
+                            popUpList.list.forEach {
+                                DropdownMenuItem(
+                                    onClick = {
+                                        expanded = false
+                                        onSelectPopUpItem(it)
+                                    },
+                                    modifier = Modifier.background(UiKitColors.colors.surface.primary)
+                                ) {
+                                    popUpItem?.invoke(it)
+                                }
                             }
                         }
                     }
@@ -291,8 +412,8 @@ fun PopupPreview() {
 fun UiKitCurrencyPopUpTextField(currency: BudgetCurrencyEnum) {
     Row(
         modifier = Modifier
-            .background(UiKitColors.colors.surface.primary)
-            .padding(halfPadding),
+            .padding(halfPadding)
+            .clip(RoundedCornerShape(halfCorner)),
         verticalAlignment = Alignment.CenterVertically
     ) {
 

@@ -27,7 +27,6 @@ import ru.bysoft.android.budget.features.bottom_navigation.statistic.R
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.listItem.UiKitListItem
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfoSuccess
-import ru.bysoft.android.budget.uikit.icons.pack.Plus
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -81,7 +80,7 @@ fun StatisticScreen(
 fun AddCategoryElement(onClick: () -> Unit) {
     UiKitListItem(
         title = stringResource(R.string.create_new_category),
-        icons = listOf(Plus),
+        icons = listOf(ru.bysoft.android.budget.uikit.R.drawable.plus_02),
         amount = UiKitAmountInfoSuccess(""),
         amountColor = Color.Transparent,
         modifier = Modifier

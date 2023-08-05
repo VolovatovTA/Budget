@@ -117,7 +117,11 @@ fun CRUDWalletScreen(
                     onSelectPopUpItem = screenController::onCurrencySelected
                 )
             }
-            UiKitIconsComponent(screenController::onIconSelected, controllerWalletState.iconState)
+            UiKitIconsComponent(
+                type = null,
+                screenController::onIconSelected,
+                controllerWalletState.iconState
+            )
 
             Spacer(modifier = Modifier.height(40.dp))
             ButtonComponent(viewModel, viewModelWalletState)

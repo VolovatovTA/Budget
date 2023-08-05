@@ -149,11 +149,6 @@ fun <T> UiKitPopUp(
     ) {
         Surface(
             shape = RoundedCornerShape(10.dp),
-            border = BorderStroke(
-                0.8.dp,
-                if (info.errorText == null || info.errorText.isEmpty()) UiKitColors.colors.type.high
-                else UiKitColors.colors.feedbackRed.`500`
-            ),
             modifier = modifier,
             color = Color.Transparent
         ) {
@@ -179,7 +174,7 @@ fun <T> UiKitPopUp(
                 Spacer(modifier = Modifier.width(10.dp))
             }
         }
-        if (info.errorText != null && info.errorText.isNotEmpty()) {
+        if (!info.errorText.isNullOrEmpty()) {
             Text(
                 text = info.errorText,
                 style = UiKitTypography.TextXS.Regular,
@@ -193,10 +188,12 @@ fun <T> UiKitPopUp(
         ) {
 
             info.list.forEach { item ->
-                DropdownMenuItem(onClick = {
-                    showMenu.value = false
-                    onClickItem(item)
-                }) {
+                DropdownMenuItem(
+                    onClick = {
+                        showMenu.value = false
+                        onClickItem(item)
+                    }
+                ) {
                     itemInPopup(item)
                 }
             }

@@ -12,7 +12,7 @@ import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.ent
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletCardPresentation
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletCreateNewPresentation
 import ru.bysoft.android.budget.uikit.icons.UiKitIcons
-import ru.bysoft.android.budget.uikit.icons.pack.Recycle
+import ru.bysoft.android.budget.uikit.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -69,7 +69,7 @@ class HomePresentationMapper @Inject constructor(
             date =
             transactionData.date?.let { SimpleDateFormat(dateFormatOutput, locale).format(it) },
             icons =
-            if (transactionData is TransactionTransfer) listOf(Recycle)
+            if (transactionData is TransactionTransfer) listOf(R.drawable.coins_rotate)
             else transactionData.categories.mapNotNull { UiKitIcons.getByName(it.iconName) },
             name = transactionData.comment,
             color = when (transactionData) {

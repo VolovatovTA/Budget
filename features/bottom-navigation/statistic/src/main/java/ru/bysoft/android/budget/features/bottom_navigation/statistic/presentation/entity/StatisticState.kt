@@ -1,6 +1,6 @@
 package ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity
 
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.annotation.DrawableRes
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfo
 
 sealed interface IStatisticState
@@ -16,7 +16,7 @@ data class StatisticWaitingState(
 ): IStatisticState
 
 data class CategoryInfo(
-    val icon: ImageVector?,
+    @DrawableRes val icon: Int?,
     val name: String,
     val subtitle: String?,
     val subtitleAddition: Int?,

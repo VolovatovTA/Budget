@@ -93,6 +93,7 @@ private fun StatisticProgressIndicator(progress: ProgressInfo) {
                 strokeCap = StrokeCap.Round
             )
         }
+
         is ProgressInfoWaiting -> UiKitShimmerComponent(
             Modifier
                 .height(4.dp)
@@ -100,6 +101,7 @@ private fun StatisticProgressIndicator(progress: ProgressInfo) {
                 .padding(horizontal = padding),
             cornerRadius = 4.dp
         )
+
         is ProgressInfoError ->
             Row(
                 horizontalArrangement = Arrangement.Center,

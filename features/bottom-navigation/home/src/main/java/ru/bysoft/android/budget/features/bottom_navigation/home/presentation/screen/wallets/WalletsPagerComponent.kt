@@ -3,7 +3,18 @@ package ru.bysoft.android.budget.features.bottom_navigation.home.presentation.sc
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -26,16 +37,27 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import ru.bysoft.android.budget.common.util.onNull
 import ru.bysoft.android.budget.currency.getBeautifulAmount
 import ru.bysoft.android.budget.features.bottom_navigation.home.R
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.*
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.IWalletPresentation
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.IWalletsState
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletCardPresentation
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletCreateNewPresentation
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletsErrorState
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletsLoadingState
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletsSuccessState
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.android.budget.uikit.icons.UiKitIcons
 import ru.bysoft.android.budget.uikit.icons.pack.Edit
 import ru.bysoft.android.budget.uikit.icons.pack.Plus
-import ru.bysoft.android.budget.uikit.styles.*
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
+import ru.bysoft.android.budget.uikit.styles.corner
+import ru.bysoft.android.budget.uikit.styles.doubleCorner
+import ru.bysoft.android.budget.uikit.styles.doublePadding
+import ru.bysoft.android.budget.uikit.styles.halfPadding
+import ru.bysoft.android.budget.uikit.styles.padding
+import ru.bysoft.android.budget.uikit.styles.quarterPadding
 
 val widthCard = 200.dp
 val height = 105.dp
@@ -255,13 +277,7 @@ fun WalletSimpleCard(
                 ) {
                     UiKitIcons.getByName(info.icon)?.let {
                         Icon(
-                            imageVector = it,
-                            contentDescription = null,
-                            tint = UiKitColors.colors.type.high
-                        )
-                    }.onNull {
-                        Icon(
-                            painter = painterResource(id = ru.bysoft.android.budget.uikit.R.drawable.wallet_01),
+                            painter = painterResource(id = it),
                             contentDescription = null,
                             tint = UiKitColors.colors.type.high
                         )
