@@ -71,34 +71,52 @@ class AuthViewModel @Inject constructor(
     }
 
     override fun onCheckBoxClicked(value: Boolean) {
-        state.value = state.value.copy(
-            isCheckBoxChecked = value,
-            isButtonEnabled = isAllComplete(isCheckBoxChecked = value),
-            toastText = null
-        )
+        state.update {
+            it.copy(
+                isCheckBoxChecked = value,
+                isButtonEnabled = isAllComplete(isCheckBoxChecked = value),
+                toastText = null
+            )
+        }
+        state.update {
+            it.copy(
+                isGoogleButtonEnabled = isAllForGoogleComplete(it)
+            )
+        }
+    }
+
+    private fun isAllForGoogleComplete(state: AuthState): Boolean {
+        return if (state.type == AuthActionType.SIGN_IN) true
+        else state.isCheckBoxChecked
     }
 
     override fun setNewName(name: String) {
-        state.value = state.value.copy(
-            name = TextFieldState(name, null),
-            isButtonEnabled = isAllComplete(name = name),
-            toastText = null
-        )
+        state.update {
+            it.copy(
+                name = TextFieldState(name, null),
+                isButtonEnabled = isAllComplete(name = name),
+                toastText = null
+            )
+        }
     }
 
     override fun setNewEmail(email: String) {
-        state.value = state.value.copy(
-            email = TextFieldState(email, null),
-            isButtonEnabled = isAllComplete(email = email),
-            toastText = null
-        )
+        state.update {
+            it.copy(
+                email = TextFieldState(email, null),
+                isButtonEnabled = isAllComplete(email = email),
+                toastText = null
+            )
+        }
     }
 
     override fun onButtonClick(action: AuthActionType) {
-        state.value = state.value.copy(
-            isLoading = true,
-            toastText = null
-        )
+        state.update {
+            it.copy(
+                isLoading = true,
+                toastText = null
+            )
+        }
         when (action) {
             AuthActionType.SIGN_IN -> {
                 viewModelScope.launch(handler) {
@@ -143,10 +161,17 @@ class AuthViewModel @Inject constructor(
     }
 
     override fun switchAuthType(newType: AuthActionType) {
-        state.value = state.value.copy(
-            type = newType,
-            toastText = null
-        )
+        state.update {
+            it.copy(
+                type = newType,
+                toastText = null
+            )
+        }
+        state.update {
+            it.copy(
+                isGoogleButtonEnabled = isAllForGoogleComplete(it)
+            )
+        }
     }
 
     override fun onGoogleSignInResult(account: SignInResult) {
@@ -157,15 +182,7 @@ class AuthViewModel @Inject constructor(
                 navigate.toBottomNavigation()
             }
         } else {
-            state.update {
-                it.copy(
-                    toastText = R.string.unexpected_error,
-                    isLoading = false,
-                    email = it.email.copy(
-                        text = account.errorMessage.orEmpty()
-                    )
-                )
-            }
+            state.update { it.copy(isLoading = false) }
         }
 
     }

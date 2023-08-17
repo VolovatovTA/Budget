@@ -14,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
@@ -159,41 +158,38 @@ fun UiKitSocialMediaButton(
         },
         contentColor = UiKitColors.colors.type.high
     )
-    CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
-
-        Button(
-            onClick = onClick,
-            modifier = modifier
-                .clip(RoundedCornerShape(corner))
-                .height(44.dp),
-            colors = colors,
-            enabled = isButtonEnabled,
-            interactionSource = source,
-            elevation = ButtonDefaults.elevation(
-                defaultElevation = 0.dp,
-                pressedElevation = 5.dp,
-                disabledElevation = 0.dp,
-                focusedElevation = 0.dp,
-                hoveredElevation = 0.dp
-            )
+    Button(
+        onClick = onClick,
+        modifier = modifier
+            .clip(RoundedCornerShape(corner))
+            .height(44.dp),
+        colors = colors,
+        enabled = isButtonEnabled,
+        interactionSource = source,
+        elevation = ButtonDefaults.elevation(
+            defaultElevation = 0.dp,
+            pressedElevation = 5.dp,
+            disabledElevation = 0.dp,
+            focusedElevation = 0.dp,
+            hoveredElevation = 0.dp
+        )
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(padding)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(padding)
-            ) {
-                Image(
-                    painter = painterLeftImage,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(end = halfPadding)
-                )
+            Image(
+                painter = painterLeftImage,
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(end = halfPadding)
+            )
 
-                Text(
-                    text,
-                    color = UiKitColors.colors.type.high,
-                    style = UiKitTypography.TextMD.Medium
-                )
-            }
+            Text(
+                text,
+                color = UiKitColors.colors.type.high,
+                style = UiKitTypography.TextMD.Medium
+            )
         }
     }
 }

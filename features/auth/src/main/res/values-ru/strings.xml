@@ -10,10 +10,13 @@
     <string name="password_create_label">Придумайте пароль</string>
     <string name="password_enter_label">Пароль</string>
     <string name="password_confirm_enter_label">"Подтвердите пароль"</string>
-    <string name="agree_with_terms_and_conditions">С условиями использования и политикой конфиденциальности согласен</string>
-    <string name="invite_sign_in_text">"Ещё нет аккаунта, "</string>
+    <string name="agree_with_terms_and_conditions">"Я согласен с "</string>
+    <string name="and">" и "</string>
+    <string name="terms_text">"условиями использования"</string>
+    <string name="conditions_text">"политикой конфиденциальности"</string>
+    <string name="invite_sign_in_text">"Ещё нет аккаунта? "</string>
     <string name="invite_sign_up_text">"Введите ваши данные для регистрации. Или, если они у вас уже есть, "</string>
-    <string name="invite_sign_in_link">зарегестрируйтесь</string>
+    <string name="invite_sign_in_link">Зарегестрируйтесь!</string>
     <string name="invite_sign_up_link">войдите</string>
 
     <string name="field_email_invalid">Email адрес занят или введён не корректно</string>
@@ -27,5 +30,6 @@
     <string name="certificate_error">Ошибка сертификата. Обратитесь в службу поддержки</string>
     <string name="unexpected_error">Непредвиденная ошибка</string>
     <string name="sign_in_with_google">Войти через Google</string>
+    <string name="sign_up_by_google">Зарегистрироваться через Google</string>
     <string name="or_continue_with">Или через</string>
 </resources>

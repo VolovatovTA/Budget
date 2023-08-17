@@ -8,6 +8,7 @@ data class AuthState(
     val confirmPassword: TextFieldState = TextFieldState(),
     val name: TextFieldState = TextFieldState(),
     val isButtonEnabled: Boolean = false,
+    val isGoogleButtonEnabled: Boolean = true,
     val type: AuthActionType,
     val isLoading: Boolean,
     val toastText: Int?,

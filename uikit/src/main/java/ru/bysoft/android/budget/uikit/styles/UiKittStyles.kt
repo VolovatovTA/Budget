@@ -6,11 +6,11 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.theme.PublicSans
-import ru.bysoft.android.budget.uikit.theme.Roboto
 
 val textColor: Color
     @Composable
@@ -25,6 +25,7 @@ val corner = 8.dp
 val halfCorner = corner / 2
 val doubleCorner = corner * 2
 val quarterCorner = corner / 4
+
 data class BudgetTypography(
     val Regular: TextStyle,
     val Medium: TextStyle,
@@ -89,14 +90,14 @@ object UiKitTypography {
             )
         }
 
-    val Body2Link: SpanStyle
-        @Composable
-        get() = SpanStyle(
-            color = UiKitColors.colors.primary.`600`,
-            fontSize = 14.sp,
-            fontWeight = FontWeight(400),
-            fontFamily = Roboto
-        )
+    @Composable
+    fun Body2Link(textStyle: TextStyle = TextMD.Regular) = SpanStyle(
+        color = UiKitColors.colors.primary.`600`,
+        fontSize = textStyle.fontSize,
+        fontWeight = textStyle.fontWeight,
+        fontFamily = textStyle.fontFamily,
+        textDecoration = TextDecoration.Underline,
+    )
 
     val DisplayMD: BudgetTypography
         @Composable

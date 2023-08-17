@@ -1,6 +1,9 @@
 package ru.bysoft.android.budget.auth.presentation.screen
 
+import android.app.Activity
 import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -8,7 +11,6 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.*
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -143,7 +145,7 @@ private fun AuthSuccessScreen(
     val annotatedString = buildAnnotatedString {
         append(simpleText)
 
-        withStyle(style = UiKitTypography.Body2Link) {
+        withStyle(style = UiKitTypography.Body2Link()) {
             withAnnotation(
                 tag = "",
                 annotation = state.type.name
@@ -278,13 +280,51 @@ private fun AuthSuccessScreen(
                     modifier = Modifier
                         .size(20.dp)
                 )
-                Text(
-                    text = stringResource(id = R.string.agree_with_terms_and_conditions),
-                    style = UiKitTypography.TextXS.Regular,
+
+                // TODO add link to terms and conditions when it will be ready
+                val text1 = stringResource(id = R.string.agree_with_terms_and_conditions)
+//                val text2 = stringResource(id = R.string.terms_text)
+//                val text3 = stringResource(id = R.string.and)
+                val text4 = stringResource(id = R.string.conditions_text)
+                val stringWithTermsAndConditions = buildAnnotatedString {
+                    withStyle(UiKitTypography.TextXS.Regular.toSpanStyle()) {
+                        append(text1)
+//                        withStyle(UiKitTypography.Body2Link(UiKitTypography.TextXS.Regular)) {
+//                            withAnnotation(
+//                                tag = "https://wallet.it-bears.com/privacy_policy",
+//                                annotation = "https://wallet.it-bears.com/privacy_policy"
+//                            ) {
+//                                append(text2)
+//                            }
+//                        }
+//                        append(text3)
+                        withStyle(UiKitTypography.Body2Link(UiKitTypography.TextXS.Regular)) {
+                            withAnnotation(
+                                tag = "https://wallet.it-bears.com/privacy_policy",
+                                annotation = "https://wallet.it-bears.com/privacy_policy"
+                            ) {
+                                append(text4)
+                            }
+                        }
+                    }
+                }
+                val activity = LocalContext.current as? Activity
+                ClickableText(
+                    text = stringWithTermsAndConditions,
                     modifier = Modifier
                         .padding(start = halfPadding)
-                        .clickable { viewModel.onCheckBoxClicked(state.isCheckBoxChecked.not()) }
-                )
+                ) {
+                    stringWithTermsAndConditions.getStringAnnotations(it, it)
+                        .firstOrNull()
+                        ?.let { annotation ->
+                            activity?.startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(annotation.tag)
+                                )
+                            )
+                        } ?: viewModel.onCheckBoxClicked(state.isCheckBoxChecked.not())
+                }
             }
         }
 
@@ -311,9 +351,12 @@ private fun AuthSuccessScreen(
         Column(verticalArrangement = Arrangement.spacedBy(halfPadding)) {
 
             UiKitSocialMediaButton(
-                text = stringResource(id = R.string.sign_in_with_google),
+                text = stringResource(
+                    if (state.type == AuthActionType.SIGN_IN) R.string.sign_in_with_google
+                    else R.string.sign_up_by_google
+                ),
                 painterLeftImage = painterResource(id = R.drawable.logo_google),
-                isButtonEnabled = true,
+                isButtonEnabled = state.isGoogleButtonEnabled,
                 onClick = {
                     scope.launch {
                         viewModel.setLoading(true)
