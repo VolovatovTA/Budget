@@ -7,6 +7,8 @@ import javax.inject.Inject
 
 interface IHomeWalletsRepo {
     suspend fun getWallets(): List<WalletData>
+
+    fun clearCash()
 }
 
 class HomeWalletsRepo @Inject constructor(
@@ -14,8 +16,15 @@ class HomeWalletsRepo @Inject constructor(
     private val mapper: IWalletsDataMapper
 ) : IHomeWalletsRepo {
 
+    private var cash: List<WalletData>? = null
     override suspend fun getWallets(): List<WalletData> {
-        return mapper.mapToData(api.getWallets())
+        val localVal = cash ?: mapper.mapToData(api.getWallets())
+        cash = localVal
+        return localVal
+    }
+
+    override fun clearCash() {
+        cash = null
     }
 
 }

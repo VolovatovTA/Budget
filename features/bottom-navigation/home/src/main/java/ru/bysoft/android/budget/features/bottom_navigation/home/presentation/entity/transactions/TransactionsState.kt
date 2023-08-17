@@ -5,6 +5,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Immutable
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 
+@Immutable
 sealed interface TransactionsState
 
 @Immutable

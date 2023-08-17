@@ -18,14 +18,14 @@ import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.map
 abstract class HomeDi {
 
     @Binds
-    abstract fun bindWalletsRepo(repo: HomeWalletsRepo): IHomeWalletsRepo
-
-    @Binds
-    abstract fun bindMeRepo(repo: HomeMeRepo): IHomeMeRepo
-
-    @Binds
     abstract fun bindTransactionsRepo(repo: TransactionRepo): ITransactionsRepo
 
     @Binds
     abstract fun bindHomePresentationMapper(impl: HomePresentationMapper): IHomePresentationMapper
+
+    @Binds
+    abstract fun bindHomeWalletsRepo(repo: HomeWalletsRepo): IHomeWalletsRepo
+
+    @Binds
+    abstract fun bindHomeMeRepo(repo: HomeMeRepo): IHomeMeRepo
 }

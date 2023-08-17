@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.times
 import coil.compose.SubcomposeAsyncImage
 import ru.bysoft.android.budget.common.me_info.entity.DayOfWeek
 import ru.bysoft.android.budget.common.me_info.entity.MeData
@@ -38,7 +39,9 @@ import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.styles.corner
 import ru.bysoft.android.budget.uikit.styles.halfPadding
 import ru.bysoft.android.budget.uikit.styles.padding
+import ru.bysoft.android.budget.uikit.styles.quarterPadding
 
+val loaderSize = 24.dp
 
 @Composable
 fun HomeTitleComponent(
@@ -47,7 +50,8 @@ fun HomeTitleComponent(
     onCurrencyChanged: (BudgetCurrencyEnum) -> Unit
 ) {
     Box(
-        modifier = Modifier,
+        modifier = Modifier
+            .height(loaderSize + 2 * padding),
         contentAlignment = Alignment.CenterStart
     ) {
         when (meState) {
@@ -56,6 +60,7 @@ fun HomeTitleComponent(
                     modifier = Modifier
                         .padding(top = padding)
                         .padding(horizontal = padding),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     UiKitShimmerComponent(
                         modifier = Modifier
@@ -73,13 +78,18 @@ fun HomeTitleComponent(
             }
 
             is MeErrorState -> {
-                Text(
-                    text = stringResource(R.string.error_while_loading_me_info),
-                    style = UiKitTypography.TextMD.Regular,
+                Box(
                     modifier = Modifier
                         .padding(top = padding)
-                        .padding(horizontal = padding)
-                )
+                        .padding(horizontal = padding),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    Text(
+                        text = stringResource(R.string.error_while_loading_me_info),
+                        style = UiKitTypography.TextMD.Regular,
+                        modifier = Modifier
+                    )
+                }
             }
         }
     }
@@ -100,15 +110,15 @@ private fun TitleSuccessComponent(
     ) {
         var isLoadingSuccess by remember { mutableStateOf(true) }
         val modifier = Modifier
-            .size(24.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .size(loaderSize)
+            .clip(RoundedCornerShape(corner))
         if (isLoadingSuccess) {
             SubcomposeAsyncImage(
                 model = meState.meData?.pictureUrl,
                 modifier = modifier.clickable(onClick = onSettingsClick),
                 loading = {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(loaderSize)
                     )
                 },
                 onError = {
@@ -123,7 +133,8 @@ private fun TitleSuccessComponent(
                 contentDescription = null,
                 modifier = modifier
                     .background(UiKitColors.colors.neutral.`200`)
-                    .padding(7.dp)
+                    .size(loaderSize)
+                    .padding(quarterPadding)
                     .clickable(onClick = onSettingsClick),
             )
         }
@@ -157,7 +168,6 @@ private fun TitleSuccessComponent(
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
-                modifier = Modifier.background(UiKitColors.colors.surface.primary)
             ) {
                 popUpList.list.forEach {
                     DropdownMenuItem(
@@ -165,7 +175,6 @@ private fun TitleSuccessComponent(
                             expanded = false
                             onCurrencyChanged(it)
                         },
-                        modifier = Modifier.background(UiKitColors.colors.surface.primary)
                     ) {
                         UiKitCurrencyPopUpTextField(it)
                     }

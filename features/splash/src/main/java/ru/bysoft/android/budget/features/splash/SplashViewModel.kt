@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.token.ITokenStorage
@@ -34,10 +35,12 @@ class SplashViewModel @Inject constructor(
     }
 
     override fun onAnimationFinished() {
-        if (tokenRepo.getTokens() == null) {
-            navigate.toAuth()
-        } else {
-            navigate.toBottomNavigation()
+        viewModelScope.launch {
+            if (tokenRepo.getTokens().first() == null) {
+                navigate.toAuth()
+            } else {
+                navigate.toBottomNavigation()
+            }
         }
     }
 

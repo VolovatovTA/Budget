@@ -52,8 +52,10 @@ class SettingsViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     fun onLogoutClick() {
-        tokenRepo.clearTokens()
-        navigate.toAuth()
+        viewModelScope.launch {
+            tokenRepo.clearTokens()
+            navigate.toAuth()
+        }
     }
 
     fun onEditCurrency(currency: BudgetCurrencyEnum) {

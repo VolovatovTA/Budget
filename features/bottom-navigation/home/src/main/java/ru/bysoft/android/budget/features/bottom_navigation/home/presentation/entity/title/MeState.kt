@@ -1,8 +1,10 @@
 package ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.title
 
+import androidx.compose.runtime.Immutable
 import ru.bysoft.android.budget.common.me_info.entity.MeData
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 
+@Immutable
 sealed interface IMeState
 
 data class MeSuccessState(

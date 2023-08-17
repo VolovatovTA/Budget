@@ -50,6 +50,8 @@ dependencies {
     //auth
     implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
 
+    implementation "androidx.datastore:datastore-preferences:$datastore_prefs"
+
     // retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"

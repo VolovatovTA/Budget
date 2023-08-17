@@ -1,6 +1,5 @@
 package ru.bysoft.android.budget.features.bottom_navigation.home
 
-import android.util.Log
 import androidx.compose.material.DismissState
 import androidx.compose.material.DismissValue
 import androidx.compose.material.ExperimentalMaterialApi
@@ -13,7 +12,6 @@ import ru.budget.android.api.data.source.network.entity.transactions.TransferTyp
 import ru.bysoft.android.budget.common.errors.errorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.network.entity.ifHttpErrorGetErrorBody
-import ru.bysoft.android.budget.common.util.TAG
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getCurrency
@@ -68,13 +66,11 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel(), IHomeViewModel {
 
     override fun loadData(isRefresh: Boolean) {
-        Log.d(TAG, "loadData: ")
         getMeInfo()
         getWallets(isRefresh)
     }
 
     override fun loadTransactions(isRefresh: Boolean) {
-        Log.d(TAG, "loadTransactions: ")
         getTransactions(isRefresh)
     }
 
@@ -110,7 +106,7 @@ class HomeViewModel @Inject constructor(
     override val transactionsState: MutableStateFlow<TransactionsState> =
         MutableStateFlow(TransactionLoading(false))
 
-    private var currentWalletId: String = ""
+    private var currentWalletId: String? = null
 
     private fun getBasicFilterState() = UiKitRowTabState(
         listFilters = TransactionTypeEnum.values()
@@ -268,11 +264,17 @@ class HomeViewModel @Inject constructor(
 
     private fun getWallets(isRefresh: Boolean) {
         viewModelScope.launch(homeWalletsExceptionHandler) {
-            walletsState.value = WalletsLoadingState(isRefresh)
+            when (walletsState.value) {
+                is WalletsErrorState -> {
+                    walletsState.value = WalletsLoadingState(isRefresh)
+                }
+
+                else -> {}
+            }
             val loadedData = walletsRepo.getWallets()
             walletsState.value = WalletsSuccessState(
-                mapper.mapToState(loadedData),
-                loadedData.firstOrNull()?.id ?: ""
+                list = mapper.mapToState(loadedData),
+                currentWalletId = currentWalletId ?: loadedData.firstOrNull()?.id ?: ""
             )
             currentWalletId = loadedData.firstOrNull()?.id ?: ""
             if (walletsState.value is WalletsSuccessState) {
@@ -286,7 +288,9 @@ class HomeViewModel @Inject constructor(
 
     private fun getMeInfo() {
         viewModelScope.launch(homeMeExceptionHandler) {
-            meState.value = MeLoadingState
+            if (meState.value is MeErrorState) {
+                meState.value = MeLoadingState
+            }
             val meInfoData = meRepo.getMeInfo()
             meInfo.setCurrentMeInfo(meInfoData)
             meState.value = MeSuccessState(meInfoData)

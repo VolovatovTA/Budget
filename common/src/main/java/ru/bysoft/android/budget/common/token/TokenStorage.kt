@@ -1,34 +1,48 @@
 package ru.bysoft.android.budget.common.token
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import ru.bysoft.android.budget.common.token.entity.AuthSuccessResponse
 import ru.bysoft.android.budget.common.util.restore
 import ru.bysoft.android.budget.common.util.toJson
 import javax.inject.Inject
 
 interface ITokenStorage {
-    fun saveTokens(tokenData: AuthSuccessResponse)
-    fun getTokens(): AuthSuccessResponse?
-    fun clearTokens()
+    suspend fun saveTokens(tokenData: AuthSuccessResponse)
+    fun getTokens(): Flow<AuthSuccessResponse?>
+    suspend fun clearTokens()
 }
 
 class TokenStorage @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ITokenStorage {
-    private val tableName = "tokenTableName"
-    private val tokenKey = "tokenKey"
-    private val shredPrefs = context.getSharedPreferences(tableName, Context.MODE_PRIVATE)
-
-    override fun saveTokens(tokenData: AuthSuccessResponse) {
-        shredPrefs.edit().putString(tokenKey, tokenData.toJson()).apply()
+    companion object {
+        private val Context.tokenStorage: DataStore<Preferences> by preferencesDataStore("tokenStore")
+        val tokensKey = stringPreferencesKey("field1")
     }
 
-    override fun getTokens() =
-        shredPrefs.getString(tokenKey, "")?.restore<AuthSuccessResponse>()
+    override suspend fun saveTokens(tokenData: AuthSuccessResponse) {
+        context.tokenStorage.edit {
+            it[tokensKey] = tokenData.toJson()
+        }
+    }
 
-    override fun clearTokens() {
-        shredPrefs.edit().clear().commit()
+    override fun getTokens(): Flow<AuthSuccessResponse?> =
+        context.tokenStorage.data.map { prefs ->
+            prefs[tokensKey]?.restore<AuthSuccessResponse>()
+        }
+
+    override suspend fun clearTokens() {
+        context.tokenStorage.edit {
+            it.clear()
+        }
     }
 
 }

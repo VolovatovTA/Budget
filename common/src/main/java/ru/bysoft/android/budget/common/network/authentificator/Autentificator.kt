@@ -1,10 +1,14 @@
 package ru.bysoft.android.budget.common.network.authentificator
 
 import android.util.Log
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Protocol
@@ -27,8 +31,8 @@ const val tokenAdder = "Bearer "
 
 sealed interface TokenStatus
 
-object TokenWaiting : TokenStatus
 object TokenError : TokenStatus
+object TokenEmpty : TokenStatus
 data class TokenSuccess(
     val tokens: AuthSuccessResponse
 ) : TokenStatus
@@ -44,96 +48,100 @@ class AuthenticationInterceptorRefreshToken @Inject constructor(
     private val navigator: ICommonNavigation
 ) : Interceptor {
 
-    private fun tokenDefaultStatus() = when (val tokens = tokenRepo.getTokens()) {
-        null -> null
-        else -> TokenSuccess(tokens)
-    }
+    private val scope = CoroutineScope(Dispatchers.IO)
+    private val tokenStatus = tokenRepo.getTokens()
+        .map { response ->
+            response?.let { TokenSuccess(it) } ?: TokenEmpty
+        }
+        .stateIn(scope, SharingStarted.WhileSubscribed(), TokenEmpty)
 
-    private val tokenStatus: MutableStateFlow<TokenStatus?> = MutableStateFlow(tokenDefaultStatus())
-
+    private var isRefreshing = false
     init {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             tokenStatus.collect {
-                Log.d(TAG, "token: $it")
+                Log.d(TAG, "token status updated: $it")
             }
         }
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        when (val currentState = tokenStatus.value) {
-            is TokenSuccess -> {
-                println("TokenSuccess")
+        val currentState = tokenStatus.value
+        when {
+            currentState is TokenSuccess -> {
                 val authenticationRequest = getAuthRequest(
                     request,
                     requireNotNull(currentState.tokens.accessToken)
                 ) // Добавляем токен в заголовок
                 val response = chain.proceed(authenticationRequest) // делаем запрос
-                println(response.toString())
                 return when (response.code) {
                     401 -> {
-                        println("code 401")
                         response.close() // Закрываем старый ответ потому что иначе ругаться будет
                         refresh(request, chain) // Обновляем токен и делаем запрос заново
                     }
+
                     else -> {
-                        println("success")
                         response
                     }
                 }
             }
-            is TokenWaiting -> {
-                println("TokenWaiting")
+
+            isRefreshing -> {
                 return awaitRefreshingAndRequest(request, chain)
             }
-            is TokenError -> {
-                println("TokenError")
-                Log.d(TAG, "при самом старте tokens null")
-                val newTokens = tokenDefaultStatus()
-                return if (newTokens is TokenSuccess){
-                    tokenStatus.update { newTokens }
-                    intercept(chain)
-                } else {
-                    runBlocking(Dispatchers.Main) { navigator.navigateToAuth() } //нужно навигироваться в мэйн потоке
-                    Response.Builder()
-                        .body("{\"goToAuth\": true}".toResponseBody("application/json; charset=utf-8".toMediaType()))
-                        .code(200)
-                        .request(request)
-                        .protocol(Protocol.HTTP_1_0)
-                        .message("OK")
-                        .build()
-                }
+
+            currentState is TokenError -> {
+                // при старте смотрим есть ли токены, если нет то переходим на авторизацию
+                runBlocking(Dispatchers.Main) { navigator.navigateToAuth() } //нужно навигироваться в мэйн потоке
+                return Response.Builder()
+                    .body("{\"goToAuth\": true}".toResponseBody("application/json; charset=utf-8".toMediaType()))
+                    .code(200)
+                    .request(request)
+                    .protocol(Protocol.HTTP_1_0)
+                    .message("OK")
+                    .build()
             }
+
+            currentState is TokenEmpty -> {
+                // при старте токен не должен быть пустым или в ошибке. Если пустой то переходим на авторизацию
+                runBlocking(Dispatchers.Main) { navigator.navigateToAuth() } //нужно навигироваться в мэйн потоке
+                return Response.Builder()
+                    .body("{\"goToAuth\": true}".toResponseBody("application/json; charset=utf-8".toMediaType()))
+                    .code(200)
+                    .request(request)
+                    .protocol(Protocol.HTTP_1_0)
+                    .message("OK")
+                    .build()
+            }
+
             else -> {
-                println("else")
-                return chain.proceed(request)
+                return Response.Builder()
+                    .body("{\"goToAuth\": error}".toResponseBody("application/json; charset=utf-8".toMediaType()))
+                    .code(401)
+                    .request(request)
+                    .protocol(Protocol.HTTP_1_0)
+                    .message("OK")
+                    .build()
             }
         }
     }
 
-    var conter = 0
 
     private fun refresh(
         originalRequest: Request,
         chain: Interceptor.Chain
     ): Response {
-        println("refresh ${++conter}")
-        if (tokenStatus.value is TokenWaiting) {
+        if (isRefreshing) {
             return awaitRefreshingAndRequest(originalRequest, chain)
         } else {
-            tokenStatus.value = TokenWaiting
+            isRefreshing = true
             val responseNewTokens = try {
-                println("responseNewTokens start")
-                Log.d(TAG, "responseNewTokens start")
                 val answer = runBlocking { getNewTokens() }
-                println("responseNewTokens end")
-                Log.d(TAG, "responseNewTokens end")
+                isRefreshing = false
                 answer
             } catch (t: HttpException) {
-                println("разлогин")
-                Log.d(TAG, "разлогин")
-                tokenRepo.clearTokens()
-                tokenStatus.update { TokenError }
+                runBlocking { tokenRepo.clearTokens() }
+                isRefreshing = false
                 runBlocking(Dispatchers.Main) { navigator.navigateToAuth() } //нужно навигироваться в мэйн потоке
                 return Response.Builder()
                     .body("{\"goToAuth\": error while trying to get new tokens}".toResponseBody("application/json; charset=utf-8".toMediaType()))
@@ -143,31 +151,17 @@ class AuthenticationInterceptorRefreshToken @Inject constructor(
                     .message("OK")
                     .build()
             }
-            println("responseNewTokens finish")
-            Log.d(TAG, "responseNewTokens finish")
 
             if (responseNewTokens.accessToken != null && responseNewTokens.refreshToken != null) {
-                println("responseNewTokens.accessToken")
-                Log.d(TAG, "responseNewTokens responseNewTokens.accessToken")
-
-                tokenRepo.saveTokens(responseNewTokens)
-                tokenStatus.value = TokenSuccess(responseNewTokens)
+                runBlocking { tokenRepo.saveTokens(responseNewTokens) }
             } else {
-                println("responseNewTokens throw EmptyTokensWhileRefreshing")
-                Log.d(TAG, "responseNewTokens throw EmptyTokensWhileRefreshing")
                 throw EmptyTokensWhileRefreshing
             }
 
             val newAuthenticationRequest =
                 getAuthRequest(originalRequest, responseNewTokens.accessToken)
-            println("newAuthenticationRequest newAuthenticationRequest")
-            Log.d(TAG, "newAuthenticationRequest newAuthenticationRequest")
 
-            val response = chain.proceed(newAuthenticationRequest)
-            println("response $response")
-            Log.d(TAG, "response $response")
-
-            return response
+            return chain.proceed(newAuthenticationRequest)
         }
     }
 
@@ -175,23 +169,18 @@ class AuthenticationInterceptorRefreshToken @Inject constructor(
         refreshApi
             .refresh(
                 TokenRefreshRequest(
-                    tokenRepo.getTokens()?.refreshToken ?: "empty-refresh-token"
+                    tokenRepo.getTokens().first()?.refreshToken ?: "empty-refresh-token"
                 )
             )
 
-    var counter2 = 0
     private fun awaitRefreshingAndRequest(
         originalRequest: Request,
         chain: Interceptor.Chain
     ): Response {
-        println("awaitRefreshingAndRequest ${++counter2}")
-        Log.d(TAG, "awaitRefreshingAndRequest ${++counter2}")
 
         return runBlocking {
             val tokenSuccess =
                 tokenStatus.first { tokenStatus ->
-                    println("tokenStatus.first $tokenStatus")
-                    Log.d(TAG, "tokenStatus.first $tokenStatus")
                     tokenStatus is TokenSuccess
                 } as TokenSuccess
             val newAuthenticationRequest =

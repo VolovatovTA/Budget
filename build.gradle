@@ -38,6 +38,7 @@ buildscript {
         room_version = '2.5.1'
 
         tehras_charts_version = '0.2.4-alpha'
+        datastore_prefs = '1.0.0'
     }
     dependencies {
         classpath 'com.google.gms:google-services:4.3.15'
