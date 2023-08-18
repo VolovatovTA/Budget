@@ -13,6 +13,9 @@
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 /.idea/inspectionProfiles/Project_Default.xml
+/.idea/kotlinc.xml
+/app/remoteBack/release/app-remoteBack-release.apk
+/app/remoteBack/release/output-metadata.json
 .DS_Store
 /build
 /captures
