@@ -36,5 +36,6 @@
     <string name="or_continue_with">Or continue with</string>
 
     <string name="web_client_id" translatable="false">247103763456-2083adl9jcbl11iuhjk2gshlv9vuqro8.apps.googleusercontent.com</string>
+    <string name="passwords_not_match">Password mismatch</string>
 
 </resources>

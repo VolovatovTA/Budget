@@ -32,5 +32,6 @@
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="sign_up_by_google">Sign up by Google</string>
     <string name="or_continue_with">Or continue with</string>
+    <string name="passwords_not_match">Password mismatch</string>
 
 </resources>

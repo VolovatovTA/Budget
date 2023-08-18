@@ -55,19 +55,36 @@ class AuthViewModel @Inject constructor(
         )
 
     override fun setNewPassword(password: String) {
-        state.value = state.value.copy(
-            password = TextFieldState(password, null),
-            isButtonEnabled = isAllComplete(password = password),
-            toastText = null
-        )
+        state.update {
+            it.copy(
+                password =
+                TextFieldState(
+                    password,
+                    if (it.type == AuthActionType.SIGN_UP && password != state.value.confirmPassword.text) R.string.passwords_not_match else null
+                ),
+                confirmPassword = it.confirmPassword.copy(
+                    errorText = if (it.type == AuthActionType.SIGN_UP && password != state.value.confirmPassword.text) R.string.passwords_not_match else null
+                ), isButtonEnabled = isAllComplete(password = password),
+                toastText = null
+            )
+        }
     }
 
     override fun setNewConfirmPassword(password: String) {
-        state.value = state.value.copy(
-            confirmPassword = TextFieldState(password, null),
-            isButtonEnabled = isAllComplete(password = password),
-            toastText = null
-        )
+        state.update {
+            it.copy(
+                confirmPassword =
+                TextFieldState(
+                    password,
+                    if (password != state.value.password.text) R.string.passwords_not_match else null
+                ),
+                password = it.password.copy(
+                    errorText = if (it.type == AuthActionType.SIGN_UP && password != state.value.password.text) R.string.passwords_not_match else null
+                ),
+                isButtonEnabled = isAllComplete(confirmPassword = password),
+                toastText = null
+            )
+        }
     }
 
     override fun onCheckBoxClicked(value: Boolean) {
@@ -164,7 +181,9 @@ class AuthViewModel @Inject constructor(
         state.update {
             it.copy(
                 type = newType,
-                toastText = null
+                toastText = null,
+                password = it.password.copy(errorText = if (newType == AuthActionType.SIGN_IN) null else it.password.errorText),
+                isButtonEnabled = isAllComplete(type = newType)
             )
         }
         state.update {
@@ -196,6 +215,7 @@ class AuthViewModel @Inject constructor(
         email: String = state.value.email.text,
         name: String = state.value.name.text,
         password: String = state.value.password.text,
+        confirmPassword: String = state.value.confirmPassword.text,
         isCheckBoxChecked: Boolean = state.value.isCheckBoxChecked
     ) =
         when (type) {
@@ -203,7 +223,7 @@ class AuthViewModel @Inject constructor(
             AuthActionType.SIGN_UP -> isCheckBoxChecked && isEmailCorrect(email) && isPasswordCorrect(
                 password
             )
-                    && isNameCorrect(name)
+                    && isNameCorrect(name) && password == confirmPassword
         }
 
 

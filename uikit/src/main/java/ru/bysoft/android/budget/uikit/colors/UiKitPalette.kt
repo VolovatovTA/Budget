@@ -1,6 +1,7 @@
 package ru.bysoft.android.budget.uikit.colors
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import ru.bysoft.android.budget.uikit.styles.text.BaseTextFieldColors
@@ -201,6 +202,7 @@ object DarkPalette : Palette {
 
 object UiKitColors {
 
+
     @Composable
     private fun getColorsBySystemTheme(): Palette {
         return if (isSystemInDarkTheme()) DarkPalette else LightPalette
@@ -257,6 +259,14 @@ object UiKitColors {
         if (isSelected) colors.neutral.`300` else colors.surface.primary
     }
 
+    val selectionColors
+        @Composable
+        get() =
+            TextSelectionColors(
+                handleColor = colors.primary.`700`,
+                backgroundColor = colors.type.low,
+            )
+
     val textField
         @Composable
         get() =
@@ -290,7 +300,7 @@ object UiKitColors {
                     backgroundColor = Color.Transparent,
                     trailingIconColor = colors.type.high,
                     leadingIconColor = colors.type.high,
-                    cursorColor = colors.primary.`1100`,
+                    cursorColor = colors.type.high,
                     placeholderColor = Color.Transparent,
                     focusedIndicatorColor = colors.type.high,
                     focusedLabelColor = colors.type.high,

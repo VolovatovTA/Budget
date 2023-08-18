@@ -30,6 +30,7 @@
     <string name="certificate_error">Ошибка сертификата. Обратитесь в службу поддержки</string>
     <string name="unexpected_error">Непредвиденная ошибка</string>
     <string name="sign_in_with_google">Войти через Google</string>
-    <string name="sign_up_by_google">Зарегистрироваться через Google</string>
+    <string name="sign_up_by_google">Через Google</string>
     <string name="or_continue_with">Или через</string>
+    <string name="passwords_not_match">Пароли не сопадают</string>
 </resources>
