@@ -19,6 +19,7 @@
     <string name="wallet_btn_update_text">Подтвердить</string>
     <string name="wallet_title_create">Создайте кошелёк</string>
     <string name="wallet_title_update">Отредактируйте кошелёк</string>
+    <string name="wallet_icon_text">Для упрощения работы с кошельком задайте ему иконку. В будущем вам будет проще вспомнить что это за кошелёк</string>
 
     <string name="monday">Понедельник</string>
     <string name="tuesday">Вторник</string>

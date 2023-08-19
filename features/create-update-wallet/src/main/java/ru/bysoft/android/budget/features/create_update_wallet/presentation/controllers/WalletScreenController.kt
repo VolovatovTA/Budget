@@ -8,6 +8,8 @@ import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.create_update_wallet.IWalletScreenController
+import ru.bysoft.android.budget.common.R
+import ru.bysoft.android.budget.common.util.applyFilter
 import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.ControllerWalletState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
@@ -28,11 +30,24 @@ class WalletScreenController @Inject constructor(
         get() = _state
 
     override fun onNameChanged(name: String) {
-        _state.update { it.copy(nameTextState = TextFieldState(name)) }
+        _state.update {
+            it.copy(
+                nameTextState = TextFieldState(
+                    text = name,
+                    errorText = if (name.isEmpty()) R.string.invalid_name else null
+                )
+            )
+        }
     }
 
     override fun onBalanceChanged(balance: String) {
-        _state.update { it.copy(balanceTextState = TextFieldState(balance)) }
+        _state.update {
+            it.copy(
+                balanceTextState = it.balanceTextState.copy(
+                    text = balance.applyFilter()
+                )
+            )
+        }
     }
 
     override fun onCurrencySelected(currency: BudgetCurrencyEnum) {
@@ -70,6 +85,7 @@ class WalletScreenController @Inject constructor(
             CreateWalletErrorData.INVALID_BALANCE -> _state.value.balanceTextState.copy(
                 errorText = CreateWalletErrorData.INVALID_BALANCE.errorText
             )
+
             else -> _state.value.balanceTextState
         }
 
@@ -78,9 +94,11 @@ class WalletScreenController @Inject constructor(
             CreateWalletErrorData.INVALID_NAME -> _state.value.nameTextState.copy(
                 errorText = CreateWalletErrorData.INVALID_NAME.errorText
             )
+
             CreateWalletErrorData.NO_UNIQUE_NAME -> _state.value.nameTextState.copy(
                 errorText = CreateWalletErrorData.NO_UNIQUE_NAME.errorText
             )
+
             else -> _state.value.nameTextState
         }
 
@@ -89,6 +107,7 @@ class WalletScreenController @Inject constructor(
             CreateWalletErrorData.INVALID_CURRENCY -> _state.value.currencyFieldState.copy(
                 errorText = CreateWalletErrorData.INVALID_CURRENCY.errorText
             )
+
             else -> _state.value.currencyFieldState
         }
 }

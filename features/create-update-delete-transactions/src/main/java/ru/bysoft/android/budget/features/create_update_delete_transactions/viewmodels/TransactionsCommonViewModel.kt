@@ -13,6 +13,7 @@ import ru.budget.android.api.data.source.network.IWalletApi
 import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
+import ru.bysoft.android.budget.common.util.applyFilter
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.TransactionsCreateNavParams
@@ -86,7 +87,7 @@ abstract class TransactionsCommonViewModel(
         state.update {
             it.copyWithAmount(
                 amountState = it.amountState.copy(
-                    text = amount
+                    text = amount.applyFilter()
                 )
             )
         }

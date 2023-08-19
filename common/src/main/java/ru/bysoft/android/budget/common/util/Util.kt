@@ -16,7 +16,35 @@ inline fun <reified T> String.restore() = Gson().fromJson(this, T::class.java)
 
 const val pointJson = ".json"
 
+fun String.applyFilter(): String {
+    if (this == ".") return this
+    val filtered = replace(',', '.').filter { it.isDigit() || it == '.' }
+    when (val dotIndex = filtered.indexOf('.')) {
+        -1 -> return filtered
+        0 -> {
+            val nextDotIndex = filtered.indexOf('.', 1)
+            return if (nextDotIndex != -1) {
+                // if we found anoter dot, we return substring from 0 to next dot
+                "0" + filtered.substring(0, nextDotIndex)
+            } else {
+                // if we didn't find another dot, we return substring from 0 to last index adding the 0 to the beginning
+                "0$filtered"
+            }
+        }
 
+        filtered.lastIndex -> return filtered
+        else -> {
+            val nextDotIndex = filtered.indexOf('.', dotIndex + 1)
+            return if (nextDotIndex != -1) {
+                // if we found anoter dot, we return substring from 0 to next dot
+                filtered.substring(0, nextDotIndex)
+            } else {
+                // if we didn't find another dot, we return filtered string
+                filtered
+            }
+        }
+    }
+}
 
 inline fun <R> R?.onNull(block: () -> R): R = this ?: block()
 

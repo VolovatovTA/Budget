@@ -21,8 +21,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -179,8 +181,13 @@ fun UiKitTextFieldWithCurrency(
     var expanded by remember { mutableStateOf(false) }
     Box {
         OutlinedTextField(
-            value = state.text,
-            onValueChange = onValueChange,
+            value = TextFieldValue(
+                state.text,
+                selection = TextRange(state.text.length)
+            ),
+            onValueChange = {
+                onValueChange(it.text)
+            },
             modifier = modifier
                 .onFocusChanged { if (!it.isFocused) onNotFocused(state.text) },
             singleLine = true,

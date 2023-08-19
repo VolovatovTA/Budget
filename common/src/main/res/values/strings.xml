@@ -20,6 +20,7 @@
     <string name="wallet_btn_update_text">Confirm</string>
     <string name="wallet_title_create">Creating wallet</string>
     <string name="wallet_title_update">Edit wallet</string>
+    <string name="wallet_icon_text">To create wallet you need to choose one of icon. It will simplify recognizing your wallet faster</string>
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
     <string name="wednesday">Wednesday</string>

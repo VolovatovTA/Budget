@@ -8,6 +8,7 @@ import ru.bysoft.android.budget.common.data_entity.CategoryErrorType
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.PeriodState
+import ru.bysoft.android.budget.common.util.applyFilter
 import ru.bysoft.android.budget.features.create_udate_category.R
 import ru.bysoft.android.budget.features.create_udate_category.navigation.CreateCategoryNavInfo
 import ru.bysoft.android.budget.features.create_udate_category.navigation.ICreateUpdateCategoryNavigation
@@ -87,7 +88,7 @@ abstract class CreateUpdateCategoryViewModel(
         state.update {
             it.copy(
                 amountTextState = it.amountTextState.copy(
-                    text = newAmount
+                    text = newAmount.applyFilter()
                 )
             )
         }
