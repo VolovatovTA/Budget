@@ -14,6 +14,8 @@
 /.idea/assetWizardSettings.xml
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/kotlinc.xml
+/.idea/appInsightsSettings.xml
+/.idea/migrations.xml
 /app/remoteBack/release/app-remoteBack-release.apk
 /app/remoteBack/release/output-metadata.json
 .DS_Store

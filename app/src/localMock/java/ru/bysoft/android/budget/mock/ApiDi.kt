@@ -24,4 +24,7 @@ abstract class ApiDi {
 
     @Binds
     abstract fun bindMeApiMock(mockImpl: MeApiMock): IMeApi
+
+    @Binds
+    abstract fun bindCurrencyRatesApiMock(mockImpl: CurrencyRateApiMock): ICurrencyRatesApi
 }

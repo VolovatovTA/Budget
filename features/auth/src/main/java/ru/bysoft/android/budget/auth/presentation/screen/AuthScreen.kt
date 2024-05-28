@@ -10,15 +10,29 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.*
-import androidx.compose.foundation.interaction.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -29,8 +43,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.*
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.withAnnotation
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -56,7 +73,10 @@ import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
 import ru.bysoft.android.budget.uikit.components.checkbox.UiKitCheckBox
 import ru.bysoft.android.budget.uikit.components.devider.UiKitDivider
-import ru.bysoft.android.budget.uikit.styles.*
+import ru.bysoft.android.budget.uikit.styles.UiKitTypography
+import ru.bysoft.android.budget.uikit.styles.halfPadding
+import ru.bysoft.android.budget.uikit.styles.padding
+import ru.bysoft.android.budget.uikit.styles.quarterPadding
 import ru.bysoft.android.budget.uikit.utils.ExpandVertically
 import ru.bysoft.android.budget.uikit.utils.duration
 
@@ -283,25 +303,15 @@ private fun AuthSuccessScreen(
 
                 // TODO add link to terms and conditions when it will be ready
                 val text1 = stringResource(id = R.string.agree_with_terms_and_conditions)
-//                val text2 = stringResource(id = R.string.terms_text)
-//                val text3 = stringResource(id = R.string.and)
+
                 val text4 = stringResource(id = R.string.conditions_text)
                 val stringWithTermsAndConditions = buildAnnotatedString {
                     withStyle(UiKitTypography.TextXS.Regular.toSpanStyle()) {
                         append(text1)
-//                        withStyle(UiKitTypography.Body2Link(UiKitTypography.TextXS.Regular)) {
-//                            withAnnotation(
-//                                tag = "https://wallet.it-bears.com/privacy_policy",
-//                                annotation = "https://wallet.it-bears.com/privacy_policy"
-//                            ) {
-//                                append(text2)
-//                            }
-//                        }
-//                        append(text3)
                         withStyle(UiKitTypography.Body2Link(UiKitTypography.TextXS.Regular)) {
                             withAnnotation(
-                                tag = "https://wallet.it-bears.com/privacy_policy",
-                                annotation = "https://wallet.it-bears.com/privacy_policy"
+                                tag = "https://www.iubenda.com/privacy-policy/52608160",
+                                annotation = "https://www.iubenda.com/privacy-policy/52608160"
                             ) {
                                 append(text4)
                             }
