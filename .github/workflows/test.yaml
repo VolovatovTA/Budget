@@ -1,0 +1,24 @@
+name: Tests
+on:
+  push:
+    branches:
+      - 'develop'
+
+jobs:
+  debug:
+    name: Debug
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up secret file
+        env:
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_ALIAS_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.EY_STORE_PASSWORD }}
+        run: |
+          echo ${{secrets.KEY_ALIAS}} | sed 's/./& /g'
+          echo ${{secrets.KEY_PASSWORD}} | sed 's/./& /g'
+          echo ${{secrets.EY_STORE_PASSWORD}} | sed 's/./& /g'

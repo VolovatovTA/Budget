@@ -5,10 +5,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dagger.multibindings.IntoSet
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.bysoft.android.budget.common.network.authentificator.AuthenticationInterceptorRefreshToken
@@ -23,16 +21,16 @@ const val NO_AUTH_CLIENT_NAME = "clientWithoutAuth"
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class StandDi {
+abstract class RemoteBackDi {
 
     companion object {
 
         @Provides
         @Named(MAIN_BASE_URL_NAME)
-        fun provideMainBaseUrl(): String = "https://it-bears.com"
+        fun provideMainBaseUrl(): String = "https://imbsoft.tech"
         @Provides
         @Named(WALLET_BASE_URL_NAME)
-        fun provideWalletBaseUrl(): String = "https://wallet.it-bears.com"
+        fun provideWalletBaseUrl(): String = "https://imbsoft.tech"
 
         @Provides
         fun provideRefreshApi(
@@ -66,13 +64,6 @@ abstract class StandDi {
             set.forEach { clientBuilder.addInterceptor(it) }
             return clientBuilder.build()
         }
-
-        @Provides
-        @IntoSet
-        fun provideLoggerInterceptor(): Interceptor = HttpLoggingInterceptor()
-            .apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            }
     }
 
 

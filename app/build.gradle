@@ -11,10 +11,10 @@ plugins {
 android {
     signingConfigs {
         release {
-            keyAlias 'uploadKey'
-            keyPassword 'werthvfy926'
-            storeFile file("${project.rootDir}/curvaMes.jks")
-            storePassword 'werthvfy926'
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD")
+            storeFile file("${project.rootDir}/release_signing_keys.jks")
+            storePassword System.getenv("STORE_PASSWORD")
         }
         debug {
             keyAlias 'androiddebugkey'

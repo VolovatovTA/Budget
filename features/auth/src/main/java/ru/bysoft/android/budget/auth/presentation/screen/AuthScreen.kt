@@ -10,7 +10,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -41,7 +40,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.buildAnnotatedString
@@ -68,11 +66,9 @@ import ru.bysoft.android.budget.auth.presentation.entity.AuthActionType
 import ru.bysoft.android.budget.auth.presentation.entity.AuthState
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
-import ru.bysoft.android.budget.uikit.components.buttons.UiKitSocialMediaButton
 import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
 import ru.bysoft.android.budget.uikit.components.checkbox.UiKitCheckBox
-import ru.bysoft.android.budget.uikit.components.devider.UiKitDivider
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.styles.halfPadding
 import ru.bysoft.android.budget.uikit.styles.padding
@@ -350,39 +346,39 @@ private fun AuthSuccessScreen(
         )
         Spacer(modifier = Modifier.height(padding + halfPadding))
 
-        UiKitDivider(
-            text = stringResource(id = R.string.or_continue_with),
-            modifier = Modifier.padding(
-                horizontal = padding,
-            )
-        )
-        Spacer(modifier = Modifier.height(padding + halfPadding))
-
-        Column(verticalArrangement = Arrangement.spacedBy(halfPadding)) {
-
-            UiKitSocialMediaButton(
-                text = stringResource(
-                    if (state.type == AuthActionType.SIGN_IN) R.string.sign_in_with_google
-                    else R.string.sign_up_by_google
-                ),
-                painterLeftImage = painterResource(id = R.drawable.logo_google),
-                isButtonEnabled = state.isGoogleButtonEnabled,
-                onClick = {
-                    scope.launch {
-                        viewModel.setLoading(true)
-                        val signInIntentSender = googleAuthUiClient!!.signIn()
-                        launcher!!.launch(
-                            IntentSenderRequest.Builder(
-                                signInIntentSender ?: return@launch
-                            ).build()
-                        )
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = padding)
-            )
-        }
+//        UiKitDivider(
+//            text = stringResource(id = R.string.or_continue_with),
+//            modifier = Modifier.padding(
+//                horizontal = padding,
+//            )
+//        )
+//        Spacer(modifier = Modifier.height(padding + halfPadding))
+//
+//        Column(verticalArrangement = Arrangement.spacedBy(halfPadding)) {
+//
+//            UiKitSocialMediaButton(
+//                text = stringResource(
+//                    if (state.type == AuthActionType.SIGN_IN) R.string.sign_in_with_google
+//                    else R.string.sign_up_by_google
+//                ),
+//                painterLeftImage = painterResource(id = R.drawable.logo_google),
+//                isButtonEnabled = state.isGoogleButtonEnabled,
+//                onClick = {
+//                    scope.launch {
+//                        viewModel.setLoading(true)
+//                        val signInIntentSender = googleAuthUiClient!!.signIn()
+//                        launcher!!.launch(
+//                            IntentSenderRequest.Builder(
+//                                signInIntentSender ?: return@launch
+//                            ).build()
+//                        )
+//                    }
+//                },
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(horizontal = padding)
+//            )
+//        }
 
         Spacer(modifier = Modifier.height(padding + halfPadding))
 
