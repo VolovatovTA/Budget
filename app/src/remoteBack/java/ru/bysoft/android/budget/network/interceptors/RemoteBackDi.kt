@@ -11,6 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.bysoft.android.budget.common.network.authentificator.AuthenticationInterceptorRefreshToken
 import ru.bysoft.android.budget.common.token.network.ITokenRefreshApi
+import java.util.concurrent.TimeUnit
 import javax.inject.Named
 
 const val MAIN_BASE_URL_NAME = "mainBaseUrl"
@@ -18,6 +19,8 @@ const val WALLET_BASE_URL_NAME = "walletBaseUrl"
 const val AUTH_INTERCEPTOR_NAME = "authInterceptor"
 const val AUTH_CLIENT_NAME = "clientWithAuth"
 const val NO_AUTH_CLIENT_NAME = "clientWithoutAuth"
+
+const val TIME_OUT_MINUTES = 2L
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -28,6 +31,7 @@ abstract class RemoteBackDi {
         @Provides
         @Named(MAIN_BASE_URL_NAME)
         fun provideMainBaseUrl(): String = "https://imbsoft.tech"
+
         @Provides
         @Named(WALLET_BASE_URL_NAME)
         fun provideWalletBaseUrl(): String = "https://imbsoft.tech"
@@ -52,7 +56,12 @@ abstract class RemoteBackDi {
             val clientBuilder = OkHttpClient.Builder()
             set.forEach { clientBuilder.addInterceptor(it) }
             clientBuilder.addInterceptor(authInterceptor)
-            return clientBuilder.build()
+            return clientBuilder
+                .callTimeout(TIME_OUT_MINUTES, TimeUnit.MINUTES)
+                .readTimeout(TIME_OUT_MINUTES, TimeUnit.MINUTES)
+                .writeTimeout(TIME_OUT_MINUTES, TimeUnit.MINUTES)
+                .connectTimeout(TIME_OUT_MINUTES, TimeUnit.MINUTES)
+                .build()
         }
 
         @Provides
@@ -62,7 +71,12 @@ abstract class RemoteBackDi {
         ): OkHttpClient {
             val clientBuilder = OkHttpClient.Builder()
             set.forEach { clientBuilder.addInterceptor(it) }
-            return clientBuilder.build()
+            return clientBuilder
+                .callTimeout(TIME_OUT_MINUTES, TimeUnit.MINUTES)
+                .readTimeout(TIME_OUT_MINUTES, TimeUnit.MINUTES)
+                .writeTimeout(TIME_OUT_MINUTES, TimeUnit.MINUTES)
+                .connectTimeout(TIME_OUT_MINUTES, TimeUnit.MINUTES)
+                .build()
         }
     }
 

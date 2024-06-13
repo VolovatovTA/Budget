@@ -14,14 +14,22 @@ data class AuthSuccessResponse(
     val accessToken: String? = null,
     @SerializedName("refresh")
     val refreshToken: String? = null,
-): AuthResponse
+) : AuthResponse
 
-data class SignUpErrorResponse(
-    @SerializedName("slug")
-    val slug: String? = null
-): AuthResponse
-
-data class SignInErrorResponse(
-    @SerializedName("slug")
-    val slug: String? = null
-): AuthResponse
+data class SignErrorResponse(
+    @SerializedName("message")
+    val message: String? = null,
+    @SerializedName("error")
+    val error: String? = null,
+    @SerializedName("errors")
+    val errors: Errors? = null
+) : AuthResponse {
+    data class Errors(
+        @SerializedName("email")
+        val email: List<String>?,
+        @SerializedName("password")
+        val password: List<String>?,
+        @SerializedName("name")
+        val name: List<String>?
+    )
+}

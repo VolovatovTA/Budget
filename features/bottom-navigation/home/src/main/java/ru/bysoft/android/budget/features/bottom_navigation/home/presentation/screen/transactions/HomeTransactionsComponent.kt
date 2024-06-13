@@ -3,12 +3,26 @@ package ru.bysoft.android.budget.features.bottom_navigation.home.presentation.sc
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.DismissDirection
+import androidx.compose.material.DismissValue
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.SwipeToDismiss
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,12 +36,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.features.bottom_navigation.home.R
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.transactions.*
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionError
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionLoading
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionSuccess
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.transactions.TransactionsState
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.listItem.UiKitListItem
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfoSuccess
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
-import ru.bysoft.android.budget.uikit.icons.pack.*
+import ru.bysoft.android.budget.uikit.icons.pack.Delete
+import ru.bysoft.android.budget.uikit.icons.pack.Edit
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.styles.doublePadding
 import ru.bysoft.android.budget.uikit.styles.halfPadding
@@ -77,6 +95,7 @@ private fun LazyListScope.transactionsSuccessComponent(
             }
             SwipeToDismiss(
                 state = dismissState,
+                directions = setOf(DismissDirection.EndToStart),
                 background = {
                     val color by animateColorAsState(
                         when (dismissState.targetValue) {
@@ -84,7 +103,8 @@ private fun LazyListScope.transactionsSuccessComponent(
                             DismissValue.DismissedToEnd -> UiKitColors.colors.feedbackGreen.`500`
                             DismissValue.DismissedToStart -> UiKitColors.colors.feedbackRed.`500`
                             else -> UiKitColors.colors.primary.`100`
-                        }
+                        },
+                        label = "color"
                     )
                     val alignment = Alignment.CenterEnd
 
@@ -92,20 +112,23 @@ private fun LazyListScope.transactionsSuccessComponent(
                         when (dismissState.targetValue) {
                             DismissValue.Default -> 0.25f
                             else -> 1f
-                        }
+                        },
+                        label = "scale"
                     )
 
                     val alphaDeleteIcon by animateFloatAsState(
                         when (dismissState.targetValue) {
                             DismissValue.DismissedToStart -> 1f
                             else -> 0f
-                        }
+                        },
+                        label = "alphaDeleteIcon"
                     )
                     val alphaUpdateIcon by animateFloatAsState(
                         when (dismissState.targetValue) {
                             DismissValue.DismissedToEnd -> 1f
                             else -> 0f
-                        }
+                        },
+                        label = "alphaUpdateIcon"
                     )
 
                     Box(
@@ -145,7 +168,6 @@ private fun LazyListScope.transactionsSuccessComponent(
                 dismissContent = {
                     Box(
                         modifier = Modifier
-                            .clickable { }
                             .background(Color.Transparent)
                             .padding(vertical = halfPadding)
                             .padding(end = padding)

@@ -323,9 +323,8 @@ class HomeViewModel @Inject constructor(
             val transactions = transactionsRepo.getTransactions(
                 type = filtersToBack,
                 transferType = transferTypeEnum(filters),
-                walletId = listOf(
-                    (walletsState.value as? WalletsSuccessState)?.currentWalletId ?: ""
-                )
+                walletId =
+                (walletsState.value as? WalletsSuccessState)?.currentWalletId ?.let { listOf(it) }
             )
             transactionsState.value =
                 TransactionSuccess(mapper.mapToInfo(transactions, deleteLambda))

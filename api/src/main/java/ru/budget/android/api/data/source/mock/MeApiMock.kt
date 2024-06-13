@@ -27,9 +27,9 @@ class MeApiMock @Inject constructor(
         return context.getStringFromAsset(pathSettings + pointJson).restore()
     }
 
-    override suspend fun setMeInfo(request: SettingsRequest) {
+    override suspend fun setMeInfo(request: SettingsRequest) = Unit
 
-    }
+    override suspend fun deleteAccount() = Unit
 
 
 }

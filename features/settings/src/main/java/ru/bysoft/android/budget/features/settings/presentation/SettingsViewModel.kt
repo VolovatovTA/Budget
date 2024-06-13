@@ -28,7 +28,7 @@ class SettingsViewModel @Inject constructor(
     meInfo: IMeInfo,
     private val tokenRepo: ITokenStorage,
     private val navigate: ISettingsNavigation,
-    private val repo: SettingsRepository
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     val toastState = MutableSharedFlow<Int>()
@@ -53,6 +53,14 @@ class SettingsViewModel @Inject constructor(
 
     fun onLogoutClick() {
         viewModelScope.launch {
+            tokenRepo.clearTokens()
+            navigate.toAuth()
+        }
+    }
+
+    fun onDeleteAccountClick(){
+        viewModelScope.launch {
+            settingsRepository.deleteAccount()
             tokenRepo.clearTokens()
             navigate.toAuth()
         }
@@ -94,7 +102,7 @@ class SettingsViewModel @Inject constructor(
     fun onConfirm() {
         viewModelScope.launch(handler) {
             _state.update { it.copy(isLoading = true) }
-            repo.setMeInfo(state.value.currencyFieldState.selectedCurrency, state.value.dayOfWeekState.selectedValue, state.value.meInfoData?.pictureUrl)
+            settingsRepository.setMeInfo(state.value.currencyFieldState.selectedCurrency, state.value.dayOfWeekState.selectedValue, state.value.meInfoData?.pictureUrl)
             _state.update { it.copy(isLoading = false) }
             navigate.popBack()
         }

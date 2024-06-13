@@ -2,10 +2,20 @@ package ru.bysoft.android.budget.features.bottom_navigation.home.presentation.sc
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -20,7 +30,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
-import com.google.accompanist.pager.*
 import ru.bysoft.android.budget.features.bottom_navigation.home.IHomeViewModel
 import ru.bysoft.android.budget.features.bottom_navigation.home.R
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.DialogInfo
@@ -28,18 +37,16 @@ import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.ent
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.WalletsLoadingState
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.filters.HomeFiltersComponent
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.title.HomeTitleComponent
-import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.transactions.*
+import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.transactions.homeTransactionsComponent
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.wallets.WalletsPagerComponent
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
 import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonType
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
-import ru.bysoft.android.budget.uikit.icons.pack.*
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.styles.corner
 import ru.bysoft.android.budget.uikit.styles.halfPadding
 import ru.bysoft.android.budget.uikit.styles.padding
-import java.util.*
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -81,16 +88,17 @@ fun HomeScreen(
         }
         Column(
             modifier = Modifier
+                .pullRefresh(
+                    pullRefreshState,
+                    enabled = refreshEnabled
+                )
                 .padding(it)
                 .fillMaxSize()
                 .background(Color.Transparent)
 
         ) {
             Box(
-                Modifier.pullRefresh(
-                    pullRefreshState,
-                    enabled = refreshEnabled
-                )
+                Modifier
             ) {
                 Column {
                     LazyColumn(

@@ -5,6 +5,7 @@
     <string name="your_currency">"Валюта по умолчанию: "</string>
     <string name="icon_description">Загружаем ваше фото</string>
     <string name="logout">Выйти из профиля</string>
+    <string name="delete_account">Удалить аккаунт Budget</string>
     <string name="your_first_day_of_week">Первый день недели</string>
     <string name="not_loaded">Не загружено</string>
     <string name="confirm">Сохранить</string>

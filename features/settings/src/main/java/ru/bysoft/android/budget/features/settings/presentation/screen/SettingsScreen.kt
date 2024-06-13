@@ -1,20 +1,38 @@
 package ru.bysoft.android.budget.features.settings.presentation.screen
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,6 +53,8 @@ import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFi
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.PopupFieldState
 import ru.bysoft.android.budget.uikit.icons.pack.Person
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
+import ru.bysoft.android.budget.uikit.styles.doubleCorner
+import ru.bysoft.android.budget.uikit.styles.padding
 import ru.bysoft.android.settings.R
 
 @Composable
@@ -49,11 +69,12 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     }
 
     SettingsScreenContent(
-        state,
-        viewModel::onLogoutClick,
-        viewModel::onEditFirstDayOfWeek,
-        viewModel::onEditCurrency,
-        viewModel::onConfirm
+        state = state,
+        onLogoutClick = viewModel::onLogoutClick,
+        onDeleteAccountClick = viewModel::onDeleteAccountClick,
+        onEditFirstDayOfWeek = viewModel::onEditFirstDayOfWeek,
+        onEditCurrency = viewModel::onEditCurrency,
+        onConfirm = viewModel::onConfirm
     )
 }
 
@@ -61,6 +82,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
 private fun SettingsScreenContent(
     state: SettingsState,
     onLogoutClick: () -> Unit,
+    onDeleteAccountClick: () -> Unit,
     onEditFirstDayOfWeek: (DayOfWeek) -> Unit,
     onEditCurrency: (BudgetCurrencyEnum) -> Unit,
     onConfirm: () -> Unit
@@ -93,12 +115,11 @@ private fun SettingsScreenContent(
                     .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                var isLoadingSuccess by remember { mutableStateOf(true) }
+                var isLoadingSuccess by remember { mutableStateOf(state.meInfoData?.pictureUrl != null) }
                 val modifier = Modifier
-                    .padding(30.dp)
+                    .padding(padding)
                     .size(100.dp)
-                    // не работает почему-то
-                    .clip(CircleShape)
+                    .clip(RoundedCornerShape(doubleCorner))
                 if (isLoadingSuccess) {
                     SubcomposeAsyncImage(
                         model = state.meInfoData?.pictureUrl,
@@ -110,13 +131,17 @@ private fun SettingsScreenContent(
                             isLoadingSuccess = false
                         },
                         contentDescription = stringResource(R.string.icon_description),
-                        contentScale = androidx.compose.ui.layout.ContentScale.FillBounds
+                        contentScale = ContentScale.FillBounds
                     )
                 } else {
-                    Icon(
+                    Image(
                         imageVector = Person,
                         contentDescription = null,
-                        modifier = modifier
+                        modifier = modifier,
+                        contentScale = ContentScale.Fit,
+                        colorFilter = ColorFilter.tint(
+                            color = UiKitColors.colors.neutral.`700`
+                        )
                     )
                 }
 
@@ -135,14 +160,26 @@ private fun SettingsScreenContent(
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(vertical = 30.dp)
+                        .padding(padding),
+                    verticalArrangement = Arrangement.spacedBy(padding)
                 ) {
+
                     UiKitButton(
                         info = UiKitButtonInfo(
                             text = stringResource(R.string.logout),
                             size = ButtonSize.MEDIUM
                         ),
                         onClick = onLogoutClick,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    UiKitButton(
+                        info = UiKitButtonInfo(
+                            text = stringResource(R.string.delete_account),
+                            size = ButtonSize.MEDIUM
+                        ),
+                        onClick = onDeleteAccountClick,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
             }
@@ -306,17 +343,18 @@ fun PreviewSettingsScreen() {
     SettingsScreenContent(
         SettingsState(
             MeData(
-                "email",
-                "name",
-                "https://lh3.googleusercontent.com/a/AGNmyxZMBP_uwqLUiYKRXkMjuHbInB5LeicqefblyJwdfg=s96-c",
+                email = "email",
+                name = "name",
+                pictureUrl = null,
+//                pictureUrl = "https://lh3.googleusercontent.com/a/AGNmyxZMBP_uwqLUiYKRXkMjuHbInB5LeicqefblyJwdfg=s96-c",
                 SettingsData("RUB", DayOfWeek.MONDAY),
-                "",
+                userId = "",
             ),
             dayOfWeekState = PopupFieldState(
                 selectedValue = DayOfWeek.MONDAY,
                 list = DayOfWeek.values().toList()
             )
         ),
-        {}, {}, {}, {}
+        {}, {}, {}, {}, {}
     )
 }

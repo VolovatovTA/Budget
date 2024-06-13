@@ -20,12 +20,12 @@
     <string name="invite_sign_up_link">Sign in!</string>
 
     <string name="field_email_invalid">Email is incorrect</string>
-    <string name="field_password_invalid_length">Password must contains at least 5 symbols</string>
+    <string name="field_password_invalid_length">Password must contains at least 6 symbols</string>
     <string name="invalid_credentials">Password or email is incorrect</string>
     <string name="field_email_required">Email is required</string>
     <string name="field_password_required">Password is required</string>
     <string name="field_name_required">Name is required</string>
-    <string name="field_name_invalid_length">Name must contains at least one letter</string>
+    <string name="field_name_invalid_length">Name must contains at least 3 symbols</string>
     <string name="internal_server_error">Internal server error happened. We know about it and fix it as soon as possible</string>
     <string name="certificate_error">Certificate error</string>
     <string name="unexpected_error">Unexpected error</string>

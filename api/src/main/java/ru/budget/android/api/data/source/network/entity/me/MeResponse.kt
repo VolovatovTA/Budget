@@ -15,9 +15,9 @@ data class MeResponse(
 
 data class SettingsResponse(
     @SerializedName("currency")
-    val currencyResponse: String,
+    val currencyResponse: String?,
     @SerializedName("first_day_of_week")
-    val firstDayOfWeek: String,
+    val firstDayOfWeek: String?,
     @SerializedName("profile_picture_url")
     val pictureUrl: String?
 )

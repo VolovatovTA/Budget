@@ -15,9 +15,16 @@ fun mapToData(response: MeResponse) = MeData(
 )
 
 fun mapToSettings(response: SettingsResponse) =
-    SettingsData(response.currencyResponse, mapToDayOfWeek(response.firstDayOfWeek))
+    response.currencyResponse?.let {
+        SettingsData(
+            currency = it,
+            firstDayOfWeek = mapToDayOfWeek(response.firstDayOfWeek)
+        )
+    } ?: SettingsData(
+        firstDayOfWeek = mapToDayOfWeek(response.firstDayOfWeek)
+    )
 
-fun mapToDayOfWeek(dayOfWeek: String): DayOfWeek =
+fun mapToDayOfWeek(dayOfWeek: String?): DayOfWeek =
     when (dayOfWeek) {
         "MON" -> DayOfWeek.MONDAY
         "TUE" -> DayOfWeek.TUESDAY

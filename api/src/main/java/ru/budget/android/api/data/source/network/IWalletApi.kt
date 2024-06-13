@@ -8,7 +8,7 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 import ru.budget.android.api.data.source.network.entity.wallet.*
 
-const val pathWallet = "api/v1/wallets"
+const val pathWallet = "wallet/api/v1/wallets"
 const val idPlacement = "idPlacement"
 
 interface IWalletApi {

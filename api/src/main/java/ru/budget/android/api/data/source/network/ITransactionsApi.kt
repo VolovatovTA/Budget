@@ -6,7 +6,7 @@ import ru.budget.android.api.data.source.network.entity.transactions.Transaction
 import ru.budget.android.api.data.source.network.entity.transactions.TransactionResponse
 import ru.budget.android.api.data.source.network.entity.transactions.TransactionTransferCreateRequest
 
-const val pathToTransactions = "api/v1/transactions"
+const val pathToTransactions = "wallet/api/v1/transactions"
 
 interface ITransactionsApi {
     @GET(pathToTransactions)

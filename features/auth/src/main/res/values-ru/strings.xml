@@ -20,12 +20,12 @@
     <string name="invite_sign_up_link">войдите</string>
 
     <string name="field_email_invalid">Email адрес занят или введён не корректно</string>
-    <string name="field_password_invalid_length">Пароль должен содержать 5 или более символов</string>
+    <string name="field_password_invalid_length">Пароль должен содержать 6 или более символов</string>
     <string name="invalid_credentials">Пароль или email введены неверно</string>
     <string name="field_email_required">Нужен ваш email</string>
     <string name="field_password_required">Без пароля не получиться зарегестрироваться</string>
     <string name="field_name_required">Без вашего имени регистрация невозможна</string>
-    <string name="field_name_invalid_length">Имя должно содержать хотя бы один символ</string>
+    <string name="field_name_invalid_length">Имя должно содержать хотя бы 3 символа</string>
     <string name="internal_server_error">Произошла ошибка сервера. Мы о ней знаем и скоро исправим</string>
     <string name="certificate_error">Ошибка сертификата. Обратитесь в службу поддержки</string>
     <string name="unexpected_error">Непредвиденная ошибка</string>

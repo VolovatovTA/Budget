@@ -229,7 +229,7 @@ class AuthViewModel @Inject constructor(
 
     private fun isEmailCorrect(email: String) = email.contains('@') && email.contains('.')
 
-    private fun isPasswordCorrect(password: String) = password.count() >= 5
+    private fun isPasswordCorrect(password: String) = password.count() >= 6
 
     private fun isNameCorrect(name: String) = name.isNotEmpty()
 }

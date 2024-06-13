@@ -13,7 +13,7 @@ android {
         release {
             keyAlias System.getenv("KEY_ALIAS")
             keyPassword System.getenv("KEY_PASSWORD")
-            storeFile file("${project.rootDir}/release_signing_keys.jks")
+            storeFile file("${project.rootDir}/signing_keys")
             storePassword System.getenv("STORE_PASSWORD")
         }
         debug {

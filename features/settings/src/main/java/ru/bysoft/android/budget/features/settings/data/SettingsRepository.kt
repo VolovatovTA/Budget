@@ -10,13 +10,17 @@ class SettingsRepository @Inject constructor(
     private val api: IMeApi
 ) {
 
-    suspend fun setMeInfo(currency: BudgetCurrencyEnum?, firstDayOfWeek: DayOfWeek?, pictureUrl: String?) {
-        api.setMeInfo(
-            SettingsRequest(
-                currencyRequest = currency?.iso4217,
-                firstDayOfWeek = firstDayOfWeek?.nameFromBack,
-                pictureUrl = pictureUrl
-            )
+    suspend fun setMeInfo(
+        currency: BudgetCurrencyEnum?,
+        firstDayOfWeek: DayOfWeek?,
+        pictureUrl: String?
+    ) = api.setMeInfo(
+        SettingsRequest(
+            currencyRequest = currency?.iso4217,
+            firstDayOfWeek = firstDayOfWeek?.nameFromBack,
+            pictureUrl = pictureUrl
         )
-    }
+    )
+
+    suspend fun deleteAccount() = api.deleteAccount()
 }

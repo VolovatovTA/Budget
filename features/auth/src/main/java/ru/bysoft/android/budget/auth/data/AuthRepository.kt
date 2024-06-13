@@ -3,9 +3,8 @@ package ru.bysoft.android.budget.auth.data
 import ru.budget.android.api.data.source.network.IAuthApi
 import ru.budget.android.api.data.source.network.entity.auth.SignInGoogleRequest
 import ru.bysoft.android.budget.auth.data.entity.SignInData
-import ru.bysoft.android.budget.auth.data.entity.SignInErrorData
 import ru.bysoft.android.budget.auth.data.entity.SignUpData
-import ru.bysoft.android.budget.auth.data.entity.SignUpErrorData
+import ru.bysoft.android.budget.auth.data.entity.SignErrorData
 import ru.bysoft.android.budget.auth.data.mapper.mapToErrorData
 import ru.bysoft.android.budget.auth.data.mapper.mapToSignInRequest
 import ru.bysoft.android.budget.auth.data.mapper.mapToSignUpRequest
@@ -13,15 +12,14 @@ import ru.bysoft.android.budget.common.network.entity.ifHttpErrorGetErrorBody
 import ru.bysoft.android.budget.common.token.ITokenStorage
 import ru.bysoft.android.budget.common.token.entity.AuthResponse
 import ru.bysoft.android.budget.common.token.entity.AuthSuccessResponse
-import ru.bysoft.android.budget.common.token.entity.SignInErrorResponse
-import ru.bysoft.android.budget.common.token.entity.SignUpErrorResponse
+import ru.bysoft.android.budget.common.token.entity.SignErrorResponse
 import ru.bysoft.android.budget.common.util.restore
 import javax.inject.Inject
 import javax.net.ssl.SSLPeerUnverifiedException
 
 interface IAuthRepository {
-    suspend fun signIn(signInData: SignInData): SignInErrorData?
-    suspend fun signUp(signUpData: SignUpData): SignUpErrorData?
+    suspend fun signIn(signInData: SignInData): SignErrorData?
+    suspend fun signUp(signUpData: SignUpData): SignErrorData?
     suspend fun signInByGoogle(idToken: String?)
 }
 
@@ -30,7 +28,7 @@ class AuthRepository @Inject constructor(
     private val tokenRepo: ITokenStorage,
 ) : IAuthRepository {
 
-    override suspend fun signIn(signInData: SignInData): SignInErrorData? {
+    override suspend fun signIn(signInData: SignInData): SignErrorData? {
         val authResponse: AuthResponse = try {
             api.signIn(signInData.mapToSignInRequest())
         } catch (e: Throwable) {
@@ -39,58 +37,66 @@ class AuthRepository @Inject constructor(
 
             when {
                 errorJson != null -> {
-                    errorJson.restore<SignInErrorResponse>()
+                    errorJson.restore<SignErrorResponse>()
                         ?: throw EmptySlugMessage(errorJson)
                 }
-                e is SSLPeerUnverifiedException -> SignInErrorResponse(
-                    "error_certificate"
+
+                e is SSLPeerUnverifiedException -> SignErrorResponse(
+                    "error_certificate",
                 )
-                else -> SignInErrorResponse(
-                    "unknown_error"
+
+                else -> SignErrorResponse(
+                    "unknown_error",
                 )
             }
         }
 
         return when (authResponse) {
-            is SignInErrorResponse -> {
+            is SignErrorResponse -> {
                 authResponse.mapToErrorData()
             }
+
             is AuthSuccessResponse -> {
                 tokenRepo.saveTokens(authResponse)
                 null
             }
+
             else -> throw Throwable()
         }
     }
 
-    override suspend fun signUp(signUpData: SignUpData): SignUpErrorData? {
+    override suspend fun signUp(signUpData: SignUpData): SignErrorData? {
         val authResponse: AuthResponse = try {
             api.signUp(signUpData.mapToSignUpRequest())
         } catch (e: Throwable) {
 
             val errorJson = e.ifHttpErrorGetErrorBody()
 
-            when  {
+            when {
                 errorJson != null -> {
-                    errorJson.restore<SignUpErrorResponse>() ?: throw EmptySlugMessage(errorJson)
+                    errorJson.restore<SignErrorResponse>() ?: throw EmptySlugMessage(errorJson)
                 }
-                e is SSLPeerUnverifiedException -> SignUpErrorResponse(
+
+                e is SSLPeerUnverifiedException -> SignErrorResponse(
                     "error_certificate"
                 )
-                else -> SignUpErrorResponse(
+
+                else -> SignErrorResponse(
                     "unknown_error"
                 )
             }
         }
 
         return when (authResponse) {
-            is SignUpErrorResponse -> {
+            is SignErrorResponse -> {
                 authResponse.mapToErrorData()
             }
+
             is AuthSuccessResponse -> {
                 tokenRepo.saveTokens(authResponse)
                 null
             }
+
             else -> throw Throwable()
         }
     }

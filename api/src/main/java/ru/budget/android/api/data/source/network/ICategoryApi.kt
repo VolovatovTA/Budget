@@ -1,12 +1,16 @@
 package ru.budget.android.api.data.source.network
 
-import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 import ru.budget.android.api.data.source.network.entity.category.*
 
-const val pathToWallet = "api/v1"
+const val pathToWallet = "wallet/api/v1"
 const val pathExpensesName = "expensesName"
-const val pathToCategory = "api/v1/"
+const val pathToCategory = "wallet/api/v1/"
 const val namePathExpenseIncome = "namePathExpenseIncome"
 const val nameId = "id"
 
