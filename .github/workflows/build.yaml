@@ -24,3 +24,9 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew assembleRemoteBackRelease
+
+      - name: Upload to GHA artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: outputs/apk
+
