@@ -24,7 +24,7 @@ jobs:
           java-version: '17'
 
       - name: Build with Gradle
-        run: ./gradlew assembleRemoteBackRelease
+        run: ./gradlew bundleRemoteBackRelease
 
       - name: Upload to GHA artifacts
         uses: actions/upload-artifact@v4
