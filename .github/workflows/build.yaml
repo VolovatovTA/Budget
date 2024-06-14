@@ -29,5 +29,5 @@ jobs:
       - name: Upload to GHA artifacts
         uses: actions/upload-artifact@v4
         with:
-          path: outputs/apk
+          path: app/remoteBack/release/app-remoteBack-release.aab
 
