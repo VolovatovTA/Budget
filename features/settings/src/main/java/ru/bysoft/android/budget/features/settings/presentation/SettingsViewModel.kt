@@ -102,7 +102,10 @@ class SettingsViewModel @Inject constructor(
     fun onConfirm() {
         viewModelScope.launch(handler) {
             _state.update { it.copy(isLoading = true) }
-            settingsRepository.setMeInfo(state.value.currencyFieldState.selectedCurrency, state.value.dayOfWeekState.selectedValue, state.value.meInfoData?.pictureUrl)
+            settingsRepository.setMeInfo(
+                state.value.currencyFieldState.selectedCurrency,
+                state.value.dayOfWeekState.selectedValue,
+                state.value.meInfoData?.pictureUrl)
             _state.update { it.copy(isLoading = false) }
             navigate.popBack()
         }

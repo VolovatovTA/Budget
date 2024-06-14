@@ -11,7 +11,7 @@ fun mapToData(response: MeResponse) = MeData(
     email = response.email,
     settingsData = response.settingsResponse?.let { mapToSettings(it) },
     userId = response.userId,
-    pictureUrl = response.settingsResponse?.pictureUrl.orEmpty()
+    pictureUrl = response.settingsResponse?.pictureUrl
 )
 
 fun mapToSettings(response: SettingsResponse) =

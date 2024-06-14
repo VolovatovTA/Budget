@@ -23,6 +23,15 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
+        with:
+#          если нужно перезаписать кэш не из default вуток
+          cache-read-only: false
+          cache-overwrite-existing: true
+#          раскомментить для очистки кэша
+#          gradle-home-cache-cleanup: true
+
       - name: Build with Gradle
         run: ./gradlew bundleRemoteBackRelease
 
