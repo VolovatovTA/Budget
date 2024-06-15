@@ -11,8 +11,14 @@ plugins {
 android {
     signingConfigs {
         release {
-            keyAlias System.getenv("KEY_ALIAS")
+            keyAlias "signing_key_true"
             keyPassword System.getenv("KEY_PASSWORD")
+            storeFile file("${project.rootDir}/signing_keys")
+            storePassword System.getenv("STORE_PASSWORD")
+        }
+        upload {
+            keyAlias System.getenv("KEY_UPLOAD_ALIAS")
+            keyPassword System.getenv("KEY_UPLOAD_PASSWORD")
             storeFile file("${project.rootDir}/signing_keys")
             storePassword System.getenv("STORE_PASSWORD")
         }
@@ -29,15 +35,15 @@ android {
         applicationId "ru.it_bears.android.budget"
         minSdk min_sdk
         targetSdk target_sdk
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.upload
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             multiDexEnabled true

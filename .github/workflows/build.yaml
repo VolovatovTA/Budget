@@ -6,8 +6,8 @@ on:
       - '*'
 
 env:
-  KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-  KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+  KEY_UPLOAD_ALIAS: ${{ secrets.KEY_ALIAS }}
+  KEY_UPLOAD_PASSWORD: ${{ secrets.KEY_PASSWORD }}
   STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
 
 jobs:
