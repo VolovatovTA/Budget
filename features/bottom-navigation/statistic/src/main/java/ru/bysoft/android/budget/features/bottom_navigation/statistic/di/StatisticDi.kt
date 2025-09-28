@@ -1,15 +1,15 @@
 package ru.bysoft.android.budget.features.bottom_navigation.statistic.di
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.bind
+import org.koin.dsl.module
+import ru.bysoft.android.budget.features.bottom_navigation.statistic.IStatisticViewModel
+import ru.bysoft.android.budget.features.bottom_navigation.statistic.StatisticViewModel
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.data.IStatisticRepo
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.data.StatisticRepo
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class StatisticDi {
-    @Binds
-    abstract fun bindRepo(repo: StatisticRepo): IStatisticRepo
+val StatisticDi = module{
+    singleOf(::StatisticRepo) bind IStatisticRepo::class
+    viewModelOf(::StatisticViewModel) bind IStatisticViewModel::class
 }

@@ -2,13 +2,12 @@ package ru.bysoft.android.budget.features.create_update_delete_transactions.pres
 
 import ru.budget.android.api.data.source.network.entity.transactions.*
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
-import javax.inject.Inject
 
 interface ITransactionPresentationMapper {
     fun toRequest(state: ITransactionState): ITransactionCreateRequest
 }
 
-class TransactionPresentationMapper @Inject constructor(
+class TransactionPresentationMapper(
 
 ) : ITransactionPresentationMapper {
     override fun toRequest(state: ITransactionState): ITransactionCreateRequest {

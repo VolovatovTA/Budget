@@ -4,13 +4,12 @@ import ru.bysoft.android.budget.currency.getCurrency
 import ru.budget.android.api.data.source.network.entity.category.CategoryResponse
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.CategoryPresentation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.CategorySuccess
-import javax.inject.Inject
 
 interface ITransactionsCategoryPresentationMapper {
     fun toPresentation(response: CategoryResponse): CategorySuccess
 }
 
-class TransactionsCategoryPresentationMapper @Inject constructor() :
+class TransactionsCategoryPresentationMapper:
     ITransactionsCategoryPresentationMapper {
 
     override fun toPresentation(response: CategoryResponse): CategorySuccess {

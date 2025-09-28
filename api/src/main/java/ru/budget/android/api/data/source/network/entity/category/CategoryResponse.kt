@@ -1,23 +1,26 @@
 package ru.budget.android.api.data.source.network.entity.category
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CategoryResponse(
-    @SerializedName("data")
+    @SerialName("data")
     val data: List<CategoryItemResponse>
 )
 
+@Serializable
 data class CategoryItemResponse(
-    @SerializedName("currency")
+    @SerialName("currency")
     val currency: String,
-    @SerializedName("icon_name")
+    @SerialName("icon_name")
     val iconName: String?,
-    @SerializedName("id")
+    @SerialName("id")
     val id: String,
-    @SerializedName("name")
+    @SerialName("name")
     val name: String,
-    @SerializedName("limit_amount")
+    @SerialName("limit_amount")
     val limitAmount: String?,
-    @SerializedName("limit_type")
+    @SerialName("limit_type")
     val limitType: String?
 )

@@ -1,12 +1,14 @@
 package ru.budget.android.api.data.source.network.entity.me
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class SettingsRequest(
-    @SerializedName("currency")
+    @SerialName("currency")
     val currencyRequest: String?,
-    @SerializedName("first_day_of_week")
+    @SerialName("first_day_of_week")
     val firstDayOfWeek: String?,
-    @SerializedName("profile_picture_url")
+    @SerialName("profile_picture_url")
     val pictureUrl: String?
 )

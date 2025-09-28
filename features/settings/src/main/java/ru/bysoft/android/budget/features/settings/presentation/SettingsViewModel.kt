@@ -2,13 +2,13 @@ package ru.bysoft.android.budget.features.settings.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.dsl.module
 import ru.bysoft.android.budget.common.errors.errorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.me_info.entity.DayOfWeek
@@ -20,11 +20,16 @@ import ru.bysoft.android.budget.features.settings.presentation.entity.SettingsSt
 import ru.bysoft.android.budget.features.settings.presentation.navigation.ISettingsNavigation
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.PopupFieldState
-import ru.bysoft.android.settings.R
-import javax.inject.Inject
+import ru.bysoft.android.budget.features.settings.R
+import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 
-@HiltViewModel
-class SettingsViewModel @Inject constructor(
+
+val SettingDi = module {
+    viewModelOf(::SettingsViewModel)
+}
+
+class SettingsViewModel(
     meInfo: IMeInfo,
     private val tokenRepo: ITokenStorage,
     private val navigate: ISettingsNavigation,
@@ -58,7 +63,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun onDeleteAccountClick(){
+    fun onDeleteAccountClick() {
         viewModelScope.launch {
             settingsRepository.deleteAccount()
             tokenRepo.clearTokens()
@@ -95,17 +100,19 @@ class SettingsViewModel @Inject constructor(
 
     private val handler = CoroutineExceptionHandler { _, throwable ->
         viewModelScope.launch { toastState.emit(R.string.error_while_update_profile_data) }
-        _state.update{ it.copy(isLoading = false) }
+        _state.update { it.copy(isLoading = false) }
         errorLogger.logError(throwable)
         navigate.popBack()
     }
+
     fun onConfirm() {
         viewModelScope.launch(handler) {
             _state.update { it.copy(isLoading = true) }
             settingsRepository.setMeInfo(
                 state.value.currencyFieldState.selectedCurrency,
                 state.value.dayOfWeekState.selectedValue,
-                state.value.meInfoData?.pictureUrl)
+                state.value.meInfoData?.pictureUrl
+            )
             _state.update { it.copy(isLoading = false) }
             navigate.popBack()
         }

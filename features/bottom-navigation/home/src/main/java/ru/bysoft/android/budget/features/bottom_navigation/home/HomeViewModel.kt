@@ -5,7 +5,6 @@ import androidx.compose.material.DismissValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import ru.budget.android.api.data.source.network.entity.transactions.TransferTypeEnum
@@ -30,7 +29,6 @@ import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.map
 import ru.bysoft.android.budget.features.currency_rates.data.ICurrencyRatesRepo
 import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitRowTabState
 import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitTabInfo
-import javax.inject.Inject
 
 interface IHomeViewModel {
     val dialogState: StateFlow<DialogInfo<String>?>
@@ -54,8 +52,7 @@ interface IHomeViewModel {
     fun <T> onDialogConfirmed(data: T)
 }
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(
+class HomeViewModel(
     private val walletsRepo: IHomeWalletsRepo,
     private val meRepo: IHomeMeRepo,
     private val transactionsRepo: ITransactionsRepo,

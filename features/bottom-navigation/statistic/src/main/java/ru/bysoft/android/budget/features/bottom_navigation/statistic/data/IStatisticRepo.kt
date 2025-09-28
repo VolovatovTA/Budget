@@ -6,14 +6,13 @@ import ru.budget.android.api.data.mapper.CategoryDataMapper
 import ru.budget.android.api.data.source.network.ITransactionsApi
 import ru.bysoft.android.budget.common.data_entity.ExpenseCategory
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
-import javax.inject.Inject
 
 interface IStatisticRepo {
     suspend fun getExpenses(): StatisticData
     suspend fun getUpdatedCategoryData(id: String, dateFrom: String?, dateTo: String?, oldCategoryData: ExpenseCategory): ExpenseCategory
 }
 
-class StatisticRepo @Inject constructor(
+class StatisticRepo(
     private val categoryApi: ICategoryApi,
     private val transactionApi: ITransactionsApi,
     private val mapper: CategoryDataMapper

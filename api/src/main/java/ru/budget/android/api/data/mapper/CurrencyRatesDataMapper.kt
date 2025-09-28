@@ -6,9 +6,8 @@ import ru.bysoft.android.budget.common.data_entity.CurrencyRateData
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getAvailableCurrency
 import ru.bysoft.android.budget.common.util.onNull
-import javax.inject.Inject
 
-class CurrencyRatesDataMapper @Inject constructor() {
+class CurrencyRatesDataMapper {
     fun getCurrencyRates(responses: List<CurrencyRatesResponse>): CurrencyRateData {
         return CurrencyRateData(
             responses

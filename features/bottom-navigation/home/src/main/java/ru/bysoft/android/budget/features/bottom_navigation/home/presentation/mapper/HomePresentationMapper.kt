@@ -16,7 +16,6 @@ import ru.bysoft.android.budget.uikit.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import javax.inject.Inject
 
 interface IHomePresentationMapper {
     fun mapToState(data: List<WalletData>): List<IWalletPresentation>
@@ -26,7 +25,7 @@ interface IHomePresentationMapper {
     ): List<TransactionInfo>
 }
 
-class HomePresentationMapper @Inject constructor(
+class HomePresentationMapper(
     private val locale: Locale
 ) : IHomePresentationMapper {
 

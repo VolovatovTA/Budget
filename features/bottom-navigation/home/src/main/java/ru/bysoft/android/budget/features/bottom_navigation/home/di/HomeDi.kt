@@ -1,9 +1,11 @@
 package ru.bysoft.android.budget.features.bottom_navigation.home.di
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.bind
+import org.koin.dsl.module
+import ru.bysoft.android.budget.features.bottom_navigation.home.HomeViewModel
+import ru.bysoft.android.budget.features.bottom_navigation.home.IHomeViewModel
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.me.HomeMeRepo
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.me.IHomeMeRepo
 import ru.bysoft.android.budget.features.bottom_navigation.home.data.transactions.ITransactionsRepo
@@ -13,19 +15,10 @@ import ru.bysoft.android.budget.features.bottom_navigation.home.data.wallets.IHo
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.mapper.HomePresentationMapper
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.mapper.IHomePresentationMapper
 
-@Module
-@InstallIn(ViewModelComponent::class)
-abstract class HomeDi {
-
-    @Binds
-    abstract fun bindTransactionsRepo(repo: TransactionRepo): ITransactionsRepo
-
-    @Binds
-    abstract fun bindHomePresentationMapper(impl: HomePresentationMapper): IHomePresentationMapper
-
-    @Binds
-    abstract fun bindHomeWalletsRepo(repo: HomeWalletsRepo): IHomeWalletsRepo
-
-    @Binds
-    abstract fun bindHomeMeRepo(repo: HomeMeRepo): IHomeMeRepo
+val HomeDi = module {
+    singleOf(::TransactionRepo) bind ITransactionsRepo::class
+    singleOf(::HomePresentationMapper) bind IHomePresentationMapper::class
+    singleOf(::HomeWalletsRepo) bind IHomeWalletsRepo::class
+    singleOf(::HomeMeRepo) bind IHomeMeRepo::class
+    viewModelOf(::HomeViewModel) bind IHomeViewModel::class
 }

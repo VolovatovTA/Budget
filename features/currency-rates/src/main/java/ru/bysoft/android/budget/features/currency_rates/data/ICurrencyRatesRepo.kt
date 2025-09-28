@@ -11,14 +11,13 @@ import ru.bysoft.android.budget.currency.getAvailableCurrency
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.currency_rates.data.storage.ICurrencyRatesLocalStorage
 import ru.bysoft.android.budget.features.currency_rates.data.storage.entity.CurrencyRatesEntity
-import javax.inject.Inject
 
 interface ICurrencyRatesRepo {
     suspend fun getCurrencyRates(): CurrencyRateData
     suspend fun getCurrencyRate(base: BudgetCurrencyEnum, target: BudgetCurrencyEnum): CurrencyRate
 }
 
-class CurrencyRatesRepo @Inject constructor(
+class CurrencyRatesRepo(
     private val api: ICurrencyRatesApi,
     private val mapper: CurrencyRatesDataMapper,
     private val currencyRatesStorage: ICurrencyRatesLocalStorage,

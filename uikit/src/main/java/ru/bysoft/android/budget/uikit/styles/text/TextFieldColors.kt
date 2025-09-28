@@ -32,6 +32,11 @@ class BaseTextFieldColors(
     private val placeholderColor: Color,
     private val disabledPlaceholderColor: Color
 ) : TextFieldColors {
+    @Deprecated(
+        "Use/implement overload with interactionSource parameter",
+        replaceWith = ReplaceWith("leadingIconColor(enabled, isError, interactionSource)"),
+        level = DeprecationLevel.WARNING
+    )
     @Composable
     override fun leadingIconColor(enabled: Boolean, isError: Boolean): State<Color> {
         return rememberUpdatedState(
@@ -43,6 +48,11 @@ class BaseTextFieldColors(
         )
     }
 
+    @Deprecated(
+        "Use/implement overload with interactionSource parameter",
+        replaceWith = ReplaceWith("trailingIconColor(enabled, isError, interactionSource)"),
+        level = DeprecationLevel.WARNING
+    )
     @Composable
     override fun trailingIconColor(enabled: Boolean, isError: Boolean): State<Color> {
         return rememberUpdatedState(

@@ -6,13 +6,11 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.bysoft.android.budget.common.token.entity.AuthSuccessResponse
 import ru.bysoft.android.budget.common.util.restore
 import ru.bysoft.android.budget.common.util.toJson
-import javax.inject.Inject
 
 interface ITokenStorage {
     suspend fun saveTokens(tokenData: AuthSuccessResponse)
@@ -20,8 +18,8 @@ interface ITokenStorage {
     suspend fun clearTokens()
 }
 
-class TokenStorage @Inject constructor(
-    @ApplicationContext private val context: Context
+class TokenStorage(
+    private val context: Context
 ) : ITokenStorage {
     companion object {
         private val Context.tokenStorage: DataStore<Preferences> by preferencesDataStore("tokenStore")

@@ -1,15 +1,16 @@
 package ru.bysoft.android.budget.auth.presentation.screen
 
-import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -40,6 +41,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.buildAnnotatedString
@@ -49,13 +51,13 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 import ru.bysoft.android.budget.auth.AuthViewModel
 import ru.bysoft.android.budget.auth.IAuthViewModel
 import ru.bysoft.android.budget.auth.R
@@ -75,10 +77,13 @@ import ru.bysoft.android.budget.uikit.styles.padding
 import ru.bysoft.android.budget.uikit.styles.quarterPadding
 import ru.bysoft.android.budget.uikit.utils.ExpandVertically
 import ru.bysoft.android.budget.uikit.utils.duration
+import androidx.core.net.toUri
+import ru.bysoft.android.budget.uikit.components.buttons.UiKitSocialMediaButton
+import ru.bysoft.android.budget.uikit.components.devider.UiKitDivider
 
 @Composable
 fun AuthScreen() {
-    val viewModel = hiltViewModel<AuthViewModel>()
+    val viewModel = koinViewModel<AuthViewModel>()
     val state = viewModel.state.collectAsState().value
     val context = LocalContext.current
 
@@ -314,7 +319,7 @@ private fun AuthSuccessScreen(
                         }
                     }
                 }
-                val activity = LocalContext.current as? Activity
+                val activity = LocalActivity.current
                 ClickableText(
                     text = stringWithTermsAndConditions,
                     modifier = Modifier
@@ -326,7 +331,7 @@ private fun AuthSuccessScreen(
                             activity?.startActivity(
                                 Intent(
                                     Intent.ACTION_VIEW,
-                                    Uri.parse(annotation.tag)
+                                    annotation.tag.toUri()
                                 )
                             )
                         } ?: viewModel.onCheckBoxClicked(state.isCheckBoxChecked.not())
@@ -346,39 +351,39 @@ private fun AuthSuccessScreen(
         )
         Spacer(modifier = Modifier.height(padding + halfPadding))
 
-//        UiKitDivider(
-//            text = stringResource(id = R.string.or_continue_with),
-//            modifier = Modifier.padding(
-//                horizontal = padding,
-//            )
-//        )
-//        Spacer(modifier = Modifier.height(padding + halfPadding))
-//
-//        Column(verticalArrangement = Arrangement.spacedBy(halfPadding)) {
-//
-//            UiKitSocialMediaButton(
-//                text = stringResource(
-//                    if (state.type == AuthActionType.SIGN_IN) R.string.sign_in_with_google
-//                    else R.string.sign_up_by_google
-//                ),
-//                painterLeftImage = painterResource(id = R.drawable.logo_google),
-//                isButtonEnabled = state.isGoogleButtonEnabled,
-//                onClick = {
-//                    scope.launch {
-//                        viewModel.setLoading(true)
-//                        val signInIntentSender = googleAuthUiClient!!.signIn()
-//                        launcher!!.launch(
-//                            IntentSenderRequest.Builder(
-//                                signInIntentSender ?: return@launch
-//                            ).build()
-//                        )
-//                    }
-//                },
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = padding)
-//            )
-//        }
+        UiKitDivider(
+            text = stringResource(id = R.string.or_continue_with),
+            modifier = Modifier.padding(
+                horizontal = padding,
+            )
+        )
+        Spacer(modifier = Modifier.height(padding + halfPadding))
+
+        Column(verticalArrangement = Arrangement.spacedBy(halfPadding)) {
+
+            UiKitSocialMediaButton(
+                text = stringResource(
+                    if (state.type == AuthActionType.SIGN_IN) R.string.sign_in_with_google
+                    else R.string.sign_up_by_google
+                ),
+                painterLeftImage = painterResource(id = R.drawable.logo_google),
+                isButtonEnabled = state.isGoogleButtonEnabled,
+                onClick = {
+                    scope.launch {
+                        viewModel.setLoading(true)
+                        val signInIntentSender = googleAuthUiClient!!.signIn()
+                        launcher!!.launch(
+                            IntentSenderRequest.Builder(
+                                signInIntentSender ?: return@launch
+                            ).build()
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = padding)
+            )
+        }
 
         Spacer(modifier = Modifier.height(padding + halfPadding))
 

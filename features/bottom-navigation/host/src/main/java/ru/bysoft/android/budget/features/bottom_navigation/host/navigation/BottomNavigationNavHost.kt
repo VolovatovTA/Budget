@@ -1,16 +1,16 @@
 package ru.bysoft.android.budget.features.bottom_navigation.host.navigation
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import org.koin.compose.viewmodel.koinViewModel
 import ru.bysoft.android.budget.common.navigation.NavigationInfo
 import ru.bysoft.android.budget.features.bottom_navigation.home.HomeViewModel
 import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.screen.HomeScreen
@@ -31,12 +31,12 @@ fun BottomNavigationNavHost(navController: NavHostController) {
             startDestination = Home.screenName
         ) {
             composable(Home.screenName) {
-                HomeScreen(hiltViewModel<HomeViewModel>())
+                HomeScreen(koinViewModel<HomeViewModel>())
             }
         }
         navigation(route = Statistic.route, startDestination = Statistic.screenName) {
             composable(Statistic.screenName) {
-                StatisticScreen(hiltViewModel<StatisticViewModel>())
+                StatisticScreen(koinViewModel<StatisticViewModel>())
             }
         }
 
@@ -48,7 +48,7 @@ fun BottomNavigationNavHost(navController: NavHostController) {
                     }
                 )
                 LaunchedEffect(key1 = Unit) {
-                    launcher.launch(Uri.parse(""))
+                    launcher.launch("".toUri())
                 }
             }
         }

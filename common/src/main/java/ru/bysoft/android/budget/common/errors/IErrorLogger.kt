@@ -2,13 +2,12 @@ package ru.bysoft.android.budget.common.errors
 
 import android.util.Log
 import kotlinx.coroutines.CoroutineExceptionHandler
-import javax.inject.Inject
 
 interface IErrorLogger {
     fun logError(t: Throwable)
 }
 
-class ErrorLogger @Inject constructor() : IErrorLogger {
+class ErrorLogger : IErrorLogger {
     override fun logError(t: Throwable) {
         Log.e("error", "", t)
     }

@@ -7,7 +7,6 @@ import ru.budget.android.api.data.source.network.entity.transactions.Transaction
 import ru.budget.android.api.data.source.network.entity.transactions.TransactionItemResponse
 import java.text.SimpleDateFormat
 import java.util.Locale
-import javax.inject.Inject
 
 interface ITransactionsDataMapper {
     fun mapToData(response: TransactionResponse): ListTransactionsData
@@ -16,7 +15,7 @@ interface ITransactionsDataMapper {
 class UnknownTypeTransaction(type: String) :
     Throwable("Allowed EXPENSE, INCOME, TRANSFER, but came: $type")
 
-class TransactionsDataMapper @Inject constructor(
+class TransactionsDataMapper(
     private val locale: Locale
 ) : ITransactionsDataMapper {
     override fun mapToData(response: TransactionResponse) =

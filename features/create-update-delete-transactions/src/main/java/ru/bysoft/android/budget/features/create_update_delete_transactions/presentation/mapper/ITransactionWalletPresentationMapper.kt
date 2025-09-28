@@ -5,13 +5,12 @@ import ru.bysoft.android.budget.currency.getCurrency
 import ru.budget.android.api.data.source.network.entity.wallet.WalletListResponse
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.WalletInfo
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.WalletSuccessState
-import javax.inject.Inject
 
 interface ITransactionWalletPresentationMapper {
     fun toPresentation(response: WalletListResponse): WalletSuccessState
 }
 
-class TransactionsWalletPresentationMapper @Inject constructor() :
+class TransactionsWalletPresentationMapper :
     ITransactionWalletPresentationMapper {
     override fun toPresentation(response: WalletListResponse): WalletSuccessState {
         return WalletSuccessState(

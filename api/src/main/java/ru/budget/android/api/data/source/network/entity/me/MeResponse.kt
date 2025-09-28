@@ -1,23 +1,27 @@
 package ru.budget.android.api.data.source.network.entity.me
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+
+@Serializable
 data class MeResponse(
-    @SerializedName("email")
+    @SerialName("email")
     val email: String,
-    @SerializedName("name")
+    @SerialName("name")
     val name: String,
-    @SerializedName("settings")
+    @SerialName("settings")
     val settingsResponse: SettingsResponse?,
-    @SerializedName("uuid")
+    @SerialName("uuid")
     val userId: String
 )
 
+@Serializable
 data class SettingsResponse(
-    @SerializedName("currency")
+    @SerialName("currency")
     val currencyResponse: String?,
-    @SerializedName("first_day_of_week")
+    @SerialName("first_day_of_week")
     val firstDayOfWeek: String?,
-    @SerializedName("profile_picture_url")
+    @SerialName("profile_picture_url")
     val pictureUrl: String?
 )

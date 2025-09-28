@@ -1,7 +1,7 @@
 package ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels
 
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+//import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -18,11 +18,9 @@ import ru.bysoft.android.budget.common.util.PeriodState
 import ru.bysoft.android.budget.features.create_udate_category.navigation.ICreateUpdateCategoryNavigation
 import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.CreateUpdateCategoryState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
-import javax.inject.Inject
 
 
-@HiltViewModel
-class UpdateCategoryViewModel @Inject constructor(
+class UpdateCategoryViewModel(
     meInfo: IMeInfo,
     private val repo: ICategoryRepo,
     private val navigate: ICreateUpdateCategoryNavigation

@@ -55,7 +55,7 @@ import ru.bysoft.android.budget.uikit.icons.pack.Person
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.styles.doubleCorner
 import ru.bysoft.android.budget.uikit.styles.padding
-import ru.bysoft.android.settings.R
+import ru.bysoft.android.budget.features.settings.R
 
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel) {

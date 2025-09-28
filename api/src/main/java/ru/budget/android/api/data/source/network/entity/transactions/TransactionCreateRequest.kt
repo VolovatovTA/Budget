@@ -1,6 +1,7 @@
 package ru.budget.android.api.data.source.network.entity.transactions
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 sealed interface ITransactionCreateRequest
 
@@ -10,61 +11,66 @@ const val currencyName = "currency"
 const val exchangesName = "exchanges"
 const val expensesName = "expenses"
 const val walletIdName = "wallet_id"
+@Serializable
 data class TransactionExpenseCreateRequest(
-    @SerializedName(amountName)
+    @SerialName(amountName)
     val amount: Float,
-    @SerializedName(commentName)
+    @SerialName(commentName)
     val comment: String,
-    @SerializedName(currencyName)
+    @SerialName(currencyName)
     val currency: String,
-    @SerializedName(exchangesName)
+    @SerialName(exchangesName)
     val exchanges: List<Exchange>? = null,
-    @SerializedName(expensesName)
+    @SerialName(expensesName)
     val expenses: List<Expense>? = null,
-    @SerializedName(walletIdName)
+    @SerialName(walletIdName)
     val walletId: String
 ) : ITransactionCreateRequest
 
+@Serializable
 data class TransactionIncomeCreateRequest(
-    @SerializedName(amountName)
+    @SerialName(amountName)
     val amount: Float,
-    @SerializedName("comment")
+    @SerialName("comment")
     val comment: String,
-    @SerializedName("currency")
+    @SerialName("currency")
     val currency: String,
-    @SerializedName("exchanges")
+    @SerialName("exchanges")
     val exchanges: List<Exchange>? = null,
-    @SerializedName("income_id")
+    @SerialName("income_id")
     val income_id: String? = null,
-    @SerializedName("wallet_id")
+    @SerialName("wallet_id")
     val walletId: String
 ) : ITransactionCreateRequest
 
+@Serializable
 data class TransactionTransferCreateRequest(
-    @SerializedName(amountName)
+    @SerialName(amountName)
     val amount: Float,
-    @SerializedName("comment")
+    @SerialName("comment")
     val comment: String,
-    @SerializedName("currency")
+    @SerialName("currency")
     val currency: String,
-    @SerializedName("exchanges")
+    @SerialName("exchanges")
     val exchanges: List<Exchange>? = null,
-    @SerializedName("expenses")
+    @SerialName("expenses")
     val expenses: List<Expense>? = null,
-    @SerializedName("expense_wallet_id")
+    @SerialName("expense_wallet_id")
     val walletIdFrom: String,
-    @SerializedName("income_wallet_id")
+    @SerialName("income_wallet_id")
     val walletIdTo: String,
 ) : ITransactionCreateRequest
 
+@Serializable
 data class Exchange(
-    @SerializedName(amountName)
+    @SerialName(amountName)
     val amount: Float,
-    @SerializedName("currency")
+    @SerialName("currency")
     val currency: String
 )
 
+@Serializable
 data class Expense(
-    @SerializedName("id")
+    @SerialName("id")
     val id: String
 )

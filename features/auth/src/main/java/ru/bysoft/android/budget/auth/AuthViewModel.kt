@@ -2,7 +2,6 @@ package ru.bysoft.android.budget.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +16,6 @@ import ru.bysoft.android.budget.auth.presentation.mapper.getSignInData
 import ru.bysoft.android.budget.auth.presentation.mapper.getSignUpData
 import ru.bysoft.android.budget.common.errors.errorLogger
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
-import javax.inject.Inject
 
 interface IAuthViewModel {
     val state: StateFlow<AuthState>
@@ -32,8 +30,7 @@ interface IAuthViewModel {
     fun setLoading(b: Boolean)
 }
 
-@HiltViewModel
-class AuthViewModel @Inject constructor(
+class AuthViewModel(
     private val repository: IAuthRepository,
     private val navigate: IAuthNavigation
 ) : ViewModel(), IAuthViewModel {

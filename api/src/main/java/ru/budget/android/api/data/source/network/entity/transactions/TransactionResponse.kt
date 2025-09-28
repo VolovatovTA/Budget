@@ -1,103 +1,111 @@
 package ru.budget.android.api.data.source.network.entity.transactions
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import ru.budget.android.api.data.source.network.entity.wallet.WalletItemResponse
 import ru.budget.android.api.data.source.network.entity.wallet.WalletResponse
 
+
+@kotlinx.serialization.Serializable
 data class TransactionResponse(
-    @SerializedName("data")
+    @SerialName("data")
     val data: List<TransactionItemResponse?>?
 )
 
+@kotlinx.serialization.Serializable
 data class TransactionItemResponse(
-    @SerializedName("amount")
+    @SerialName("amount")
     val amount: String,
-    @SerializedName("comment")
+    @SerialName("comment")
     val comment: String?,
-    @SerializedName("created_at")
+    @SerialName("created_at")
     val createdAt: String,
-    @SerializedName("currency")
+    @SerialName("currency")
     val currency: String,
-    @SerializedName("exchanges")
+    @SerialName("exchanges")
     val exchanges: List<TransactionExchangeResponse>,
-    @SerializedName("expenses")
+    @SerialName("expenses")
     val listTransactionExpenseResponse: List<TransactionExpenseResponse>?,
-    @SerializedName("id")
+    @SerialName("id")
     val id: String,
-    @SerializedName("income")
+    @SerialName("income")
     val transactionIncomeResponse: TransactionIncomeResponse?,
-    @SerializedName("transfer")
+    @SerialName("transfer")
     val transfer: TransactionTransferResponse?,
-    @SerializedName("type")
+    @SerialName("type")
     val type: String,
-    @SerializedName("updated_at")
+    @SerialName("updated_at")
     val updatedAt: String,
-    @SerializedName("wallet")
+    @SerialName("wallet")
     val transactionWalletResponse: WalletItemResponse
 )
 
+@kotlinx.serialization.Serializable
 data class TransactionExchangeResponse(
-    @SerializedName("amount")
+    @SerialName("amount")
     val amount: String,
-    @SerializedName("created_at")
+    @SerialName("created_at")
     val createdAt: String,
-    @SerializedName("currency")
+    @SerialName("currency")
     val currency: String,
-    @SerializedName("id")
+    @SerialName("id")
     val id: String,
-    @SerializedName("transaction_id")
+    @SerialName("transaction_id")
     val transactionId: String,
-    @SerializedName("updated_at")
+    @SerialName("updated_at")
     val updatedAt: String
 )
 
+@kotlinx.serialization.Serializable
 data class TransactionExpenseResponse(
-    @SerializedName("created_at")
+    @SerialName("created_at")
     val createdAt: String,
-    @SerializedName("currency")
+    @SerialName("currency")
     val currency: String,
-    @SerializedName("icon_name")
+    @SerialName("icon_name")
     val iconName: String,
-    @SerializedName("id")
+    @SerialName("id")
     val id: String,
-    @SerializedName("name")
+    @SerialName("name")
     val name: String,
-    @SerializedName("updated_at")
+    @SerialName("updated_at")
     val updatedAt: String,
-    @SerializedName("user_id")
+    @SerialName("user_id")
     val userId: String,
-    @SerializedName("wallet")
+    @SerialName("wallet")
     val wallet: WalletItemResponse
 )
 
+@kotlinx.serialization.Serializable
 data class TransactionIncomeResponse(
-    @SerializedName("created_at")
+    @SerialName("created_at")
     val createdAt: String,
-    @SerializedName("currency")
+    @SerialName("currency")
     val currency: String,
-    @SerializedName("icon_name")
+    @SerialName("icon_name")
     val iconName: String,
-    @SerializedName("id")
+    @SerialName("id")
     val id: String,
-    @SerializedName("name")
+    @SerialName("name")
     val name: String,
-    @SerializedName("updated_at")
+    @SerialName("updated_at")
     val updatedAt: String,
-    @SerializedName("user_id")
+    @SerialName("user_id")
     val userId: String,
-    @SerializedName("wallet")
+    @SerialName("wallet")
     val wallet: WalletItemResponse
 )
 
+@Serializable
 data class TransactionTransferResponse(
-    @SerializedName("created_at")
+    @SerialName("created_at")
     val createdAt: String,
-    @SerializedName("expense")
+    @SerialName("expense")
     val expense: TransactionExpenseResponse,
-    @SerializedName("id")
+    @SerialName("id")
     val id: String,
-    @SerializedName("income")
+    @SerialName("income")
     val income: TransactionIncomeResponse,
-    @SerializedName("updated_at")
+    @SerialName("updated_at")
     val updatedAt: String
 )

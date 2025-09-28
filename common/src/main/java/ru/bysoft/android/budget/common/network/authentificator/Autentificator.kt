@@ -21,8 +21,6 @@ import ru.bysoft.android.budget.common.token.entity.AuthSuccessResponse
 import ru.bysoft.android.budget.common.token.entity.TokenRefreshRequest
 import ru.bysoft.android.budget.common.token.network.ITokenRefreshApi
 import ru.bysoft.android.budget.common.util.TAG
-import javax.inject.Inject
-import javax.inject.Singleton
 
 object EmptyTokensWhileRefreshing : Throwable()
 
@@ -38,11 +36,10 @@ data class TokenSuccess(
 ) : TokenStatus
 
 interface ICommonNavigation {
-    fun navigateToAuth()
+    suspend fun navigateToAuth()
 }
 
-@Singleton
-class AuthenticationInterceptorRefreshToken @Inject constructor(
+class AuthenticationInterceptorRefreshToken(
     private val refreshApi: ITokenRefreshApi,
     private val tokenRepo: ITokenStorage,
     private val navigator: ICommonNavigation

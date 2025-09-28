@@ -11,7 +11,6 @@ import ru.budget.android.api.data.mapper.mapToData
 import ru.budget.android.api.data.source.network.entity.wallet.CreateWalletRequest
 import ru.budget.android.api.data.source.network.entity.wallet.UpdateWalletRequest
 import ru.bysoft.android.budget.common.data_entity.WalletData
-import javax.inject.Inject
 
 
 interface IWalletRepository {
@@ -21,7 +20,7 @@ interface IWalletRepository {
     suspend fun deleteWallet(id: String)
 }
 
-class WalletRepository @Inject constructor(
+class WalletRepository constructor(
     private val api: IWalletApi,
     private val mapper: WalletsDataMapper,
 ) : IWalletRepository {

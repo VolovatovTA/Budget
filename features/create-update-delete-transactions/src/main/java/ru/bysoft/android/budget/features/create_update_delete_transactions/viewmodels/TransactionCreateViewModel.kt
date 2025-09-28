@@ -3,7 +3,6 @@ package ru.bysoft.android.budget.features.create_update_delete_transactions.view
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -31,11 +30,9 @@ import ru.bysoft.android.budget.features.create_update_delete_transactions.prese
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.ITransactionsCategoryPresentationMapper
 import ru.bysoft.android.budget.features.currency_rates.data.ICurrencyRatesRepo
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
-import javax.inject.Inject
 import kotlin.math.pow
 
-@HiltViewModel
-class TransactionCreateViewModel @Inject constructor(
+class TransactionCreateViewModel(
     private val navigate: ITransactionNavigation,
     private val transactionApi: ITransactionsApi,
     private val transactionMapper: ITransactionPresentationMapper,

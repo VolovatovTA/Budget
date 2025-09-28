@@ -13,9 +13,8 @@ import ru.bysoft.android.budget.common.util.applyFilter
 import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.ControllerWalletState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
-import javax.inject.Inject
 
-class WalletScreenController @Inject constructor(
+class WalletScreenController(
     meInfo: IMeInfo
 ) : IWalletScreenController {
 

@@ -7,7 +7,7 @@ data class UiKitRowTabState(
 )
 
 data class UiKitTabInfo(
-    @StringRes val text: Int,
+    @param:StringRes val text: Int,
     val isChecked: Boolean = false,
     val isEnabled: Boolean = true
 )

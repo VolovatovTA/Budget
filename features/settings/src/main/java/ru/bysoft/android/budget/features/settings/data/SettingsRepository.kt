@@ -4,9 +4,8 @@ import ru.budget.android.api.data.source.network.IMeApi
 import ru.budget.android.api.data.source.network.entity.me.SettingsRequest
 import ru.bysoft.android.budget.common.me_info.entity.DayOfWeek
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
-import javax.inject.Inject
 
-class SettingsRepository @Inject constructor(
+class SettingsRepository(
     private val api: IMeApi
 ) {
 

@@ -1,35 +1,41 @@
 package ru.bysoft.android.budget.common.token.entity
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class TokenRefreshRequest(
-    @SerializedName("refresh")
+    @SerialName("refresh")
     val refreshToken: String
 )
 
+@Serializable
 sealed interface AuthResponse
 
+@Serializable
 data class AuthSuccessResponse(
-    @SerializedName("access")
+    @SerialName("access")
     val accessToken: String? = null,
-    @SerializedName("refresh")
+    @SerialName("refresh")
     val refreshToken: String? = null,
 ) : AuthResponse
 
+@Serializable
 data class SignErrorResponse(
-    @SerializedName("message")
+    @SerialName("message")
     val message: String? = null,
-    @SerializedName("error")
+    @SerialName("error")
     val error: String? = null,
-    @SerializedName("errors")
+    @SerialName("errors")
     val errors: Errors? = null
 ) : AuthResponse {
+    @Serializable
     data class Errors(
-        @SerializedName("email")
+        @SerialName("email")
         val email: List<String>?,
-        @SerializedName("password")
+        @SerialName("password")
         val password: List<String>?,
-        @SerializedName("name")
+        @SerialName("name")
         val name: List<String>?
     )
 }

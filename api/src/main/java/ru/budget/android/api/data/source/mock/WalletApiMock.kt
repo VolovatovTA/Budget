@@ -1,7 +1,6 @@
 package ru.budget.android.api.data.source.mock
 
 import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import ru.budget.android.api.data.source.network.IWalletApi
 import ru.bysoft.android.budget.common.network.MOCK_DELAY_NAME
@@ -12,12 +11,10 @@ import ru.budget.android.api.data.source.network.entity.wallet.UpdateWalletReque
 import ru.budget.android.api.data.source.network.entity.wallet.WalletItemResponse
 import ru.budget.android.api.data.source.network.entity.wallet.WalletListResponse
 import ru.budget.android.api.data.source.network.pathToWallet
-import javax.inject.Inject
-import javax.inject.Named
 
-class WalletApiMock @Inject constructor(
-    @ApplicationContext private val context: Context,
-    @Named(MOCK_DELAY_NAME) private val mockDelay: Long
+class WalletApiMock(
+    private val context: Context,
+    private val mockDelay: Long
 ) : IWalletApi {
     override suspend fun createWallet(request: CreateWalletRequest): WalletItemResponse {
         delay(mockDelay)

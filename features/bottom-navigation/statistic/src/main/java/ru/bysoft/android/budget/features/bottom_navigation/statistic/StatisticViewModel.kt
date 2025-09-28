@@ -2,7 +2,6 @@ package ru.bysoft.android.budget.features.bottom_navigation.statistic
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +19,6 @@ import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfo
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfoSuccess
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfoWaiting
 import java.util.*
-import javax.inject.Inject
 
 interface IStatisticViewModel {
     val state: StateFlow<IStatisticState>
@@ -31,8 +29,7 @@ interface IStatisticViewModel {
     fun toDetailStatistic()
 }
 
-@HiltViewModel
-class StatisticViewModel @Inject constructor(
+class StatisticViewModel(
     private val errorLogger: IErrorLogger,
     private val repo: IStatisticRepo,
     private val mapper: StatisticPresentationMapper,

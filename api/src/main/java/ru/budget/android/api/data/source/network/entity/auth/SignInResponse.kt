@@ -1,24 +1,28 @@
 package ru.budget.android.api.data.source.network.entity.auth
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class SignUpRequest(
-    @SerializedName("email")
+    @SerialName("email")
     val email: String,
-    @SerializedName("name")
+    @SerialName("name")
     val name: String,
-    @SerializedName("password")
+    @SerialName("password")
     val password: String
 )
 
+@Serializable
 data class SignInRequest(
-    @SerializedName("email")
+    @SerialName("email")
     val email: String,
-    @SerializedName("password")
+    @SerialName("password")
     val password: String
 )
 
+@Serializable
 data class SignInGoogleRequest(
-    @SerializedName("credential")
+    @SerialName("credential")
     val idToken: String?
 )

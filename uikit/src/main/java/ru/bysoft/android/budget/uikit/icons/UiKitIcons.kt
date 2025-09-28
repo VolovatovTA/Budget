@@ -6,20 +6,20 @@ import ru.bysoft.android.budget.uikit.R
 
 object UiKitIcons {
     private val icons =
-        (ExpensesIcons.values().toList() +
-                IncomesIcons.values().toList() +
-                WalletIcons.values().toList())
+        (ExpensesIcons.entries +
+                IncomesIcons.entries +
+                WalletIcons.entries)
             .associate { it.nameForBack to it.id }
 
     fun getByName(name: String?): Int? = icons[name]
 
     fun getCategoriesIcons(type: CategoryTypeEnum): List<IIcons> =
         when (type) {
-            CategoryTypeEnum.EXPENSE -> ExpensesIcons.values().toList()
-            CategoryTypeEnum.INCOME -> IncomesIcons.values().toList()
+            CategoryTypeEnum.EXPENSE -> ExpensesIcons.entries
+            CategoryTypeEnum.INCOME -> IncomesIcons.entries
         }
 
-    fun getWalletIcons(): List<IIcons> = WalletIcons.values().toList()
+    fun getWalletIcons(): List<IIcons> = WalletIcons.entries
 
 
     interface IIcons {
@@ -27,7 +27,7 @@ object UiKitIcons {
         val id: Int
     }
 
-    enum class ExpensesIcons(override val nameForBack: String, @DrawableRes override val id: Int) :
+    enum class ExpensesIcons(override val nameForBack: String, @param:DrawableRes override val id: Int) :
         IIcons {
         Beach("activity", R.drawable.activity),
         AlertTriangle("alert_triangle", R.drawable.alert_triangle),
@@ -62,7 +62,7 @@ object UiKitIcons {
         Clothes("clothes", R.drawable.clothes),
     }
 
-    enum class IncomesIcons(override val nameForBack: String, @DrawableRes override val id: Int) :
+    enum class IncomesIcons(override val nameForBack: String, @param:DrawableRes override val id: Int) :
         IIcons {
         Banknote02("banknote_02", R.drawable.bank_note_02),
         Banknote05("banknote_05", R.drawable.bank_note_05),
@@ -83,7 +83,7 @@ object UiKitIcons {
         CurrencyCoinBitcoin("currency_coin_bitcoin", R.drawable.currency_coin_bitcoin),
     }
 
-    enum class WalletIcons(override val nameForBack: String, @DrawableRes override val id: Int) :
+    enum class WalletIcons(override val nameForBack: String, @param:DrawableRes override val id: Int) :
         IIcons {
         Banknote05("banknote_05", R.drawable.bank_note_05),
         Wallet("wallet", R.drawable.wallet),

@@ -1,30 +1,34 @@
 package ru.budget.android.api.data.source.network.entity.wallet
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 sealed interface WalletResponse
 
+@kotlinx.serialization.Serializable
 data class WalletListResponse(
-    @SerializedName("data")
+    @SerialName("data")
     val data: List<WalletItemResponse>
 ) : WalletResponse
 
+@kotlinx.serialization.Serializable
 data class WalletItemResponse(
-    @SerializedName("balance")
+    @SerialName("balance")
     val balance: String?,
-    @SerializedName("currency")
+    @SerialName("currency")
     val currency: String?,
-    @SerializedName("id")
+    @SerialName("id")
     val id: String?,
-    @SerializedName("name")
+    @SerialName("name")
     val name: String?,
-    @SerializedName("user_id")
+    @SerialName("user_id")
     val userId: String?,
-    @SerializedName("icon_name")
+    @SerialName("icon_name")
     val iconName: String?
 ) : WalletResponse
 
+@Serializable
 data class WalletErrorResponse(
-    @SerializedName("slug")
+    @SerialName("slug")
     val slug: String
 ) : WalletResponse

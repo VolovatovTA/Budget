@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -19,22 +20,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 import ru.bysoft.android.budget.features.splash.ISplashViewModel
 import ru.bysoft.android.budget.features.splash.SplashViewModel
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 
 @Composable
 fun SplashScreen() {
-    val viewModel: ISplashViewModel = hiltViewModel<SplashViewModel>()
-    val animatedState = remember { mutableStateOf(0) }
+    val viewModel: ISplashViewModel = koinViewModel<SplashViewModel>()
+    val animatedState = remember { mutableIntStateOf(0) }
     val scope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
         scope.launch {
             delay(500)
-            animatedState.value++
+            animatedState.intValue++
         }
     }
 

@@ -1,7 +1,10 @@
 package ru.bysoft.android.budget.common.util
 
 import android.content.Context
-import com.google.gson.Gson
+import android.os.Parcelable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import ru.bysoft.android.budget.common.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -11,8 +14,11 @@ const val TAG = "OkHttp"
 fun Context.getStringFromAsset(filePath: String) =
     this.assets.open(filePath).bufferedReader().use { it.readText() }
 
-fun <T> T.toJson() = Gson().toJson(this)
-inline fun <reified T> String.restore() = Gson().fromJson(this, T::class.java)
+inline fun <reified T> T.toJson(): String {
+    return Json.encodeToString(this)
+}
+
+inline fun <reified T> String.restore() = Json.decodeFromString<T>(this)
 
 const val pointJson = ".json"
 
@@ -48,20 +54,38 @@ fun String.applyFilter(): String {
 
 inline fun <R> R?.onNull(block: () -> R): R = this ?: block()
 
+@Serializable
 enum class PeriodState(val textToShow: Int, val textToBack: String) {
+    @SerialName("DAY")
     DAY(R.string.add_text_per_day, "DAY"),
+
+    @SerialName("WEEK")
     WEEK(R.string.add_text_per_week, "WEEK"),
+
+    @SerialName("PERIOD_DAYS")
     PERIOD_DAYS(R.string.add_text_per_some_days, "PERIOD_DAYS"),
+
+    @SerialName("MONTH")
     MONTH(R.string.add_text_per_mont, "MONTH"),
+
+    @SerialName("NO_PERIOD")
     NO_PERIOD(R.string.add_text_whole_time, "WO_PERIOD");
 
     companion object {
-        fun getByTextFromBack(text: String) = values().firstOrNull { it.textToBack == text }
+        fun getByTextFromBack(text: String) = entries.firstOrNull { it.textToBack == text }
     }
 }
 
-enum class TransactionTypeEnum(val text: Int, val nameForBack: String) {
-    EXPENSE(R.string.btn_expense_text, "EXPENSE"), INCOME(R.string.btn_income_text, "INCOME"), TRANSFER(R.string.btn_transfer_text, "TRANSFER");
+@Serializable
+enum class TransactionTypeEnum(
+    @SerialName("text")
+    val text: Int,
+    @SerialName("nameForBack")
+    val nameForBack: String
+) {
+    EXPENSE(R.string.btn_expense_text, "EXPENSE"),
+    INCOME(R.string.btn_income_text, "INCOME"),
+    TRANSFER(R.string.btn_transfer_text, "TRANSFER");
 }
 
 enum class CategoryTypeEnum(val text: Int, val pathToBack: String) {

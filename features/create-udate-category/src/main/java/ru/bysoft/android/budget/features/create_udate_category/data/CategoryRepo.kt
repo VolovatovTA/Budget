@@ -5,7 +5,6 @@ import ru.budget.android.api.data.mapper.CategoryDataMapper
 import ru.budget.android.api.data.source.network.ICategoryApi
 import ru.budget.android.api.data.source.network.entity.category.CategoryItemResponse
 import ru.budget.android.api.data.source.network.entity.category.CategoryRequest
-import javax.inject.Inject
 
 interface ICategoryRepo {
     suspend fun createCategory(categoryRequest: CategoryRequest, name: String): Result<Unit>
@@ -14,7 +13,7 @@ interface ICategoryRepo {
     suspend fun delete(id: String, path: String): Result<Unit>
 }
 
-class CategoryRepo @Inject constructor(
+class CategoryRepo(
     private val api: ICategoryApi,
     private val mapper: CategoryDataMapper
 ) : ICategoryRepo {

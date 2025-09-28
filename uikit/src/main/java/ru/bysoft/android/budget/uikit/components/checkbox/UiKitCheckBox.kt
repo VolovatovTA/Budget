@@ -17,7 +17,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.styles.halfPadding
-import ru.bysoft.android.budget.uikit.theme.NoRippleTheme
 
 @Composable
 fun UiKitCheckBox(
@@ -28,25 +27,22 @@ fun UiKitCheckBox(
 ) {
     val source = remember { MutableInteractionSource() }
     val isCheckBoxPressed by source.collectIsPressedAsState()
-    CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
-
-        Checkbox(
-            checked = checked,
-            onCheckedChange = onCheckedChange,
-            colors = CheckboxDefaults.colors(
-                checkedColor = UiKitColors.colors.primary.`600`,
-                uncheckedColor = if (isSystemInDarkTheme()) UiKitColors.colors.neutral.`300` else UiKitColors.colors.neutral.`500`,
-                checkmarkColor = if (!enabled) UiKitColors.colors.neutral.`400` else Color.White,
-                disabledColor = UiKitColors.colors.neutral.`300`,
-                disabledIndeterminateColor = UiKitColors.colors.neutral.`400`,
-            ),
-            modifier = modifier.shadow(
-                elevation = if (isCheckBoxPressed) 2.dp else 0.dp
-            ),
-            interactionSource = source,
-            enabled = enabled,
-        )
-    }
+    Checkbox(
+        checked = checked,
+        onCheckedChange = onCheckedChange,
+        colors = CheckboxDefaults.colors(
+            checkedColor = UiKitColors.colors.primary.`600`,
+            uncheckedColor = if (isSystemInDarkTheme()) UiKitColors.colors.neutral.`300` else UiKitColors.colors.neutral.`500`,
+            checkmarkColor = if (!enabled) UiKitColors.colors.neutral.`400` else Color.White,
+            disabledColor = UiKitColors.colors.neutral.`300`,
+            disabledIndeterminateColor = UiKitColors.colors.neutral.`400`,
+        ),
+        modifier = modifier.shadow(
+            elevation = if (isCheckBoxPressed) 2.dp else 0.dp
+        ),
+        interactionSource = source,
+        enabled = enabled,
+    )
 }
 
 @Preview(

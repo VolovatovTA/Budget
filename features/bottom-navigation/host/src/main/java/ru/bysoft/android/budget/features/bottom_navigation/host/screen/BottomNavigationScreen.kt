@@ -96,11 +96,11 @@ fun BottomNavigationScreen(
                 },
                 backgroundColor = UiKitColors.colors.surface.secondary,
             ) {
-                Icon(
-                    painter = painterResource(id = Plus.iconId),
-                    contentDescription = "add",
-                    tint = UiKitColors.colors.type.high,
-                )
+//                Icon(
+//                    painter = painterResource(id = Plus.iconId),
+//                    contentDescription = "add",
+//                    tint = UiKitColors.colors.type.high,
+//                )
             }
         }
     ) {

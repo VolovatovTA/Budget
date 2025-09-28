@@ -2,7 +2,6 @@ package ru.bysoft.android.budget.features.create_update_wallet
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +13,6 @@ import ru.bysoft.android.budget.common.data_entity.CreateWalletErrorData
 import ru.bysoft.android.budget.features.create_update_wallet.navigation.IWalletNavigation
 import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.ControllerWalletState
 import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.ViewModelWalletState
-import javax.inject.Inject
 
 interface IWalletScreenController {
     val state: StateFlow<ControllerWalletState>
@@ -39,8 +37,7 @@ interface IUpdateWalletViewModel : IWalletViewModel {
     fun onWalletDeleteClick(walletId: String)
 }
 
-@HiltViewModel
-class CreateWalletViewModel @Inject constructor(
+class CreateWalletViewModel(
     private val repository: IWalletRepository,
     private val navigate: IWalletNavigation,
     private val errorLogger: IErrorLogger,

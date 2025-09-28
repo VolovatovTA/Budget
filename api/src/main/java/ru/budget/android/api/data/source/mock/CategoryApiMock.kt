@@ -1,7 +1,6 @@
 package ru.budget.android.api.data.source.mock
 
 import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import ru.budget.android.api.data.source.network.ICategoryApi
 import ru.budget.android.api.data.source.network.entity.category.*
@@ -9,12 +8,10 @@ import ru.bysoft.android.budget.common.network.MOCK_DELAY_NAME
 import ru.bysoft.android.budget.common.util.getStringFromAsset
 import ru.bysoft.android.budget.common.util.restore
 import java.util.*
-import javax.inject.Inject
-import javax.inject.Named
 
-class CategoryApiMock @Inject constructor(
-    @ApplicationContext private val context: Context,
-    @Named(MOCK_DELAY_NAME) private val delayMock: Long
+class CategoryApiMock(
+    private val context: Context,
+    private val delayMock: Long
 ) : ICategoryApi {
 
     override suspend fun getCategories(name: String): CategoryResponse {

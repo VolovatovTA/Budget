@@ -14,7 +14,6 @@ import ru.bysoft.android.budget.common.token.entity.AuthResponse
 import ru.bysoft.android.budget.common.token.entity.AuthSuccessResponse
 import ru.bysoft.android.budget.common.token.entity.SignErrorResponse
 import ru.bysoft.android.budget.common.util.restore
-import javax.inject.Inject
 import javax.net.ssl.SSLPeerUnverifiedException
 
 interface IAuthRepository {
@@ -23,7 +22,7 @@ interface IAuthRepository {
     suspend fun signInByGoogle(idToken: String?)
 }
 
-class AuthRepository @Inject constructor(
+class AuthRepository(
     private val api: IAuthApi,
     private val tokenRepo: ITokenStorage,
 ) : IAuthRepository {

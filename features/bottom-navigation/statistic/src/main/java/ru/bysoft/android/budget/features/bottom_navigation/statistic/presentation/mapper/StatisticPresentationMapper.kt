@@ -10,9 +10,8 @@ import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentatio
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfo
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfoWaiting
 import ru.bysoft.android.budget.uikit.icons.UiKitIcons
-import javax.inject.Inject
 
-class StatisticPresentationMapper @Inject constructor() {
+class StatisticPresentationMapper {
     fun getState(
         data: StatisticData,
         amountInfo: UiKitAmountInfo = UiKitAmountInfoWaiting

@@ -1,16 +1,18 @@
 package ru.budget.android.api.data.source.network.entity.category
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CategoryRequest(
-    @SerializedName("currency")
+    @SerialName("currency")
     val currency: String,
-    @SerializedName("icon_name")
+    @SerialName("icon_name")
     val iconName: String? = null,
-    @SerializedName("name")
+    @SerialName("name")
     val name: String,
-    @SerializedName("limit_type")
+    @SerialName("limit_type")
     val limitType: String?,
-    @SerializedName("limit_amount")
+    @SerialName("limit_amount")
     val limitAmount: Float?
 )

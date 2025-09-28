@@ -1,21 +1,13 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.di
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
+import org.koin.dsl.module
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.*
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class TransactionsDi {
 
-    @Binds
-    abstract fun bindCategoryMapper(mapper: TransactionsCategoryPresentationMapper): ITransactionsCategoryPresentationMapper
-
-    @Binds
-    abstract fun bindWalletMapper(mapper: TransactionsWalletPresentationMapper): ITransactionWalletPresentationMapper
-
-    @Binds
-    abstract fun bindTransactionMapper(mapper: TransactionPresentationMapper): ITransactionPresentationMapper
+val TransactionsDi = module {
+    singleOf(::TransactionsCategoryPresentationMapper) bind ITransactionsCategoryPresentationMapper::class
+    singleOf(::TransactionsWalletPresentationMapper) bind ITransactionWalletPresentationMapper::class
+    singleOf(::TransactionPresentationMapper) bind ITransactionPresentationMapper::class
 }

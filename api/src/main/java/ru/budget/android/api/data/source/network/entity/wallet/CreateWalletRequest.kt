@@ -1,21 +1,24 @@
 package ru.budget.android.api.data.source.network.entity.wallet
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CreateWalletRequest(
-    @SerializedName("icon_name")
+    @SerialName("icon_name")
     val iconName: String?,
-    @SerializedName("balance")
+    @SerialName("balance")
     val balance: Float?,
-    @SerializedName("currency")
+    @SerialName("currency")
     val currency: String,
-    @SerializedName("name")
+    @SerialName("name")
     val name: String
 )
 
+@Serializable
 data class UpdateWalletRequest(
-    @SerializedName("icon_name")
+    @SerialName("icon_name")
     val iconName: String?,
-    @SerializedName("name")
+    @SerialName("name")
     val name: String
 )

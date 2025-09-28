@@ -1,6 +1,7 @@
 package ru.bysoft.android.budget.common.network.entity
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call
@@ -8,8 +9,9 @@ import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
 
+@Serializable
 data class CommonErrorBody(
-    @SerializedName("slug")
+    @SerialName("slug")
     val slug: String
 )
 

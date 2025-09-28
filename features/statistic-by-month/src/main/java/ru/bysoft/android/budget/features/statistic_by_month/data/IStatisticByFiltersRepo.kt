@@ -5,7 +5,6 @@ import ru.budget.android.api.data.source.network.ITransactionsApi
 import ru.budget.android.api.data.source.network.entity.transactions.TransactionResponse
 import ru.budget.android.api.data.source.network.entity.transactions.TransferTypeEnum
 import ru.bysoft.android.budget.common.data_entity.ListTransactionsData
-import javax.inject.Inject
 
 interface IStatisticByFiltersRepo {
     suspend fun getTransactions(
@@ -15,7 +14,7 @@ interface IStatisticByFiltersRepo {
     ): List<ListTransactionsData>
 }
 
-class StatisticByFiltersRepo @Inject constructor(
+class StatisticByFiltersRepo constructor(
     private val api: ITransactionsApi,
     private val mapper: ITransactionsDataMapper
 ) : IStatisticByFiltersRepo {

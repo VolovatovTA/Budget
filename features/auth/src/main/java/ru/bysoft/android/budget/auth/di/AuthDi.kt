@@ -1,17 +1,15 @@
 package ru.bysoft.android.budget.auth.di
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.bind
+import org.koin.dsl.module
+import ru.bysoft.android.budget.auth.AuthViewModel
+import ru.bysoft.android.budget.auth.IAuthViewModel
 import ru.bysoft.android.budget.auth.data.AuthRepository
 import ru.bysoft.android.budget.auth.data.IAuthRepository
 
-@Module
-@InstallIn(ViewModelComponent::class)
-interface AuthDi {
-
-    @Binds
-    fun bindRepo(repo: AuthRepository): IAuthRepository
-
+val AuthDi = module {
+    singleOf(::AuthRepository) bind IAuthRepository::class
+    viewModelOf(::AuthViewModel) bind IAuthViewModel::class
 }
