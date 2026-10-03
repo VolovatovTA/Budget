@@ -21,11 +21,11 @@
 .DS_Store
 /build
 /captures
-signing_keys
+*.jks
 .externalNativeBuild
 .cxx
 local.properties
-debug.keystore
+debug.keystore.jks
 release.keystore
 /app/remoteBack/release/app-remoteBack-release.aab
 /build-logic/convension/build/kotlin/compileKotlin/local-state/build-history.bin
