@@ -9,7 +9,7 @@ import ru.bysoft.android.budget.common.util.PeriodState
 import ru.bysoft.android.budget.common.util.restore
 import ru.bysoft.android.budget.currency.getCurrency
 
-class CategoryDataMapper{
+class CategoryDataMapper {
     fun mapToData(response: CategoryResponse): StatisticData {
         return StatisticData(
             listCategoryData = response.data.map { getCategoryData(it) }

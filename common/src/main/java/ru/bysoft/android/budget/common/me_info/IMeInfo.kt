@@ -10,7 +10,7 @@ interface IMeInfo {
 class MeInfo : IMeInfo {
     private var cachedData: MeData? = null
     override fun setCurrentMeInfo(meInfoData: MeData) {
-       cachedData = meInfoData
+        cachedData = meInfoData
     }
 
     override fun getCurrentMeInfo(): MeData? = cachedData

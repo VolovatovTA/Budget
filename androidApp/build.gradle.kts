@@ -18,19 +18,19 @@ android {
         create("release") {
             keyAlias = "signing_key_true"
             keyPassword = System.getenv("KEY_PASSWORD")
-            storeFile = file("${project.rootDir}/signing_keys")
+            storeFile = file("${project.rootDir}/signing_keys.jks")
             storePassword = System.getenv("STORE_PASSWORD")
         }
         create("upload") {
             keyAlias = System.getenv("KEY_UPLOAD_ALIAS")
             keyPassword = System.getenv("KEY_UPLOAD_PASSWORD")
-            storeFile = file("${project.rootDir}/signing_keys")
+            storeFile = file("${project.rootDir}/signing_keys.jks")
             storePassword = System.getenv("STORE_PASSWORD")
         }
         create("default") {
             keyAlias = "androiddebugkey"
             keyPassword = "android"
-            storeFile = file("${project.rootDir}/debug.keystore")
+            storeFile = file("${project.rootDir}/debug.keystore.jks")
             storePassword = "android"
         }
     }
@@ -49,6 +49,7 @@ android {
         release {
             signingConfig = signingConfigs.get("upload")
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -129,11 +130,14 @@ dependencies {
     implementation(libs.room.runtime)
 //    ksp(libs.room.compiller)
 //
-//    // Unit tests
-//    testImplementation(libs.junit)
+    // Units
+    testImplementation(libs.junit)
+    testImplementation(libs.koin.test)
+
+    // Instrumentals
 //    androidTestImplementation(libs.junit.ext)
 //    androidTestImplementation(libs.espresso.core)
-//
+
     // Modules
     implementation(project(":shared"))
     implementation(project(":uikit"))
