@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import ru.bysoft.android.budget.common.errors.errorLogger
 import ru.bysoft.android.budget.common.me_info.IMeInfo
@@ -15,18 +17,17 @@ import ru.bysoft.android.budget.common.me_info.entity.DayOfWeek
 import ru.bysoft.android.budget.common.token.ITokenStorage
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getCurrency
+import ru.bysoft.android.budget.features.settings.R
 import ru.bysoft.android.budget.features.settings.data.SettingsRepository
 import ru.bysoft.android.budget.features.settings.presentation.entity.SettingsState
 import ru.bysoft.android.budget.features.settings.presentation.navigation.ISettingsNavigation
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.PopupFieldState
-import ru.bysoft.android.budget.features.settings.R
-import org.koin.core.module.dsl.viewModel
-import org.koin.core.module.dsl.viewModelOf
 
 
 val SettingDi = module {
     viewModelOf(::SettingsViewModel)
+    singleOf(::SettingsRepository)
 }
 
 class SettingsViewModel(

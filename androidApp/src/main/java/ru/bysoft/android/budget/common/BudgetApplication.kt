@@ -34,25 +34,7 @@ class BudgetApplication : Application() {
         startKoin {
             androidContext(this@BudgetApplication)
             androidLogger()
-            modules(
-                platformModule,
-                SplashDi,
-                TokenDi,
-                CurrencyRatedDi,
-                AuthDi,
-                HomeDi,
-                StatisticDi,
-                CreatedUpdateCategoryDi,
-                TransactionsDi,
-                CreateWalletDi,
-                SettingDi,
-                StatisticByFiltersDi,
-                ApiDi,
-                NavigationDi,
-                CommonDi,
-                CommonMockDi,
-                ResponseToDataMappersDi
-            )
+            modules(appModules)
         }
     }
 
@@ -65,3 +47,23 @@ val platformModule = module {
     singleOf(::Platform)
     singleOf(::NavHostControllerWrapper)
 }
+
+val appModules = listOf(
+    platformModule,
+    SplashDi,
+    TokenDi,
+    CurrencyRatedDi,
+    AuthDi,
+    HomeDi,
+    StatisticDi,
+    CreatedUpdateCategoryDi,
+    TransactionsDi,
+    CreateWalletDi,
+    SettingDi,
+    StatisticByFiltersDi,
+    ApiDi,
+    NavigationDi,
+    CommonDi,
+    CommonMockDi,
+    ResponseToDataMappersDi
+)

@@ -18,19 +18,19 @@ android {
         create("release") {
             keyAlias = "signing_key_true"
             keyPassword = System.getenv("KEY_PASSWORD")
-            storeFile = file("${project.rootDir}/signing_keys")
+            storeFile = file("${project.rootDir}/signing_keys.jks")
             storePassword = System.getenv("STORE_PASSWORD")
         }
         create("upload") {
             keyAlias = System.getenv("KEY_UPLOAD_ALIAS")
             keyPassword = System.getenv("KEY_UPLOAD_PASSWORD")
-            storeFile = file("${project.rootDir}/signing_keys")
+            storeFile = file("${project.rootDir}/signing_keys.jks")
             storePassword = System.getenv("STORE_PASSWORD")
         }
         create("default") {
             keyAlias = "androiddebugkey"
             keyPassword = "android"
-            storeFile = file("${project.rootDir}/debug.keystore")
+            storeFile = file("${project.rootDir}/debug.keystore.jks")
             storePassword = "android"
         }
     }
@@ -43,12 +43,18 @@ android {
         versionCode = 3
         versionName = "1.0.0"
 
+        // ключ exchangerate-api: exchangeRateApiKey в ~/.gradle/gradle.properties или переменная окружения
+        val exchangeRateApiKey = providers.gradleProperty("exchangeRateApiKey")
+            .orElse(providers.environmentVariable("EXCHANGE_RATE_API_KEY"))
+            .getOrElse("")
+        buildConfigField("String", "EXCHANGE_RATE_API_KEY", "\"$exchangeRateApiKey\"")
     }
 
     buildTypes {
         release {
             signingConfig = signingConfigs.get("upload")
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -56,7 +62,9 @@ android {
             multiDexEnabled = true
         }
         debug {
-            signingConfig = signingConfigs.get("default")
+            // в CI файла debug.keystore.jks нет — тогда подписываем стандартным отладочным ключом
+            signingConfig = signingConfigs.get("default").takeIf { it.storeFile?.exists() == true }
+                ?: signingConfigs.getByName("debug")
             applicationIdSuffix = ".debug"
             isDebuggable = true
         }
@@ -87,6 +95,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -129,11 +138,14 @@ dependencies {
     implementation(libs.room.runtime)
 //    ksp(libs.room.compiller)
 //
-//    // Unit tests
-//    testImplementation(libs.junit)
+    // Units
+    testImplementation(libs.junit)
+    testImplementation(libs.koin.test)
+
+    // Instrumentals
 //    androidTestImplementation(libs.junit.ext)
 //    androidTestImplementation(libs.espresso.core)
-//
+
     // Modules
     implementation(project(":shared"))
     implementation(project(":uikit"))

@@ -1,0 +1,37 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "d8f533ecb68bd975dcfc9f2491a05d66",
+    "entities": [
+      {
+        "tableName": "CurrencyRatesEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`iso4217` TEXT NOT NULL, `list` TEXT NOT NULL, PRIMARY KEY(`iso4217`))",
+        "fields": [
+          {
+            "fieldPath": "iso4217",
+            "columnName": "iso4217",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "list",
+            "columnName": "list",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "iso4217"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd8f533ecb68bd975dcfc9f2491a05d66')"
+    ]
+  }
+}

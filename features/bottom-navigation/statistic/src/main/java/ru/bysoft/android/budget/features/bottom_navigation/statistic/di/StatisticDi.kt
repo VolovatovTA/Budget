@@ -8,8 +8,10 @@ import ru.bysoft.android.budget.features.bottom_navigation.statistic.IStatisticV
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.StatisticViewModel
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.data.IStatisticRepo
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.data.StatisticRepo
+import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.mapper.StatisticPresentationMapper
 
 val StatisticDi = module{
     singleOf(::StatisticRepo) bind IStatisticRepo::class
+    singleOf(::StatisticPresentationMapper)
     viewModelOf(::StatisticViewModel) bind IStatisticViewModel::class
 }
