@@ -43,6 +43,11 @@ android {
         versionCode = 3
         versionName = "1.0.0"
 
+        // ключ exchangerate-api: exchangeRateApiKey в ~/.gradle/gradle.properties или переменная окружения
+        val exchangeRateApiKey = providers.gradleProperty("exchangeRateApiKey")
+            .orElse(providers.environmentVariable("EXCHANGE_RATE_API_KEY"))
+            .getOrElse("")
+        buildConfigField("String", "EXCHANGE_RATE_API_KEY", "\"$exchangeRateApiKey\"")
     }
 
     buildTypes {
@@ -57,7 +62,9 @@ android {
             multiDexEnabled = true
         }
         debug {
-            signingConfig = signingConfigs.get("default")
+            // в CI файла debug.keystore.jks нет — тогда подписываем стандартным отладочным ключом
+            signingConfig = signingConfigs.get("default").takeIf { it.storeFile?.exists() == true }
+                ?: signingConfigs.getByName("debug")
             applicationIdSuffix = ".debug"
             isDebuggable = true
         }
@@ -88,6 +95,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

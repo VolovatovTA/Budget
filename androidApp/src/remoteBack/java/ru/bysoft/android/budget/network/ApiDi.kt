@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.budget.android.api.data.source.network.*
+import ru.bysoft.android.budget.BuildConfig
 import ru.bysoft.android.budget.network.interceptors.AUTH_CLIENT_NAME
 import ru.bysoft.android.budget.network.interceptors.MAIN_BASE_URL_NAME
 import ru.bysoft.android.budget.network.interceptors.NO_AUTH_CLIENT_NAME
@@ -77,7 +78,7 @@ class ApiDi {
     fun provideCurrencyRatesApi(
         @Named(AUTH_CLIENT_NAME) client: OkHttpClient
     ): ICurrencyRatesApi = Retrofit.Builder()
-            .baseUrl("https://v6.exchangerate-api.com/v6/4352975908f4e056a01a0f38/latest/")
+            .baseUrl("https://v6.exchangerate-api.com/v6/${BuildConfig.EXCHANGE_RATE_API_KEY}/latest/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
