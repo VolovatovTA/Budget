@@ -1,13 +1,17 @@
 [versions]
+#noinspection NewerVersionAvailable
 kotlin = "2.2.0"
 ksp = "2.2.0-2.0.2"
 kotlin-coroutines = "1.10.2"
 compose-plugin = "1.9.0"
 agp = "8.13.0"
-min-sdk = "26"
-compile-sdk = "36"
-target-sdk = "36"
 koin = "4.1.1"
+#noinspection UnusedVersionCatalogEntry
+min-sdk = "26"
+#noinspection UnusedVersionCatalogEntry
+compile-sdk = "36"
+#noinspection UnusedVersionCatalogEntry
+target-sdk = "36"
 
 androidTools = "31.13.0"
 crashlyticV = "3.0.6"
@@ -114,6 +118,7 @@ kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.re
 runner = { group = "androidx.test", name = "runner", version.ref = "runnerVersion" }
 core = { group = "androidx.test", name = "core", version.ref = "coreVersion" }
 test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
+junit = { group = "junit", name = "junit", version.ref = "junit-version" }
 
 [bundles]
 compose = [

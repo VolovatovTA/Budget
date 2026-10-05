@@ -35,7 +35,6 @@ class StatisticViewModel(
     private val mapper: StatisticPresentationMapper,
     private val navigate: IStatisticNavigation,
     private val locale: Locale,
-    private val meInfo: IMeInfo
 ) : ViewModel(), IStatisticViewModel {
 
     override val state: MutableStateFlow<IStatisticState> =
@@ -63,6 +62,7 @@ class StatisticViewModel(
                         }
                     )
                 }
+
                 else -> statisticState
             }
         }
@@ -127,7 +127,7 @@ class StatisticViewModel(
                                     if (filledCategory.amount == 0f && filledCategory.limitAmount == 0f) 0f
                                     // (5 || null)/null ~= 0
                                     else (filledCategory.amount ?: 0f) / (filledCategory.limitAmount
-                                            ?: Float.MAX_VALUE)
+                                        ?: Float.MAX_VALUE)
                                 )
                             }
                         } else UiKitAmountInfoError to ProgressInfoError
