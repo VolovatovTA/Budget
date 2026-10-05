@@ -1,0 +1,90 @@
+package ru.budget.android.api.data.mapper
+
+import ru.bysoft.android.budget.common.data_entity.*
+import ru.bysoft.android.budget.common.util.dateFormat
+import ru.bysoft.android.budget.currency.getCurrency
+import ru.budget.android.api.data.source.network.entity.transactions.TransactionResponse
+import ru.budget.android.api.data.source.network.entity.transactions.TransactionItemResponse
+import java.text.SimpleDateFormat
+import java.util.Locale
+
+interface ITransactionsDataMapper {
+    fun mapToData(response: TransactionResponse): ListTransactionsData
+}
+
+class UnknownTypeTransaction(type: String) :
+    Throwable("Allowed EXPENSE, INCOME, TRANSFER, but came: $type")
+
+class TransactionsDataMapper(
+    private val locale: Locale
+) : ITransactionsDataMapper {
+    override fun mapToData(response: TransactionResponse) =
+        ListTransactionsData(listTransactions = response.data?.mapNotNull { it?.let{mapToData(it)} }.orEmpty())
+
+    private fun mapToData(response: TransactionItemResponse): TransactionData =
+        when  {
+            response.type == "EXPENSE" && response.transfer == null-> getExpenseTransaction(response, locale = locale)
+            response.type == "INCOME"  && response.transfer == null-> getIncomeTransaction(response, locale = locale)
+            response.transfer != null-> getTransferTransaction(response, locale = locale)
+            else -> throw UnknownTypeTransaction(response.type)
+        }
+
+    private fun getExpenseTransaction(
+        transactionItemResponse: TransactionItemResponse,
+        locale: Locale
+    ): TransactionExpense =
+        TransactionExpense(
+            amount = transactionItemResponse.amount.toFloatOrNull() ?: 0f,
+            categories = getCategories(transactionItemResponse),
+            comment = transactionItemResponse.comment,
+            currency = getCurrency(transactionItemResponse.currency),
+            date = SimpleDateFormat(dateFormat, locale).parse(transactionItemResponse.createdAt),
+            id = transactionItemResponse.id
+        )
+
+    private fun getIncomeTransaction(
+        transactionItemResponse: TransactionItemResponse,
+        locale: Locale
+    ): TransactionIncome =
+        TransactionIncome(
+            amount = transactionItemResponse.amount.toFloatOrNull() ?: 0f,
+            categories = getCategories(transactionItemResponse),
+            comment = transactionItemResponse.comment,
+            currency = getCurrency(transactionItemResponse.currency),
+            date = SimpleDateFormat(dateFormat, locale).parse(transactionItemResponse.createdAt),
+            id = transactionItemResponse.id
+        )
+
+    private fun getTransferTransaction(
+        transactionItemResponse: TransactionItemResponse,
+        locale: Locale
+    ): TransactionTransfer =
+        TransactionTransfer(
+            amount = transactionItemResponse.amount.toFloatOrNull() ?: 0f,
+            comment = transactionItemResponse.comment,
+            currency = getCurrency(transactionItemResponse.currency),
+            date = SimpleDateFormat(dateFormat, locale).parse(transactionItemResponse.createdAt),
+            id = transactionItemResponse.id
+        )
+
+    private fun getCategories(transactionItemResponse: TransactionItemResponse): List<CategoryData> =
+        when {
+            !transactionItemResponse.listTransactionExpenseResponse.isNullOrEmpty() -> transactionItemResponse.listTransactionExpenseResponse.map {
+                ExpenseCategory(
+                    currency = getCurrency(it.currency),
+                    id = it.id,
+                    name = it.name,
+                    iconName = it.iconName,
+                )
+            }
+            transactionItemResponse.transactionIncomeResponse != null -> listOf(
+                IncomeCategory(
+                    currency = getCurrency(transactionItemResponse.transactionIncomeResponse.currency),
+                    id = transactionItemResponse.transactionIncomeResponse.id,
+                    name = transactionItemResponse.transactionIncomeResponse.name,
+                    iconName = transactionItemResponse.transactionIncomeResponse.iconName
+                )
+            )
+            else -> emptyList()
+        }
+}

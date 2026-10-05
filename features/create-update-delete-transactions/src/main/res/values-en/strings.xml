@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_screen_title">Create transaction</string>
+    <string name="update_screen_title">Update transaction</string>
+    <string name="wallet_from_title_text">Wallet to pay</string>
+    <string name="wallet_to_text">Top-upped wallet</string>
+    <string name="text_field_comment_label">Comment</string>
+    <string name="text_field_amount_label">Amount</string>
+    <string name="text_field_exchange_label">Exchange</string>
+    <string name="title_categories_incomes">Income categories</string>
+    <string name="title_categories_expense">Expense categories</string>
+    <string name="btn_text_create">Create</string>
+    <string name="text_field_exchange_not_empty">Because currency of transaction is not the same with currencies of wallet(s)/category(ies) you need to enter exchanges</string>
+    <string name="error_loading_wallets">Error occurred while loading wallets</string>
+    <string name="error_loading_categories">Error occurred while loading categories</string>
+    <string name="error_answer">Create transaction failed</string>
+    <string name="add_category1">Add</string>
+    <string name="add_category2">category</string>
+    <string name="no_categories_expense">To create expense you need create at least one category of expense</string>
+    <string name="no_categories_income">To create income you need create at least one category of incomes</string>
+    <string name="full_amount">full \namount</string>
+</resources>

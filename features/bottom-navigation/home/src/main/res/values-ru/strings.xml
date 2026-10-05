@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_while_loading_some_data">"Не удалось загрузить данные…"</string>
+    <string name="create_new_wallet">"Создайте новую карту"</string>
+    <string name="hello_text_dashboard">"С возвращением, "</string>
+    <string name="error_while_loading_me_info">"Не удалось загрузить данные о вас…"</string>
+    <string name="filter_income">"ДОХОД"</string>
+    <string name="filter_expense">"РАСХОД"</string>
+    <string name="filter_transfer">"ПЕРЕВОД"</string>
+    <string name="empty_transactions_list">"У вас пока нет ни одной транзакции…"</string>
+    <string name="icon_description">Your profile photo</string>
+    <string name="dialog_delete_transaction_title">Удаление транзакции</string>
+    <string name="dialog_delete_transaction_subtitle">Вы действительно хотите удалить транзакцию?</string>
+    <string name="dialog_delete_transaction_positive_button">да</string>
+    <string name="dialog_delete_transaction_negative_button">нет</string>
+</resources>

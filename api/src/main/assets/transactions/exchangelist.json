@@ -1,0 +1,96 @@
+{
+  "data": [
+    {
+      "id": "408da770-151c-4a9b-b381-1f8d26b41140",
+      "type": "EXPENSE",
+      "comment": "open edu",
+      "expenses": [
+        {
+          "id": "43559e28-445c-4ab0-8d4e-41b63a328e78",
+          "name": "турецкое образование",
+          "currency": "TRY",
+          "icon_name": "Food"
+        }
+      ],
+      "wallet": {
+        "id": "efabc3ab-8570-4abe-a2b9-ccf5dfa47a1d",
+        "name": "Турецкий",
+        "currency": "TRY"
+      },
+      "amount": 2547245,
+      "currency": "TRY",
+      "created": "01/22/2023 18:06:07",
+      "exchanges": []
+    },
+    {
+      "id": "a2fd1319-c628-4d2d-a491-7448fe2801e0",
+      "type": "EXPENSE",
+      "comment": "na pivko",
+      "expenses": [
+        {
+          "id": "c403d77f-00f5-4c42-b385-5b7bf29eaa73",
+          "name": "Food",
+          "currency": "RUB",
+          "icon_name": "Food"
+        },
+        {
+          "id": "a306c44b-56d5-4cad-9817-9cf51d2de72a",
+          "name": "Food georgian",
+          "currency": "GEL",
+          "icon_name": "Food"
+        },
+        {
+          "id": "43559e28-445c-4ab0-8d4e-41b63a328e78",
+          "name": "турецкое образование",
+          "currency": "TRY",
+          "icon_name": "Food"
+        },
+        {
+          "id": "8090924a-4837-4601-9ab5-1fc113f11339",
+          "name": "Еда в армении",
+          "currency": "AMD",
+          "icon_name": "Food"
+        }
+      ],
+      "wallet": {
+        "id": "efabc3ab-8570-4abe-a2b9-ccf5dfa47a1d",
+        "name": "Турецкий",
+        "currency": "TRY"
+      },
+      "amount": 1000,
+      "currency": "RUB",
+      "created": "01/24/2023 09:14:20",
+      "exchanges": [
+        {
+          "currency": "GEL",
+          "amount": 45
+        },
+        {
+          "currency": "TRY",
+          "amount": 3500
+        },
+        {
+          "currency": "AMD",
+          "amount": 5300
+        }
+      ]
+    }
+  ],
+  "filter": {
+    "wallet_ids": [
+      "efabc3ab-8570-4abe-a2b9-ccf5dfa47a1d"
+    ],
+    "expense_ids": null,
+    "income_ids": null,
+    "type": [
+      "EXPENSE"
+    ],
+    "currency": null,
+    "date_from": null,
+    "date_to": null,
+    "last_id": null,
+    "count": 10,
+    "sort_by": "created",
+    "search": null
+  }
+}

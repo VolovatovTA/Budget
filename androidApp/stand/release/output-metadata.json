@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "ru.it_bears.android.budget",
+  "variantName": "standRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 1,
+      "versionName": "1.0-stand",
+      "outputFile": "app-stand-release.apk"
+    }
+  ],
+  "elementType": "File"
+}

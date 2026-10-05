@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="without_icon">без \nиконки</string>
+    <string name="currency_not_selected">Валюта не выбрана</string>
+    <string name="compose">Compose</string>
+    <string name="views">Views</string>
+    <string name="y_axis">Dollllllars</string>
+    <string name="x_axis">timie (days)</string>
+</resources>

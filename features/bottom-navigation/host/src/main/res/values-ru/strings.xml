@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_home">Главная</string>
+    <string name="label_qr">Сканировать</string>
+    <string name="label_statistic">Статистика</string>
+</resources>

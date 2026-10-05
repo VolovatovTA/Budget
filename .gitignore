@@ -1,0 +1,24 @@
+# Build output
+build/
+bin/
+.gradle/
+.kotlin/
+.externalNativeBuild/
+.cxx/
+captures/
+
+# IDE
+.idea/
+*.iml
+
+# Local machine config
+local.properties
+.DS_Store
+
+# Signing
+signing_keys
+*.jks
+*.keystore
+!debug.keystore
+/buildSrc/signing_keys
+/buildSrc/release_signing_keys

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.BudgetTheme" parent="@android:style/Theme.Material.NoActionBar">
+        <!--Other app theme properties-->
+        <item name="android:statusBarColor">@color/surfacePrimary</item>
+        <item name="android:navigationBarColor">@color/surfacePrimary</item>
+        <item name="android:windowBackground">@color/surfacePrimary</item>
+    </style>
+</resources>

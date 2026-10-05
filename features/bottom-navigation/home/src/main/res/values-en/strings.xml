@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_while_loading_some_data">"Oups.. We can't loading data.."</string>
+    <string name="create_new_wallet">"Create new wallet"</string>
+    <string name="hello_text_dashboard">"Oh. Hi, "</string>
+    <string name="error_while_loading_me_info">"Oups.. Something went wrong.."</string>
+    <string name="filter_income">"INCOME"</string>
+    <string name="filter_expense">"EXPENSE"</string>
+    <string name="filter_transfer">"TRANSFER"</string>
+    <string name="empty_transactions_list">"Your transactions list is empty"</string>
+    <string name="icon_description">Your profile photo</string>
+    <string name="dialog_delete_transaction_title">Delete transaction</string>
+    <string name="dialog_delete_transaction_subtitle">Do you really want delete this transaction?</string>
+    <string name="dialog_delete_transaction_positive_button">yes</string>
+    <string name="dialog_delete_transaction_negative_button">no</string>
+</resources>

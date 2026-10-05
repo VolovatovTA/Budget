@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_category_title">Create category</string>
+    <string name="update_category_title">Update category</string>
+    <string name="error_loading_data">Oups.. We can\'t loading data..</string>
+    <string name="text_field_name_category_label">Category name</string>
+    <string name="text_field_limit_label">Set limit</string>
+    <string name="text_limit_description">This limit will be shows in statistic and may be wil helpful for manage expenses</string>
+    <string name="btn_finish_update_text">Update category</string>
+    <string name="btn_finish_create_text">Create new category</string>
+    <string name="undefined_text">Undefined</string>
+    <string name="no_unique_name">Name of category must be unique</string>
+    <string name="invalid_name">Invalid name</string>
+    <string name="invalid_currency">Invalid currency</string>
+    <string name="null_error_server_sent">Server send an error, but it is empty</string>
+    <string name="undefined_error">Unknown error</string>
+    <string name="technical_error">Technical error</string>
+    <string name="invalid_icon_name">Something wrong with icon.. But what may happened..</string>
+    <string name="category_deleted">The category was deleted</string>
+    <string name="without_icon">без \nиконки</string>
+</resources>

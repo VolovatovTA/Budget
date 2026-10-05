@@ -1,0 +1,43 @@
+package ru.bysoft.android.budget.common.network.entity
+
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import okhttp3.Request
+import okio.Timeout
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.HttpException
+import retrofit2.Response
+
+@Serializable
+data class CommonErrorBody(
+    @SerialName("slug")
+    val slug: String
+)
+
+fun Throwable.ifHttpErrorGetErrorBody(): String? {
+    if (this is HttpException) {
+        return response()?.errorBody()?.string()
+    }
+    return null
+}
+
+
+object EmptyAnswer : Call<Unit> {
+    override fun clone(): Call<Unit> = this
+
+    override fun execute(): Response<Unit> = Response.success(Unit)
+
+    override fun enqueue(callback: Callback<Unit>) {}
+
+    override fun isExecuted(): Boolean = true
+
+    override fun cancel() {}
+
+    override fun isCanceled(): Boolean = false
+
+    override fun request(): Request = Request.Builder().build()
+
+    override fun timeout(): Timeout = Timeout()
+
+}

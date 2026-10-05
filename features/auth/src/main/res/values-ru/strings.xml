@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_main_sign_in_welcome_text">С возвращением!</string>
+    <string name="auth_btn_sign_in_text">войти</string>
+    <string name="auth_btn_sign_up_text">зарегистрироваться</string>
+    <string name="auth_main_sign_up_welcome_text">Добро пожаловать!</string>
+    <string name="auth_welcome_text">В наше скромное приложение</string>
+    <string name="your_name_label">Ваше имя</string>
+    <string name="your_email_label">Email</string>
+    <string name="password_create_label">Придумайте пароль</string>
+    <string name="password_enter_label">Пароль</string>
+    <string name="password_confirm_enter_label">"Подтвердите пароль"</string>
+    <string name="agree_with_terms_and_conditions">"Я согласен с "</string>
+    <string name="and">" и "</string>
+    <string name="terms_text">"условиями использования"</string>
+    <string name="conditions_text">"политикой конфиденциальности"</string>
+    <string name="invite_sign_in_text">"Ещё нет аккаунта? "</string>
+    <string name="invite_sign_up_text">"Введите ваши данные для регистрации. Или, если они у вас уже есть, "</string>
+    <string name="invite_sign_in_link">Зарегестрируйтесь!</string>
+    <string name="invite_sign_up_link">войдите</string>
+
+    <string name="field_email_invalid">Email адрес занят или введён не корректно</string>
+    <string name="field_password_invalid_length">Пароль должен содержать 6 или более символов</string>
+    <string name="invalid_credentials">Пароль или email введены неверно</string>
+    <string name="field_email_required">Нужен ваш email</string>
+    <string name="field_password_required">Без пароля не получиться зарегестрироваться</string>
+    <string name="field_name_required">Без вашего имени регистрация невозможна</string>
+    <string name="field_name_invalid_length">Имя должно содержать хотя бы 3 символа</string>
+    <string name="internal_server_error">Произошла ошибка сервера. Мы о ней знаем и скоро исправим</string>
+    <string name="certificate_error">Ошибка сертификата. Обратитесь в службу поддержки</string>
+    <string name="unexpected_error">Непредвиденная ошибка</string>
+    <string name="sign_in_with_google">Войти через Google</string>
+    <string name="sign_up_by_google">Через Google</string>
+    <string name="or_continue_with">Или через</string>
+    <string name="passwords_not_match">Пароли не сопадают</string>
+</resources>

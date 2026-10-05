@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_text_per_day">"в день"</string>
+    <string name="add_text_per_week">"в неделю"</string>
+    <string name="add_text_per_some_days">"дней"</string>
+    <string name="add_text_per_mont">"в месяц"</string>
+    <string name="add_text_whole_time">"на всё время"</string>
+
+    <string name="btn_expense_text">"Расход"</string>
+    <string name="btn_income_text">"Доход"</string>
+    <string name="btn_transfer_text">"Перевод"</string>
+    <string name="wallet_name_text">"Имя нового кошелька"</string>
+    <string name="wallet_balance_text">"Баланс нового кошелька"</string>
+    <string name="wallet_btn_create_text">"Создать кошелёк"</string>
+    <string name="invalid_currency">Данная валюта не поддерживается нашим бэкендом. Странно что она вообще сюда попала…</string>
+    <string name="invalid_balance">Неверный баланс. Попробуйте заменить его</string>
+    <string name="invalid_name">Имя не должно быть пустым</string>
+    <string name="wallet_name_must_be_unique">Имя кошелька должно отличаться от существующих</string>
+    <string name="wallet_btn_update_text">Подтвердить</string>
+    <string name="wallet_title_create">Создайте кошелёк</string>
+    <string name="wallet_title_update">Отредактируйте кошелёк</string>
+    <string name="wallet_icon_text">Для упрощения работы с кошельком задайте ему иконку. В будущем вам будет проще вспомнить что это за кошелёк</string>
+
+    <string name="monday">Понедельник</string>
+    <string name="tuesday">Вторник</string>
+    <string name="wednesday">Среда</string>
+    <string name="thursday">Четверг</string>
+    <string name="friday">Пятница</string>
+    <string name="saturday">Суббота</string>
+    <string name="sunday">Воскресенье</string>
+
+</resources>

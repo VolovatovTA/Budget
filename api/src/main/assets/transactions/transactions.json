@@ -1,0 +1,171 @@
+{
+  "data": [
+    {
+      "id": "d87f033c-dc7f-474f-a9f3-1372d879bfcc",
+      "comment": "Pososal",
+      "type": "EXPENSE",
+      "currency": "TRY",
+      "wallet": {
+        "id": "c8805a3f-6eee-47b6-885a-ab4eee512a8e",
+        "name": "Turkish",
+        "icon_name": null,
+        "balance": "100",
+        "user_id": "27320f08-83f4-4db6-af1a-99582f9ee506",
+        "currency": "TRY",
+        "created_at": "2023-03-04T11:09:23.000000Z",
+        "updated_at": "2023-03-05T12:58:28.000000Z"
+      },
+      "exchanges": [],
+      "amount": "100",
+      "created_at": "2023-03-04T11:11:15.000000Z",
+      "updated_at": "2023-03-04T11:11:15.000000Z"
+    },
+    {
+      "id": "d29b1c40-f053-463a-91c3-468ef333e1f8",
+      "comment": "Broken leg",
+      "type": "EXPENSE",
+      "currency": "TRY",
+      "wallet": {
+        "id": "c8805a3f-6eee-47b6-885a-ab4eee512a8e",
+        "name": "Turkish",
+        "icon_name": null,
+        "balance": "100",
+        "user_id": "27320f08-83f4-4db6-af1a-99582f9ee506",
+        "currency": "TRY",
+        "created_at": "2023-03-04T11:09:23.000000Z",
+        "updated_at": "2023-03-05T12:58:28.000000Z"
+      },
+      "expenses": [
+        {
+          "id": "89be2681-f0e2-470e-83c8-d40e8e7434c6",
+          "name": "Health",
+          "icon_name": "Heart",
+          "currency": "TRY",
+          "user_id": "27320f08-83f4-4db6-af1a-99582f9ee506",
+          "created_at": "2023-03-04T13:01:05.000000Z",
+          "updated_at": "2023-03-04T13:01:05.000000Z",
+          "limit_type": "WO_PERIOD",
+          "limit_amount": "5000"
+        },
+        {
+          "id": "89be2681-f0e2-470e-83c8-d40e8e7434c7",
+          "name": "Health",
+          "icon_name": "Recycle",
+          "currency": "TRY",
+          "user_id": "27320f08-83f4-4db6-af1a-99582f9ee506",
+          "created_at": "2023-03-04T13:01:05.000000Z",
+          "updated_at": "2023-03-04T13:01:05.000000Z",
+          "limit_type": "WO_PERIOD",
+          "limit_amount": "5000"
+        },
+        {
+          "id": "89be2681-f0e2-470e-83c8-d40e8e7434c7",
+          "name": "Health",
+          "icon_name": "Rest",
+          "currency": "TRY",
+          "user_id": "27320f08-83f4-4db6-af1a-99582f9ee506",
+          "created_at": "2023-03-04T13:01:05.000000Z",
+          "updated_at": "2023-03-04T13:01:05.000000Z",
+          "limit_type": "WO_PERIOD",
+          "limit_amount": "5000"
+        },
+        {
+          "id": "89be2681-f0e2-470e-83c8-d40e8e7434c7",
+          "name": "Health",
+          "icon_name": "Person",
+          "currency": "TRY",
+          "user_id": "27320f08-83f4-4db6-af1a-99582f9ee506",
+          "created_at": "2023-03-04T13:01:05.000000Z",
+          "updated_at": "2023-03-04T13:01:05.000000Z",
+          "limit_type": "WO_PERIOD",
+          "limit_amount": "5000"
+        }
+      ],
+      "exchanges": [],
+      "amount": "859",
+      "created_at": "2023-03-05T05:27:09.000000Z",
+      "updated_at": "2023-03-05T05:27:09.000000Z"
+    },
+    {
+      "id": "e8e0c933-bbbc-4274-9bf4-1c69a73bad26",
+      "comment": "\u0427\u0438\u0441\u0442 \u043d\u0430 \u043f\u0438\u0432\u043a\u043e",
+      "type": "EXPENSE",
+      "currency": "TRY",
+      "wallet": {
+        "id": "c8805a3f-6eee-47b6-885a-ab4eee512a8e",
+        "name": "Turkish",
+        "icon_name": null,
+        "balance": "100",
+        "user_id": "27320f08-83f4-4db6-af1a-99582f9ee506",
+        "currency": "TRY",
+        "created_at": "2023-03-04T11:09:23.000000Z",
+        "updated_at": "2023-03-05T12:58:28.000000Z"
+      },
+      "expenses": [
+        {
+          "id": "89be2681-f0e2-470e-83c8-d40e8e7434c6",
+          "name": "Health",
+          "icon_name": "Heart",
+          "currency": "TRY",
+          "user_id": "27320f08-83f4-4db6-af1a-99582f9ee506",
+          "created_at": "2023-03-04T13:01:05.000000Z",
+          "updated_at": "2023-03-04T13:01:05.000000Z",
+          "limit_type": "WO_PERIOD",
+          "limit_amount": "5000"
+        }
+      ],
+      "exchanges": [],
+      "amount": "41.8",
+      "created_at": "2023-03-05T12:58:01.000000Z",
+      "updated_at": "2023-03-05T12:58:01.000000Z"
+    },
+    {
+      "id": "df3bfcf6-4c91-404a-a3e0-54345754ea89",
+      "comment": null,
+      "type": "INCOME",
+      "currency": "TRY",
+      "wallet": {
+        "id": "c8805a3f-6eee-47b6-885a-ab4eee512a8e",
+        "name": "Turkish",
+        "icon_name": null,
+        "balance": "100",
+        "user_id": "27320f08-83f4-4db6-af1a-99582f9ee506",
+        "currency": "TRY",
+        "created_at": "2023-03-04T11:09:23.000000Z",
+        "updated_at": "2023-03-05T12:58:28.000000Z"
+      },
+      "income": {
+        "id": "e4869e1a-8236-439c-a453-477b4becfb24",
+        "name": "ZP",
+        "icon_name": "Person",
+        "currency": "EUR",
+        "user_id": "27320f08-83f4-4db6-af1a-99582f9ee506",
+        "created_at": "2023-03-05T08:50:37.000000Z",
+        "updated_at": "2023-03-05T08:50:37.000000Z"
+      },
+      "exchanges": [
+        {
+          "id": "aab859c7-46c7-4b9c-8507-5216344cf924",
+          "transaction_id": "df3bfcf6-4c91-404a-a3e0-54345754ea89",
+          "amount": "5.9",
+          "currency": "EUR",
+          "created_at": "2023-03-05T12:58:28.000000Z",
+          "updated_at": "2023-03-05T12:58:28.000000Z"
+        }
+      ],
+      "amount": "100.8",
+      "created_at": "2023-03-05T12:58:28.000000Z",
+      "updated_at": "2023-03-05T12:58:28.000000Z"
+    }
+  ],
+  "filter": {
+    "wallet_ids": [
+      "c8805a3f-6eee-47b6-885a-ab4eee512a8e"
+    ],
+    "expense_ids": null,
+    "income_ids": null,
+    "date_from": null,
+    "date_to": null,
+    "transfer": "WITHOUT"
+  }
+}

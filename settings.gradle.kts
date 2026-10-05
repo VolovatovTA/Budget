@@ -1,0 +1,48 @@
+import java.net.URI
+
+include(":shared")
+
+
+pluginManagement {
+    includeBuild("build-logic")
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("gradle/libs.verion.toml"))
+        }
+    }
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url = URI("https://jitpack.io")
+        }
+    }
+}
+rootProject.name = "Budget"
+include(":androidApp")
+include(":api")
+include(":uikit")
+include(":common")
+include(":features")
+include(":features:splash")
+include(":features:auth")
+include(":features:bottom-navigation")
+include(":features:bottom-navigation:host")
+include(":features:bottom-navigation:home")
+include(":features:bottom-navigation:statistic")
+include(":features:create-update-wallet")
+include(":features:create-udate-category")
+include(":features:create-update-delete-transactions")
+include(":features:statistic-by-month")
+include(":features:settings")
+include(":features:currency-rates")
+include(":features:transaction-detail")
+include(":currency")
