@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "id": "30000000-0000-4000-8000-000000000001",
+      "name": "Salary",
+      "icon_name": "coin_hand",
+      "currency": "USD",
+      "limit_amount": null,
+      "limit_type": null
+    },
+    {
+      "id": "30000000-0000-4000-8000-000000000002",
+      "name": "Freelance",
+      "icon_name": "gift",
+      "currency": "USD",
+      "limit_amount": null,
+      "limit_type": null
+    }
+  ]
+}

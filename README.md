@@ -32,33 +32,24 @@ talks to the real backend.
 ./gradlew :androidApp:testLocalMockDebugUnitTest
 ```
 
-The `remoteBack` flavor is being migrated from Hilt to Koin and does not build yet. It reads the
-exchangerate-api key from the `exchangeRateApiKey` Gradle property or the
+The `remoteBack` flavor reads the exchangerate-api key from the `exchangeRateApiKey` Gradle property or the
 `EXCHANGE_RATE_API_KEY` environment variable.
 
-The unit tests include a Koin `verify()` check that fails if any class in the DI graph has an
-unregistered dependency. CI runs the tests and a debug build on every pull request.
+Unit tests cover two things that used to break silently: a Koin `verify()` check fails if any
+class in the DI graph has an unregistered dependency, and a mock-assets test fails if a bundled
+mock response no longer matches its response class. CI runs the tests and a debug build on every
+pull request.
 
-# Screenshots
+## Status
 
-## Registration
-Register with your email and password. You will receive an email with a link to confirm your email address. After that you can login with your email and password.
-![img_3.png](docs/screenshots/img_3.png)
-## Authorization
-You can authorize with your email and password. You will receive an access token. You can use this token to access the API.
-![img_2.png](docs/screenshots/img_2.png)
-## Home page
-You can see your wallets and your transactions bounded at your wallets. You can also create a new wallets and transactions.
-![img_4.png](docs/screenshots/img_4.png)
-## Wallets create
-You can create a new wallet. You can choose a name and a currency.
-![img.png](docs/screenshots/img.png)
-## Statistics
-You can see your statistics. You can see your total balance and your total balance in USD.
-![img_1.png](docs/screenshots/img_1.png)
-## Category create
-You can create a new category. You can choose a name and a type.
-![img_5.png](docs/screenshots/img_5.png)
-## Transaction create
-You can create a new transaction. You can choose a wallet, a category, a type, a description and an amount.
-![img_6.png](docs/screenshots/img_6.png)
+The project is in the middle of a migration from Hilt to Koin. On the `localMock` build sign-in,
+sign-up, the home screen and statistics work; the create/edit screens, settings and the
+`remoteBack` flavor are not migrated yet.
+
+## Screenshots
+
+Taken from the `localMock` build.
+
+| Sign in | Sign up | Home | Statistics |
+|---|---|---|---|
+| <img src="docs/screenshots/sign-in.png" width="200"> | <img src="docs/screenshots/sign-up.png" width="200"> | <img src="docs/screenshots/home.png" width="200"> | <img src="docs/screenshots/statistics.png" width="200"> |

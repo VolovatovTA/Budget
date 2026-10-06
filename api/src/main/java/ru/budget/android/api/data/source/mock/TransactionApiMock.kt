@@ -7,10 +7,10 @@ import ru.budget.android.api.data.source.network.entity.transactions.Transaction
 import ru.budget.android.api.data.source.network.entity.transactions.TransactionIncomeCreateRequest
 import ru.budget.android.api.data.source.network.entity.transactions.TransactionResponse
 import ru.budget.android.api.data.source.network.entity.transactions.TransactionTransferCreateRequest
+import ru.budget.android.api.data.source.network.pathToTransactions
 import ru.bysoft.android.budget.common.util.getStringFromAsset
+import ru.bysoft.android.budget.common.util.pointJson
 import ru.bysoft.android.budget.common.util.restore
-import java.util.*
-import kotlin.random.Random
 
 class TransactionApiMock (
     private val context: Context,
@@ -23,7 +23,12 @@ class TransactionApiMock (
         dateTo: String?,
         expenseIds: List<String>?
     ): TransactionResponse {
-        return context.getStringFromAsset("").restore()
+        val response = allTransactions()
+        return response.copy(
+            data = response.data?.filter { transaction ->
+                transaction?.listTransactionExpenseResponse.orEmpty().any { it.id in expenseIds.orEmpty() }
+            }
+        )
     }
     override suspend fun getTransactions(
         type: String?,
@@ -36,12 +41,7 @@ class TransactionApiMock (
         wallet_ids: List<String>?
     ): TransactionResponse {
         delay(delayMock)
-        val response = context.getStringFromAsset("transactions/transactions.json")
-            .restore<TransactionResponse>()
-        return response.copy(
-            data = response.data?.subList(0, Random.nextInt(0, response.data.size))
-                ?.map { it?.copy(id = UUID.randomUUID().toString()) }
-        )
+        return allTransactions()
     }
 
     override suspend fun deleteTransaction(id: String): Unit {
@@ -50,16 +50,19 @@ class TransactionApiMock (
 
     override suspend fun createTransactionExpense(request: TransactionExpenseCreateRequest): TransactionResponse {
         delay(delayMock)
-        return context.getStringFromAsset("").restore()
+        return allTransactions()
     }
 
     override suspend fun createTransactionIncome(request: TransactionIncomeCreateRequest): TransactionResponse {
         delay(delayMock)
-        return context.getStringFromAsset("").restore()
+        return allTransactions()
     }
 
     override suspend fun createTransactionTransfer(request: TransactionTransferCreateRequest): TransactionResponse {
         delay(delayMock)
-        return context.getStringFromAsset("").restore()
+        return allTransactions()
     }
+
+    private fun allTransactions(): TransactionResponse =
+        context.getStringFromAsset(pathToTransactions + pointJson).restore()
 }

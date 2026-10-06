@@ -11,6 +11,10 @@ import ru.budget.android.api.data.source.network.entity.wallet.UpdateWalletReque
 import ru.budget.android.api.data.source.network.entity.wallet.WalletItemResponse
 import ru.budget.android.api.data.source.network.entity.wallet.WalletListResponse
 import ru.budget.android.api.data.source.network.pathToWallet
+import ru.budget.android.api.data.source.network.pathWallet
+import ru.bysoft.android.budget.common.util.pointJson
+
+private const val pathWalletItem = "$pathToWallet/wallet$pointJson"
 
 class WalletApiMock(
     private val context: Context,
@@ -18,7 +22,7 @@ class WalletApiMock(
 ) : IWalletApi {
     override suspend fun createWallet(request: CreateWalletRequest): WalletItemResponse {
         delay(mockDelay)
-        return context.getStringFromAsset(pathToWallet).restore()
+        return context.getStringFromAsset(pathWalletItem).restore()
     }
 
     override suspend fun updateWallet(id: String, request: UpdateWalletRequest) {
@@ -32,11 +36,11 @@ class WalletApiMock(
 
     override suspend fun getWallet(id: String): WalletItemResponse {
         delay(mockDelay)
-        return context.getStringFromAsset(pathToWallet).restore()
+        return context.getStringFromAsset(pathWalletItem).restore()
     }
 
     override suspend fun getWallets(): WalletListResponse {
         delay(mockDelay)
-        return context.getStringFromAsset("").restore()
+        return context.getStringFromAsset(pathWallet + pointJson).restore()
     }
 }
