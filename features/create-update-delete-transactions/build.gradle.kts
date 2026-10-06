@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.bysoft.library)
     alias(libs.plugins.bysoft.compose)
+    alias(libs.plugins.serialization)
 }
 
 

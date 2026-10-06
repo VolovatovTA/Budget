@@ -1,0 +1,10 @@
+{
+  "uuid": "00000000-0000-4000-8000-000000000001",
+  "email": "alex@example.com",
+  "name": "Alex",
+  "settings": {
+    "currency": "USD",
+    "first_day_of_week": "MONDAY",
+    "profile_picture_url": null
+  }
+}
