@@ -82,6 +82,7 @@ charts-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", 
 
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit-version" }
 retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit-version" }
+retrofit-kotlinx-serialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "retrofit-version" }
 retrofit-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "interceptor-version" }
 
 viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "viewmodel-compose-version" }

@@ -3,7 +3,7 @@ package ru.bysoft.android.budget.common.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.viewmodel.compose.viewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -63,7 +63,7 @@ fun MainNavigationHost(mainNavController: NavHostController) {
             startDestination = WalletNavigation.screenName
         ) {
             composable(WalletNavigation.createScreenName) {
-                val viewModel = viewModel<CreateWalletViewModel>()
+                val viewModel = koinViewModel<CreateWalletViewModel>()
                 CRUDWalletScreen(
                     screenController = viewModel.walletScreenController,
                     viewModelWalletState = viewModel.state.collectAsState().value,
@@ -72,10 +72,8 @@ fun MainNavigationHost(mainNavController: NavHostController) {
             }
 
             composable("${WalletNavigation.updateScreenName}/{${WalletNavigation.walletIdKey}}") {
-                val walletId =
-                    it.arguments?.getString(WalletNavigation.walletIdKey)
-                        ?.restore<String>()
-                val viewModel = viewModel<UpdateWalletViewModel>()
+                val walletId = it.arguments?.getString(WalletNavigation.walletIdKey)
+                val viewModel = koinViewModel<UpdateWalletViewModel>()
                 LaunchedEffect(Unit) {
                     viewModel.init(walletId)
                 }
@@ -97,13 +95,13 @@ fun MainNavigationHost(mainNavController: NavHostController) {
             composable("${CreateUpdateCategory.createScreenName}/{arguments}") {
                 val typeCategory =
                     it.arguments?.getString("arguments")?.restore<CreateCategoryNavInfo>()
-                val viewModel = viewModel<CreateCategoryViewModel>()
+                val viewModel = koinViewModel<CreateCategoryViewModel>()
                 viewModel.initNavParams(typeCategory)
                 CreateCategoryScreen(viewModel)
             }
             composable("${CreateUpdateCategory.updateDeleteScreenName}/{arguments}") {
                 val id = it.arguments?.getString("arguments")!!
-                UpdateCategoryScreen(viewModel<UpdateCategoryViewModel>(), id)
+                UpdateCategoryScreen(koinViewModel<UpdateCategoryViewModel>(), id)
             }
         }
 
@@ -112,7 +110,7 @@ fun MainNavigationHost(mainNavController: NavHostController) {
             startDestination = DetailStatistic.screenName
         ) {
             composable(DetailStatistic.screenName) {
-                val viewModel = viewModel<StatisticByFiltersViewModel>()
+                val viewModel = koinViewModel<StatisticByFiltersViewModel>()
                 StatisticByFiltersScreen(viewModel)
             }
         }
@@ -128,20 +126,20 @@ fun MainNavigationHost(mainNavController: NavHostController) {
                 arguments = listOf(navArgument(argumentName) { type = NavType.StringType })
 
             ) {
-                val viewModel = viewModel<TransactionCreateViewModel>()
+                val viewModel = koinViewModel<TransactionCreateViewModel>()
                 TransactionScreen(viewModel)
             }
 
             composable("${Transaction.updateScreen}/{arguments}") {
                 val id = it.arguments?.getString("arguments")!!
-                val viewModel = viewModel<TransactionUpdateViewModel>()
+                val viewModel = koinViewModel<TransactionUpdateViewModel>()
                 LaunchedEffect(Unit) { viewModel.initId(id) }
                 TransactionScreen(viewModel)
             }
         }
 
         composable(SettingsNavigation.screenName) {
-            val viewModel = viewModel<SettingsViewModel>()
+            val viewModel = koinViewModel<SettingsViewModel>()
             SettingsScreen(viewModel)
         }
     }

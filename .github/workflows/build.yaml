@@ -21,7 +21,9 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build with Gradle
-        run: ./gradlew :androidApp:assembleLocalMockDebug
+        env:
+          EXCHANGE_RATE_API_KEY: ${{ secrets.EXCHANGE_RATE_API_KEY }}
+        run: ./gradlew :androidApp:assembleLocalMockDebug :androidApp:assembleRemoteBackDebug
 
       - name: Upload to GHA artifacts
         uses: actions/upload-artifact@v4
