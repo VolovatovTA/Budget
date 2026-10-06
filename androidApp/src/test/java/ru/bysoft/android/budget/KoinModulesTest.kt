@@ -1,24 +1,22 @@
 package ru.bysoft.android.budget
 
 import android.content.Context
+import androidx.lifecycle.SavedStateHandle
 import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.dsl.module
 import org.koin.test.verify.verify
 import ru.bysoft.android.budget.common.appModules
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
+/** Проверяет, что у каждого класса в графе Koin все зависимости зарегистрированы */
 class KoinModulesTest {
 
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun allDefinitionsResolve() {
         module { includes(appModules) }.verify(
-            extraTypes = listOf(Context::class)
+            // Context даёт androidContext(), SavedStateHandle Koin подставляет во view model сам
+            extraTypes = listOf(Context::class, SavedStateHandle::class)
         )
     }
 }

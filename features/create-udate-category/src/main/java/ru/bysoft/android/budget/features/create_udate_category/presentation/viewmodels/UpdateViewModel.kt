@@ -1,7 +1,6 @@
 package ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels
 
 import androidx.lifecycle.viewModelScope
-//import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

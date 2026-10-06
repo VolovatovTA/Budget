@@ -25,7 +25,8 @@ expense transactions, categories and spending statistics.
 ## Build
 
 The app has two flavors: `localMock` works offline on bundled mock responses, `remoteBack`
-talks to the real backend.
+talks to the real backend. Build types and flavors contribute their own Koin modules
+(`buildTypeModules`, `flavorModules`), so the DI graph is verified for every variant.
 
 ```
 ./gradlew :androidApp:assembleLocalMockDebug
@@ -40,12 +41,6 @@ class in the DI graph has an unregistered dependency, and a mock-assets test fai
 mock response no longer matches its response class. CI runs the tests and a debug build on every
 pull request.
 
-## Status
-
-The project is in the middle of a migration from Hilt to Koin. On the `localMock` build sign-in,
-sign-up, the home screen and statistics work; the create/edit screens, settings and the
-`remoteBack` flavor are not migrated yet.
-
 ## Screenshots
 
 Taken from the `localMock` build.
@@ -53,3 +48,7 @@ Taken from the `localMock` build.
 | Sign in | Sign up | Home | Statistics |
 |---|---|---|---|
 | <img src="docs/screenshots/sign-in.png" width="200"> | <img src="docs/screenshots/sign-up.png" width="200"> | <img src="docs/screenshots/home.png" width="200"> | <img src="docs/screenshots/statistics.png" width="200"> |
+
+| New transaction | New category | Edit wallet | Settings |
+|---|---|---|---|
+| <img src="docs/screenshots/transaction.png" width="200"> | <img src="docs/screenshots/category.png" width="200"> | <img src="docs/screenshots/wallet.png" width="200"> | <img src="docs/screenshots/settings.png" width="200"> |

@@ -124,9 +124,13 @@ dependencies {
     // DI (Koin)
     implementation(libs.koin.core)
     implementation(libs.koin.android)
+    implementation(libs.koin.android.compose)
 
     // Networking / Logging
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.kotlinx.serialization)
     implementation(libs.retrofit.logging)
+    implementation(libs.kotlinx.json)
 
     // Firebase
     implementation(platform(libs.firebase.bom))
