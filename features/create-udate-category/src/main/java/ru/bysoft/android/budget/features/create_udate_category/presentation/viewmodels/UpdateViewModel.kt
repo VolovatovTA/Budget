@@ -58,6 +58,7 @@ class UpdateCategoryViewModel(
     }
 
     override fun initId(id: String) {
+        if (this.id == id) return
         this.id = id
         viewModelScope.launch(exceptionHandler) {
             state.value = state.value.copy(isLoading = true)

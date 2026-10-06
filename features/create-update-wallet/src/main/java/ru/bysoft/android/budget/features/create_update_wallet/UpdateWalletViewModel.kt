@@ -54,7 +54,8 @@ class UpdateWalletViewModel(
     }
 
     override fun init(walletId: String?) {
-        if (walletId == null) return
+        // повторный вызов после поворота экрана: данные уже загружены
+        if (walletId == null || this::walletId.isInitialized) return
         this.walletId = walletId
         viewModelScope.launch(createWalletExceptionHandler) {
             _state.value = _state.value.copy(isLoading = true)
