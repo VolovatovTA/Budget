@@ -23,8 +23,8 @@ import ru.bysoft.android.budget.features.currency_rates.di.CurrencyRatedDi
 import ru.bysoft.android.budget.features.settings.presentation.SettingDi
 import ru.bysoft.android.budget.features.splash.di.SplashDi
 import ru.bysoft.android.budget.features.statistic_by_month.di.StatisticByFiltersDi
-import ru.bysoft.android.budget.mock.ApiDi
-import ru.bysoft.android.budget.mock.common.CommonMockDi
+import ru.bysoft.android.budget.di.buildTypeModules
+import ru.bysoft.android.budget.di.flavorModules
 import ru.bysoft.shared.Platform
 
 class BudgetApplication : Application() {
@@ -61,9 +61,7 @@ val appModules = listOf(
     CreateWalletDi,
     SettingDi,
     StatisticByFiltersDi,
-    ApiDi,
     NavigationDi,
     CommonDi,
-    CommonMockDi,
     ResponseToDataMappersDi
-)
+) + flavorModules + buildTypeModules

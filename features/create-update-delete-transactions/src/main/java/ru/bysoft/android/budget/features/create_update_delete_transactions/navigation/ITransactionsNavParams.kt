@@ -10,6 +10,7 @@ data class TransactionsCreateNavParams(
     val type: TransactionTypeEnum,
 )
 
+@Serializable
 data class TransactionUpdateNavParams(
     val id: String
 )
