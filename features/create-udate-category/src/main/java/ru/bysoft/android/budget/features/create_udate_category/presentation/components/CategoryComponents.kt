@@ -56,7 +56,7 @@ fun CreateUpdateCategoryTextField(
     modifier: Modifier = Modifier,
     onNotFocused: (lastText: String) -> Unit = {},
     keyboardActions: KeyboardActions,
-    popUpList: CurrencyFieldState? = null,
+    popUpList: CurrencyFieldState<BudgetCurrencyEnum>? = null,
     onCurrencySelected: ((BudgetCurrencyEnum) -> Unit)? = null
 ) {
     Column(
@@ -76,7 +76,7 @@ fun CreateUpdateCategoryTextField(
             popUpList = popUpList,
             popUpItem = {
                 it?.let {
-                    UiKitCurrencyPopUpTextField(it)
+                    UiKitCurrencyPopUpTextField(it.displayName, it.flag)
                 }
             },
             onSelectPopUpItem = {

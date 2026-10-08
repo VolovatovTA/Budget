@@ -1,5 +1,6 @@
 package ru.bysoft.android.budget.features.create_udate_category.presentation.screen
 
+import ru.bysoft.android.budget.features.create_udate_category.presentation.mapper.toIconPack
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -75,7 +76,7 @@ fun UpdateCategoryScreen(
 
             item {
                 UiKitIconsComponent(
-                    type = state.typeCategory,
+                    pack = state.typeCategory.toIconPack(),
                     viewModel::onIconSelected,
                     state.iconState
                 )

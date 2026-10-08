@@ -26,11 +26,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
-import ru.bysoft.android.budget.common.util.CategoryTypeEnum
-import ru.bysoft.android.budget.common.util.onNull
 import ru.bysoft.android.budget.uikit.R
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.icons.UiKitIcons
+import ru.bysoft.android.budget.uikit.icons.UiKitIcons.UiKitIconPack
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.styles.corner
 import ru.bysoft.android.budget.uikit.styles.halfPadding
@@ -46,19 +45,13 @@ val iconSize = 50.dp
 
 @Composable
 fun UiKitIconsComponent(
-    type: CategoryTypeEnum? = null,
+    pack: UiKitIconPack = UiKitIconPack.WALLET,
     onClick: (String?) -> Unit,
     selectedIcon: UiKitIconState
 ) {
 
-    val listIcons =
-        // add null icon (= without icon)
-        listOf<UiKitIcons.IIcons?>(null) +
-                type?.let {
-                    UiKitIcons.getCategoriesIcons(type)
-                }.onNull {
-                    UiKitIcons.getWalletIcons()
-                }
+    // the leading null stands for "without icon"
+    val listIcons = listOf<UiKitIcons.IIcons?>(null) + UiKitIcons.getIcons(pack)
     val rowsCount = when (listIcons.size) {
         in (0..7) -> 1
         in (8..14) -> 2
@@ -119,17 +112,17 @@ fun UiKitIconsComponentPreview() {
     BudgetTheme {
         Column(verticalArrangement = Arrangement.spacedBy(padding)) {
             UiKitIconsComponent(
-                type = CategoryTypeEnum.EXPENSE,
+                pack = UiKitIconPack.EXPENSE,
                 onClick = {},
                 selectedIcon = UiKitIconState(iconName = "activity")
             )
             UiKitIconsComponent(
-                type = CategoryTypeEnum.INCOME,
+                pack = UiKitIconPack.INCOME,
                 onClick = {},
                 selectedIcon = UiKitIconState(iconName = null)
             )
             UiKitIconsComponent(
-                type = null,
+                pack = UiKitIconPack.WALLET,
                 onClick = {},
                 selectedIcon = UiKitIconState(iconName = null)
             )

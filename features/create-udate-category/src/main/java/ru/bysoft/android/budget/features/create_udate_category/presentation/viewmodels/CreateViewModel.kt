@@ -1,5 +1,6 @@
 package ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels
 
+import ru.bysoft.android.budget.currency.getAvailableCurrency
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +32,8 @@ class CreateCategoryViewModel(
     override val state: MutableStateFlow<CreateUpdateCategoryState> = MutableStateFlow(
         CreateUpdateCategoryState(
             currencyFieldState = CurrencyFieldState(
-                selectedCurrency = getCurrency(meInfo.getCurrentMeInfo()?.settingsData?.currency)
+                selectedCurrency = getCurrency(meInfo.getCurrentMeInfo()?.settingsData?.currency),
+                list = getAvailableCurrency(),
             )
         )
     )

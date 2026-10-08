@@ -1,5 +1,7 @@
 package ru.bysoft.android.budget.features.create_update_wallet.presentation.screen
 
+import ru.bysoft.android.budget.uikit.icons.UiKitIcons.UiKitIconPack
+import ru.bysoft.android.budget.currency.getAvailableCurrency
 import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.border
@@ -125,7 +127,7 @@ fun CRUDWalletScreen(
                     popUpList = controllerWalletState.currencyFieldState,
                     popUpItem = { t ->
                         t?.let {
-                            UiKitCurrencyPopUpTextField(t)
+                            UiKitCurrencyPopUpTextField(t.displayName, t.flag)
                         }
                     },
                     onSelectPopUpItem = screenController::onCurrencySelected
@@ -146,7 +148,7 @@ fun CRUDWalletScreen(
                     .padding(halfPadding)
             ) {
                 UiKitIconsComponent(
-                    type = null,
+                    pack = UiKitIconPack.WALLET,
                     screenController::onIconSelected,
                     controllerWalletState.iconState
                 )
@@ -240,7 +242,8 @@ fun PreviewCreateWalletScreen() {
                         ),
                         balanceTextState = TextFieldState(),
                         currencyFieldState = CurrencyFieldState(
-                            selectedCurrency = BudgetCurrencyEnum.RUB
+                            selectedCurrency = BudgetCurrencyEnum.RUB,
+                            list = getAvailableCurrency(),
                         ),
                     )
                 )

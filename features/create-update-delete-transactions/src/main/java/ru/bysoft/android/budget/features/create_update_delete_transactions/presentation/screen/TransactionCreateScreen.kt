@@ -196,7 +196,7 @@ private fun TransactionCreateScreenMain(
                     popUpList = transactionState.currencyFieldState,
                     popUpItem = { t ->
                         t?.let {
-                            UiKitCurrencyPopUpTextField(t)
+                            UiKitCurrencyPopUpTextField(t.displayName, t.flag)
                         }
                     },
                     onSelectPopUpItem = {

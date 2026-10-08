@@ -93,14 +93,14 @@ fun UiKitRowTabLightPreview() {
     UiKitRowTab(
         startState = UiKitRowTabState(
             listOf(
-                UiKitTabInfo(ru.bysoft.android.budget.common.R.string.btn_income_text, true, true),
+                UiKitTabInfo(android.R.string.ok, true, true),
                 UiKitTabInfo(
-                    ru.bysoft.android.budget.common.R.string.btn_transfer_text,
+                    android.R.string.copy,
                     false,
                     true
                 ),
                 UiKitTabInfo(
-                    ru.bysoft.android.budget.common.R.string.btn_expense_text,
+                    android.R.string.cancel,
                     false,
                     false
                 )
@@ -116,14 +116,14 @@ fun UiKitRowTabDarkPreview() {
     UiKitRowTab(
         startState = UiKitRowTabState(
             listOf(
-                UiKitTabInfo(ru.bysoft.android.budget.common.R.string.btn_income_text, true, true),
+                UiKitTabInfo(android.R.string.ok, true, true),
                 UiKitTabInfo(
-                    ru.bysoft.android.budget.common.R.string.btn_transfer_text,
+                    android.R.string.copy,
                     false,
                     true
                 ),
                 UiKitTabInfo(
-                    ru.bysoft.android.budget.common.R.string.btn_expense_text,
+                    android.R.string.cancel,
                     false,
                     false
                 )

@@ -1,5 +1,6 @@
 package ru.bysoft.android.budget.features.create_update_wallet.presentation.controllers
 
+import ru.bysoft.android.budget.currency.getAvailableCurrency
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -21,7 +22,8 @@ class WalletScreenController(
     private val _state = MutableStateFlow(
         ControllerWalletState(
             currencyFieldState = CurrencyFieldState(
-                selectedCurrency = getCurrency(meInfo.getCurrentMeInfo()!!.settingsData?.currency)
+                selectedCurrency = getCurrency(meInfo.getCurrentMeInfo()!!.settingsData?.currency),
+                list = getAvailableCurrency(),
             )
         )
     )
@@ -101,7 +103,7 @@ class WalletScreenController(
             else -> _state.value.nameTextState
         }
 
-    private fun getCurrencyStateByErrorType(errorType: CreateWalletErrorData): CurrencyFieldState =
+    private fun getCurrencyStateByErrorType(errorType: CreateWalletErrorData): CurrencyFieldState<BudgetCurrencyEnum> =
         when (errorType) {
             CreateWalletErrorData.INVALID_CURRENCY -> _state.value.currencyFieldState.copy(
                 errorText = CreateWalletErrorData.INVALID_CURRENCY.errorText

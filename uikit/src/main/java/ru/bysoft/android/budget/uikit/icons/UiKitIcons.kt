@@ -1,7 +1,6 @@
 package ru.bysoft.android.budget.uikit.icons
 
 import androidx.annotation.DrawableRes
-import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.uikit.R
 
 object UiKitIcons {
@@ -13,13 +12,15 @@ object UiKitIcons {
 
     fun getByName(name: String?): Int? = icons[name]
 
-    fun getCategoriesIcons(type: CategoryTypeEnum): List<IIcons> =
-        when (type) {
-            CategoryTypeEnum.EXPENSE -> ExpensesIcons.entries
-            CategoryTypeEnum.INCOME -> IncomesIcons.entries
+    fun getIcons(pack: UiKitIconPack): List<IIcons> =
+        when (pack) {
+            UiKitIconPack.EXPENSE -> ExpensesIcons.entries
+            UiKitIconPack.INCOME -> IncomesIcons.entries
+            UiKitIconPack.WALLET -> WalletIcons.entries
         }
 
-    fun getWalletIcons(): List<IIcons> = WalletIcons.entries
+    /** Which set of icons a picker offers. Features map their own types onto this. */
+    enum class UiKitIconPack { EXPENSE, INCOME, WALLET }
 
 
     interface IIcons {
