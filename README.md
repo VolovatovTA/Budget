@@ -73,7 +73,6 @@ flowchart TB
     host --> transactions
     home --> rates
     transactions --> rates
-    splash --> rates
 
     features --> core
     rates --> core
@@ -105,7 +104,7 @@ the rules in the root `build.gradle.kts`:
 Things the graph makes visible:
 
 - `bottom-navigation:host` is the only feature that depends on other features.
-- `currency-rates` is a data module (Room, no UI) that three features read from. It sits
+- `currency-rates` is a data module (Room, no UI) that `home` and the transactions feature read from. It sits
   between the features and the core because it needs `api`.
 - `transaction-detail` is in the build but nothing depends on it: `androidApp` does not
   include it.

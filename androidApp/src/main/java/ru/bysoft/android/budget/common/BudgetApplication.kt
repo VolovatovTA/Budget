@@ -2,6 +2,7 @@ package ru.bysoft.android.budget.common
 
 import android.app.Application
 import androidx.room.Room
+import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
@@ -13,6 +14,7 @@ import ru.bysoft.android.budget.common.di.CommonDi
 import ru.bysoft.android.budget.common.di.NavigationDi
 import ru.bysoft.android.budget.common.navigation.NavHostControllerWrapper
 import ru.bysoft.android.budget.common.token.di.TokenDi
+import ru.bysoft.android.budget.common.warmup.AppWarmUp
 import ru.bysoft.android.budget.features.bottom_navigation.home.di.HomeDi
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.di.StatisticDi
 import ru.bysoft.android.budget.features.create_udate_category.di.CreatedUpdateCategoryDi
@@ -36,6 +38,7 @@ class BudgetApplication : Application() {
             androidLogger()
             modules(appModules)
         }
+        get<AppWarmUp>().start()
     }
 
     val database: CurrentRaceDatabase by lazy {
@@ -46,6 +49,7 @@ class BudgetApplication : Application() {
 val platformModule = module {
     singleOf(::Platform)
     singleOf(::NavHostControllerWrapper)
+    single { AppWarmUp(currencyRatesRepo = get(), errorLogger = get()) }
 }
 
 val appModules = listOf(
