@@ -102,9 +102,8 @@ dependencies {
 //    implementation(libs.accompanist.pager.indicators)
 
     // AndroidX & Material
-    implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.36.0")
-    implementation(libs.compose.navigation)
+    implementation(libs.core.splashscreen)
+    implementation(libs.accompanist.systemuicontroller)
 //    implementation(libs.appcompat)
 //    implementation(libs.material)
 //    implementation(libs.constraintlayout)
@@ -129,7 +128,7 @@ dependencies {
 
     // Room
     implementation(libs.room.runtime)
-//    ksp(libs.room.compiller)
+//    ksp(libs.room.compiler)
 //
     // Units
     testImplementation(libs.junit)
