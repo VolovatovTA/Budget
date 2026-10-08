@@ -11,7 +11,6 @@ dependencies {
     implementation(libs.viewmodel.compose)
     implementation(libs.koin.compose.viewmodel)
     
-    implementation(project(":features:currency-rates"))
     implementation(project(":common"))
     implementation(project(":uikit"))
 }

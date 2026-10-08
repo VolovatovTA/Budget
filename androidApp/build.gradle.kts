@@ -123,6 +123,8 @@ dependencies {
     // Units
     testImplementation(libs.junit)
     testImplementation(libs.koin.test)
+    testImplementation(libs.coroutines.test)
+    testImplementation(project(":currency"))
 
     // Modules
     implementation(project(":shared"))
