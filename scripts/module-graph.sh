@@ -6,10 +6,10 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 # node id for a module path like features:bottom-navigation:host
-id() { echo "$1" | sed -E 's/^features://; s/^bottom-navigation:/bn_/; s/[-:]/_/g'; }
-label() { echo "$1" | sed -E 's/^features://'; }
+id() { echo "$1" | sed -E 's/^features://; s/^core:/core_/; s/^bottom-navigation:/bn_/; s/[-:]/_/g'; }
+label() { echo "$1" | sed -E 's/^features://; s/^core://'; }
 
-modules=$(find androidApp api common currency uikit shared features -name build.gradle.kts | sed 's|/build.gradle.kts||; s|/|:|g' | sort)
+modules=$(find androidApp core shared features -name build.gradle.kts | sed 's|/build.gradle.kts||; s|/|:|g' | sort)
 
 echo 'flowchart TB'
 echo '    androidApp'
@@ -22,10 +22,9 @@ echo '    subgraph data'
 echo '        currency_rates[currency-rates]'
 echo '    end'
 echo '    subgraph core'
-echo '        api'
-echo '        common'
-echo '        currency'
-echo '        uikit'
+for m in $modules; do
+  case "$m" in core:*) echo "        $(id "$m")[$(label "$m")]";; esac
+done
 echo '    end'
 echo '    shared[shared · KMP]'
 echo

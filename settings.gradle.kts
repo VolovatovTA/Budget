@@ -23,9 +23,10 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Budget"
 include(":androidApp")
-include(":api")
-include(":uikit")
-include(":common")
+include(":core:common")
+include(":core:designsystem")
+include(":core:model")
+include(":core:network")
 include(":features")
 include(":features:splash")
 include(":features:auth")
@@ -40,4 +41,3 @@ include(":features:statistic-by-month")
 include(":features:settings")
 include(":features:currency-rates")
 include(":features:transaction-detail")
-include(":currency")

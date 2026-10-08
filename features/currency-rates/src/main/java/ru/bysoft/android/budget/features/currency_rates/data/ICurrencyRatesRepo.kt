@@ -17,6 +17,8 @@ interface ICurrencyRatesRepo {
     suspend fun getCurrencyRate(base: BudgetCurrencyEnum, target: BudgetCurrencyEnum): CurrencyRate
 }
 
+const val MILLIS_IN_ONE_DAY = 1000 * 60 * 60 * 24
+
 class CurrencyRatesRepo(
     private val api: ICurrencyRatesApi,
     private val mapper: CurrencyRatesDataMapper,
@@ -29,20 +31,16 @@ class CurrencyRatesRepo(
         CoroutineExceptionHandler { _, throwable -> errorLogger.logError(throwable) }
 
     override suspend fun getCurrencyRates(): CurrencyRateData {
-
         val availableCurrency = getAvailableCurrency()
-        val firstCurrency =
-            availableCurrency.firstOrNull() ?: return CurrencyRateData(emptyMap())
-        val extractedData = withContext(scope.coroutineContext + handler) {
+        val firstCurrency = availableCurrency.first()
+        val extractedData: CurrencyRatesEntity? = withContext(handler) {
             currencyRatesStorage.getCurrencyRateByIso(firstCurrency.iso4217)
         }
-        val extractedMillis = extractedData?.list?.split('|')?.get(1)?.toLongOrNull() ?: 0L
+        val extractedMillis: Long = extractedData?.list?.split('|')?.get(1)?.toLongOrNull() ?: 0L
         val currentMillis = System.currentTimeMillis()
         val difference = currentMillis - extractedMillis
-        val millisecondsInDay = 1000 * 60 * 60 * 24
-
-        return if (extractedData != null && difference < millisecondsInDay) {
-            getCurrecyRatesFromStorage()
+        return if (extractedData != null && difference < MILLIS_IN_ONE_DAY) {
+            getCurrencyRatesFromStorage()
         } else {
             getCurrencyRatesFromApiAndSaveItInStorage(availableCurrency)
         }
@@ -76,8 +74,8 @@ class CurrencyRatesRepo(
         return data
     }
 
-    private suspend fun getCurrecyRatesFromStorage(): CurrencyRateData {
-        val data = withContext(scope.coroutineContext + handler) {
+    private suspend fun getCurrencyRatesFromStorage(): CurrencyRateData {
+        val data = withContext(handler) {
             mapToListCurrencyRatesData(currencyRatesStorage.getAllCurrencyRates())
         }
         return CurrencyRateData(data)
@@ -85,7 +83,7 @@ class CurrencyRatesRepo(
 
     private fun mapToListCurrencyRatesData(list: List<CurrencyRatesEntity>): Map<BudgetCurrencyEnum, List<CurrencyRate>> {
         val result = list
-            .map { it.iso4217 to it.list.split('|')[0] }
+            .map { it.iso4217 to it.list.firstCurrency() }
             .associate {
                 getCurrency(it.first) to it.second.mapToCurrencyRateData()
             }
@@ -93,8 +91,10 @@ class CurrencyRatesRepo(
     }
 
 
+    private fun String.firstCurrency() = split('|')[0]
+
     private fun String.mapToCurrencyRateData(): List<CurrencyRate> = this
-        .split('|')[0]
+        .firstCurrency()
         .split(";")
         .map { curWithDouble ->
             val data = curWithDouble.split(",")
@@ -105,9 +105,7 @@ class CurrencyRatesRepo(
         base: BudgetCurrencyEnum,
         target: BudgetCurrencyEnum
     ): CurrencyRate {
-        withContext(scope.coroutineContext) {
-            currencyRatesStorage.getCurrencyRateByIso(base.iso4217)
-        }?.let {
+        currencyRatesStorage.getCurrencyRateByIso(base.iso4217)?.let {
             return it.list.mapToCurrencyRateData()
                 .firstOrNull { currencyRate -> currencyRate.currency == target }
                 ?: CurrencyRate(target, Double.NaN)
