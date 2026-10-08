@@ -9,11 +9,11 @@ android {
 
 dependencies {
     implementation(libs.retrofit)
-
+    implementation(libs.kotlinx.json)
     implementation(libs.coroutines.android)
-
+    
     implementation(project(":common"))
     implementation(project(":currency"))
-
+    
     testImplementation(libs.junit)
 }
