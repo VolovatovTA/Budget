@@ -31,6 +31,9 @@ class MainActivity : ComponentActivity() {
             navWrapper.set(navController)
 
             BudgetTheme {
+                // accompanist/systemuicontroller is deprecated; the replacement is enableEdgeToEdge()
+                // plus inset handling on every screen, which is a visual change for a separate PR
+                @Suppress("DEPRECATION")
                 val systemUiController = rememberSystemUiController()
                 systemUiController.setSystemBarsColor(color = UiKitColors.colors.surface.primary)
                 MainNavigationHost(navController)

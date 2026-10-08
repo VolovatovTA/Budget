@@ -95,6 +95,10 @@ enum class CategoryTypeEnum(val text: Int, val pathToBack: String) {
 const val dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
 const val dateFormatOutput = "d MMMM HH:mm:ss"
 
+/** Day of week the way the deprecated [Date.getDay] counted it: Sunday = 0 … Saturday = 6. */
+fun Date.dayOfWeekSundayZero(): Int =
+    Calendar.getInstance().apply { time = this@dayOfWeekSundayZero }.get(Calendar.DAY_OF_WEEK) - 1
+
 fun getCalculatedDate(locale: Locale, days: Int): String? {
     val cal = Calendar.getInstance(locale)
     val s = SimpleDateFormat(dateFormat, locale)

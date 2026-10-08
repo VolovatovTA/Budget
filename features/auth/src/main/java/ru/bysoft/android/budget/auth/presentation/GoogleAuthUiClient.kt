@@ -1,3 +1,7 @@
+// Google One Tap (SignInClient) is deprecated in favour of Credential Manager. The migration
+// changes the sign-in flow and is a separate task; until then the warnings are silenced here.
+@file:Suppress("DEPRECATION")
+
 package ru.bysoft.android.budget.auth.presentation
 
 import android.content.Context

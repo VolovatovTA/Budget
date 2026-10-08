@@ -58,11 +58,11 @@ class CategoryDataMapper {
 
     fun getCategoryErrorType(e: String?): CategoryErrorType {
         if (e == null) return CategoryErrorType.NULL_ERROR
-        val restoredObject = e.restore<CommonErrorBody>()
-        return if (restoredObject is CommonErrorBody) {
+        val restoredObject = runCatching { e.restore<CommonErrorBody>() }.getOrNull()
+        return if (restoredObject != null) {
             getErrorTypeByString(restoredObject.slug)
         } else {
-            // что-то не так со слагом
+            // the body is not the error json we expect
             CategoryErrorType.TECHNICAL_ERROR_IN_BACK
         }
 
