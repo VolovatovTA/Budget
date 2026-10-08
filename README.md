@@ -46,7 +46,8 @@ flowchart TB
         home[bottom-navigation:home]
         statistic[bottom-navigation:statistic]
         transactions[create-update-delete-transactions]
-        other[wallet · category · auth · splash · settings · statistic-by-month]
+        splash
+        other[wallet · category · auth · settings · statistic-by-month]
     end
 
     subgraph data
