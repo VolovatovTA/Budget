@@ -236,7 +236,7 @@ private fun DataElement(key: Int, value: String?) {
 @Composable
 private fun CurrencyField(
     key: Int,
-    popupFieldState: CurrencyFieldState,
+    popupFieldState: CurrencyFieldState<BudgetCurrencyEnum>,
     onEdit: (BudgetCurrencyEnum) -> Unit
 ) {
     Row(

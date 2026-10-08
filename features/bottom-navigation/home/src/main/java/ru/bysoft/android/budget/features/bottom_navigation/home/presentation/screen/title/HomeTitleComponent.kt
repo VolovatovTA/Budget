@@ -177,7 +177,7 @@ private fun TitleSuccessComponent(
                 Modifier.clickable { expanded = true }
             ) {
                 popUpList.selectedCurrency?.let { t ->
-                    UiKitCurrencyPopUpTextField(t)
+                    UiKitCurrencyPopUpTextField(t.displayName, t.flag)
                 }
             }
             DropdownMenu(
@@ -191,7 +191,7 @@ private fun TitleSuccessComponent(
                             onCurrencyChanged(it)
                         },
                     ) {
-                        UiKitCurrencyPopUpTextField(it)
+                        UiKitCurrencyPopUpTextField(it.displayName, it.flag)
                     }
                 }
             }

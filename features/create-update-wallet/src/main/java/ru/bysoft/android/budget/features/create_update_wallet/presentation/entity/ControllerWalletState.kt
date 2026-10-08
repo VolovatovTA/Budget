@@ -1,5 +1,6 @@
 package ru.bysoft.android.budget.features.create_update_wallet.presentation.entity
 
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.icon_component.UiKitIconState
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
@@ -7,7 +8,7 @@ import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 data class ControllerWalletState(
     val nameTextState: TextFieldState = TextFieldState(""),
     val balanceTextState: TextFieldState = TextFieldState(""),
-    val currencyFieldState: CurrencyFieldState,
+    val currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum>,
     val iconState: UiKitIconState = UiKitIconState(null),
 )
 

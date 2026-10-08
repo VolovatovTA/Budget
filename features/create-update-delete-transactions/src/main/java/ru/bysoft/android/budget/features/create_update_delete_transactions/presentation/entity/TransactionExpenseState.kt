@@ -1,5 +1,6 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity
 
+import ru.bysoft.android.budget.currency.getAvailableCurrency
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
@@ -7,7 +8,7 @@ import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 sealed class ITransactionState(
     open val commentState: TextFieldState = TextFieldState(),
     open val amountState: TextFieldState = TextFieldState(),
-    open val currencyFieldState: CurrencyFieldState = CurrencyFieldState(selectedCurrency = null),
+    open val currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum> = CurrencyFieldState(selectedCurrency = null, list = getAvailableCurrency()),
     open val categoryState: CategoryState?,
     open val exchangeFieldState: List<ExchangeFieldState> = emptyList(),
     open val isLoading: Boolean = false,
@@ -17,7 +18,7 @@ sealed class ITransactionState(
     ) {
     abstract fun copyWithAmount(amountState: TextFieldState): ITransactionState
     abstract fun copyWithComment(commentState: TextFieldState): ITransactionState
-    abstract fun copyWithCurrency(currencyFieldState: CurrencyFieldState): ITransactionState
+    abstract fun copyWithCurrency(currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum>): ITransactionState
     abstract fun copyWithExchanges(exchangeFieldState: List<ExchangeFieldState>): ITransactionState
     abstract fun copyWithLoading(isLoading: Boolean): ITransactionState
     abstract fun copyWithCategory(categoryState: CategoryState): ITransactionState
@@ -29,7 +30,7 @@ sealed class ITransactionState(
 data class TransactionExpenseState(
     override val commentState: TextFieldState = TextFieldState(),
     override val amountState: TextFieldState = TextFieldState(),
-    override val currencyFieldState: CurrencyFieldState = CurrencyFieldState(selectedCurrency = null),
+    override val currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum> = CurrencyFieldState(selectedCurrency = null, list = getAvailableCurrency()),
     override val categoryState: CategoryState = CategoryWaiting,
     override val exchangeFieldState: List<ExchangeFieldState> = emptyList(),
     override val isLoading: Boolean = false,
@@ -50,7 +51,7 @@ data class TransactionExpenseState(
     override fun copyWithComment(commentState: TextFieldState): TransactionExpenseState =
         this.copy(commentState = commentState)
 
-    override fun copyWithCurrency(currencyFieldState: CurrencyFieldState): TransactionExpenseState =
+    override fun copyWithCurrency(currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum>): TransactionExpenseState =
         this.copy(currencyFieldState = currencyFieldState)
 
     override fun copyWithExchanges(exchangeFieldState: List<ExchangeFieldState>): TransactionExpenseState =
@@ -73,7 +74,7 @@ data class TransactionExpenseState(
 data class TransactionIncomeState(
     override val commentState: TextFieldState = TextFieldState(),
     override val amountState: TextFieldState = TextFieldState(),
-    override val currencyFieldState: CurrencyFieldState = CurrencyFieldState(selectedCurrency = null),
+    override val currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum> = CurrencyFieldState(selectedCurrency = null, list = getAvailableCurrency()),
     override val categoryState: CategoryState = CategoryWaiting,
     override val exchangeFieldState: List<ExchangeFieldState> = emptyList(),
     override val isLoading: Boolean = false,
@@ -94,7 +95,7 @@ data class TransactionIncomeState(
     override fun copyWithComment(commentState: TextFieldState): TransactionIncomeState =
         this.copy(commentState = commentState)
 
-    override fun copyWithCurrency(currencyFieldState: CurrencyFieldState): TransactionIncomeState =
+    override fun copyWithCurrency(currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum>): TransactionIncomeState =
         this.copy(currencyFieldState = currencyFieldState)
 
     override fun copyWithExchanges(exchangeFieldState: List<ExchangeFieldState>): TransactionIncomeState =
@@ -117,7 +118,7 @@ data class TransactionIncomeState(
 data class TransactionTransferState(
     override val commentState: TextFieldState = TextFieldState(),
     override val amountState: TextFieldState = TextFieldState(),
-    override val currencyFieldState: CurrencyFieldState = CurrencyFieldState(selectedCurrency = null),
+    override val currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum> = CurrencyFieldState(selectedCurrency = null, list = getAvailableCurrency()),
     override val categoryState: CategoryState? = null,
     override val exchangeFieldState: List<ExchangeFieldState> = emptyList(),
     override val isLoading: Boolean = false,
@@ -139,7 +140,7 @@ data class TransactionTransferState(
     override fun copyWithComment(commentState: TextFieldState): TransactionTransferState =
         this.copy(commentState = commentState)
 
-    override fun copyWithCurrency(currencyFieldState: CurrencyFieldState): TransactionTransferState =
+    override fun copyWithCurrency(currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum>): TransactionTransferState =
         this.copy(currencyFieldState = currencyFieldState)
 
     override fun copyWithExchanges(exchangeFieldState: List<ExchangeFieldState>): TransactionTransferState =

@@ -41,9 +41,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
-import ru.bysoft.android.budget.currency.currencyWithFlags
-import ru.bysoft.android.budget.currency.getAvailableCurrency
+import androidx.annotation.DrawableRes
 import ru.bysoft.android.budget.uikit.R
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitPopUp
@@ -61,7 +59,7 @@ data class TextFieldState(
 )
 
 @Composable
-fun <T> UiKitTextFieldWithPopUpAndCurrency(
+fun <T, C> UiKitTextFieldWithPopUpAndCurrency(
     state: TextFieldState,
     onValueChange: (String) -> Unit,
     label: String,
@@ -72,9 +70,9 @@ fun <T> UiKitTextFieldWithPopUpAndCurrency(
     popUpList: PopupFieldState<T>? = null,
     popupItem: (@Composable (T?) -> Unit)? = null,
     onSelectPopupItem: (T) -> Unit = {},
-    currencyPopUpList: CurrencyFieldState? = null,
-    currencyItem: (@Composable (BudgetCurrencyEnum?) -> Unit)? = null,
-    onSelectCurrency: (BudgetCurrencyEnum) -> Unit = {},
+    currencyPopUpList: CurrencyFieldState<C>? = null,
+    currencyItem: (@Composable (C?) -> Unit)? = null,
+    onSelectCurrency: (C) -> Unit = {},
 ) {
     val source = remember { MutableInteractionSource() }
 
@@ -176,7 +174,7 @@ fun <T> UiKitTextFieldWithPopUpAndCurrency(
 
 
 @Composable
-fun UiKitTextFieldWithCurrency(
+fun <C> UiKitTextFieldWithCurrency(
     state: TextFieldState,
     onValueChange: (String) -> Unit,
     label: String,
@@ -184,9 +182,9 @@ fun UiKitTextFieldWithCurrency(
     modifier: Modifier = Modifier,
     onNotFocused: (lastText: String) -> Unit = {},
     keyboardActions: KeyboardActions,
-    popUpList: CurrencyFieldState? = null,
-    popUpItem: (@Composable (BudgetCurrencyEnum?) -> Unit)? = null,
-    onSelectPopUpItem: (BudgetCurrencyEnum) -> Unit = {},
+    popUpList: CurrencyFieldState<C>? = null,
+    popUpItem: (@Composable (C?) -> Unit)? = null,
+    onSelectPopUpItem: (C) -> Unit = {},
 ) {
     val source = remember { MutableInteractionSource() }
 
@@ -365,11 +363,12 @@ fun TextFieldPreviewLight() {
                     label = pair.second,
                     keyboardActions = KeyboardActions { },
                     popUpList = CurrencyFieldState(
-                        selectedCurrency = getAvailableCurrency()[1]
+                        selectedCurrency = previewCurrencies[1],
+                        list = previewCurrencies
                     ),
                     popUpItem = { t ->
                         t?.let {
-                            UiKitCurrencyPopUpTextField(t)
+                            UiKitCurrencyPopUpTextField(t.symbol, t.flag)
                         }
                     }
                 )
@@ -416,17 +415,26 @@ fun TextFieldPreview() {
 fun PopupPreview() {
     UiKitPopUp(
         info = PopupFieldState(
-            list = currencyWithFlags,
-            selectedValue = currencyWithFlags[1]
+            list = previewCurrencies,
+            selectedValue = previewCurrencies[1]
         ), onClickItem = {}) { t ->
         t?.let {
-            UiKitCurrencyPopUpTextField(t.first)
+            UiKitCurrencyPopUpTextField(t.symbol, t.flag)
         }
     }
 }
 
+private data class PreviewCurrency(val symbol: String, @param:DrawableRes val flag: Int)
+
+private val previewCurrencies = listOf(
+    PreviewCurrency("€", R.drawable.currency_coin_euro),
+    PreviewCurrency("$", R.drawable.currency_coin_dollar),
+    PreviewCurrency("₽", R.drawable.currency_coin_rubel),
+)
+
+/** One row of the currency dropdown: the currency symbol and, if given, its flag. */
 @Composable
-fun UiKitCurrencyPopUpTextField(currency: BudgetCurrencyEnum) {
+fun UiKitCurrencyPopUpTextField(symbol: String, @DrawableRes flag: Int? = null) {
     Row(
         modifier = Modifier
             .padding(halfPadding)
@@ -435,16 +443,15 @@ fun UiKitCurrencyPopUpTextField(currency: BudgetCurrencyEnum) {
     ) {
 
         Text(
-            text = currency.displayName,
+            text = symbol,
             style = UiKitTypography.TextSM.Medium,
             color = UiKitColors.colors.type.high,
             modifier = Modifier
                 .padding(end = halfPadding)
         )
-        val icon = currencyWithFlags.firstOrNull { it.first == currency }?.second
-        icon?.let {
+        flag?.let {
             Image(
-                painter = painterResource(id = icon),
+                painter = painterResource(id = flag),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(end = halfPadding)

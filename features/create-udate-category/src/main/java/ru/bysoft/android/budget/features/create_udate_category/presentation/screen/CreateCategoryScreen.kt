@@ -1,5 +1,7 @@
 package ru.bysoft.android.budget.features.create_udate_category.presentation.screen
 
+import ru.bysoft.android.budget.features.create_udate_category.presentation.mapper.toIconPack
+import ru.bysoft.android.budget.currency.getAvailableCurrency
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -132,7 +134,7 @@ fun CreateCategoryScreen(
 
             item {
                 UiKitIconsComponent(
-                    type = state.typeCategory,
+                    pack = state.typeCategory.toIconPack(),
                     viewModel::onIconSelected,
                     state.iconState
                 )
@@ -191,7 +193,7 @@ fun CreateCategoryLimitComponent(
                 },
                 currencyItem = {
                     it?.let {
-                        UiKitCurrencyPopUpTextField(it)
+                        UiKitCurrencyPopUpTextField(it.displayName, it.flag)
                     }
                 }
             )
@@ -216,7 +218,8 @@ fun UpdateScreenPreview() {
                 get() = MutableStateFlow(
                     CreateUpdateCategoryState(
                         currencyFieldState = CurrencyFieldState(
-                            selectedCurrency = BudgetCurrencyEnum.GEL
+                            selectedCurrency = BudgetCurrencyEnum.GEL,
+                            list = getAvailableCurrency(),
                         )
                     )
                 )

@@ -13,6 +13,4 @@ dependencies {
     implementation(libs.compose.shimmer)
     implementation(libs.charts.compose)
     
-    implementation(project(":common"))
-    implementation(project(":currency"))
 }

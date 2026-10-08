@@ -1,5 +1,6 @@
 package ru.bysoft.android.budget.features.settings.presentation
 
+import ru.bysoft.android.budget.currency.getAvailableCurrency
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -50,7 +51,8 @@ class SettingsViewModel(
                 )
             ),
             currencyFieldState = CurrencyFieldState(
-                selectedCurrency = getCurrency(loadedData?.settingsData?.currency)
+                selectedCurrency = getCurrency(loadedData?.settingsData?.currency),
+                list = getAvailableCurrency(),
             )
         )
     )
