@@ -1,7 +1,6 @@
 package ru.bysoft.android.budget.common
 
 import android.app.Application
-import androidx.room.Room
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
@@ -18,7 +17,6 @@ import ru.bysoft.android.budget.features.bottom_navigation.statistic.di.Statisti
 import ru.bysoft.android.budget.features.create_udate_category.di.CreatedUpdateCategoryDi
 import ru.bysoft.android.budget.features.create_update_delete_transactions.di.TransactionsDi
 import ru.bysoft.android.budget.features.create_update_wallet.di.CreateWalletDi
-import ru.bysoft.android.budget.features.currency_rates.data.storage.CurrentRaceDatabase
 import ru.bysoft.android.budget.features.currency_rates.di.CurrencyRatedDi
 import ru.bysoft.android.budget.features.settings.presentation.SettingDi
 import ru.bysoft.android.budget.features.splash.di.SplashDi
@@ -36,10 +34,6 @@ class BudgetApplication : Application() {
             androidLogger()
             modules(appModules)
         }
-    }
-
-    val database: CurrentRaceDatabase by lazy {
-        Room.databaseBuilder(this, CurrentRaceDatabase::class.java, "current-race-database").build()
     }
 }
 
