@@ -12,6 +12,30 @@ plugins {
     alias(libs.plugins.crashlitycs) apply false
     alias(libs.plugins.gms) apply false
     alias(libs.plugins.dependency.analysis)
+    alias(libs.plugins.module.graph.assert)
+}
+
+// Module dependency rules, checked by `./gradlew assertModuleGraph` (part of `check`).
+// Every project(...) dependency must match one of `allowed`; `restricted` are explicit bans.
+moduleGraphAssert {
+    maxHeight = 6
+    allowed = arrayOf(
+        ":androidApp -> :.*",
+        // features and the data module use the core only
+        ":features:.* -> :(api|common|currency|uikit)",
+        ":features:.* -> :features:currency-rates",
+        // the tab host is the one feature allowed to depend on other features: it hosts their screens
+        ":features:bottom-navigation:host -> :features:.*",
+        // inside the core: api -> common -> currency
+        ":api -> :(common|currency)",
+        ":common -> :currency",
+    )
+    restricted = arrayOf(
+        ":.* -X> :androidApp",
+        ":(api|common|currency|uikit) -X> :features:.*",
+        // the design system is a leaf
+        ":uikit -X> :.*",
+    )
 }
 
 tasks.register<Delete>("clean") {
