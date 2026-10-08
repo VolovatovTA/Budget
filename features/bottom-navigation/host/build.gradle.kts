@@ -19,7 +19,7 @@ dependencies {
     implementation(libs.viewmodel.compose)
     implementation(libs.compose.activity)
 //    implementation ("com.google.accompanist:accompanist-systemuicontroller:$accompanist_systemui_controller_version")
-    implementation ("androidx.navigation:navigation-compose:2.5.3")
+    implementation(libs.compose.navigation)
 //    implementation ("androidx.compose.material:material:$compose_version")
 
 //    implementation ("ndroidx.core:core-ktx:1.7.0")

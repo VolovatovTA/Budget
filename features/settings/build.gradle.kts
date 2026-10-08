@@ -20,14 +20,13 @@ dependencies {
 //    implementation ("androidx.compose.material:material:$compose_version")
 
 
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("com.google.android.material:material:1.7.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.4")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(libs.espresso.core)
 
-    implementation("io.coil-kt:coil-compose:2.3.0")
+    implementation(libs.coil.compose)
 
 
     implementation(project(":uikit"))

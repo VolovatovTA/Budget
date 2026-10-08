@@ -10,7 +10,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.bundles.compose)
 
 //    implementation "androidx.compose.ui:ui:$compose_version"
 //    implementation "androidx.compose.ui:ui-tooling:$compose_version"

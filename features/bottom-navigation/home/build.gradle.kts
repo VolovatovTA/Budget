@@ -28,7 +28,7 @@ dependencies {
 //    androidTestImplementation "androidx.test.ext:junit:$ext_junit_version"
 //    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
 //
-    implementation("io.coil-kt:coil-compose:2.3.0")
+    implementation(libs.coil.compose)
 
     implementation(project(":features:currency-rates"))
     implementation(project(":common"))

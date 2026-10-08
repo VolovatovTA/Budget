@@ -21,10 +21,10 @@ dependencies {
 //    androidTestImplementation ("androidx.test.ext:junit:$ext_junit_version")
 //    androidTestImplementation ("androidx.test.espresso:espresso-core:$espresso_core_version")
 //
-    implementation("com.google.android.gms:play-services-auth:20.5.0")
-    implementation("com.google.firebase:firebase-common-ktx:20.3.2")
-    implementation("com.google.firebase:firebase-auth:22.0.0")
-    implementation("com.google.firebase:firebase-auth-ktx:22.0.0")
+    implementation(libs.play.services.auth)
+    implementation(libs.firebase.common.ktx)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.auth.ktx)
 
     implementation(project(":common"))
     implementation(project(":uikit"))

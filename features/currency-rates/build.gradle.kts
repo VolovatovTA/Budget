@@ -17,7 +17,7 @@ dependencies {
     implementation(libs.retrofit.gson)
 
     implementation(libs.room.runtime)
-    ksp(libs.room.compiller)
+    ksp(libs.room.compiler)
 
     implementation(project(":api"))
     implementation(project(":common"))
