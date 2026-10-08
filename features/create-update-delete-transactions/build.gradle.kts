@@ -14,8 +14,8 @@ dependencies {
     implementation(libs.gson)
     
     implementation(project(":features:currency-rates"))
-    implementation(project(":common"))
-    implementation(project(":uikit"))
-    implementation(project(":api"))
-    implementation(project(":currency"))
+    implementation(project(":core:common"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:network"))
+    implementation(project(":core:model"))
 }

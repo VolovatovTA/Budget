@@ -22,19 +22,19 @@ moduleGraphAssert {
     allowed = arrayOf(
         ":androidApp -> :.*",
         // features and the data module use the core only
-        ":features:.* -> :(api|common|currency|uikit)",
+        ":features:.* -> :core:.*",
         ":features:.* -> :features:currency-rates",
         // the tab host is the one feature allowed to depend on other features: it hosts their screens
         ":features:bottom-navigation:host -> :features:.*",
-        // inside the core: api -> common -> currency
-        ":api -> :(common|currency)",
-        ":common -> :currency",
+        // inside the core: network -> common -> model
+        ":core:network -> :core:(common|model)",
+        ":core:common -> :core:model",
     )
     restricted = arrayOf(
         ":.* -X> :androidApp",
-        ":(api|common|currency|uikit) -X> :features:.*",
+        ":core:.* -X> :features:.*",
         // the design system is a leaf
-        ":uikit -X> :.*",
+        ":core:designsystem -X> :.*",
     )
 }
 

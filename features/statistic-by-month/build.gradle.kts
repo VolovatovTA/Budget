@@ -10,7 +10,7 @@ android {
 dependencies {
     implementation(libs.charts.compose)
     
-    implementation(project(":uikit"))
-    implementation(project(":common"))
-    implementation(project(":api"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:common"))
+    implementation(project(":core:network"))
 }

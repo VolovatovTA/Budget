@@ -12,8 +12,8 @@ dependencies {
     implementation(libs.kotlinx.json)
     implementation(libs.coroutines.android)
     
-    implementation(project(":common"))
-    implementation(project(":currency"))
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
     
     testImplementation(libs.junit)
 }

@@ -19,7 +19,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.auth.ktx)
     
-    implementation(project(":common"))
-    implementation(project(":uikit"))
-    implementation(project(":api"))
+    implementation(project(":core:common"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:network"))
 }

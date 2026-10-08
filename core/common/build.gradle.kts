@@ -12,7 +12,7 @@ dependencies {
     implementation(libs.datastore.prefs)
     implementation(libs.kotlinx.json)
     
-    implementation(project(":currency"))
+    implementation(project(":core:model"))
     
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
