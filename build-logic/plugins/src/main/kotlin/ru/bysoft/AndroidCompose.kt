@@ -23,6 +23,8 @@ internal fun Project.configureAndroidCompose(
             "implementation"(libs.findLibrary("compose-ui-tooling-preview").get())
             "implementation"(libs.findBundle("compose").get())
             "debugImplementation"(libs.findLibrary("compose-ui-tooling").get())
+            "implementation"(libs.findLibrary("lifecycle-viewmodel").get())
+            "implementation"(libs.findLibrary("koin-core-viewmodel").get())
         }
     }
 

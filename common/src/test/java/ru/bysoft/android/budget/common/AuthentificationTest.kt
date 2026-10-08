@@ -1,6 +1,7 @@
 package ru.bysoft.android.budget.common
 
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.*
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -56,7 +57,7 @@ class AuthentificationTest {
 
         // Возвращаем request
         Mockito.`when`(chain.request()).doReturn(request)
-        Mockito.`when`(tokenStorage.getTokens()).doReturn(successResponseWithGoodTokens)
+        Mockito.`when`(tokenStorage.getTokens()).doReturn(flowOf(successResponseWithGoodTokens))
         Mockito.`when`(chain.proceed(any())).doReturn(successAuthResponse)
         Mockito.`when`(request.newBuilder()).doReturn(requestBuilder)
         Mockito.`when`(requestBuilder.addHeader(eq(tokenHeader), any())).doReturn(requestBuilder)

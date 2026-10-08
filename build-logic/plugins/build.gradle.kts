@@ -22,21 +22,10 @@ dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.android.tools.common)
     compileOnly(libs.compose.gradlePlugin)
-//    compileOnly(libs.firebase.crashlytics.gradlePlugin)
-//    compileOnly(libs.firebase.performance.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.room.gradlePlugin)
+    compileOnly(libs.dependency.analysis.gradlePlugin)
 
-//    compileOnly(libs.android.gradlePlugin)
-//    compileOnly(libs.kotlin.gradlePlugin)
-//    compileOnly(libs.kotlin.compose.compiler)
-}
-
-tasks {
-    validatePlugins {
-//        enableStricterValidation = true
-//        failOnWarning = true
-    }
 }
 
 gradlePlugin {

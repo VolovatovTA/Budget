@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.gms)
     alias(libs.plugins.crashlitycs)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.dependency.analysis)
 }
 
 android {
@@ -90,29 +91,18 @@ android {
 
 dependencies {
     // Compose
-    implementation(libs.bundles.compose)
-//    implementation(libs.compose.material.icons.core)
-//    implementation(libs.compose.material.icons.extended)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.tooling)
     implementation(libs.compose.activity)
     implementation(libs.compose.navigation)
-
-//    // Accompanist
-//    implementation(libs.accompanist.systemuicontroller)
-//    implementation(libs.accompanist.pager)
-//    implementation(libs.accompanist.pager.indicators)
-
-    // AndroidX & Material
     implementation(libs.core.splashscreen)
     implementation(libs.accompanist.systemuicontroller)
-//    implementation(libs.appcompat)
-//    implementation(libs.material)
-//    implementation(libs.constraintlayout)
-//    implementation(libs.core.splashscreen)
-//
+
     // DI (Koin)
     implementation(libs.koin.core)
     implementation(libs.koin.android)
-    implementation(libs.koin.android.compose)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.compose.viewmodel)
 
     // Networking / Logging
     implementation(libs.retrofit)
@@ -128,15 +118,10 @@ dependencies {
 
     // Room
     implementation(libs.room.runtime)
-//    ksp(libs.room.compiler)
-//
+
     // Units
     testImplementation(libs.junit)
     testImplementation(libs.koin.test)
-
-    // Instrumentals
-//    androidTestImplementation(libs.junit.ext)
-//    androidTestImplementation(libs.espresso.core)
 
     // Modules
     implementation(project(":shared"))

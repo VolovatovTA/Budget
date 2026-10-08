@@ -11,6 +11,7 @@ class BaseLibraryPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target.pluginManager) {
             apply("com.android.library")
+            apply("com.autonomousapps.dependency-analysis")
         }
 
         target.extensions.getByType(LibraryExtension::class.java).apply {
@@ -40,8 +41,7 @@ class BaseLibraryPlugin : Plugin<Project> {
 
         with(target) {
             dependencies {
-                "implementation"(libs.findLibrary("koin-android-compose").get())
-                "implementation"(libs.findLibrary("koin-android").get())
+                "api"(libs.findLibrary("koin-core").get())
             }
         }
     }
