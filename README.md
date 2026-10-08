@@ -54,7 +54,7 @@ flowchart TB
         rates[currency-rates]
     end
 
-    subgraph core
+    subgraph core["shared modules (api, common, currency, uikit)"]
         direction LR
         api
         common
@@ -75,15 +75,19 @@ flowchart TB
     transactions --> rates
 
     features --> core
-    rates --> core
+    rates --> api
+    rates --> common
+    rates --> currency
 
     api --> common
     common --> currency
     api --> currency
 ```
 
-An arrow into a box means "into any module of that layer"; only the feature-to-feature
-edges are drawn one by one. `scripts/module-graph.sh` prints every real edge if you need
+The "shared modules" box is a grouping for the picture, not a folder: the four modules live
+in the repository root. An arrow into that box means "into some of its modules" (every
+feature uses `common` and `uikit`, most also `api` and `currency`); the edges of
+`currency-rates` and the feature-to-feature edges are drawn one by one. `scripts/module-graph.sh` prints every real edge if you need
 the full picture.
 
 ### Rules
@@ -93,11 +97,11 @@ and of the CI test workflow) fails the build when a `project(...)` dependency br
 the rules in the root `build.gradle.kts`:
 
 - `androidApp` may depend on anything; nothing may depend on it.
-- A feature may depend on the core (`api`, `common`, `currency`, `uikit`) and on the
+- A feature may depend on the shared modules (`api`, `common`, `currency`, `uikit`) and on the
   `currency-rates` data module, not on other features. `bottom-navigation:host` is the one
   explicit exception: it hosts the tab screens.
-- The core never depends on features, and `uikit` depends on nothing in the project.
-- Inside the core the order is `api → common → currency`.
+- The shared modules never depend on features, and `uikit` depends on nothing in the project.
+- Among the shared modules the order is `api → common → currency`.
 - The longest path is capped at 6 modules (today: app → host → home → currency-rates →
   api → common → currency).
 
@@ -105,7 +109,7 @@ Things the graph makes visible:
 
 - `bottom-navigation:host` is the only feature that depends on other features.
 - `currency-rates` is a data module (Room, no UI) that `home` and the transactions feature read from. It sits
-  between the features and the core because it needs `api`.
+  between the features and the shared modules because it needs `api`.
 - `transaction-detail` is in the build but nothing depends on it: `androidApp` does not
   include it.
 - `shared` (Kotlin Multiplatform) has no dependencies on the rest of the project yet.
