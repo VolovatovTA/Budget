@@ -8,20 +8,19 @@ import org.koin.dsl.module
 import ru.budget.android.api.data.mapper.CurrencyRatesDataMapper
 import ru.bysoft.android.budget.features.currency_rates.data.CurrencyRatesRepo
 import ru.bysoft.android.budget.features.currency_rates.data.ICurrencyRatesRepo
-import ru.bysoft.android.budget.features.currency_rates.data.storage.CurrentRaceDatabase
-import ru.bysoft.android.budget.features.currency_rates.data.storage.ICurrencyRatesLocalStorage
+import ru.bysoft.android.budget.features.currency_rates.data.storage.CurrencyRatesDao
+import ru.bysoft.android.budget.features.currency_rates.data.storage.CurrencyRatesDatabase
 
 val CurrencyRatedDi = module {
     singleOf(::CurrencyRatesDataMapper)
-    singleOf(::CurrencyRatesRepo) bind ICurrencyRatesRepo::class
+    single { CurrencyRatesRepo(api = get(), mapper = get(), dao = get()) } bind ICurrencyRatesRepo::class
 
-    single<CurrentRaceDatabase> {
-        Room.databaseBuilder(
-            androidContext(),
-            CurrentRaceDatabase::class.java,
-            "currency_rates.db"
-        ).build()
+    single<CurrencyRatesDatabase> {
+        Room.databaseBuilder(androidContext(), CurrencyRatesDatabase::class.java, "currency_rates.db")
+            // the table is a cache that refills itself; on a schema change just start over
+            .fallbackToDestructiveMigration(dropAllTables = true)
+            .build()
     }
 
-    single<ICurrencyRatesLocalStorage> { get<CurrentRaceDatabase>().currencyRatesDao() }
+    single<CurrencyRatesDao> { get<CurrencyRatesDatabase>().currencyRatesDao() }
 }

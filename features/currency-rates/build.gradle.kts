@@ -16,6 +16,9 @@ dependencies {
     implementation(project(":api"))
     implementation(project(":common"))
     implementation(project(":currency"))
+
+    testImplementation(libs.junit)
+    testImplementation(libs.coroutines.test)
 }
 
 room {
