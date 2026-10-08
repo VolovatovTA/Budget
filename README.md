@@ -5,7 +5,7 @@ expense transactions, categories and spending statistics.
 
 ## Tech stack
 
-- Kotlin 2.2, Coroutines, Kotlin Multiplatform `shared` module
+- Kotlin 2.4, Coroutines, Kotlin Multiplatform `shared` module
 - Jetpack Compose, Navigation Compose
 - Koin for dependency injection
 - Retrofit + kotlinx.serialization, Room

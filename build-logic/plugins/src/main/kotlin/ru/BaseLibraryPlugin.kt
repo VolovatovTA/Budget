@@ -5,16 +5,12 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import ru.bysoft.libs
 
 class BaseLibraryPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target.pluginManager) {
             apply("com.android.library")
-            apply("org.jetbrains.kotlin.android")
-            apply("kotlin-android")
         }
 
         target.extensions.getByType(LibraryExtension::class.java).apply {
@@ -39,13 +35,6 @@ class BaseLibraryPlugin : Plugin<Project> {
             compileOptions {
                 sourceCompatibility = JavaVersion.VERSION_17
                 targetCompatibility = JavaVersion.VERSION_17
-            }
-        }
-
-
-        target.tasks.withType(KotlinJvmCompile::class.java).configureEach {
-            compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_17)
             }
         }
 

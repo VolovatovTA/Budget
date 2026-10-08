@@ -213,26 +213,23 @@ object UiKitColors {
      */
     @Composable
     fun getColorByName(color: String): Color {
-        return runCatching {
-            val typeColor = color.split('.')[0]
-            val nameColor = color.split('.')[1]
-            val budgetColors = getBudgetColorsByName(name = typeColor)
-            return when (nameColor) {
-                "1100" -> budgetColors.`1100`
-                "1000" -> budgetColors.`1000`
-                "900" -> budgetColors.`900`
-                "800" -> budgetColors.`800`
-                "700" -> budgetColors.`700`
-                "600" -> budgetColors.`600`
-                "500" -> budgetColors.`500`
-                "400" -> budgetColors.`400`
-                "300" -> budgetColors.`300`
-                "200" -> budgetColors.`200`
-                "100" -> budgetColors.`100`
-                else -> Color.Yellow
-            }
-        }.getOrNull() ?: Color.Yellow
-
+        val parts = color.split('.')
+        if (parts.size < 2) return Color.Yellow
+        val budgetColors = getBudgetColorsByName(name = parts[0])
+        return when (parts[1]) {
+            "1100" -> budgetColors.`1100`
+            "1000" -> budgetColors.`1000`
+            "900" -> budgetColors.`900`
+            "800" -> budgetColors.`800`
+            "700" -> budgetColors.`700`
+            "600" -> budgetColors.`600`
+            "500" -> budgetColors.`500`
+            "400" -> budgetColors.`400`
+            "300" -> budgetColors.`300`
+            "200" -> budgetColors.`200`
+            "100" -> budgetColors.`100`
+            else -> Color.Yellow
+        }
     }
 
 
