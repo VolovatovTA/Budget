@@ -1,11 +1,20 @@
 # Budget
 
+[![Build](https://github.com/VolovatovTA/Budget/actions/workflows/build.yaml/badge.svg)](https://github.com/VolovatovTA/Budget/actions/workflows/build.yaml)
+[![Tests](https://github.com/VolovatovTA/Budget/actions/workflows/test.yaml/badge.svg)](https://github.com/VolovatovTA/Budget/actions/workflows/test.yaml)
+![Kotlin](https://img.shields.io/badge/Kotlin-2.4.20-7F52FF?logo=kotlin&logoColor=white)
+![Gradle](https://img.shields.io/badge/Gradle-9.8.1-02303A?logo=gradle&logoColor=white)
+![AGP](https://img.shields.io/badge/AGP-9.4.1-3DDC84?logo=android&logoColor=white)
+![Compose](https://img.shields.io/badge/Compose-1.9.2-4285F4?logo=jetpackcompose&logoColor=white)
+![minSdk](https://img.shields.io/badge/minSdk-26-3DDC84?logo=android&logoColor=white)
+![compileSdk](https://img.shields.io/badge/compileSdk-36-3DDC84?logo=android&logoColor=white)
+
 Android app for tracking personal finances: wallets in different currencies, income and
 expense transactions, categories and spending statistics.
 
 ## Tech stack
 
-- Kotlin 2.2, Coroutines, Kotlin Multiplatform `shared` module
+- Kotlin, Coroutines, Kotlin Multiplatform `shared` module
 - Jetpack Compose, Navigation Compose
 - Koin for dependency injection
 - Retrofit + kotlinx.serialization, Room

@@ -1,6 +1,6 @@
 package ru.bysoft
 
-import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.assign
@@ -12,9 +12,9 @@ import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginE
  * Configure Compose-specific options
  */
 internal fun Project.configureAndroidCompose(
-    commonExtension: CommonExtension<*, *, *, *, *, *>,
+    libraryExtension: LibraryExtension,
 ) {
-    commonExtension.apply {
+    libraryExtension.apply {
         buildFeatures {
             compose = true
         }

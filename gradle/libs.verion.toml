@@ -1,10 +1,10 @@
 [versions]
 #noinspection NewerVersionAvailable
-kotlin = "2.2.0"
-ksp = "2.2.0-2.0.2"
+kotlin = "2.4.20"
+ksp = "2.3.12"
 kotlin-coroutines = "1.10.2"
 compose-plugin = "1.9.0"
-agp = "8.13.0"
+agp = "9.4.1"
 koin = "4.1.1"
 #noinspection UnusedVersionCatalogEntry
 min-sdk = "26"
@@ -13,7 +13,7 @@ compile-sdk = "36"
 #noinspection UnusedVersionCatalogEntry
 target-sdk = "36"
 
-androidTools = "31.13.0"
+androidTools = "32.4.1"
 crashlyticV = "3.0.6"
 gmsV = "4.4.3"
 
@@ -54,8 +54,8 @@ tehras-charts-version = "0.2.4-alpha"
 datastore-prefs = "1.1.7"
 
 room = "2.7.2"
-kotlinStdlibVersion = "2.2.0"
-kotlinTestVersion = "2.2.0"
+kotlinStdlibVersion = "2.4.20"
+kotlinTestVersion = "2.4.20"
 runnerVersion = "1.5.2"
 coreVersion = "1.5.0"
 junit = "1.3.0"
@@ -144,7 +144,6 @@ retrofit = [
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 gms = { id = "com.google.gms.google-services", version.ref = "gmsV" }
 crashlitycs = { id = "com.google.firebase.crashlytics", version.ref = "crashlyticV" }
 
