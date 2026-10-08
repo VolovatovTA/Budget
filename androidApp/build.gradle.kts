@@ -124,13 +124,13 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.koin.test)
     testImplementation(libs.coroutines.test)
-    testImplementation(project(":currency"))
+    testImplementation(project(":core:model"))
 
     // Modules
     implementation(project(":shared"))
-    implementation(project(":uikit"))
-    implementation(project(":common"))
-    implementation(project(":api"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:common"))
+    implementation(project(":core:network"))
     implementation(project(":features:splash"))
     implementation(project(":features:auth"))
     implementation(project(":features:create-udate-category"))

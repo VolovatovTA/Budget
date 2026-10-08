@@ -11,6 +11,6 @@ dependencies {
     implementation(libs.viewmodel.compose)
     implementation(libs.koin.compose.viewmodel)
     
-    implementation(project(":common"))
-    implementation(project(":uikit"))
+    implementation(project(":core:common"))
+    implementation(project(":core:designsystem"))
 }
