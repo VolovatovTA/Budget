@@ -31,6 +31,112 @@ expense transactions, categories and spending statistics.
 | `uikit` | Design system: Compose components, theme, icons |
 | `shared` | Kotlin Multiplatform module |
 
+## Module graph
+
+Four layers, dependencies only point downwards. Every arrow is a real `project(...)`
+dependency from a build script; `scripts/module-graph.sh` regenerates the diagram.
+
+```mermaid
+flowchart TB
+    androidApp
+    subgraph features
+        auth[auth]
+        bn_home[bottom-navigation:home]
+        bn_host[bottom-navigation:host]
+        bn_statistic[bottom-navigation:statistic]
+        create_udate_category[create-udate-category]
+        create_update_delete_transactions[create-update-delete-transactions]
+        create_update_wallet[create-update-wallet]
+        settings[settings]
+        splash[splash]
+        statistic_by_month[statistic-by-month]
+        transaction_detail[transaction-detail]
+    end
+    subgraph data
+        currency_rates[currency-rates]
+    end
+    subgraph core
+        api
+        common
+        currency
+        uikit
+    end
+    shared[shared · KMP]
+
+    androidApp --> shared
+    androidApp --> uikit
+    androidApp --> common
+    androidApp --> api
+    androidApp --> splash
+    androidApp --> auth
+    androidApp --> create_udate_category
+    androidApp --> create_update_delete_transactions
+    androidApp --> create_update_wallet
+    androidApp --> bn_host
+    androidApp --> bn_home
+    androidApp --> bn_statistic
+    androidApp --> statistic_by_month
+    androidApp --> settings
+    androidApp --> currency_rates
+    api --> common
+    api --> currency
+    common --> currency
+    auth --> common
+    auth --> uikit
+    auth --> api
+    bn_home --> currency_rates
+    bn_home --> common
+    bn_home --> uikit
+    bn_home --> api
+    bn_home --> currency
+    bn_host --> uikit
+    bn_host --> bn_home
+    bn_host --> bn_statistic
+    bn_host --> create_update_delete_transactions
+    bn_host --> common
+    bn_statistic --> common
+    bn_statistic --> uikit
+    bn_statistic --> api
+    bn_statistic --> currency
+    create_udate_category --> common
+    create_udate_category --> uikit
+    create_udate_category --> api
+    create_udate_category --> currency
+    create_update_delete_transactions --> currency_rates
+    create_update_delete_transactions --> common
+    create_update_delete_transactions --> uikit
+    create_update_delete_transactions --> api
+    create_update_delete_transactions --> currency
+    create_update_wallet --> common
+    create_update_wallet --> uikit
+    create_update_wallet --> api
+    create_update_wallet --> currency
+    currency_rates --> api
+    currency_rates --> common
+    currency_rates --> currency
+    settings --> uikit
+    settings --> common
+    settings --> api
+    settings --> currency
+    splash --> currency_rates
+    splash --> common
+    splash --> uikit
+    statistic_by_month --> uikit
+    statistic_by_month --> common
+    statistic_by_month --> api
+```
+
+Things the graph makes visible:
+
+- `bottom-navigation:host` is the only feature that depends on other features: it hosts
+  `home`, `statistic` and the transactions screen.
+- `currency-rates` is a data module (Room, no UI) that three features read from. It sits
+  between the features and the core because it needs `api`.
+- `uikit` is a leaf: it depends on nothing in the project, so it can change without
+  touching business code and the other way round.
+- `transaction-detail` has no incoming edges: `androidApp` does not include it.
+- `shared` (Kotlin Multiplatform) has no dependencies on the rest of the project yet.
+
 ## Build
 
 The app has two flavors: `localMock` works offline on bundled mock responses, `remoteBack`
