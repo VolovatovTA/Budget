@@ -46,6 +46,7 @@ play-services-auth = "21.4.0"
 google-services = "4.4.3"
 firebase-crashlytics-plugin = "3.0.6"
 dependency-analysis = "3.19.2"
+module-graph-assert = "2.9.1"
 
 # Tests
 junit = "4.13.2"
@@ -153,6 +154,7 @@ room-android = { id = "androidx.room", version.ref = "room" }
 gms = { id = "com.google.gms.google-services", version.ref = "google-services" }
 crashlitycs = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
+module-graph-assert = { id = "com.jraska.module.graph.assertion", version.ref = "module-graph-assert" }
 
 # Convention plugins from build-logic
 bysoft-library = { id = "ru.bysoft.library", version = "unspecified" }

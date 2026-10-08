@@ -33,108 +33,81 @@ expense transactions, categories and spending statistics.
 
 ## Module graph
 
-Four layers, dependencies only point downwards. Every arrow is a real `project(...)`
-dependency from a build script; `scripts/module-graph.sh` regenerates the diagram.
+Four layers, dependencies only point downwards. The picture is the summary; the rules
+below are what is actually enforced.
 
 ```mermaid
 flowchart TB
-    androidApp
+    app[androidApp]
+
     subgraph features
-        auth[auth]
-        bn_home[bottom-navigation:home]
-        bn_host[bottom-navigation:host]
-        bn_statistic[bottom-navigation:statistic]
-        create_udate_category[create-udate-category]
-        create_update_delete_transactions[create-update-delete-transactions]
-        create_update_wallet[create-update-wallet]
-        settings[settings]
-        splash[splash]
-        statistic_by_month[statistic-by-month]
-        transaction_detail[transaction-detail]
+        direction LR
+        host[bottom-navigation:host]
+        home[bottom-navigation:home]
+        statistic[bottom-navigation:statistic]
+        transactions[create-update-delete-transactions]
+        other[wallet · category · auth · splash · settings · statistic-by-month]
     end
+
     subgraph data
-        currency_rates[currency-rates]
+        rates[currency-rates]
     end
+
     subgraph core
+        direction LR
         api
         common
         currency
         uikit
     end
+
     shared[shared · KMP]
 
-    androidApp --> shared
-    androidApp --> uikit
-    androidApp --> common
-    androidApp --> api
-    androidApp --> splash
-    androidApp --> auth
-    androidApp --> create_udate_category
-    androidApp --> create_update_delete_transactions
-    androidApp --> create_update_wallet
-    androidApp --> bn_host
-    androidApp --> bn_home
-    androidApp --> bn_statistic
-    androidApp --> statistic_by_month
-    androidApp --> settings
-    androidApp --> currency_rates
+    app --> features
+    app --> rates
+    app --> shared
+
+    host --> home
+    host --> statistic
+    host --> transactions
+    home --> rates
+    transactions --> rates
+    splash --> rates
+
+    features --> core
+    rates --> core
+
     api --> common
-    api --> currency
     common --> currency
-    auth --> common
-    auth --> uikit
-    auth --> api
-    bn_home --> currency_rates
-    bn_home --> common
-    bn_home --> uikit
-    bn_home --> api
-    bn_home --> currency
-    bn_host --> uikit
-    bn_host --> bn_home
-    bn_host --> bn_statistic
-    bn_host --> create_update_delete_transactions
-    bn_host --> common
-    bn_statistic --> common
-    bn_statistic --> uikit
-    bn_statistic --> api
-    bn_statistic --> currency
-    create_udate_category --> common
-    create_udate_category --> uikit
-    create_udate_category --> api
-    create_udate_category --> currency
-    create_update_delete_transactions --> currency_rates
-    create_update_delete_transactions --> common
-    create_update_delete_transactions --> uikit
-    create_update_delete_transactions --> api
-    create_update_delete_transactions --> currency
-    create_update_wallet --> common
-    create_update_wallet --> uikit
-    create_update_wallet --> api
-    create_update_wallet --> currency
-    currency_rates --> api
-    currency_rates --> common
-    currency_rates --> currency
-    settings --> uikit
-    settings --> common
-    settings --> api
-    settings --> currency
-    splash --> currency_rates
-    splash --> common
-    splash --> uikit
-    statistic_by_month --> uikit
-    statistic_by_month --> common
-    statistic_by_month --> api
+    api --> currency
 ```
+
+An arrow into a box means "into any module of that layer"; only the feature-to-feature
+edges are drawn one by one. `scripts/module-graph.sh` prints every real edge if you need
+the full picture.
+
+### Rules
+
+The graph is checked, not just drawn. `./gradlew assertModuleGraph` (also part of `check`
+and of the CI test workflow) fails the build when a `project(...)` dependency breaks one of
+the rules in the root `build.gradle.kts`:
+
+- `androidApp` may depend on anything; nothing may depend on it.
+- A feature may depend on the core (`api`, `common`, `currency`, `uikit`) and on the
+  `currency-rates` data module, not on other features. `bottom-navigation:host` is the one
+  explicit exception: it hosts the tab screens.
+- The core never depends on features, and `uikit` depends on nothing in the project.
+- Inside the core the order is `api → common → currency`.
+- The longest path is capped at 6 modules (today: app → host → home → currency-rates →
+  api → common → currency).
 
 Things the graph makes visible:
 
-- `bottom-navigation:host` is the only feature that depends on other features: it hosts
-  `home`, `statistic` and the transactions screen.
+- `bottom-navigation:host` is the only feature that depends on other features.
 - `currency-rates` is a data module (Room, no UI) that three features read from. It sits
   between the features and the core because it needs `api`.
-- `uikit` is a leaf: it depends on nothing in the project, so it can change without
-  touching business code and the other way round.
-- `transaction-detail` has no incoming edges: `androidApp` does not include it.
+- `transaction-detail` is in the build but nothing depends on it: `androidApp` does not
+  include it.
 - `shared` (Kotlin Multiplatform) has no dependencies on the rest of the project yet.
 
 ## Build
