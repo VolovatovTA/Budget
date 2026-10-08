@@ -5,6 +5,7 @@ plugins {
 }
 
 kotlin {
+    jvmToolchain(libs.versions.jdk.get().toInt())
 
     // Target declarations - add or remove as needed below. These define
     // which platforms this KMP module supports.
