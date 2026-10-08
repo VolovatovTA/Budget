@@ -4,7 +4,6 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
-import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
@@ -22,7 +21,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
@@ -45,8 +43,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.withLink
+import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.withAnnotation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -77,7 +78,6 @@ import ru.bysoft.android.budget.uikit.styles.padding
 import ru.bysoft.android.budget.uikit.styles.quarterPadding
 import ru.bysoft.android.budget.uikit.utils.ExpandVertically
 import ru.bysoft.android.budget.uikit.utils.duration
-import androidx.core.net.toUri
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitSocialMediaButton
 import ru.bysoft.android.budget.uikit.components.devider.UiKitDivider
 
@@ -165,14 +165,18 @@ private fun AuthSuccessScreen(
 
     val annotatedString = buildAnnotatedString {
         append(simpleText)
-
-        withStyle(style = UiKitTypography.Body2Link()) {
-            withAnnotation(
-                tag = "",
-                annotation = state.type.name
+        withLink(
+            LinkAnnotation.Clickable(
+                tag = state.type.name,
+                styles = TextLinkStyles(style = UiKitTypography.Body2Link()),
             ) {
-                append(linkText)
+                viewModel.switchAuthType(
+                    if (state.type == AuthActionType.SIGN_IN) AuthActionType.SIGN_UP
+                    else AuthActionType.SIGN_IN
+                )
             }
+        ) {
+            append(linkText)
         }
     }
     val btnText =
@@ -309,33 +313,26 @@ private fun AuthSuccessScreen(
                 val stringWithTermsAndConditions = buildAnnotatedString {
                     withStyle(UiKitTypography.TextXS.Regular.toSpanStyle()) {
                         append(text1)
-                        withStyle(UiKitTypography.Body2Link(UiKitTypography.TextXS.Regular)) {
-                            withAnnotation(
-                                tag = "https://www.iubenda.com/privacy-policy/52608160",
-                                annotation = "https://www.iubenda.com/privacy-policy/52608160"
-                            ) {
-                                append(text4)
-                            }
+                        // LinkAnnotation.Url is opened by Text through LocalUriHandler
+                        withLink(
+                            LinkAnnotation.Url(
+                                url = "https://www.iubenda.com/privacy-policy/52608160",
+                                styles = TextLinkStyles(
+                                    style = UiKitTypography.Body2Link(UiKitTypography.TextXS.Regular)
+                                ),
+                            )
+                        ) {
+                            append(text4)
                         }
                     }
                 }
-                val activity = LocalActivity.current
-                ClickableText(
+                Text(
                     text = stringWithTermsAndConditions,
                     modifier = Modifier
                         .padding(start = halfPadding)
-                ) {
-                    stringWithTermsAndConditions.getStringAnnotations(it, it)
-                        .firstOrNull()
-                        ?.let { annotation ->
-                            activity?.startActivity(
-                                Intent(
-                                    Intent.ACTION_VIEW,
-                                    annotation.tag.toUri()
-                                )
-                            )
-                        } ?: viewModel.onCheckBoxClicked(state.isCheckBoxChecked.not())
-                }
+                        // a tap outside the link toggles the checkbox, as before
+                        .clickable { viewModel.onCheckBoxClicked(state.isCheckBoxChecked.not()) }
+                )
             }
         }
 
@@ -387,7 +384,7 @@ private fun AuthSuccessScreen(
 
         Spacer(modifier = Modifier.height(padding + halfPadding))
 
-        ClickableText(
+        Text(
             text = annotatedString,
             style = UiKitTypography.TextMD.Regular,
             modifier = Modifier
@@ -395,19 +392,6 @@ private fun AuthSuccessScreen(
                     horizontal = padding,
                 )
                 .align(Alignment.CenterHorizontally),
-            onClick = { position ->
-                val annotation =
-                    annotatedString.getStringAnnotations(position, position).firstOrNull()?.item
-                        ?: ""
-                val newType = when (annotation) {
-                    AuthActionType.SIGN_IN.name -> AuthActionType.SIGN_UP
-                    AuthActionType.SIGN_UP.name -> AuthActionType.SIGN_IN
-                    else -> null
-                }
-                newType?.let {
-                    viewModel.switchAuthType(newType)
-                }
-            }
         )
     }
 }

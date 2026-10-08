@@ -45,7 +45,7 @@ fun AuthTextField(
                 .onFocusChanged { if (!it.isFocused) onNotFocused(state.text) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
-                autoCorrect = false,
+                autoCorrectEnabled = false,
                 keyboardType = type
             ),
             shape = RoundedCornerShape(10.dp),

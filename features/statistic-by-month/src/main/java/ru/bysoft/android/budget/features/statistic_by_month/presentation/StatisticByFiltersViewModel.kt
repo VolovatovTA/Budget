@@ -1,5 +1,6 @@
 package ru.bysoft.android.budget.features.statistic_by_month.presentation
 
+import ru.bysoft.android.budget.common.util.dayOfWeekSundayZero
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.patrykandpatrick.vico.core.entry.FloatEntry
@@ -46,7 +47,7 @@ class StatisticByFiltersViewModel(
                 .map { listTransactionsData ->
                     listTransactionsData.listTransactions.map { transactionData ->
                         FloatEntry(
-                            x = transactionData.date?.day?.toFloat() ?: 0f,
+                            x = transactionData.date?.dayOfWeekSundayZero()?.toFloat() ?: 0f,
                             y = transactionData.amount
                         )
                     }

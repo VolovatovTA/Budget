@@ -102,7 +102,6 @@ private fun LazyListScope.transactionsSuccessComponent(
                             DismissValue.Default -> Color.Transparent
                             DismissValue.DismissedToEnd -> UiKitColors.colors.feedbackGreen.`500`
                             DismissValue.DismissedToStart -> UiKitColors.colors.feedbackRed.`500`
-                            else -> UiKitColors.colors.primary.`100`
                         },
                         label = "color"
                     )

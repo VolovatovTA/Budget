@@ -1,5 +1,6 @@
 package ru.bysoft.android.budget.features.bottom_navigation.statistic
 
+import ru.bysoft.android.budget.common.util.dayOfWeekSundayZero
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
@@ -83,7 +84,7 @@ class StatisticViewModel(
                     Calendar.getInstance(locale).firstDayOfWeek = Calendar.MONDAY
 
                     val currentDate = Calendar.getInstance(locale).time
-                    val currentDayOfWeek = currentDate.day
+                    val currentDayOfWeek = currentDate.dayOfWeekSundayZero()
                     launch {
                         val dateFrom = getCalculatedDate(locale, -currentDayOfWeek)
                         val dateTo = getCalculatedDate(locale, 7 - currentDayOfWeek)

@@ -5,6 +5,11 @@ plugins {
 }
 
 kotlin {
+    jvmToolchain(libs.versions.jdk.get().toInt())
+    compilerOptions {
+        // Platform is an expect/actual class; the opt-in silences the "in Beta" warning
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
 
     // Target declarations - add or remove as needed below. These define
     // which platforms this KMP module supports.

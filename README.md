@@ -42,6 +42,11 @@ talks to the real backend. Build types and flavors contribute their own Koin mod
 ./gradlew :androidApp:testLocalMockDebugUnitTest
 ```
 
+Any JDK can launch `./gradlew`: the build itself runs on JDK 17. `gradle/gradle-daemon-jvm.properties`
+pins the daemon JVM and the `jdk` entry of the version catalog pins the toolchain every module
+compiles with; a missing JDK is downloaded by the foojay resolver. `./gradlew updateDaemonJvm
+--jvm-version=<n>` plus the catalog entry is the whole procedure for moving to a newer JDK.
+
 The `remoteBack` flavor reads the exchangerate-api key from the `exchangeRateApiKey` Gradle property or the
 `EXCHANGE_RATE_API_KEY` environment variable.
 

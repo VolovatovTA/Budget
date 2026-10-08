@@ -36,8 +36,8 @@ class AuthRepository(
 
             when {
                 errorJson != null -> {
-                    errorJson.restore<SignErrorResponse>()
-                        ?: throw EmptySlugMessage(errorJson)
+                    runCatching { errorJson.restore<SignErrorResponse>() }
+                        .getOrElse { throw EmptySlugMessage(errorJson) }
                 }
 
                 e is SSLPeerUnverifiedException -> SignErrorResponse(
@@ -59,8 +59,6 @@ class AuthRepository(
                 tokenRepo.saveTokens(authResponse)
                 null
             }
-
-            else -> throw Throwable()
         }
     }
 
@@ -73,7 +71,8 @@ class AuthRepository(
 
             when {
                 errorJson != null -> {
-                    errorJson.restore<SignErrorResponse>() ?: throw EmptySlugMessage(errorJson)
+                    runCatching { errorJson.restore<SignErrorResponse>() }
+                        .getOrElse { throw EmptySlugMessage(errorJson) }
                 }
 
                 e is SSLPeerUnverifiedException -> SignErrorResponse(
@@ -95,8 +94,6 @@ class AuthRepository(
                 tokenRepo.saveTokens(authResponse)
                 null
             }
-
-            else -> throw Throwable()
         }
     }
 
