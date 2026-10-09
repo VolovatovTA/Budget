@@ -17,4 +17,6 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:network"))
     implementation(project(":core:model"))
+
+    testImplementation(libs.junit)
 }
