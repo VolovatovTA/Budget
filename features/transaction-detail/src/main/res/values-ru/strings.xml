@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transaction_detail_title">Транзакция</string>
+    <string name="transaction_detail_type">Тип</string>
+    <string name="transaction_detail_date">Дата</string>
+    <string name="transaction_detail_comment">Комментарий</string>
+    <string name="transaction_detail_categories">Категории</string>
+    <string name="transaction_detail_not_found">Такой транзакции больше нет</string>
+    <string name="transaction_detail_error">Не удалось загрузить транзакцию</string>
+</resources>
