@@ -1,27 +1,21 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.viewmodels
 
 import ru.bysoft.android.budget.common.errors.IErrorLogger
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import ru.budget.android.api.data.source.network.ITransactionsApi
-import ru.budget.android.api.data.source.network.entity.transactions.TransactionExpenseCreateRequest
-import ru.budget.android.api.data.source.network.entity.transactions.TransactionIncomeCreateRequest
-import ru.budget.android.api.data.source.network.entity.transactions.TransactionTransferCreateRequest
-import ru.budget.android.api.data.source.network.entity.transactions.error.TransactionErrorResponse
 import ru.bysoft.android.budget.common.data_entity.CurrencyRateData
 import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.common.me_info.IMeInfo
-import ru.bysoft.android.budget.common.util.TAG
 import ru.bysoft.android.budget.common.util.restore
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.currency.getCurrencyByDisplayName
 import ru.bysoft.android.budget.features.create_update_delete_transactions.data.ICategoriesRepo
+import ru.bysoft.android.budget.features.create_update_delete_transactions.data.ITransactionsRepo
 import ru.bysoft.android.budget.features.create_update_delete_transactions.data.IWalletsRepo
+import ru.bysoft.android.budget.features.create_update_delete_transactions.data.entity.TransactionCreateException
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.TransactionsCreateNavParams
@@ -39,12 +33,12 @@ import kotlin.math.pow
 class TransactionCreateViewModel(
     errorLogger: IErrorLogger,
     private val navigate: ITransactionNavigation,
-    private val transactionApi: ITransactionsApi,
+    private val transactionsRepo: ITransactionsRepo,
+    categoriesRepo: ICategoriesRepo,
+    walletsRepo: IWalletsRepo,
     private val transactionMapper: ITransactionPresentationMapper,
     private val meInfo: IMeInfo,
     private val currencyRatesRepo: ICurrencyRatesRepo,
-    categoriesRepo: ICategoriesRepo,
-    walletsRepo: IWalletsRepo,
     categoryMapperPresentation: ITransactionsCategoryPresentationMapper,
     walletMapper: ITransactionWalletPresentationMapper,
     savedStateHandle: SavedStateHandle
@@ -88,45 +82,14 @@ class TransactionCreateViewModel(
                         isLoading = true
                     )
                 }
-                when (val request = transactionMapper.toRequest(state.value)) {
-                    is TransactionExpenseCreateRequest ->
-                        transactionApi.createTransactionExpense(request)
-                    is TransactionTransferCreateRequest ->
-                        transactionApi.createTransactionTransfer(request)
-                    is TransactionIncomeCreateRequest ->
-                        transactionApi.createTransactionIncome(request)
-                }
-
-                state.update {
-                    it.copyWithLoading(
-                        isLoading = false
-                    )
-                }
+                transactionsRepo.create(transactionMapper.toNewTransaction(state.value))
+                state.update { it.copyWithLoading(isLoading = false) }
                 navigate.back()
-            } catch (e: Throwable) {
-                if (e is HttpException) {
-                    val restoredError =
-                        e.response()?.errorBody()?.string()?.restore<TransactionErrorResponse>()
-                    // TODO: till 01.07.2023 Do the correct error handling
-                    val errors = restoredError?.errors?.map {
-                        it.key.split('.')
-                    }
-
-                    toastState.tryEmit(R.string.error_answer)
-
-//                    state.update {
-//                        it.copyWithToast(
-//                            toastText = restoredError?.message
-//                        )
-//                    }
-                } else {
-                    Log.d(TAG, e.toString())
-                }
-                state.update {
-                    it.copyWithLoading(
-                        isLoading = false
-                    )
-                }
+            } catch (e: TransactionCreateException) {
+                // TODO: show e.fieldErrors next to the fields instead of a generic toast
+                errorLogger.logError(e)
+                toastState.tryEmit(R.string.error_answer)
+                state.update { it.copyWithLoading(isLoading = false) }
             }
         }
     }

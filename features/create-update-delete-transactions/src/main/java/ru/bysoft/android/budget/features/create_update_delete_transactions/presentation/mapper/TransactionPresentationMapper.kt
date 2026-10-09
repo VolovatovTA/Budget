@@ -1,94 +1,63 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper
 
-import ru.budget.android.api.data.source.network.entity.transactions.*
-import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
+import ru.bysoft.android.budget.features.create_update_delete_transactions.data.entity.NewExchange
+import ru.bysoft.android.budget.features.create_update_delete_transactions.data.entity.NewTransaction
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.CategorySuccess
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.ExchangeFieldState
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.ITransactionState
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.TransactionExpenseState
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.TransactionIncomeState
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.TransactionTransferState
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.WalletSuccessState
 
 interface ITransactionPresentationMapper {
-    fun toRequest(state: ITransactionState): ITransactionCreateRequest
+    fun toNewTransaction(state: ITransactionState): NewTransaction
 }
 
-class TransactionPresentationMapper(
+class TransactionPresentationMapper : ITransactionPresentationMapper {
 
-) : ITransactionPresentationMapper {
-    override fun toRequest(state: ITransactionState): ITransactionCreateRequest {
-        return when (state) {
-            is TransactionIncomeState -> transactionExpenseIncomeCreateRequest(state)
-            is TransactionExpenseState -> transactionExpenseIncomeCreateRequest(state)
-            is TransactionTransferState -> transactionTransferCreateRequest(state)
-        }
+    override fun toNewTransaction(state: ITransactionState): NewTransaction = when (state) {
+        is TransactionExpenseState -> NewTransaction.Expense(
+            amount = state.amount,
+            comment = state.commentState.text,
+            currency = state.currencyOrUnknown,
+            exchanges = state.exchanges(),
+            categoryIds = (state.categoryState as? CategorySuccess)?.listCategory
+                ?.filter { it.isChosen }?.map { it.id }.orEmpty(),
+            walletId = (state.walletFromFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
+        )
+        is TransactionIncomeState -> NewTransaction.Income(
+            amount = state.amount,
+            comment = state.commentState.text,
+            currency = state.currencyOrUnknown,
+            exchanges = state.exchanges(),
+            categoryId = (state.categoryState as CategorySuccess).listCategory.firstOrNull { it.isChosen }?.id,
+            walletId = (state.walletToFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
+        )
+        is TransactionTransferState -> NewTransaction.Transfer(
+            amount = state.amount,
+            comment = state.commentState.text,
+            currency = state.currencyOrUnknown,
+            exchanges = state.exchanges(),
+            walletFromId = (state.walletFromFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
+            walletToId = (state.walletToFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
+        )
     }
 
-    private fun transactionExpenseIncomeCreateRequest(state: TransactionIncomeState) =
-        TransactionIncomeCreateRequest(
-            amount = state.amountState.text.toFloatOrNull() ?: 0f,
-            comment = state.commentState.text,
-            currency = state.currencyFieldState.selectedCurrency?.iso4217 ?: "",
-            income_id = (state.categoryState as CategorySuccess).listCategory
-                .firstOrNull { it.isChosen }
-                ?.id,
-            walletId = (state.walletToFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
-            exchanges = state.exchangeFieldState.map { exchangeFieldState ->
-                val enteredAmount = if (exchangeFieldState.isRevert) 1 / (exchangeFieldState.enteredAmount.text.toFloatOrNull()
-                    ?: Float.MAX_VALUE) else exchangeFieldState.enteredAmount.text.toFloatOrNull() ?: 0f
-                Exchange(
-                    if (exchangeFieldState.isFullAmount) {
-                        enteredAmount.takeIf { it != Float.MAX_VALUE } ?: 0f
-                    } else {
-                        (state.amountState.text.toFloatOrNull()
-                            ?: 0f) * (enteredAmount)
-                    },
-                    exchangeFieldState.targetCurrency.iso4217
-                )
-            }
-        )
+    private val ITransactionState.amount: Float
+        get() = amountState.text.toFloatOrNull() ?: 0f
 
-    private fun transactionExpenseIncomeCreateRequest(state: TransactionExpenseState) =
-        TransactionExpenseCreateRequest(
-            amount = state.amountState.text.toFloatOrNull() ?: 0f,
-            comment = state.commentState.text,
-            currency = state.currencyFieldState.selectedCurrency?.iso4217 ?: "",
-            expenses = (state.categoryState as? CategorySuccess)?.listCategory
-                ?.mapNotNull {
-                    if (it.isChosen) Expense(it.id)
-                    else null
-                }?.ifEmpty { null },
-            walletId = (state.walletFromFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
-            exchanges = state.exchangeFieldState.map { exchangeFieldState ->
-                val enteredAmount = if (exchangeFieldState.isRevert) 1 / (exchangeFieldState.enteredAmount.text.toFloatOrNull()
-                    ?: Float.MAX_VALUE) else exchangeFieldState.enteredAmount.text.toFloatOrNull() ?: 0f
-                Exchange(
-                    if (exchangeFieldState.isFullAmount) {
-                        enteredAmount.takeIf { it != Float.MAX_VALUE } ?: 0f
-                    } else {
-                        (state.amountState.text.toFloatOrNull()
-                            ?: 0f) * (enteredAmount)
-                    },
-                    exchangeFieldState.targetCurrency.iso4217
-                )
-            }
-        )
+    private val ITransactionState.currencyOrUnknown: BudgetCurrencyEnum
+        get() = currencyFieldState.selectedCurrency ?: BudgetCurrencyEnum.UNKNOWN
 
-    private fun transactionTransferCreateRequest(state: TransactionTransferState) =
-        TransactionTransferCreateRequest(
-            amount = state.amountState.text.toFloatOrNull() ?: 0f,
-            comment = state.commentState.text,
-            currency = state.currencyFieldState.selectedCurrency?.iso4217 ?: "",
-            expenses = null,
-            walletIdTo = (state.walletToFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
-            walletIdFrom = (state.walletFromFieldState as? WalletSuccessState)?.selectedWalletId
-                ?: "",
-            exchanges = state.exchangeFieldState.map { exchangeFieldState ->
-                val enteredAmount = if (exchangeFieldState.isRevert) 1 / (exchangeFieldState.enteredAmount.text.toFloatOrNull()
-                    ?: Float.MAX_VALUE) else exchangeFieldState.enteredAmount.text.toFloatOrNull() ?: 0f
-                Exchange(
-                    if (exchangeFieldState.isFullAmount) {
-                        enteredAmount.takeIf { it != Float.MAX_VALUE } ?: 0f
-                    } else {
-                        (state.amountState.text.toFloatOrNull()
-                            ?: 0f) * (enteredAmount)
-                    },
-                    exchangeFieldState.targetCurrency.iso4217
-                )
-            }
-        )
+    private fun ITransactionState.exchanges(): List<NewExchange> = exchangeFieldState.map { field ->
+        NewExchange(amount = field.amountInTargetCurrency(amount), currency = field.targetCurrency)
+    }
+
+    private fun ExchangeFieldState.amountInTargetCurrency(baseAmount: Float): Float {
+        val entered = enteredAmount.text.toFloatOrNull()
+        val rate = if (isRevert) 1 / (entered ?: Float.MAX_VALUE) else entered ?: 0f
+        return if (isFullAmount) rate.takeIf { it != Float.MAX_VALUE } ?: 0f else baseAmount * rate
+    }
 }
