@@ -16,6 +16,7 @@ dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.room.gradlePlugin)
     compileOnly(libs.dependency.analysis.gradlePlugin)
+    compileOnly(libs.kover.gradlePlugin)
 
 }
 

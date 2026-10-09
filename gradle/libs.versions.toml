@@ -52,6 +52,7 @@ module-graph-assert = "2.9.1"
 # Tests
 junit = "4.13.2"
 konsist = "0.18.0"
+kover = "0.9.11"
 androidx-test-core = "1.5.0"
 androidx-test-runner = "1.5.2"
 androidx-test-junit = "1.3.0"
@@ -130,6 +131,7 @@ kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ve
 compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 room-gradlePlugin = { module = "androidx.room:room-gradle-plugin", version.ref = "room" }
 dependency-analysis-gradlePlugin = { module = "com.autonomousapps:dependency-analysis-gradle-plugin", version.ref = "dependency-analysis" }
+kover-gradlePlugin = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kover" }
 
 [bundles]
 compose = [
@@ -159,6 +161,7 @@ gms = { id = "com.google.gms.google-services", version.ref = "google-services" }
 crashlitycs = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
 module-graph-assert = { id = "com.jraska.module.graph.assertion", version.ref = "module-graph-assert" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 
 # Convention plugins from build-logic
 bysoft-library = { id = "ru.bysoft.library", version = "unspecified" }
