@@ -1,17 +1,17 @@
 package ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels
 
-import ru.bysoft.android.budget.currency.getAvailableCurrency
+import ru.bysoft.android.budget.common.errors.handler
+import ru.bysoft.android.budget.common.errors.IErrorLogger
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import ru.bysoft.android.budget.common.errors.IErrorLogger
-import ru.bysoft.android.budget.common.me_info.IMeInfo
-import ru.bysoft.android.budget.common.util.CategoryTypeEnum
-import ru.bysoft.android.budget.currency.getCurrency
-import ru.bysoft.android.budget.features.create_udate_category.data.ICategoryRepo
 import ru.budget.android.api.data.source.network.entity.category.CategoryRequest
 import ru.bysoft.android.budget.common.data_entity.CategoryErrorType
+import ru.bysoft.android.budget.common.me_info.IMeInfo
+import ru.bysoft.android.budget.common.util.CategoryTypeEnum
+import ru.bysoft.android.budget.currency.getAvailableCurrency
+import ru.bysoft.android.budget.currency.getCurrency
+import ru.bysoft.android.budget.features.create_udate_category.data.ICategoryRepo
 import ru.bysoft.android.budget.features.create_udate_category.navigation.CreateCategoryNavInfo
 import ru.bysoft.android.budget.features.create_udate_category.navigation.ICreateUpdateCategoryNavigation
 import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.CreateUpdateCategoryState
@@ -19,15 +19,13 @@ import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFi
 
 
 class CreateCategoryViewModel(
+    private val errorLogger: IErrorLogger,
     meInfo: IMeInfo,
     private val repo: ICategoryRepo,
-    private val errorLogger: IErrorLogger,
     private val navigate: ICreateUpdateCategoryNavigation
 ) : CreateUpdateCategoryViewModel(navigate), ICreateCategoryViewModel {
 
-    private val handler = CoroutineExceptionHandler { _, t ->
-        errorLogger.logError(t)
-    }
+    private val handler = errorLogger.handler()
 
     override val state: MutableStateFlow<CreateUpdateCategoryState> = MutableStateFlow(
         CreateUpdateCategoryState(

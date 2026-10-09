@@ -26,10 +26,95 @@ expense transactions, categories and spending statistics.
 |---|---|
 | `androidApp` | Application module: DI wiring, navigation, build flavors |
 | `features/*` | Feature modules: auth, home, statistics, wallets, categories, transactions, settings |
-| `api` | Network API interfaces, DTOs, mappers and mock implementations |
-| `common`, `currency` | Shared utilities, error handling, currency formatting |
-| `uikit` | Design system: Compose components, theme, icons |
+| `core/network` | Retrofit API interfaces, DTOs, mappers and mock implementations |
+| `core/common` | Auth interceptor and token storage, data entities, error logging, utilities |
+| `core/model` | Currencies: `BudgetCurrencyEnum`, flags, formatting |
+| `core/designsystem` | Design system: Compose components, theme, icons |
 | `shared` | Kotlin Multiplatform module |
+
+## Module graph
+
+Four layers, dependencies only point downwards. The picture is the summary; the rules
+below are what is actually enforced.
+
+```mermaid
+flowchart TB
+    app[androidApp]
+
+    subgraph features
+        direction LR
+        host[bottom-navigation:host]
+        home[bottom-navigation:home]
+        statistic[bottom-navigation:statistic]
+        transactions[create-update-delete-transactions]
+        splash
+        other[wallet · category · auth · settings · statistic-by-month]
+    end
+
+    subgraph data
+        rates[currency-rates]
+    end
+
+    subgraph core
+        direction LR
+        network[core:network]
+        common[core:common]
+        model[core:model]
+        designsystem[core:designsystem]
+    end
+
+    shared[shared · KMP]
+
+    app --> features
+    app --> rates
+    app --> shared
+
+    host --> home
+    host --> statistic
+    host --> transactions
+    home --> rates
+    transactions --> rates
+
+    features --> core
+    rates --> network
+    rates --> common
+    rates --> model
+
+    network --> common
+    common --> model
+    network --> model
+```
+
+An arrow into the `core` box means "into some of its modules": every feature uses
+`core:common` and `core:designsystem`, most also `core:network` and `core:model`. The edges
+of `currency-rates` and the feature-to-feature edges are drawn one by one. `scripts/module-graph.sh` prints every real edge if you need
+the full picture.
+
+### Rules
+
+The graph is checked, not just drawn. `./gradlew assertModuleGraph` (also part of `check`
+and of the CI test workflow) fails the build when a `project(...)` dependency breaks one of
+the rules in the root `build.gradle.kts`:
+
+- `androidApp` may depend on anything; nothing may depend on it.
+- A feature may depend on `core:*` and on the
+  `currency-rates` data module, not on other features. `bottom-navigation:host` is the one
+  explicit exception: it hosts the tab screens.
+- `core:*` never depends on features, and `core:designsystem` depends on nothing in the project.
+- Inside the core the order is `network → common → model`.
+- The longest path is capped at 6 modules (today: app → host → home → currency-rates →
+  network → common → model).
+
+Things the graph makes visible:
+
+- `bottom-navigation:host` is the only feature that depends on other features.
+- `currency-rates` is a data module (Room, no UI) that `home` and the transactions feature read from. It sits
+  between the features and the core because it needs `core:network`.
+- `core:designsystem` is a leaf: it depends on nothing in the project, so a visual change
+  never touches business code and the other way round.
+- `transaction-detail` is in the build but nothing depends on it: `androidApp` does not
+  include it.
+- `shared` (Kotlin Multiplatform) has no dependencies on the rest of the project yet.
 
 ## Build
 

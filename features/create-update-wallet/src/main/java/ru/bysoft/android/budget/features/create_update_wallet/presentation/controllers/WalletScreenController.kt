@@ -27,8 +27,7 @@ class WalletScreenController(
             )
         )
     )
-    override val state: StateFlow<ControllerWalletState>
-        get() = _state
+    override val state: StateFlow<ControllerWalletState> = _state
 
     override fun onNameChanged(name: String) {
         _state.update {

@@ -1,8 +1,8 @@
 package ru.bysoft.android.budget.auth
 
+import ru.bysoft.android.budget.common.errors.IErrorLogger
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -14,7 +14,7 @@ import ru.bysoft.android.budget.auth.presentation.entity.AuthActionType
 import ru.bysoft.android.budget.auth.presentation.entity.AuthState
 import ru.bysoft.android.budget.auth.presentation.mapper.getSignInData
 import ru.bysoft.android.budget.auth.presentation.mapper.getSignUpData
-import ru.bysoft.android.budget.common.errors.errorLogger
+import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 
 interface IAuthViewModel {
@@ -31,12 +31,12 @@ interface IAuthViewModel {
 }
 
 class AuthViewModel(
+    private val errorLogger: IErrorLogger,
     private val repository: IAuthRepository,
     private val navigate: IAuthNavigation
 ) : ViewModel(), IAuthViewModel {
 
-    private val handler = CoroutineExceptionHandler { _, t ->
-        errorLogger.logError(t)
+    private val handler = errorLogger.handler {
         state.value = state.value.copy(
             toastText = R.string.unexpected_error,
             isLoading = false
@@ -55,10 +55,10 @@ class AuthViewModel(
         state.update {
             it.copy(
                 password =
-                TextFieldState(
-                    password,
-                    if (it.type == AuthActionType.SIGN_UP && password != state.value.confirmPassword.text) R.string.passwords_not_match else null
-                ),
+                    TextFieldState(
+                        password,
+                        if (it.type == AuthActionType.SIGN_UP && password != state.value.confirmPassword.text) R.string.passwords_not_match else null
+                    ),
                 confirmPassword = it.confirmPassword.copy(
                     errorText = if (it.type == AuthActionType.SIGN_UP && password != state.value.confirmPassword.text) R.string.passwords_not_match else null
                 ), isButtonEnabled = isAllComplete(password = password),
@@ -71,10 +71,10 @@ class AuthViewModel(
         state.update {
             it.copy(
                 confirmPassword =
-                TextFieldState(
-                    password,
-                    if (password != state.value.password.text) R.string.passwords_not_match else null
-                ),
+                    TextFieldState(
+                        password,
+                        if (password != state.value.password.text) R.string.passwords_not_match else null
+                    ),
                 password = it.password.copy(
                     errorText = if (it.type == AuthActionType.SIGN_UP && password != state.value.password.text) R.string.passwords_not_match else null
                 ),

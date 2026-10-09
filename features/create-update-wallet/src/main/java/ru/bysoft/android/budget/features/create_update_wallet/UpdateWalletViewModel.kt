@@ -1,28 +1,27 @@
 package ru.bysoft.android.budget.features.create_update_wallet
 
+import ru.bysoft.android.budget.common.errors.IErrorLogger
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.common.data_entity.CreateWalletErrorData
-import ru.bysoft.android.budget.common.errors.IErrorLogger
+import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.create_update_wallet.data.IWalletRepository
 import ru.bysoft.android.budget.features.create_update_wallet.navigation.IWalletNavigation
 import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.ViewModelWalletState
 
 class UpdateWalletViewModel(
+    private val errorLogger: IErrorLogger,
     private val repository: IWalletRepository,
     private val navigate: IWalletNavigation,
-    private val errorLogger: IErrorLogger,
     val walletScreenController: IWalletScreenController
 ) : ViewModel(), IUpdateWalletViewModel {
 
-    private val createWalletExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        errorLogger.logError(throwable)
+    private val createWalletExceptionHandler = errorLogger.handler {
         _state.value = _state.value.copy(
             isLoading = false,
             toastText = "Произошла непредвиденная ошибка"
@@ -34,8 +33,7 @@ class UpdateWalletViewModel(
     private val _state = MutableStateFlow(
         ViewModelWalletState()
     )
-    val state: StateFlow<ViewModelWalletState>
-        get() = _state
+    val state: StateFlow<ViewModelWalletState> = _state
 
     override fun onButtonClick() {
         viewModelScope.launch(createWalletExceptionHandler) {

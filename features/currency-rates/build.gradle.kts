@@ -13,9 +13,9 @@ dependencies {
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
     
-    implementation(project(":api"))
-    implementation(project(":common"))
-    implementation(project(":currency"))
+    implementation(project(":core:network"))
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
 
     testImplementation(libs.junit)
     testImplementation(libs.coroutines.test)

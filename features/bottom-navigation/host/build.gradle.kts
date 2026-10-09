@@ -15,9 +15,9 @@ dependencies {
     implementation(libs.koin.compose.viewmodel)
     implementation(libs.kotlinx.json)
     
-    implementation(project(":uikit"))
+    implementation(project(":core:designsystem"))
     implementation(project(":features:bottom-navigation:home"))
     implementation(project(":features:bottom-navigation:statistic"))
     implementation(project(":features:create-update-delete-transactions"))
-    implementation(project(":common"))
+    implementation(project(":core:common"))
 }

@@ -1,0 +1,15 @@
+plugins {
+    alias(libs.plugins.bysoft.library)
+    alias(libs.plugins.bysoft.compose)
+}
+
+android {
+    namespace = "ru.bysoft.android.budget.uikit"
+}
+
+dependencies {
+    implementation(libs.bundles.compose.icons)
+    implementation(libs.compose.shimmer)
+    implementation(libs.charts.compose)
+    
+}

@@ -26,9 +26,7 @@ class TransactionUpdateViewModel(
 ), ITransactionUpdateViewModel {
 
     override fun update() {
-        viewModelScope.launch {
-
-        }
+        // TODO: updating a transaction is not implemented yet
     }
 
     override fun initId(id: String) {

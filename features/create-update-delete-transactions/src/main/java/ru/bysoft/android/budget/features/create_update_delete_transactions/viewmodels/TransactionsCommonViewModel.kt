@@ -1,8 +1,8 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.viewmodels
 
+import ru.bysoft.android.budget.common.errors.IErrorLogger
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,14 +10,24 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.budget.android.api.data.source.network.ICategoryApi
 import ru.budget.android.api.data.source.network.IWalletApi
-import ru.bysoft.android.budget.common.errors.IErrorLogger
+import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
 import ru.bysoft.android.budget.common.util.applyFilter
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.TransactionsCreateNavParams
-import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.CategoryError
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.CategoryPresentation
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.CategorySuccess
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.CategoryWaiting
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.ITransactionState
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.TransactionExpenseState
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.TransactionIncomeState
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.TransactionTransferState
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.WalletErrorState
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.WalletSuccessState
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.WalletWaitingState
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.ITransactionWalletPresentationMapper
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.ITransactionsCategoryPresentationMapper
 
@@ -49,7 +59,7 @@ interface ITransactionUpdateViewModel : ITransactionsViewModel {
 
 abstract class TransactionsCommonViewModel(
     private val navigate: ITransactionNavigation,
-    private val errorLogger: IErrorLogger,
+    protected val errorLogger: IErrorLogger,
     private val categoryApi: ICategoryApi,
     private val walletApi: IWalletApi,
     private val categoryMapperPresentation: ITransactionsCategoryPresentationMapper,
@@ -57,10 +67,9 @@ abstract class TransactionsCommonViewModel(
 ) : ViewModel(), ITransactionsViewModel {
 
 
-    override val toastState = MutableSharedFlow<Int>()
+    override val toastState = MutableSharedFlow<Int>(extraBufferCapacity = 1)
 
-    private val handlerCategory = CoroutineExceptionHandler { _, t ->
-        errorLogger.logError(t)
+    private val handlerCategory = errorLogger.handler {
         val currentState = state.value
         if (currentState is TransactionExpenseState) {
             state.update { currentState.copy(categoryState = CategoryError) }
@@ -70,8 +79,7 @@ abstract class TransactionsCommonViewModel(
         }
     }
 
-    private val handlerWallet = CoroutineExceptionHandler { _, t ->
-        errorLogger.logError(t)
+    private val handlerWallet = errorLogger.handler {
         val currentState = state.value
         state.update {
             currentState.copyWithWalletFromState(walletFieldState = WalletErrorState)
