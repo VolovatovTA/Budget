@@ -149,4 +149,5 @@ dependencies {
     implementation(project(":features:statistic-by-month"))
     implementation(project(":features:settings"))
     implementation(project(":features:currency-rates"))
+    implementation(project(":features:transaction-detail"))
 }

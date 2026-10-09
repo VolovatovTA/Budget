@@ -45,7 +45,7 @@ interface IHomeViewModel {
     fun onClickEditWallet(walletId: String)
     fun onPositionSelected(walletId: String)
     fun onClickFilter(newValue: Boolean, filter: Int)
-    fun updateTransaction(id: String)
+    fun openTransaction(id: String)
     fun deleteTransaction(id: String)
     fun onSettingsClick()
     fun onMainCurrencyChanged(newCurrency: BudgetCurrencyEnum)
@@ -145,8 +145,8 @@ class HomeViewModel(
         getTransactions(false)
     }
 
-    override fun updateTransaction(id: String) {
-        navigate.toUpdateTransaction(id)
+    override fun openTransaction(id: String) {
+        navigate.toTransactionDetail(id)
     }
 
     @OptIn(ExperimentalMaterialApi::class)
@@ -348,7 +348,7 @@ class HomeViewModel(
         when (value) {
             DismissValue.DismissedToStart -> showDialogConfirm(data)
 
-            DismissValue.DismissedToEnd -> updateTransaction(data)
+            DismissValue.DismissedToEnd -> openTransaction(data)
             else -> {}
         }
         true

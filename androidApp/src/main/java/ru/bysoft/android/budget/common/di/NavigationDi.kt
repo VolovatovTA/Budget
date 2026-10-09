@@ -13,6 +13,7 @@ import ru.bysoft.android.budget.common.navigation.home.HomeNavigation
 import ru.bysoft.android.budget.common.navigation.settings.SettingsNavigation
 import ru.bysoft.android.budget.common.navigation.splash.SplashNavigation
 import ru.bysoft.android.budget.common.navigation.statistic.StatisticNavigation
+import ru.bysoft.android.budget.common.navigation.transaction_detail.TransactionDetailNavigation
 import ru.bysoft.android.budget.common.network.authentificator.ICommonNavigation
 import ru.bysoft.android.budget.features.bottom_navigation.home.navigation.IHomeNavigation
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.navigation.IStatisticNavigation
@@ -21,10 +22,12 @@ import ru.bysoft.android.budget.features.create_update_delete_transactions.navig
 import ru.bysoft.android.budget.features.create_update_wallet.navigation.IWalletNavigation
 import ru.bysoft.android.budget.features.settings.presentation.navigation.ISettingsNavigation
 import ru.bysoft.android.budget.features.splash.navigation.ISplashNavigation
+import ru.bysoft.android.budget.features.transaction_detail.navigation.ITransactionDetailNavigation
 
 val NavigationDi = module {
     singleOf(::AuthNavigation) bind IAuthNavigation::class
     singleOf(::HomeNavigation) bind IHomeNavigation::class
+    singleOf(::TransactionDetailNavigation) bind ITransactionDetailNavigation::class
     singleOf(::WalletNavigation) bind IWalletNavigation::class
     singleOf(::SplashNavigation) bind ISplashNavigation::class
     singleOf(::CommonNavigation) bind ICommonNavigation::class

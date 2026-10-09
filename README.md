@@ -112,8 +112,6 @@ Things the graph makes visible:
   between the features and the core because it needs `core:network`.
 - `core:designsystem` is a leaf: it depends on nothing in the project, so a visual change
   never touches business code and the other way round.
-- `transaction-detail` is in the build but nothing depends on it: `androidApp` does not
-  include it.
 - `shared` (Kotlin Multiplatform) has no dependencies on the rest of the project yet.
 
 ## Build

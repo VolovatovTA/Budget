@@ -8,12 +8,17 @@ import ru.bysoft.android.budget.common.util.toJson
 import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.settings.SettingsNavigation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.TransactionUpdateNavParams
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.transaction.Transaction
+import ru.bysoft.android.budget.features.transaction_detail.navigation.TransactionDetail
 
 class HomeNavigation(
     private val navHostController: NavHostControllerWrapper
 ) : IHomeNavigation {
     override fun toUpdateTransaction(id: String) {
         navHostController.navigate("${Transaction.updateScreen}/${TransactionUpdateNavParams(id).toJson()}")
+    }
+
+    override fun toTransactionDetail(id: String) {
+        navHostController.navigate("${TransactionDetail.screenName}/$id")
     }
 
     override fun toCreateWallet() {

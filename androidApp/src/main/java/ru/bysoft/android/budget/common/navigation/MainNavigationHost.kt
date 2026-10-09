@@ -37,6 +37,9 @@ import ru.bysoft.android.budget.features.settings.presentation.screen.SettingsSc
 import ru.bysoft.android.budget.features.splash.presentation.screen.SplashScreen
 import ru.bysoft.android.budget.features.statistic_by_month.presentation.StatisticByFiltersViewModel
 import ru.bysoft.android.budget.features.statistic_by_month.presentation.screen.StatisticByFiltersScreen
+import ru.bysoft.android.budget.features.transaction_detail.navigation.TransactionDetail
+import ru.bysoft.android.budget.features.transaction_detail.presentation.TransactionDetailViewModel
+import ru.bysoft.android.budget.features.transaction_detail.presentation.screen.TransactionDetailScreen
 
 @Composable
 fun MainNavigationHost(mainNavController: NavHostController) {
@@ -136,6 +139,16 @@ fun MainNavigationHost(mainNavController: NavHostController) {
                 LaunchedEffect(Unit) { viewModel.initId(id) }
                 TransactionScreen(viewModel)
             }
+        }
+
+        composable(
+            route = "${TransactionDetail.screenName}/{${TransactionDetail.idKey}}",
+            arguments = listOf(navArgument(TransactionDetail.idKey) { type = NavType.StringType })
+        ) {
+            val id = it.arguments?.getString(TransactionDetail.idKey)!!
+            val viewModel = koinViewModel<TransactionDetailViewModel>()
+            LaunchedEffect(id) { viewModel.load(id) }
+            TransactionDetailScreen(viewModel)
         }
 
         composable(SettingsNavigation.screenName) {
