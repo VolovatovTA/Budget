@@ -16,10 +16,12 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v4
-      - run: ./gradlew :androidApp:testLocalMockDebugUnitTest :androidApp:testRemoteBackDebugUnitTest :core:network:testDebugUnitTest :konsist:test assertModuleGraph
+        with:
+          cache-read-only: false
 
-      # unit-test coverage of every module, merged; fails when it drops below COVERAGE_MIN_PERCENT (root build)
-      - run: ./gradlew koverXmlReportCoverage koverVerifyCoverage
+      # koverXmlReportCoverage runs the localMock / debug unit tests of every module itself;
+      # the remoteBack flavor, Konsist and the module graph are not part of the coverage variant
+      - run: ./gradlew koverXmlReportCoverage koverVerifyCoverage :androidApp:testRemoteBackDebugUnitTest :konsist:test assertModuleGraph
 
       - name: Coverage summary on the pull request
         uses: madrapps/jacoco-report@v1.7.1
