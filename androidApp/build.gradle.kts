@@ -38,6 +38,7 @@ android {
         minSdk = libs.versions.min.sdk.get().toInt()
         lint.targetSdk = libs.versions.target.sdk.get().toInt()
         versionCode = 3
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         versionName = "1.0.0"
 
         // ключ exchangerate-api: exchangeRateApiKey в ~/.gradle/gradle.properties или переменная окружения
@@ -132,6 +133,13 @@ dependencies {
     testImplementation(libs.koin.test)
     testImplementation(libs.coroutines.test)
     testImplementation(project(":core:model"))
+
+    // Instrumented flow tests, see src/androidTest (run them on the localMock flavor)
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(libs.koin.core)
+    debugImplementation(libs.compose.ui.test.manifest)
 
     // Modules
     implementation(project(":shared"))
