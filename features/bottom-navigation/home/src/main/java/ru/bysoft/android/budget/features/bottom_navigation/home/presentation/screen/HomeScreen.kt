@@ -130,6 +130,7 @@ fun HomeScreen(
                         }
                         homeTransactionsComponent(
                             transactionsState,
+                            onTransactionClick = viewModel::openTransaction,
                         )
                     }
                 }

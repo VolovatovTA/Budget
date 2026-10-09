@@ -3,6 +3,7 @@ package ru.bysoft.android.budget.features.bottom_navigation.home.presentation.sc
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,10 +54,11 @@ import ru.bysoft.android.budget.uikit.styles.padding
 
 fun LazyListScope.homeTransactionsComponent(
     state: TransactionsState,
+    onTransactionClick: (id: String) -> Unit,
 ) {
 
     when (state) {
-        is TransactionSuccess -> transactionsSuccessComponent(state)
+        is TransactionSuccess -> transactionsSuccessComponent(state, onTransactionClick)
         is TransactionLoading -> transactionLoadingComponent()
         is TransactionError -> transactionErrorComponent()
     }
@@ -64,7 +66,8 @@ fun LazyListScope.homeTransactionsComponent(
 
 @OptIn(ExperimentalMaterialApi::class)
 private fun LazyListScope.transactionsSuccessComponent(
-    state: TransactionSuccess
+    state: TransactionSuccess,
+    onTransactionClick: (id: String) -> Unit,
 ) {
     if (state.list.isEmpty()) {
         item {
@@ -168,6 +171,7 @@ private fun LazyListScope.transactionsSuccessComponent(
                     Box(
                         modifier = Modifier
                             .background(Color.Transparent)
+                            .clickable(enabled = !data.isWaiting) { onTransactionClick(data.id) }
                             .padding(vertical = halfPadding)
                             .padding(end = padding)
                     ) {
