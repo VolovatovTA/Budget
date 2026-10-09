@@ -135,6 +135,10 @@ compiles with; a missing JDK is downloaded by the foojay resolver. `./gradlew up
 The `remoteBack` flavor reads the exchangerate-api key from the `exchangeRateApiKey` Gradle property or the
 `EXCHANGE_RATE_API_KEY` environment variable.
 
+`./gradlew koverHtmlReportCoverage` writes the merged unit-test coverage of all modules to
+`build/reports/kover/htmlCoverage`; CI posts the same numbers on every pull request and fails when
+line coverage drops below `COVERAGE_MIN_PERCENT` in the root `build.gradle.kts`.
+
 Unit tests cover two things that used to break silently: a Koin `verify()` check fails if any
 class in the DI graph has an unregistered dependency, and a mock-assets test fails if a bundled
 mock response no longer matches its response class. CI runs the tests and a debug build on every

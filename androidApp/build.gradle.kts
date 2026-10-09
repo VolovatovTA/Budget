@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.crashlitycs)
     alias(libs.plugins.serialization)
     alias(libs.plugins.dependency.analysis)
+    alias(libs.plugins.kover)
 }
 
 android {
@@ -81,6 +82,12 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+    }
+}
+
+kover {
+    currentProject {
+        createVariant("coverage") { add("localMockDebug") }
     }
 }
 
