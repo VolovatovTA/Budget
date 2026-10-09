@@ -1,8 +1,7 @@
 name: Tests
 
 on:
-  pull_request:
-    branches: [master, develop]
+  pull_request:   # every PR, including ones stacked on another branch
 
 jobs:
   unit-tests:

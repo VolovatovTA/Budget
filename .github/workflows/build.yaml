@@ -1,8 +1,7 @@
 name: Build
 
 on:
-  pull_request:
-    branches: [master, develop]
+  pull_request:   # every PR, including ones stacked on another branch
 
 jobs:
   build:
