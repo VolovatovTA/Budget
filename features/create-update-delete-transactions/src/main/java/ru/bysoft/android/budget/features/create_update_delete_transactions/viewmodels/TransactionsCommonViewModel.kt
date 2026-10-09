@@ -8,13 +8,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.budget.android.api.data.source.network.ICategoryApi
-import ru.budget.android.api.data.source.network.IWalletApi
 import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
 import ru.bysoft.android.budget.common.util.applyFilter
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
+import ru.bysoft.android.budget.features.create_update_delete_transactions.data.ICategoriesRepo
+import ru.bysoft.android.budget.features.create_update_delete_transactions.data.IWalletsRepo
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.TransactionsCreateNavParams
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.CategoryError
@@ -60,8 +60,8 @@ interface ITransactionUpdateViewModel : ITransactionsViewModel {
 abstract class TransactionsCommonViewModel(
     private val navigate: ITransactionNavigation,
     protected val errorLogger: IErrorLogger,
-    private val categoryApi: ICategoryApi,
-    private val walletApi: IWalletApi,
+    private val categoriesRepo: ICategoriesRepo,
+    private val walletsRepo: IWalletsRepo,
     private val categoryMapperPresentation: ITransactionsCategoryPresentationMapper,
     private val walletMapper: ITransactionWalletPresentationMapper,
 ) : ViewModel(), ITransactionsViewModel {
@@ -341,10 +341,9 @@ abstract class TransactionsCommonViewModel(
                 is TransactionTransferState -> return@launch
             }
 
-            val response = categoryApi.getCategories(neededCategoryType.pathToBack)
+            val categories = categoriesRepo.getCategories(neededCategoryType)
             state.update {
-                it
-                    .copyWithCategory(categoryMapperPresentation.toPresentation(response))
+                it.copyWithCategory(categoryMapperPresentation.toPresentation(categories))
             }
         }
     }
@@ -356,24 +355,24 @@ abstract class TransactionsCommonViewModel(
                     walletFieldState = WalletWaitingState
                 )
             }
-            val response = walletApi.getWallets()
+            val wallets = walletsRepo.getWallets()
             state.update { iTransactionState ->
                 when (iTransactionState) {
                     is TransactionTransferState -> {
                         iTransactionState.copyWithWalletFromState(
-                            walletFieldState = walletMapper.toPresentation(response)
+                            walletFieldState = walletMapper.toPresentation(wallets)
                         ).copyWithWalletToState(
-                            walletFieldState = walletMapper.toPresentation(response)
+                            walletFieldState = walletMapper.toPresentation(wallets)
                         )
                     }
                     is TransactionIncomeState -> {
                         iTransactionState.copyWithWalletToState(
-                            walletFieldState = walletMapper.toPresentation(response)
+                            walletFieldState = walletMapper.toPresentation(wallets)
                         )
                     }
                     is TransactionExpenseState -> {
                         iTransactionState.copyWithWalletFromState(
-                            walletFieldState = walletMapper.toPresentation(response)
+                            walletFieldState = walletMapper.toPresentation(wallets)
                         )
                     }
                 }
