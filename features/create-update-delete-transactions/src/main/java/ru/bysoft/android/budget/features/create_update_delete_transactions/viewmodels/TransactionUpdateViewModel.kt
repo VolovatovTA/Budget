@@ -2,8 +2,8 @@ package ru.bysoft.android.budget.features.create_update_delete_transactions.view
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.budget.android.api.data.source.network.ICategoryApi
-import ru.budget.android.api.data.source.network.IWalletApi
+import ru.bysoft.android.budget.features.create_update_delete_transactions.data.ICategoriesRepo
+import ru.bysoft.android.budget.features.create_update_delete_transactions.data.IWalletsRepo
 import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.ITransactionWalletPresentationMapper
@@ -12,15 +12,15 @@ import ru.bysoft.android.budget.features.create_update_delete_transactions.prese
 class TransactionUpdateViewModel(
     navigate: ITransactionNavigation,
     errorLogger: IErrorLogger,
-    categoryApi: ICategoryApi,
-    walletApi: IWalletApi,
+    categoriesRepo: ICategoriesRepo,
+    walletsRepo: IWalletsRepo,
     categoryMapperPresentation: ITransactionsCategoryPresentationMapper,
     walletMapper: ITransactionWalletPresentationMapper,
 ) : TransactionsCommonViewModel(
     navigate = navigate,
     errorLogger = errorLogger,
-    categoryApi = categoryApi,
-    walletApi = walletApi,
+    categoriesRepo = categoriesRepo,
+    walletsRepo = walletsRepo,
     categoryMapperPresentation = categoryMapperPresentation,
     walletMapper = walletMapper
 ), ITransactionUpdateViewModel {

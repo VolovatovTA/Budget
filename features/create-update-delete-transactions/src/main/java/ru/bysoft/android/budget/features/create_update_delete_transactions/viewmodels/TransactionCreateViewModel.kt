@@ -7,9 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import ru.budget.android.api.data.source.network.ICategoryApi
 import ru.budget.android.api.data.source.network.ITransactionsApi
-import ru.budget.android.api.data.source.network.IWalletApi
 import ru.budget.android.api.data.source.network.entity.transactions.TransactionExpenseCreateRequest
 import ru.budget.android.api.data.source.network.entity.transactions.TransactionIncomeCreateRequest
 import ru.budget.android.api.data.source.network.entity.transactions.TransactionTransferCreateRequest
@@ -22,6 +20,8 @@ import ru.bysoft.android.budget.common.util.restore
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.currency.getCurrencyByDisplayName
+import ru.bysoft.android.budget.features.create_update_delete_transactions.data.ICategoriesRepo
+import ru.bysoft.android.budget.features.create_update_delete_transactions.data.IWalletsRepo
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.TransactionsCreateNavParams
@@ -43,16 +43,16 @@ class TransactionCreateViewModel(
     private val transactionMapper: ITransactionPresentationMapper,
     private val meInfo: IMeInfo,
     private val currencyRatesRepo: ICurrencyRatesRepo,
-    categoryApi: ICategoryApi,
-    walletApi: IWalletApi,
+    categoriesRepo: ICategoriesRepo,
+    walletsRepo: IWalletsRepo,
     categoryMapperPresentation: ITransactionsCategoryPresentationMapper,
     walletMapper: ITransactionWalletPresentationMapper,
     savedStateHandle: SavedStateHandle
 ) : TransactionsCommonViewModel(
     navigate = navigate,
     errorLogger = errorLogger,
-    categoryApi = categoryApi,
-    walletApi = walletApi,
+    categoriesRepo = categoriesRepo,
+    walletsRepo = walletsRepo,
     categoryMapperPresentation = categoryMapperPresentation,
     walletMapper = walletMapper
 ), ITransactionCreateViewModel {

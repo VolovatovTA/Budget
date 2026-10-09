@@ -11,7 +11,6 @@ android {
 dependencies {
     implementation(libs.retrofit)
     implementation(libs.kotlinx.json)
-    implementation(libs.gson)
     
     implementation(project(":features:currency-rates"))
     implementation(project(":core:common"))
