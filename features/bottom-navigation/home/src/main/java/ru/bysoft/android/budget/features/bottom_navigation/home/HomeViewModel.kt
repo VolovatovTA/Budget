@@ -1,5 +1,6 @@
 package ru.bysoft.android.budget.features.bottom_navigation.home
 
+import ru.bysoft.android.budget.common.errors.IErrorLogger
 import androidx.compose.material.DismissState
 import androidx.compose.material.DismissValue
 import androidx.compose.material.ExperimentalMaterialApi
@@ -8,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import ru.budget.android.api.data.source.network.entity.transactions.TransferTypeEnum
-import ru.bysoft.android.budget.common.errors.errorLogger
+import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.network.entity.ifHttpErrorGetErrorBody
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
@@ -53,6 +54,7 @@ interface IHomeViewModel {
 }
 
 class HomeViewModel(
+    private val errorLogger: IErrorLogger,
     private val walletsRepo: IHomeWalletsRepo,
     private val meRepo: IHomeMeRepo,
     private val transactionsRepo: ITransactionsRepo,
@@ -71,18 +73,15 @@ class HomeViewModel(
         getTransactions(isRefresh)
     }
 
-    private val homeWalletsExceptionHandler = CoroutineExceptionHandler { _, t ->
-        errorLogger.logError(t)
+    private val homeWalletsExceptionHandler = errorLogger.handler {
         walletsState.value = WalletsErrorState
     }
 
-    private val homeMeExceptionHandler = CoroutineExceptionHandler { _, t ->
-        errorLogger.logError(t)
+    private val homeMeExceptionHandler = errorLogger.handler {
         meState.value = MeErrorState
     }
 
-    private val homeTransactionExceptionHandler = CoroutineExceptionHandler { _, t ->
-        errorLogger.logError(t)
+    private val homeTransactionExceptionHandler = errorLogger.handler {
         transactionsState.value = TransactionError
     }
     override val dialogState: MutableStateFlow<DialogInfo<String>?> =

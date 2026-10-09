@@ -1,9 +1,9 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.viewmodels
 
+import ru.bysoft.android.budget.common.errors.IErrorLogger
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -15,16 +15,20 @@ import ru.budget.android.api.data.source.network.entity.transactions.Transaction
 import ru.budget.android.api.data.source.network.entity.transactions.TransactionTransferCreateRequest
 import ru.budget.android.api.data.source.network.entity.transactions.error.TransactionErrorResponse
 import ru.bysoft.android.budget.common.data_entity.CurrencyRateData
-import ru.bysoft.android.budget.common.errors.IErrorLogger
+import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.common.me_info.IMeInfo
-import ru.bysoft.android.budget.common.util.*
+import ru.bysoft.android.budget.common.util.TAG
+import ru.bysoft.android.budget.common.util.restore
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.currency.getCurrencyByDisplayName
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
-import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.TransactionsCreateNavParams
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.CategoryPresentation
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.CategorySuccess
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.ExchangeFieldState
+import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.WalletSuccessState
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.ITransactionPresentationMapper
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.ITransactionWalletPresentationMapper
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.ITransactionsCategoryPresentationMapper
@@ -33,10 +37,10 @@ import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 import kotlin.math.pow
 
 class TransactionCreateViewModel(
+    errorLogger: IErrorLogger,
     private val navigate: ITransactionNavigation,
     private val transactionApi: ITransactionsApi,
     private val transactionMapper: ITransactionPresentationMapper,
-    private val errorLogger: IErrorLogger,
     private val meInfo: IMeInfo,
     private val currencyRatesRepo: ICurrencyRatesRepo,
     categoryApi: ICategoryApi,
@@ -55,13 +59,12 @@ class TransactionCreateViewModel(
 
     private var currencyRates: CurrencyRateData? = null
 
-    private val handlerTransaction = CoroutineExceptionHandler { _, t ->
-        errorLogger.logError(t)
-        viewModelScope.launch { toastState.emit(R.string.error_answer) }
+    private val transactionCEH = errorLogger.handler {
+        toastState.tryEmit(R.string.error_answer)
     }
 
     init {
-        viewModelScope.launch(handlerTransaction) {
+        viewModelScope.launch(transactionCEH) {
             currencyRates = currencyRatesRepo.getCurrencyRates()
         }
         val argument =
@@ -78,7 +81,7 @@ class TransactionCreateViewModel(
 
 
     override fun create() {
-        viewModelScope.launch(handlerTransaction) {
+        viewModelScope.launch(transactionCEH) {
             try {
                 state.update {
                     it.copyWithLoading(
@@ -109,7 +112,7 @@ class TransactionCreateViewModel(
                         it.key.split('.')
                     }
 
-                    viewModelScope.launch { toastState.emit(R.string.error_answer) }
+                    toastState.tryEmit(R.string.error_answer)
 
 //                    state.update {
 //                        it.copyWithToast(

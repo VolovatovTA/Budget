@@ -1,6 +1,7 @@
 package ru.bysoft.android.budget.features.bottom_navigation.statistic
 
 import ru.bysoft.android.budget.common.util.dayOfWeekSundayZero
+import ru.bysoft.android.budget.common.errors.handler
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
@@ -9,7 +10,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import ru.bysoft.android.budget.common.data_entity.ExpenseCategory
 import ru.bysoft.android.budget.common.errors.IErrorLogger
-import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.currency.getBeautifulAmount
 import ru.bysoft.android.budget.common.util.getCalculatedDate
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.data.IStatisticRepo
@@ -41,13 +41,11 @@ class StatisticViewModel(
     override val state: MutableStateFlow<IStatisticState> =
         MutableStateFlow(StatisticWaitingState(false))
 
-    private val handler = CoroutineExceptionHandler { _, t ->
-        errorLogger.logError(t)
+    private val handler = errorLogger.handler {
         state.value = StatisticErrorState
     }
 
-    private val handlerTransactions = CoroutineExceptionHandler { _, t ->
-        errorLogger.logError(t)
+    private val handlerTransactions = errorLogger.handler {
         state.update { statisticState ->
             when (statisticState) {
                 is StatisticSuccessState -> {
@@ -80,7 +78,6 @@ class StatisticViewModel(
 
             data.listCategoryData.forEach { categoryData ->
                 try {
-
                     Calendar.getInstance(locale).firstDayOfWeek = Calendar.MONDAY
 
                     val currentDate = Calendar.getInstance(locale).time
@@ -98,6 +95,8 @@ class StatisticViewModel(
                             updateStateByNewCategory(statisticState, filledCategory)
                         }
                     }
+                } catch (t: CancellationException) {
+                    throw  t
                 } catch (t: Throwable) {
                     errorLogger.logError(t)
                     state.update { statisticState ->

@@ -9,7 +9,6 @@ android {
 
 dependencies {
     implementation(libs.bundles.compose.icons)
-    implementation(libs.viewmodel.compose)
     implementation(libs.compose.shimmer)
     implementation(libs.charts.compose)
     

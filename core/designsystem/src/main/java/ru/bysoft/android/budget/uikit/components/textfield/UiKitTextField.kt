@@ -42,6 +42,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.annotation.DrawableRes
+import androidx.compose.runtime.Immutable
 import ru.bysoft.android.budget.uikit.R
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitPopUp
@@ -52,7 +53,7 @@ import ru.bysoft.android.budget.uikit.styles.halfCorner
 import ru.bysoft.android.budget.uikit.styles.halfPadding
 import ru.bysoft.android.budget.uikit.styles.padding
 
-
+@Immutable
 data class TextFieldState(
     val text: String = "",
     val errorText: Int? = null,

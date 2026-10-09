@@ -7,13 +7,21 @@ interface IErrorLogger {
     fun logError(t: Throwable)
 }
 
-class ErrorLogger : IErrorLogger {
+class AndroidErrorLogger : IErrorLogger {
     override fun logError(t: Throwable) {
         Log.e("error", "", t)
     }
 }
 
-val errorLogger = ErrorLogger()
-
-val exceptionHandler: CoroutineExceptionHandler
-    get() = CoroutineExceptionHandler { _, t -> errorLogger.logError(t) }
+/**
+ * A [CoroutineExceptionHandler] that logs the failure through this logger and then runs [andThen],
+ * typically to put the screen into an error state:
+ *
+ *     private val handler = errorLogger.logAnd { state.value = ErrorState }
+ *     viewModelScope.launch(handler) { … }
+ */
+fun IErrorLogger.handler(andThen: (Throwable) -> Unit = {}): CoroutineExceptionHandler =
+    CoroutineExceptionHandler { _, t ->
+        logError(t)
+        andThen(t)
+    }
