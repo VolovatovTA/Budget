@@ -6,3 +6,10 @@ plugins {
 android {
     namespace = "ru.bysoft.android.budget.features.transaction_detail"
 }
+
+dependencies {
+    implementation(project(":core:common"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:model"))
+    implementation(project(":core:network"))
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transaction_detail_title">Transaction</string>
+    <string name="transaction_detail_type">Type</string>
+    <string name="transaction_detail_date">Date</string>
+    <string name="transaction_detail_comment">Comment</string>
+    <string name="transaction_detail_categories">Categories</string>
+    <string name="transaction_detail_not_found">This transaction no longer exists</string>
+    <string name="transaction_detail_error">Could not load the transaction</string>
+</resources>
