@@ -29,4 +29,4 @@ jobs:
           title: Unit-test coverage
           update-comment: true
           min-coverage-overall: 12
-          min-coverage-changed-files: 0
+          min-coverage-changed-files: 50
