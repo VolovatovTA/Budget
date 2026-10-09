@@ -1,6 +1,7 @@
 import java.net.URI
 
 include(":shared")
+include(":konsist")
 
 
 pluginManagement {

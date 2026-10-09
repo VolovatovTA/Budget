@@ -1,6 +1,6 @@
 package ru.bysoft.android.budget.common.warmup
 
-import kotlinx.coroutines.CoroutineExceptionHandler
+import ru.bysoft.android.budget.common.errors.handler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -17,7 +17,7 @@ class AppWarmUp(
     private val errorLogger: IErrorLogger,
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
 ) {
-    private val handler = CoroutineExceptionHandler { _, t -> errorLogger.logError(t) }
+    private val handler = errorLogger.handler()
 
     fun start() {
         scope.launch(handler) {

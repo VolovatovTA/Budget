@@ -1,5 +1,7 @@
 package ru.bysoft.android.budget.features.splash
 
+import ru.bysoft.android.budget.common.errors.handler
+import ru.bysoft.android.budget.common.errors.IErrorLogger
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.first
@@ -13,11 +15,12 @@ interface ISplashViewModel {
 
 class SplashViewModel(
     private val tokenRepo: ITokenStorage,
+    private val errorLogger: IErrorLogger,
     private val navigate: ISplashNavigation,
 ) : ViewModel(), ISplashViewModel {
 
     override fun onAnimationFinished() {
-        viewModelScope.launch {
+        viewModelScope.launch(errorLogger.handler()) {
             if (tokenRepo.getTokens().first() == null) {
                 navigate.toAuth()
             } else {

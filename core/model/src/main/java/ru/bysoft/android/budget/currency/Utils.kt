@@ -84,16 +84,3 @@ fun getBeautifulAmount(amount: Float, currency: BudgetCurrencyEnum): String {
     return "$accurateAmount.$decimals ${currency.displayName}"
 
 }
-
-val currencyWithFlags = listCurrency.map {
-    when (it.iso4217) {
-        BudgetCurrencyEnum.RSD.iso4217 -> it to R.drawable.rs_serbia
-        BudgetCurrencyEnum.EUR.iso4217 -> it to R.drawable.eu_europe_big2
-        BudgetCurrencyEnum.GEL.iso4217 -> it to R.drawable.ge_georgia
-        BudgetCurrencyEnum.RUB.iso4217 -> it to R.drawable.ru_russia
-        BudgetCurrencyEnum.KZT.iso4217 -> it to R.drawable.kz_kazakhstan
-        BudgetCurrencyEnum.AMD.iso4217 -> it to R.drawable.am_armenia
-        BudgetCurrencyEnum.USD.iso4217 -> it to R.drawable.us_united_states_of_america_usa
-        else -> it to R.drawable.cc_cocos_keeling_islands
-    }
-}
