@@ -1,8 +1,7 @@
 name: Instrumented tests
 
 on:
-  pull_request:
-    branches: [master, develop]
+  pull_request:   # every PR, including stacked ones
 
 jobs:
   flow-tests:
