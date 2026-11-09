@@ -7,12 +7,27 @@ can be checked are tests (`konsist/`), graph assertions (root `build.gradle.kts`
 
 ## Layers
 
+```mermaid
+flowchart TB
+    app[androidApp<br/>DI, navigation]
+    features[features/*<br/>screens, ViewModels, repository interfaces]
+    data[data<br/>currency-rates today, data/* tomorrow]
+    designsystem[core:designsystem<br/>tokens, theme, components]
+    network[core:network<br/>API, DTOs]
+    common[core:common<br/>auth, tokens, errors]
+    model[core:model<br/>currencies, entities]
+
+    app --> features
+    features --> data
+    features --> designsystem
+    data --> network
+    network --> common
+    common --> model
 ```
-androidApp ──▶ features/* ──▶ data (currency-rates) ──▶ core:network ──▶ core:common ──▶ core:model
-                   │                                                            ▲
-                   └──────────────▶ core:designsystem (leaf, UI only)           │
-                                                                     core:common ─┘
-```
+
+Arrows are "may depend on"; every layer may also use the ones below the one it points to
+(features read `core:model` directly, for example). `core:designsystem` is a leaf and depends on
+nothing in the project.
 
 | Layer | Modules | Owns | Must not |
 |---|---|---|---|
