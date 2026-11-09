@@ -29,6 +29,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import kotlinx.collections.immutable.persistentSetOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
@@ -46,9 +48,7 @@ import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.expandablecontent.VerticalExpandableContent
 import ru.bysoft.android.budget.uikit.components.icon_component.UiKitIconsComponent
-import ru.bysoft.android.budget.uikit.components.rowtab.UiKitRowTab
-import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitRowTabState
-import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitTabInfo
+import ru.bysoft.android.budget.uikit.components.segment.UiKitSegmentControl
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitCurrencyPopUpTextField
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextFieldWithPopUpAndCurrency
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
@@ -91,19 +91,11 @@ fun CreateCategoryScreen(viewModel: ICreateCategoryViewModel) {
             )
 
             item {
-                UiKitRowTab(
-                    startState = UiKitRowTabState(
-                        rowTabs.map { type ->
-                            UiKitTabInfo(
-                                text = type.text,
-                                isChecked = type == state.typeCategory
-                            )
-                        }
-                    ),
-                    onCheckChanged = { _, position ->
-                        viewModel.setCategoryType(rowTabs[position])
-                    },
-                    modifier = Modifier.fillMaxWidth()
+                UiKitSegmentControl(
+                    options = rowTabs.map { stringResource(it.text) }.toImmutableList(),
+                    selected = persistentSetOf(rowTabs.indexOf(state.typeCategory)),
+                    onSelect = { position -> viewModel.setCategoryType(rowTabs[position]) },
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
             item {

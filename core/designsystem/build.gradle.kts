@@ -9,6 +9,7 @@ android {
 
 dependencies {
     api(libs.compose.material3)
+    api(libs.kotlinx.collections.immutable)
     implementation(libs.bundles.compose.icons)
     implementation(libs.compose.shimmer)
     implementation(libs.charts.compose)

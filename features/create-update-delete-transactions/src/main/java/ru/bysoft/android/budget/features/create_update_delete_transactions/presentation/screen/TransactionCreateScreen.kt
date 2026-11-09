@@ -20,6 +20,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import kotlinx.collections.immutable.persistentSetOf
+import kotlinx.collections.immutable.toImmutableList
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
@@ -36,9 +38,7 @@ import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
 import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
-import ru.bysoft.android.budget.uikit.components.rowtab.UiKitRowTab
-import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitRowTabState
-import ru.bysoft.android.budget.uikit.components.rowtab.entity.UiKitTabInfo
+import ru.bysoft.android.budget.uikit.components.segment.UiKitSegmentControl
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitCurrencyPopUpTextField
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextField
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextFieldWithCurrency
@@ -165,22 +165,13 @@ private fun TransactionCreateScreenMain(
             Spacer(modifier = Modifier.height(halfPadding))
         }
         item {
-            UiKitRowTab(
-                startState = UiKitRowTabState(
-                    rowTabs.map {
-                        UiKitTabInfo(
-                            text = it.text,
-                            isChecked = it == selectedType,
-                            isEnabled = true
-                        )
-                    }
-                ),
-                onCheckChanged = { _, position ->
-                    setTransactionType(rowTabs[position])
-                },
+            UiKitSegmentControl(
+                options = rowTabs.map { stringResource(it.text) }.toImmutableList(),
+                selected = persistentSetOf(rowTabs.indexOf(selectedType)),
+                onSelect = { position -> setTransactionType(rowTabs[position]) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = padding)
+                    .padding(horizontal = padding),
             )
         }
 
