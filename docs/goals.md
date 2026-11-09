@@ -22,7 +22,7 @@ Nothing here is for sale: no paid tier, no ads, no monetisation.
    app edits go into the sheet; conflicts are latest-wins with a confirmation on same-field conflicts.
 5. **A 2026-grade look, fast and animated.** One typeface with Cyrillic (Wix Madefor Display), own
    design tokens for light and dark, components in `core:designsystem` only; every string localised
-   (ru, en). Scrolling and transitions stay at the display's frame rate on a mid-range phone (no jank
+   in English, Russian, French and Spanish. Scrolling and transitions stay at the display's frame rate on a mid-range phone (no jank
    on the Redmi Note 8 Pro used for checks); state changes are animated, not snapped.
 6. **Less typing: voice and receipts.** A transaction can be dictated (on-device speech recognition,
    amount + category + wallet parsed from the phrase) or scanned from a receipt QR code (the fiscal

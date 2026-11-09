@@ -37,7 +37,8 @@ emulator for every pull request.
    truth. No business state inside composables, no `loadData()` on every screen entry in new code.
 3. **The kit owns the look**: components, colours, radii and spacing come from `core:designsystem`;
    no `androidx.compose.material*` widgets, literal colours or dp radii in `features/*`.
-4. **Every string is a resource** in `values` and `values-ru`, in the same PR.
+4. **Every string is a resource** in `values` (en), `values-ru`, `values-fr` and `values-es`, in the same
+   PR; lint `MissingTranslation` is an error.
 5. **Coroutines**: `viewModelScope.launch(errorLogger.handler { … })`, no root `async`,
    `CancellationException` is rethrown. Checked by Konsist and detekt.
 6. **Tests pin behaviour**: at most two assertions per test (Konsist), one behaviour per test, no tests

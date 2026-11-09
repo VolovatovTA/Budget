@@ -53,7 +53,7 @@ use kit components (`UiKitButton`, …) and tokens (`UiKitColors.colors.tokens`,
 `BudgetSpacing`); literal `Color(0xFF…)` or `dp` radii in `features/*` are a finding. Material 3
 lives inside the kit (`BudgetTheme` provides both the M3 `ColorScheme` and the legacy M2 colours);
 features never import `androidx.compose.material*` widgets. Every user-visible string is in
-`res/values` (en) and `res/values-ru`.
+`res/values` (en), `res/values-ru`, `res/values-fr` and `res/values-es`.
 
 ## Known gaps against the target
 
