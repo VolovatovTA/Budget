@@ -82,7 +82,7 @@ Compose:
   PreviewPublic:
     active: true
   UnstableCollections:
-    active: false            # tokens use List<Color> by design (@Immutable on the holder)
+    active: true             # composable parameters take ImmutableList/PersistentList (kotlinx.collections.immutable)
 
 formatting:
   active: true
