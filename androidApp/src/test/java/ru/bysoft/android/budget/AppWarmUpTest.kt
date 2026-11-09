@@ -34,26 +34,28 @@ class AppWarmUpTest {
     }
 
     @Test
-    fun `start loads currency rates once`() = runTest {
-        val repo = FakeRatesRepo()
-        val logger = FakeLogger()
-        AppWarmUp(repo, logger, warmUpScope()).start()
-        testScheduler.advanceUntilIdle()
+    fun `start loads currency rates once`() =
+        runTest {
+            val repo = FakeRatesRepo()
+            val logger = FakeLogger()
+            AppWarmUp(repo, logger, warmUpScope()).start()
+            testScheduler.advanceUntilIdle()
 
-        assertEquals(1, repo.calls)
-        assertEquals(emptyList<Throwable>(), logger.errors)
-    }
+            assertEquals(1, repo.calls)
+            assertEquals(emptyList<Throwable>(), logger.errors)
+        }
 
     @Test
-    fun `a failed warm-up is logged, not thrown`() = runTest {
-        val boom = IllegalStateException("no network")
-        val repo = FakeRatesRepo(failWith = boom)
-        val logger = FakeLogger()
-        AppWarmUp(repo, logger, warmUpScope()).start()
-        testScheduler.advanceUntilIdle()
+    fun `a failed warm-up is logged, not thrown`() =
+        runTest {
+            val boom = IllegalStateException("no network")
+            val repo = FakeRatesRepo(failWith = boom)
+            val logger = FakeLogger()
+            AppWarmUp(repo, logger, warmUpScope()).start()
+            testScheduler.advanceUntilIdle()
 
-        assertEquals(listOf<Throwable>(boom), logger.errors)
-    }
+            assertEquals(listOf<Throwable>(boom), logger.errors)
+        }
 
     // Same shape as the production scope: a SupervisorJob root, so the exception handler
     // sees failures instead of the test's own job. Only the dispatcher is swapped.

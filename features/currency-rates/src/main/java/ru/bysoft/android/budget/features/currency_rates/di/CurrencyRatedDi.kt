@@ -16,7 +16,11 @@ val CurrencyRatedDi = module {
     single { CurrencyRatesRepo(api = get(), mapper = get(), dao = get()) } bind ICurrencyRatesRepo::class
 
     single<CurrencyRatesDatabase> {
-        Room.databaseBuilder(androidContext(), CurrencyRatesDatabase::class.java, "currency_rates.db")
+        Room.databaseBuilder(
+            androidContext(),
+            CurrencyRatesDatabase::class.java,
+            "currency_rates.db"
+        )
             // the table is a cache that refills itself; on a schema change just start over
             .fallbackToDestructiveMigration(dropAllTables = true)
             .build()

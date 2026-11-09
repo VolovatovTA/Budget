@@ -102,7 +102,9 @@ class WalletScreenController(
             else -> _state.value.nameTextState
         }
 
-    private fun getCurrencyStateByErrorType(errorType: CreateWalletErrorData): CurrencyFieldState<BudgetCurrencyEnum> =
+    private fun getCurrencyStateByErrorType(
+        errorType: CreateWalletErrorData
+    ): CurrencyFieldState<BudgetCurrencyEnum> =
         when (errorType) {
             CreateWalletErrorData.INVALID_CURRENCY -> _state.value.currencyFieldState.copy(
                 errorText = CreateWalletErrorData.INVALID_CURRENCY.errorText

@@ -33,7 +33,10 @@ import com.patrykandpatrick.vico.core.component.shape.shader.DynamicShaders
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 
 @Composable
-internal fun rememberChartStyle(columnChartColors: List<Color>, lineChartColors: List<Color>): ChartStyle {
+internal fun rememberChartStyle(
+    columnChartColors: List<Color>,
+    lineChartColors: List<Color>
+): ChartStyle {
     val isDark = UiKitColors.isDark
     return remember(columnChartColors, lineChartColors, isDark) {
         val defaultColors = if (isDark) DefaultColors.Dark else DefaultColors.Light

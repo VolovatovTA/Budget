@@ -24,9 +24,15 @@ class TransactionsRepo(
     override suspend fun create(transaction: NewTransaction) {
         try {
             when (transaction) {
-                is NewTransaction.Expense -> transactionApi.createTransactionExpense(transaction.toRequest())
-                is NewTransaction.Income -> transactionApi.createTransactionIncome(transaction.toRequest())
-                is NewTransaction.Transfer -> transactionApi.createTransactionTransfer(transaction.toRequest())
+                is NewTransaction.Expense -> transactionApi.createTransactionExpense(
+                    transaction.toRequest()
+                )
+                is NewTransaction.Income -> transactionApi.createTransactionIncome(
+                    transaction.toRequest()
+                )
+                is NewTransaction.Transfer -> transactionApi.createTransactionTransfer(
+                    transaction.toRequest()
+                )
             }
         } catch (e: HttpException) {
             throw e.toCreateException()
@@ -41,33 +47,36 @@ class TransactionsRepo(
         )
     }
 
-    private fun NewTransaction.Expense.toRequest() = TransactionExpenseCreateRequest(
-        amount = amount,
-        comment = comment,
-        currency = currency.iso4217,
-        exchanges = exchanges.toRequest(),
-        expenses = categoryIds.map { Expense(it) }.ifEmpty { null },
-        walletId = walletId,
-    )
+    private fun NewTransaction.Expense.toRequest() =
+        TransactionExpenseCreateRequest(
+            amount = amount,
+            comment = comment,
+            currency = currency.iso4217,
+            exchanges = exchanges.toRequest(),
+            expenses = categoryIds.map { Expense(it) }.ifEmpty { null },
+            walletId = walletId,
+        )
 
-    private fun NewTransaction.Income.toRequest() = TransactionIncomeCreateRequest(
-        amount = amount,
-        comment = comment,
-        currency = currency.iso4217,
-        exchanges = exchanges.toRequest(),
-        income_id = categoryId,
-        walletId = walletId,
-    )
+    private fun NewTransaction.Income.toRequest() =
+        TransactionIncomeCreateRequest(
+            amount = amount,
+            comment = comment,
+            currency = currency.iso4217,
+            exchanges = exchanges.toRequest(),
+            income_id = categoryId,
+            walletId = walletId,
+        )
 
-    private fun NewTransaction.Transfer.toRequest() = TransactionTransferCreateRequest(
-        amount = amount,
-        comment = comment,
-        currency = currency.iso4217,
-        exchanges = exchanges.toRequest(),
-        expenses = null,
-        walletIdFrom = walletFromId,
-        walletIdTo = walletToId,
-    )
+    private fun NewTransaction.Transfer.toRequest() =
+        TransactionTransferCreateRequest(
+            amount = amount,
+            comment = comment,
+            currency = currency.iso4217,
+            exchanges = exchanges.toRequest(),
+            expenses = null,
+            walletIdFrom = walletFromId,
+            walletIdTo = walletToId,
+        )
 
     private fun List<NewExchange>.toRequest() = map { Exchange(it.amount, it.currency.iso4217) }
 }

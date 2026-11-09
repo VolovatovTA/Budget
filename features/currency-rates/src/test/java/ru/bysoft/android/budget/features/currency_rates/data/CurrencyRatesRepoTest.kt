@@ -46,67 +46,74 @@ class CurrencyRatesRepoTest {
     }
 
     @Test
-    fun `empty cache asks the api once per base currency and returns every base`() = runTest {
-        val data = repo.getCurrencyRates()
+    fun `empty cache asks the api once per base currency and returns every base`() =
+        runTest {
+            val data = repo.getCurrencyRates()
 
-        assertEquals(getAvailableCurrency().map { it.iso4217 }, api.requestedBases)
-        assertEquals(getAvailableCurrency().toSet(), data.map.keys)
-    }
-
-    @Test
-    fun `empty cache is stored as a full base x target table stamped with now`() = runTest {
-        repo.getCurrencyRates()
-
-        assertEquals(getAvailableCurrency().size * getAvailableCurrency().size, dao.rows.size)
-        assertTrue(dao.rows.values.all { it.updatedAt == clock })
-    }
+            assertEquals(getAvailableCurrency().map { it.iso4217 }, api.requestedBases)
+            assertEquals(getAvailableCurrency().toSet(), data.map.keys)
+        }
 
     @Test
-    fun `fresh cache is served without touching the api`() = runTest {
-        seedAllBases(updatedAt = clock - day / 2)
+    fun `empty cache is stored as a full base x target table stamped with now`() =
+        runTest {
+            repo.getCurrencyRates()
 
-        val data = repo.getCurrencyRates()
-
-        assertEquals(emptyList<String>(), api.requestedBases)
-        assertEquals(1.0, data.map.getValue(BudgetCurrencyEnum.USD).first().rate, 0.0)
-    }
-
-    @Test
-    fun `cache older than a day is refreshed`() = runTest {
-        seedAllBases(updatedAt = clock - day)
-
-        val data = repo.getCurrencyRates()
-
-        assertEquals(getAvailableCurrency().size, api.requestedBases.size)
-        assertEquals(2.0, data.map.getValue(BudgetCurrencyEnum.USD).first().rate, 0.0)
-    }
+            assertEquals(getAvailableCurrency().size * getAvailableCurrency().size, dao.rows.size)
+            assertTrue(dao.rows.values.all { it.updatedAt == clock })
+        }
 
     @Test
-    fun `cache missing a base currency is refreshed even if young`() = runTest {
-        dao.rows["USD" to "EUR"] = CurrencyRateEntity("USD", "EUR", 1.0, clock)
+    fun `fresh cache is served without touching the api`() =
+        runTest {
+            seedAllBases(updatedAt = clock - day / 2)
 
-        repo.getCurrencyRates()
+            val data = repo.getCurrencyRates()
 
-        assertEquals(getAvailableCurrency().size, api.requestedBases.size)
-    }
-
-    @Test
-    fun `single rate present in the cache is served without the api, however old`() = runTest {
-        dao.rows["USD" to "EUR"] = CurrencyRateEntity("USD", "EUR", 0.9, clock - 3 * day)
-
-        val cached = repo.getCurrencyRate(BudgetCurrencyEnum.USD, BudgetCurrencyEnum.EUR)
-
-        assertEquals(0.9, cached.rate, 0.0)
-        assertEquals(emptyList<String>(), api.requestedBases)
-    }
+            assertEquals(emptyList<String>(), api.requestedBases)
+            assertEquals(1.0, data.map.getValue(BudgetCurrencyEnum.USD).first().rate, 0.0)
+        }
 
     @Test
-    fun `single rate missing from the cache triggers a full refresh`() = runTest {
-        dao.rows["USD" to "EUR"] = CurrencyRateEntity("USD", "EUR", 0.9, clock - 3 * day)
+    fun `cache older than a day is refreshed`() =
+        runTest {
+            seedAllBases(updatedAt = clock - day)
 
-        val fetched = repo.getCurrencyRate(BudgetCurrencyEnum.EUR, BudgetCurrencyEnum.USD)
+            val data = repo.getCurrencyRates()
 
-        assertEquals(2.0, fetched.rate, 0.0)
-        assertEquals(getAvailableCurrency().size, api.requestedBases.size)
-    }
+            assertEquals(getAvailableCurrency().size, api.requestedBases.size)
+            assertEquals(2.0, data.map.getValue(BudgetCurrencyEnum.USD).first().rate, 0.0)
+        }
+
+    @Test
+    fun `cache missing a base currency is refreshed even if young`() =
+        runTest {
+            dao.rows["USD" to "EUR"] = CurrencyRateEntity("USD", "EUR", 1.0, clock)
+
+            repo.getCurrencyRates()
+
+            assertEquals(getAvailableCurrency().size, api.requestedBases.size)
+        }
+
+    @Test
+    fun `single rate present in the cache is served without the api, however old`() =
+        runTest {
+            dao.rows["USD" to "EUR"] = CurrencyRateEntity("USD", "EUR", 0.9, clock - 3 * day)
+
+            val cached = repo.getCurrencyRate(BudgetCurrencyEnum.USD, BudgetCurrencyEnum.EUR)
+
+            assertEquals(0.9, cached.rate, 0.0)
+            assertEquals(emptyList<String>(), api.requestedBases)
+        }
+
+    @Test
+    fun `single rate missing from the cache triggers a full refresh`() =
+        runTest {
+            dao.rows["USD" to "EUR"] = CurrencyRateEntity("USD", "EUR", 0.9, clock - 3 * day)
+
+            val fetched = repo.getCurrencyRate(BudgetCurrencyEnum.EUR, BudgetCurrencyEnum.USD)
+
+            assertEquals(2.0, fetched.rate, 0.0)
+            assertEquals(getAvailableCurrency().size, api.requestedBases.size)
+        }
 }

@@ -24,7 +24,9 @@ import ru.bysoft.android.budget.common.token.network.ITokenRefreshApi
 // first request can land in the "no tokens, go to auth" branch; the test hits that race and also lacks
 // Dispatchers.setMain. Interceptor and test are to be fixed together (refactoring plan); until then the
 // three cases are skipped rather than left red.
-@Ignore("AuthenticationInterceptorRefreshToken races on the first request; fix with the interceptor")
+@Ignore(
+    "AuthenticationInterceptorRefreshToken races on the first request; fix with the interceptor"
+)
 class AuthentificationTest {
 
     @Mock

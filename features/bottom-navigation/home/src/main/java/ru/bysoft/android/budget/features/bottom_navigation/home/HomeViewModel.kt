@@ -104,10 +104,11 @@ class HomeViewModel(
 
     private var currentWalletId: String? = null
 
-    private fun getBasicFilterState() = UiKitRowTabState(
-        listFilters = TransactionTypeEnum.values()
-            .mapIndexed { index, it -> UiKitTabInfo(it.text, index == 0) }
-    )
+    private fun getBasicFilterState() =
+        UiKitRowTabState(
+            listFilters = TransactionTypeEnum.values()
+                .mapIndexed { index, it -> UiKitTabInfo(it.text, index == 0) }
+        )
 
     override fun onClickSimpleWallet() {
     }

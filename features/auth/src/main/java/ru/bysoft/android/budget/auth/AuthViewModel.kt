@@ -219,14 +219,13 @@ class AuthViewModel(
         password: String = state.value.password.text,
         confirmPassword: String = state.value.confirmPassword.text,
         isCheckBoxChecked: Boolean = state.value.isCheckBoxChecked
-    ) =
-        when (type) {
-            AuthActionType.SIGN_IN -> isEmailCorrect(email) && isPasswordCorrect(password)
-            AuthActionType.SIGN_UP -> isCheckBoxChecked && isEmailCorrect(email) && isPasswordCorrect(
-                password
-                ) &&
-                isNameCorrect(name) && password == confirmPassword
-        }
+    ) = when (type) {
+        AuthActionType.SIGN_IN -> isEmailCorrect(email) && isPasswordCorrect(password)
+        AuthActionType.SIGN_UP -> isCheckBoxChecked && isEmailCorrect(email) && isPasswordCorrect(
+            password
+        ) &&
+            isNameCorrect(name) && password == confirmPassword
+    }
 
     private fun isEmailCorrect(email: String) = email.contains('@') && email.contains('.')
 

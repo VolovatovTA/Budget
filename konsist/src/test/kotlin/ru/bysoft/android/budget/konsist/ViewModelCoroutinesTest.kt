@@ -20,7 +20,9 @@ class ViewModelCoroutinesTest {
 
     @Test
     fun `viewModelScope launch always gets an exception handler`() {
-        viewModels.assertFalse(additionalMessage = "use viewModelScope.launch(errorLogger.handler { ... })") {
+        viewModels.assertFalse(
+            additionalMessage = "use viewModelScope.launch(errorLogger.handler { ... })"
+        ) {
             LAUNCH_WITHOUT_CONTEXT.containsMatchIn(it.text)
         }
     }

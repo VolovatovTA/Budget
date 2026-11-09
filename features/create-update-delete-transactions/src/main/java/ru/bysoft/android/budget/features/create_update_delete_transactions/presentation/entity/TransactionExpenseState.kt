@@ -21,7 +21,9 @@ sealed class ITransactionState(
 ) {
     abstract fun copyWithAmount(amountState: TextFieldState): ITransactionState
     abstract fun copyWithComment(commentState: TextFieldState): ITransactionState
-    abstract fun copyWithCurrency(currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum>): ITransactionState
+    abstract fun copyWithCurrency(
+        currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum>
+    ): ITransactionState
     abstract fun copyWithExchanges(exchangeFieldState: List<ExchangeFieldState>): ITransactionState
     abstract fun copyWithLoading(isLoading: Boolean): ITransactionState
     abstract fun copyWithCategory(categoryState: CategoryState): ITransactionState
@@ -56,11 +58,13 @@ data class TransactionExpenseState(
     override fun copyWithComment(commentState: TextFieldState): TransactionExpenseState =
         this.copy(commentState = commentState)
 
-    override fun copyWithCurrency(currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum>): TransactionExpenseState =
-        this.copy(currencyFieldState = currencyFieldState)
+    override fun copyWithCurrency(
+        currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum>
+    ): TransactionExpenseState = this.copy(currencyFieldState = currencyFieldState)
 
-    override fun copyWithExchanges(exchangeFieldState: List<ExchangeFieldState>): TransactionExpenseState =
-        this.copy(exchangeFieldState = exchangeFieldState)
+    override fun copyWithExchanges(
+        exchangeFieldState: List<ExchangeFieldState>
+    ): TransactionExpenseState = this.copy(exchangeFieldState = exchangeFieldState)
 
     override fun copyWithLoading(isLoading: Boolean): TransactionExpenseState =
         this.copy(isLoading = isLoading)
@@ -102,11 +106,13 @@ data class TransactionIncomeState(
     override fun copyWithComment(commentState: TextFieldState): TransactionIncomeState =
         this.copy(commentState = commentState)
 
-    override fun copyWithCurrency(currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum>): TransactionIncomeState =
-        this.copy(currencyFieldState = currencyFieldState)
+    override fun copyWithCurrency(
+        currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum>
+    ): TransactionIncomeState = this.copy(currencyFieldState = currencyFieldState)
 
-    override fun copyWithExchanges(exchangeFieldState: List<ExchangeFieldState>): TransactionIncomeState =
-        this.copy(exchangeFieldState = exchangeFieldState)
+    override fun copyWithExchanges(
+        exchangeFieldState: List<ExchangeFieldState>
+    ): TransactionIncomeState = this.copy(exchangeFieldState = exchangeFieldState)
 
     override fun copyWithLoading(isLoading: Boolean): TransactionIncomeState =
         this.copy(isLoading = isLoading)
@@ -114,8 +120,9 @@ data class TransactionIncomeState(
     override fun copyWithCategory(categoryState: CategoryState): TransactionIncomeState =
         this.copy(categoryState = categoryState)
 
-    override fun copyWithWalletFromState(walletFieldState: IWalletFieldState): TransactionIncomeState =
-        this
+    override fun copyWithWalletFromState(
+        walletFieldState: IWalletFieldState
+    ): TransactionIncomeState = this
 
     override fun copyWithWalletToState(walletFieldState: IWalletFieldState): ITransactionState =
         this.copy(walletToFieldState = walletFieldState)
@@ -149,23 +156,26 @@ data class TransactionTransferState(
     override fun copyWithComment(commentState: TextFieldState): TransactionTransferState =
         this.copy(commentState = commentState)
 
-    override fun copyWithCurrency(currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum>): TransactionTransferState =
-        this.copy(currencyFieldState = currencyFieldState)
+    override fun copyWithCurrency(
+        currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum>
+    ): TransactionTransferState = this.copy(currencyFieldState = currencyFieldState)
 
-    override fun copyWithExchanges(exchangeFieldState: List<ExchangeFieldState>): TransactionTransferState =
-        this.copy(exchangeFieldState = exchangeFieldState)
+    override fun copyWithExchanges(
+        exchangeFieldState: List<ExchangeFieldState>
+    ): TransactionTransferState = this.copy(exchangeFieldState = exchangeFieldState)
 
     override fun copyWithLoading(isLoading: Boolean): TransactionTransferState =
         this.copy(isLoading = isLoading)
 
-    override fun copyWithCategory(categoryState: CategoryState): TransactionTransferState =
-        this
+    override fun copyWithCategory(categoryState: CategoryState): TransactionTransferState = this
 
-    override fun copyWithWalletFromState(walletFieldState: IWalletFieldState): TransactionTransferState =
-        this.copy(walletFromFieldState = walletFieldState)
+    override fun copyWithWalletFromState(
+        walletFieldState: IWalletFieldState
+    ): TransactionTransferState = this.copy(walletFromFieldState = walletFieldState)
 
-    override fun copyWithWalletToState(walletFieldState: IWalletFieldState): TransactionTransferState =
-        this.copy(walletToFieldState = walletFieldState)
+    override fun copyWithWalletToState(
+        walletFieldState: IWalletFieldState
+    ): TransactionTransferState = this.copy(walletToFieldState = walletFieldState)
 }
 
 sealed interface CategoryState

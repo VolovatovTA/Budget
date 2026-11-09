@@ -27,10 +27,7 @@ import ru.bysoft.android.budget.uikit.styles.halfPadding
 import ru.bysoft.android.budget.uikit.styles.padding
 
 @Composable
-fun StatisticSuccessScreen(
-    state: StatisticSuccessState,
-    viewModel: IStatisticViewModel
-) {
+fun StatisticSuccessScreen(state: StatisticSuccessState, viewModel: IStatisticViewModel) {
     Column(
         Modifier
             .fillMaxWidth()

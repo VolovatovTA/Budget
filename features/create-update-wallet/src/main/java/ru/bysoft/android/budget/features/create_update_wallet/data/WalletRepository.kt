@@ -42,7 +42,10 @@ class WalletRepository constructor(
         return mapper.mapToData(api.getWallet(id))
     }
 
-    override suspend fun updateWallet(walletId: String, state: ControllerWalletState): Result<Unit> {
+    override suspend fun updateWallet(
+        walletId: String,
+        state: ControllerWalletState
+    ): Result<Unit> {
         return try {
             api.updateWallet(walletId, mapToUpdateRequest(state))
             Result.success(Unit)

@@ -30,9 +30,7 @@ import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfo
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun StatisticScreen(
-    viewModel: IStatisticViewModel
-) {
+fun StatisticScreen(viewModel: IStatisticViewModel) {
     LaunchedEffect(Unit) { viewModel.loadData(false) }
     val state = viewModel.state.collectAsState().value
     val isRefreshing = state is StatisticWaitingState && state.isRefreshing

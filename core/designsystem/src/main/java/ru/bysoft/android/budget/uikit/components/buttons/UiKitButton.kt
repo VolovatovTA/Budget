@@ -97,7 +97,10 @@ private fun ButtonSurface(
 ) {
     val source = remember { MutableInteractionSource() }
     val pressed by source.collectIsPressedAsState()
-    val scale by animateFloatAsState(targetValue = if (pressed) PRESSED_SCALE else 1f, label = "buttonScale")
+    val scale by animateFloatAsState(
+        targetValue = if (pressed) PRESSED_SCALE else 1f,
+        label = "buttonScale"
+    )
     val borderModifier = style.border?.let { Modifier.border(BORDER_WIDTH, it, size.shape) } ?: Modifier
     Row(
         modifier = modifier
@@ -125,10 +128,11 @@ private fun ButtonSurface(
 }
 
 @Composable
-private fun ButtonSize.textStyle(): TextStyle = when (this) {
-    ButtonSize.SMALL -> UiKitTypography.TextSM.SemiBold
-    ButtonSize.MEDIUM, ButtonSize.LARGE -> UiKitTypography.TextMD.SemiBold
-}
+private fun ButtonSize.textStyle(): TextStyle =
+    when (this) {
+        ButtonSize.SMALL -> UiKitTypography.TextSM.SemiBold
+        ButtonSize.MEDIUM, ButtonSize.LARGE -> UiKitTypography.TextMD.SemiBold
+    }
 
 private const val PRESSED_SCALE = 0.97f
 private const val DISABLED_ALPHA = 0.4f

@@ -5,7 +5,7 @@
     <ID>EmptyFunctionBlock:CommonErrorBody.kt$EmptyAnswer${}</ID>
     <ID>MagicNumber:Autentificator.kt$AuthenticationInterceptorRefreshToken$200</ID>
     <ID>MagicNumber:Autentificator.kt$AuthenticationInterceptorRefreshToken$401</ID>
-    <ID>MemberNameEqualsClassName:TokenStorage.kt$TokenStorage.Companion$private val Context.tokenStorage: DataStore&lt;Preferences&gt; by preferencesDataStore("tokenStore")</ID>
+    <ID>MemberNameEqualsClassName:TokenStorage.kt$TokenStorage.Companion$private val Context.tokenStorage: DataStore&lt;Preferences&gt; by preferencesDataStore( "tokenStore" )</ID>
     <ID>ReturnCount:Autentificator.kt$AuthenticationInterceptorRefreshToken$override fun intercept(chain: Interceptor.Chain): Response</ID>
     <ID>ReturnCount:Util.kt$fun String.applyFilter(): String</ID>
     <ID>SwallowedException:Autentificator.kt$AuthenticationInterceptorRefreshToken$t: HttpException</ID>

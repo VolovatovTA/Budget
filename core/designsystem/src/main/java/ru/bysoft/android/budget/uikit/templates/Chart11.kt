@@ -22,7 +22,9 @@ private fun ComposeChart1(chartEntryModelProducer: ChartEntryModelProducer) {
     val marker = rememberMarker()
     ProvideChartStyle(rememberChartStyle(chartColors)) {
         Chart(
-            chart = lineChart(persistentMarkers = remember(marker) { mapOf(PERSISTENT_MARKER_X to marker) }),
+            chart = lineChart(
+                persistentMarkers = remember(marker) { mapOf(PERSISTENT_MARKER_X to marker) }
+            ),
             chartModelProducer = chartEntryModelProducer,
             startAxis = startAxis(),
             bottomAxis = bottomAxis(guideline = null),

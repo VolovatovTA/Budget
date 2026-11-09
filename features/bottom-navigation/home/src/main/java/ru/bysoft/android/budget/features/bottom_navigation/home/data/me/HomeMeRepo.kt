@@ -12,6 +12,5 @@ class HomeMeRepo(
     private val api: IMeApi
 ) : IHomeMeRepo {
 
-    override suspend fun getMeInfo(): MeData =
-        mapToData(api.getMeInfo())
+    override suspend fun getMeInfo(): MeData = mapToData(api.getMeInfo())
 }

@@ -49,7 +49,9 @@ fun TransactionDetailScreen(viewModel: ITransactionDetailViewModel) {
             contentAlignment = Alignment.Center,
         ) {
             when (state) {
-                TransactionDetailState.Loading -> CircularProgressIndicator(color = UiKitColors.colors.primary.`300`)
+                TransactionDetailState.Loading -> CircularProgressIndicator(
+                    color = UiKitColors.colors.primary.`300`
+                )
                 TransactionDetailState.NotFound -> Message(R.string.transaction_detail_not_found)
                 TransactionDetailState.Error -> Message(R.string.transaction_detail_error)
                 is TransactionDetailState.Success -> Details(state)

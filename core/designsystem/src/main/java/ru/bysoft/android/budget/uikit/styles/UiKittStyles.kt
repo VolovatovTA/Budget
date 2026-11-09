@@ -91,13 +91,14 @@ object UiKitTypography {
         }
 
     @Composable
-    fun Body2Link(textStyle: TextStyle = TextMD.Regular) = SpanStyle(
-        color = UiKitColors.colors.primary.`600`,
-        fontSize = textStyle.fontSize,
-        fontWeight = textStyle.fontWeight,
-        fontFamily = textStyle.fontFamily,
-        textDecoration = TextDecoration.Underline,
-    )
+    fun Body2Link(textStyle: TextStyle = TextMD.Regular) =
+        SpanStyle(
+            color = UiKitColors.colors.primary.`600`,
+            fontSize = textStyle.fontSize,
+            fontWeight = textStyle.fontWeight,
+            fontFamily = textStyle.fontFamily,
+            textDecoration = TextDecoration.Underline,
+        )
 
     val DisplayMD: BudgetTypography
         @Composable

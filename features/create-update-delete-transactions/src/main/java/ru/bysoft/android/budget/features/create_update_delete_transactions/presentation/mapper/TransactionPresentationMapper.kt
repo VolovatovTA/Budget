@@ -17,33 +17,34 @@ interface ITransactionPresentationMapper {
 
 class TransactionPresentationMapper : ITransactionPresentationMapper {
 
-    override fun toNewTransaction(state: ITransactionState): NewTransaction = when (state) {
-        is TransactionExpenseState -> NewTransaction.Expense(
-            amount = state.amount,
-            comment = state.commentState.text,
-            currency = state.currencyOrUnknown,
-            exchanges = state.exchanges(),
-            categoryIds = (state.categoryState as? CategorySuccess)?.listCategory
-                ?.filter { it.isChosen }?.map { it.id }.orEmpty(),
-            walletId = (state.walletFromFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
-        )
-        is TransactionIncomeState -> NewTransaction.Income(
-            amount = state.amount,
-            comment = state.commentState.text,
-            currency = state.currencyOrUnknown,
-            exchanges = state.exchanges(),
-            categoryId = (state.categoryState as CategorySuccess).listCategory.firstOrNull { it.isChosen }?.id,
-            walletId = (state.walletToFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
-        )
-        is TransactionTransferState -> NewTransaction.Transfer(
-            amount = state.amount,
-            comment = state.commentState.text,
-            currency = state.currencyOrUnknown,
-            exchanges = state.exchanges(),
-            walletFromId = (state.walletFromFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
-            walletToId = (state.walletToFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
-        )
-    }
+    override fun toNewTransaction(state: ITransactionState): NewTransaction =
+        when (state) {
+            is TransactionExpenseState -> NewTransaction.Expense(
+                amount = state.amount,
+                comment = state.commentState.text,
+                currency = state.currencyOrUnknown,
+                exchanges = state.exchanges(),
+                categoryIds = (state.categoryState as? CategorySuccess)?.listCategory
+                    ?.filter { it.isChosen }?.map { it.id }.orEmpty(),
+                walletId = (state.walletFromFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
+            )
+            is TransactionIncomeState -> NewTransaction.Income(
+                amount = state.amount,
+                comment = state.commentState.text,
+                currency = state.currencyOrUnknown,
+                exchanges = state.exchanges(),
+                categoryId = (state.categoryState as CategorySuccess).listCategory.firstOrNull { it.isChosen }?.id,
+                walletId = (state.walletToFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
+            )
+            is TransactionTransferState -> NewTransaction.Transfer(
+                amount = state.amount,
+                comment = state.commentState.text,
+                currency = state.currencyOrUnknown,
+                exchanges = state.exchanges(),
+                walletFromId = (state.walletFromFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
+                walletToId = (state.walletToFieldState as? WalletSuccessState)?.selectedWalletId ?: "",
+            )
+        }
 
     private val ITransactionState.amount: Float
         get() = amountState.text.toFloatOrNull() ?: 0f
@@ -51,9 +52,13 @@ class TransactionPresentationMapper : ITransactionPresentationMapper {
     private val ITransactionState.currencyOrUnknown: BudgetCurrencyEnum
         get() = currencyFieldState.selectedCurrency ?: BudgetCurrencyEnum.UNKNOWN
 
-    private fun ITransactionState.exchanges(): List<NewExchange> = exchangeFieldState.map { field ->
-        NewExchange(amount = field.amountInTargetCurrency(amount), currency = field.targetCurrency)
-    }
+    private fun ITransactionState.exchanges(): List<NewExchange> =
+        exchangeFieldState.map { field ->
+            NewExchange(
+                amount = field.amountInTargetCurrency(amount),
+                currency = field.targetCurrency
+            )
+        }
 
     private fun ExchangeFieldState.amountInTargetCurrency(baseAmount: Float): Float {
         val entered = enteredAmount.text.toFloatOrNull()

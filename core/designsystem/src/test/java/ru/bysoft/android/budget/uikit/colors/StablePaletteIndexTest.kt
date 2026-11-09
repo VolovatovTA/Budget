@@ -13,7 +13,9 @@ class StablePaletteIndexTest {
 
     @Test
     fun `index is within range for empty, ascii and cyrillic ids`() {
-        assertTrue(listOf("", "wallet-42", "категория").all { stablePaletteIndex(it, 7) in 0 until 7 })
+        assertTrue(
+            listOf("", "wallet-42", "категория").all { stablePaletteIndex(it, 7) in 0 until 7 }
+        )
     }
 
     @Test

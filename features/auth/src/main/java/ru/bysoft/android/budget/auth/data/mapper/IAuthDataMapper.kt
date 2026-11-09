@@ -8,16 +8,18 @@ import ru.bysoft.android.budget.auth.data.entity.SignInData
 import ru.bysoft.android.budget.auth.data.entity.SignUpData
 import ru.bysoft.android.budget.common.token.entity.SignErrorResponse
 
-fun SignInData.mapToSignInRequest(): SignInRequest = SignInRequest(
-    email = this.email,
-    password = this.password
-)
+fun SignInData.mapToSignInRequest(): SignInRequest =
+    SignInRequest(
+        email = this.email,
+        password = this.password
+    )
 
-fun SignUpData.mapToSignUpRequest(): SignUpRequest = SignUpRequest(
-    email = this.email,
-    password = this.password,
-    name = this.name
-)
+fun SignUpData.mapToSignUpRequest(): SignUpRequest =
+    SignUpRequest(
+        email = this.email,
+        password = this.password,
+        name = this.name
+    )
 
 fun SignErrorResponse.mapToErrorData(): SignErrorData {
     if (error == "Invalid credentials") {

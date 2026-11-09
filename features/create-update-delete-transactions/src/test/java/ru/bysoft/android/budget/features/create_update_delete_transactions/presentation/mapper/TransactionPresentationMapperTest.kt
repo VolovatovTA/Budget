@@ -31,13 +31,14 @@ class TransactionPresentationMapperTest {
         ),
         selectedWalletId = "w1",
     )
-    private fun category(id: String, chosen: Boolean) = CategoryPresentation(
-        iconName = null,
-        name = id,
-        isChosen = chosen,
-        id = id,
-        currency = "$"
-    )
+    private fun category(id: String, chosen: Boolean) =
+        CategoryPresentation(
+            iconName = null,
+            name = id,
+            isChosen = chosen,
+            id = id,
+            currency = "$"
+        )
 
     @Test
     fun `expense takes the chosen categories and the from-wallet`() {
@@ -126,10 +127,18 @@ class TransactionPresentationMapperTest {
     @Test
     fun `unparseable exchange field gives zero`() {
         assertEquals(0f, exchangesOf(amount = "100", entered = "").single().amount)
-        assertEquals(0f, exchangesOf(amount = "100", entered = "", isFullAmount = true).single().amount)
+        assertEquals(
+            0f,
+            exchangesOf(amount = "100", entered = "", isFullAmount = true).single().amount
+        )
     }
 
-    private fun exchangesOf(amount: String, entered: String, isRevert: Boolean = false, isFullAmount: Boolean = false): List<NewExchange> {
+    private fun exchangesOf(
+        amount: String,
+        entered: String,
+        isRevert: Boolean = false,
+        isFullAmount: Boolean = false
+    ): List<NewExchange> {
         val state = TransactionExpenseState(
             amountState = TextFieldState(amount),
             currencyFieldState = usd,

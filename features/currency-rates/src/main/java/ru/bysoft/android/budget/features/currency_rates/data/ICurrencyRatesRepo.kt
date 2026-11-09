@@ -54,11 +54,14 @@ class CurrencyRatesRepo(
         return bases.all { it.iso4217 in stored }
     }
 
-    private suspend fun fromStorage(): CurrencyRateData = CurrencyRateData(
-        dao.getAll()
-            .groupBy { getCurrency(it.base) }
-            .mapValues { (_, rows) -> rows.map { CurrencyRate(getCurrency(it.target), it.rate) } }
-    )
+    private suspend fun fromStorage(): CurrencyRateData =
+        CurrencyRateData(
+            dao.getAll()
+                .groupBy { getCurrency(it.base) }
+                .mapValues { (_, rows) ->
+                    rows.map { CurrencyRate(getCurrency(it.target), it.rate) }
+                }
+        )
 
     private suspend fun refresh(bases: List<BudgetCurrencyEnum>): CurrencyRateData {
         val responses = coroutineScope {
@@ -68,7 +71,14 @@ class CurrencyRatesRepo(
         val syncedAt = now()
         dao.upsertAll(
             data.map.flatMap { (base, rates) ->
-                rates.map { CurrencyRateEntity(base.iso4217, it.currency.iso4217, it.rate, syncedAt) }
+                rates.map {
+                    CurrencyRateEntity(
+                        base.iso4217,
+                        it.currency.iso4217,
+                        it.rate,
+                        syncedAt
+                    )
+                }
             }
         )
         return data

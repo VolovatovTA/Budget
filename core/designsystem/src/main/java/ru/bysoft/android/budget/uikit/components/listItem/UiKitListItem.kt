@@ -151,7 +151,11 @@ private fun UiKitListItemIcons(ides: List<Int>) {
 }
 
 @Composable
-private fun Icon(id: Int, start: Dp, top: Dp = 0.dp) {
+private fun Icon(
+    id: Int,
+    start: Dp,
+    top: Dp = 0.dp
+) {
     Surface(
         shape = RoundedCornerShape(sizeIcon / 2),
         elevation = 5.dp,
@@ -242,7 +246,12 @@ fun UiKitListItemPreview() {
         )
         UiKitListItem(
             title = "Title",
-            icons = listOf(R.drawable.activity, R.drawable.bag, R.drawable.coins_rotate, R.drawable.computer),
+            icons = listOf(
+                R.drawable.activity,
+                R.drawable.bag,
+                R.drawable.coins_rotate,
+                R.drawable.computer
+            ),
             amount = UiKitAmountInfoError,
             amountColor = UiKitColors.colors.primary.`1100`
         )

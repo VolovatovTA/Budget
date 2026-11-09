@@ -89,9 +89,15 @@ class AuthenticationInterceptorRefreshToken(
 
             currentState is TokenError -> {
                 // при старте смотрим есть ли токены, если нет то переходим на авторизацию
-                runBlocking(Dispatchers.Main) { navigator.navigateToAuth() } // нужно навигироваться в мэйн потоке
+                runBlocking(
+                    Dispatchers.Main
+                ) { navigator.navigateToAuth() } // нужно навигироваться в мэйн потоке
                 return Response.Builder()
-                    .body("{\"goToAuth\": true}".toResponseBody("application/json; charset=utf-8".toMediaType()))
+                    .body(
+                        "{\"goToAuth\": true}".toResponseBody(
+                            "application/json; charset=utf-8".toMediaType()
+                        )
+                    )
                     .code(200)
                     .request(request)
                     .protocol(Protocol.HTTP_1_0)
@@ -101,9 +107,15 @@ class AuthenticationInterceptorRefreshToken(
 
             currentState is TokenEmpty -> {
                 // при старте токен не должен быть пустым или в ошибке. Если пустой то переходим на авторизацию
-                runBlocking(Dispatchers.Main) { navigator.navigateToAuth() } // нужно навигироваться в мэйн потоке
+                runBlocking(
+                    Dispatchers.Main
+                ) { navigator.navigateToAuth() } // нужно навигироваться в мэйн потоке
                 return Response.Builder()
-                    .body("{\"goToAuth\": true}".toResponseBody("application/json; charset=utf-8".toMediaType()))
+                    .body(
+                        "{\"goToAuth\": true}".toResponseBody(
+                            "application/json; charset=utf-8".toMediaType()
+                        )
+                    )
                     .code(200)
                     .request(request)
                     .protocol(Protocol.HTTP_1_0)
@@ -113,7 +125,11 @@ class AuthenticationInterceptorRefreshToken(
 
             else -> {
                 return Response.Builder()
-                    .body("{\"goToAuth\": error}".toResponseBody("application/json; charset=utf-8".toMediaType()))
+                    .body(
+                        "{\"goToAuth\": error}".toResponseBody(
+                            "application/json; charset=utf-8".toMediaType()
+                        )
+                    )
                     .code(401)
                     .request(request)
                     .protocol(Protocol.HTTP_1_0)
@@ -123,10 +139,7 @@ class AuthenticationInterceptorRefreshToken(
         }
     }
 
-    private fun refresh(
-        originalRequest: Request,
-        chain: Interceptor.Chain
-    ): Response {
+    private fun refresh(originalRequest: Request, chain: Interceptor.Chain): Response {
         if (isRefreshing) {
             return awaitRefreshingAndRequest(originalRequest, chain)
         } else {
@@ -138,7 +151,9 @@ class AuthenticationInterceptorRefreshToken(
             } catch (t: HttpException) {
                 runBlocking { tokenRepo.clearTokens() }
                 isRefreshing = false
-                runBlocking(Dispatchers.Main) { navigator.navigateToAuth() } // нужно навигироваться в мэйн потоке
+                runBlocking(
+                    Dispatchers.Main
+                ) { navigator.navigateToAuth() } // нужно навигироваться в мэйн потоке
                 return Response.Builder()
                     .body(
                         "{\"goToAuth\": error while trying to get new tokens}".toResponseBody(

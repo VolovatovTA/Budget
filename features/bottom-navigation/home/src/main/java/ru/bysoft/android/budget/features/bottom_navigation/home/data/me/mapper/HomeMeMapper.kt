@@ -6,13 +6,14 @@ import ru.bysoft.android.budget.common.me_info.entity.DayOfWeek
 import ru.bysoft.android.budget.common.me_info.entity.MeData
 import ru.bysoft.android.budget.common.me_info.entity.SettingsData
 
-fun mapToData(response: MeResponse) = MeData(
-    name = response.name,
-    email = response.email,
-    settingsData = response.settingsResponse?.let { mapToSettings(it) },
-    userId = response.userId,
-    pictureUrl = response.settingsResponse?.pictureUrl
-)
+fun mapToData(response: MeResponse) =
+    MeData(
+        name = response.name,
+        email = response.email,
+        settingsData = response.settingsResponse?.let { mapToSettings(it) },
+        userId = response.userId,
+        pictureUrl = response.settingsResponse?.pictureUrl
+    )
 
 fun mapToSettings(response: SettingsResponse) =
     response.currencyResponse?.let {

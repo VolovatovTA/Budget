@@ -289,7 +289,9 @@ abstract class TransactionsCommonViewModel(
                         ex.copy(
                             isFullAmount = newValue,
                             enteredAmount = ex.enteredAmount.copy(
-                                text = roundToSixSignificantDigits(multipliedEnteredAmount).toString()
+                                text = roundToSixSignificantDigits(
+                                    multipliedEnteredAmount
+                                ).toString()
                             ),
                             shownAmount = if (newValue) shownAmount else 1.0
                         )

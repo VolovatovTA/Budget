@@ -55,7 +55,9 @@ class MockAssetsTest {
     @Test
     fun categoriesParseAndMap() {
         CategoryTypeEnum.entries.forEach { type ->
-            val categories = asset("$pathToWallet/${type.pathToBack}$pointJson").restore<CategoryResponse>()
+            val categories = asset(
+                "$pathToWallet/${type.pathToBack}$pointJson"
+            ).restore<CategoryResponse>()
             assertTrue(CategoryDataMapper().mapToData(categories).listCategoryData.isNotEmpty())
         }
     }
