@@ -75,6 +75,12 @@ Decision:
 - **Roles.** `coder` implements one issue per PR; `reviewer` and `architect` comment on every PR;
   `restacker` rebases PRs stacked on a merged branch and, after each merge, only the PR next in line
   (CI minutes are not spent on branches nobody merges yet). Agent files live in `.claude/agents/`.
+- **Fix rounds (amendment 2026-11-10).** On an `agent/*` pull request the architect's review comment
+  starts one coder fix round: the coder treats review text as findings to verify, fixes what holds, the
+  workflow pushes fast-forward to the same branch and the coder replies with "**coder fix**". Two rounds
+  per PR, then the maintainer. Pushes and PR creation happen in workflow steps, never by the agent; a
+  diff touching build scripts, workflows, checks or baselines is rejected unless the issue is labelled
+  `infra`. Revisit when: a fix round weakens a check or a loop reaches the cap on most PRs.
 - **Merging.** The maintainer merges by default. Auto-merge (`gh pr merge --auto --squash`) is allowed
   only when all of: CI green; the architect reported "no architecture findings"; the PR is entirely one
   of — documentation (`docs/**`, `*.md`, `.claude/**`), formatting produced by detekt auto-correct, a
