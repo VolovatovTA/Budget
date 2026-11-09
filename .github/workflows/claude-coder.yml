@@ -39,6 +39,12 @@ env:
 
 jobs:
   gate:
+    # Labels other than `agent` and comments without a trigger do not even start the gate (no minutes spent).
+    if: >-
+      (github.event_name == 'issues' && github.event.label.name == 'agent') ||
+      (github.event_name == 'issue_comment' && (contains(github.event.comment.body, '@claude') || github.event.comment.user.login == 'claude[bot]')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+      github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/claude-gate.yml
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -68,6 +74,79 @@ jobs:
             gh workflow run claude-coder.yml --repo "$GITHUB_REPOSITORY" -f issue="$n"
             echo "dispatched issue #$n"; started=$((started + 1))
           done
+
+  # A review comment from the reviewer or architect workflow on an agent/* pull request is answered by
+  # the coder: it fixes the findings, pushes to the same branch and replies with "**coder fix**".
+  # Two rounds at most per PR; after that the maintainer decides.
+  fix-review:
+    needs: gate
+    if: >-
+      needs.gate.outputs.run == 'true' &&
+      github.event_name == 'issue_comment' &&
+      github.event.issue.pull_request &&
+      github.event.comment.user.login == 'claude[bot]' &&
+      (startsWith(github.event.comment.body, '**reviewer review**') || startsWith(github.event.comment.body, '**architect review**'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    concurrency:
+      group: claude-fix-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
+    env:
+      PR: ${{ github.event.issue.number }}
+    steps:
+      - uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Only agent branches, at most two fix rounds
+        id: guard
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          head=$(gh pr view "$PR" --json headRefName -q .headRefName)
+          case "$head" in agent/*) ;; *) echo "::notice::#$PR is not an agent branch; nothing to fix automatically."; echo "go=false" >> "$GITHUB_OUTPUT"; exit 0;; esac
+          rounds=$(gh pr view "$PR" --json comments -q '[.comments[] | select(.author.login == "claude" and (.body | startswith("**coder fix**")))] | length')
+          if [ "$rounds" -ge 2 ]; then
+            gh pr comment "$PR" --body "**coder fix** — two automatic rounds are done; the remaining findings wait for the maintainer."
+            echo "go=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          echo "go=true" >> "$GITHUB_OUTPUT"; echo "head=$head" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-java@v4
+        if: steps.guard.outputs.go == 'true'
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        if: steps.guard.outputs.go == 'true'
+        with:
+          cache-read-only: true
+      - uses: anthropics/claude-code-action@v1
+        if: steps.guard.outputs.go == 'true'
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          allowed_bots: "claude[bot]"
+          prompt: |
+            You are the `coder` agent: read .claude/agents/coder.md and AGENTS.md first and follow them.
+            Pull request #${{ env.PR }} (branch ${{ steps.guard.outputs.head }}) received review comments from the
+            reviewer and architect agents: read them with `gh pr view ${{ env.PR }} --comments`. Check out the
+            branch (`git fetch origin ${{ steps.guard.outputs.head }} && git checkout ${{ steps.guard.outputs.head }}`),
+            fix every High and Medium finding and the Low ones that are cheap, run the gates named in AGENTS.md,
+            commit and push to the same branch once. Then reply with one comment starting with the line
+            "**coder fix**": what changed per finding, and which findings you disagree with and why.
+            Never merge, never edit .github/workflows, never weaken a check; pushes go to agent/* only.
+            If a gate stays red after two attempts, say so in the comment and stop.
+          claude_args: |
+            --allowedTools "${{ env.CODER_TOOLS }}"
+            --max-turns 60
 
   implement-issue:
     needs: gate
