@@ -62,3 +62,31 @@ flow tests become the real tests of the shipped app. Revisit when: the server pr
 with a stable API — then the remote repositories are re-wired behind the same interfaces, and sync
 between local data and the server becomes a feature like the spreadsheet sync.
 
+## 0006 · Agent-driven development loop · Accepted · 2026-11-10
+
+Context: the maintainer wants the design refresh and the infrastructure work to proceed with agents
+doing the implementation and the reviews, with the maintainer merging most PRs and reading the rest.
+Decision:
+- **Billing.** Every automated Claude run (GitHub Actions, routines, cloud sessions) uses the
+  maintainer's Claude subscription through an OAuth token (`claude setup-token`, secret
+  `CLAUDE_CODE_OAUTH_TOKEN`). No `ANTHROPIC_API_KEY` exists in the repository, organisation or
+  workflow environment; every agent workflow starts with a step that fails if that variable is set.
+  "Extra usage" / usage credits stay off in claude.ai, so runs stop at the subscription limit.
+- **Roles.** `coder` implements one issue per PR; `reviewer` and `architect` comment on every PR;
+  `restacker` rebases PRs stacked on a merged branch and, after each merge, only the PR next in line
+  (CI minutes are not spent on branches nobody merges yet). Agent files live in `.claude/agents/`.
+- **Merging.** The maintainer merges by default. Auto-merge (`gh pr merge --auto --squash`) is allowed
+  only when all of: CI green; the architect reported "no architecture findings"; the PR is entirely one
+  of — documentation (`docs/**`, `*.md`, `.claude/**`), formatting produced by detekt auto-correct, a
+  baseline that only shrinks, a patch-level dependency update. Everything with behaviour or design
+  waits for the maintainer.
+- **Time window.** Agent workflows that write to the repository (coder, restacker) run only after 17:00
+  Europe/Belgrade on weekdays and any time at weekends; an issue labelled during the day is picked up
+  by the evening run.
+Consequences: the maintainer's work is labelling issues, reading reports and merging; the gates
+(detekt, Konsist, module graph, Kover, flow test, baseline-growth guard, buildHealth) are what keeps
+an agent honest, so weakening any of them is itself a review finding.
+Revisit when: the subscription limit is hit regularly (then fewer scheduled runs, not an API key), or a
+merged agent PR causes a regression the gates did not catch (then the class is removed from
+auto-merge).
+
