@@ -54,8 +54,7 @@ class TransactionPresentationMapperTest {
         )
 
         val result = mapper.toNewTransaction(state) as NewTransaction.Income
-        assertEquals("salary", result.categoryId)
-        assertEquals("w2", result.walletId)
+        assertEquals("salary" to "w2", result.categoryId to result.walletId)
         assertEquals(1500f, result.amount)
     }
 
@@ -77,11 +76,15 @@ class TransactionPresentationMapperTest {
     fun `missing amount, currency and selections fall back to zero, UNKNOWN and empty`() {
         val state = TransactionExpenseState(amountState = TextFieldState("abc"))
 
-        val result = mapper.toNewTransaction(state) as NewTransaction.Expense
-        assertEquals(0f, result.amount)
-        assertEquals(BudgetCurrencyEnum.UNKNOWN, result.currency)
-        assertEquals(emptyList<String>(), result.categoryIds)
-        assertEquals("", result.walletId)
+        val expected = NewTransaction.Expense(
+            amount = 0f,
+            comment = "",
+            currency = BudgetCurrencyEnum.UNKNOWN,
+            exchanges = emptyList(),
+            categoryIds = emptyList(),
+            walletId = "",
+        )
+        assertEquals(expected, mapper.toNewTransaction(state))
     }
 
     @Test
