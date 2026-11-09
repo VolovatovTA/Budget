@@ -22,7 +22,9 @@ code and the documents, never from the author's explanation of intent.
    - **SOLID and readability.** A class with two reasons to change; an interface a feature needs only
      half of; an `if/when` on a type tag that should be a sealed hierarchy or polymorphism; a function
      longer than a screen; a `Pair`/`Triple` carrying domain data; `!!`; commented-out code; a name
-     that lies about what the thing does.
+     that lies about what the thing does; a fully qualified name in code
+     (`androidx.compose.material3.MaterialTheme(...)`) instead of an import, with an alias when two
+     names clash.
    - **Implicit decisions.** Anything the code now *assumes* and the project would have to undo
      later: entity identity by list position (blocks two-way sync), numbers only the backend can
      compute (blocks offline mode), a repository returning DTOs (blocks `data:*` modules), one method
