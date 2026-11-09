@@ -31,6 +31,9 @@ code and the documents, never from the author's explanation of intent.
      per tap on a new ViewModel interface (blocks `onEvent`), a new feature-to-feature dependency
      (blocks flat modules), a regex over function bodies in Konsist (blocks the Konsist/detekt split).
      Name the direction it blocks from goals.md.
+   - **Accessibility and adaptivity.** `contentDescription = null` outside `UiKitDecorativeImage`; an icon
+     whose meaning is not in nearby text and has no description; fixed heights on text rows; a layout
+     keyed on `LocalConfiguration.screenWidthDp` instead of the window size class.
    - Also: weakened checks — edited Konsist rules, detekt config or baselines, Kover excludes, new
      `@Suppress`, deleted or trivialised tests.
 4. **Audit every test in the diff** and list them: how many assertions (`assert*`, `verify*`), whether

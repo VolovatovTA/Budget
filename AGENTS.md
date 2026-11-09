@@ -50,7 +50,10 @@ emulator for every pull request.
 9. **Non-goals stay out** ([goals.md](docs/goals.md)); a direction listed there must stay reachable.
 10. **A TODO needs an issue.** Write `TODO(#123)` / `FIXME(#123)` with the issue you created for it;
     a bare TODO fails detekt (`ForbiddenComment`). `STOPSHIP` never merges.
-11. **The backend is archived** (decision 0005): no new code in `core:network`, the auth interceptor or
+11. **Accessible by default.** Every image or icon either has a real `contentDescription` from a string
+    resource or is a `UiKitDecorativeImage`; `contentDescription = null` is banned elsewhere. Touch
+    targets ≥ 48 dp, text rows use `heightIn`, layouts branch on window size class.
+12. **The backend is archived** (decision 0005): no new code in `core:network`, the auth interceptor or
     token storage; new features work on local data; `remoteBack` only has to compile.
 
 ## Done means

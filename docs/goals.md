@@ -34,7 +34,11 @@ Nothing here is for sale: no paid tier, no ads, no monetisation.
    `BankConnector` interface.
 8. **Kotlin Multiplatform where it pays.** Domain logic, repositories and sync move into `shared`
    so an iOS client becomes possible; UI stays native per platform.
-9. **Checked, not promised.** Module graph, layering, coroutine discipline, static analysis, coverage
+9. **Usable by everyone, on every screen.** TalkBack reads every screen sensibly (meaningful images are
+   described, decorative ones are skipped, rows read as one sentence), targets are at least 48 dp,
+   nothing breaks at 200 % font scale; phones, foldables and tablets each get a layout that fits
+   (window size classes, fold posture), not a stretched phone screen.
+10. **Checked, not promised.** Module graph, layering, coroutine discipline, static analysis, coverage
    gate and the instrumented flow test run on every PR; a rule that cannot be checked is written down
    in [architecture.md](architecture.md) with its reason.
 
@@ -69,6 +73,7 @@ even when the change itself is correct.
 | Konsist for structure, detekt for code | Body-level rules go to detekt rules with type resolution, not to regex tests |
 | Bank connectors, voice and QR input | Transactions have one creation path (a `NewTransaction` through the repository) that every input source — form, voice, QR, bank import — feeds; no second write path, source recorded on the entity |
 | Kotlin Multiplatform | New domain logic and repositories avoid Android types (`Context`, `Uri`, Android `Log`); platform access goes through small interfaces |
+| Accessibility and adaptive layouts | No `contentDescription = null` outside `UiKitDecorativeImage`; no fixed heights on text rows; layouts branch on window size class, never on raw screen width |
 | Performance and animations | No work on the main thread that is not UI; lists are keyed and stable; state types are `@Immutable`/`@Stable` so Compose can skip; cold start and list scroll are measured by Macrobenchmark against `docs/performance.md`, leaks fail the flow test (LeakCanary) |
 
 ## Priorities when they conflict
