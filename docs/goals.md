@@ -69,7 +69,7 @@ even when the change itself is correct.
 | Konsist for structure, detekt for code | Body-level rules go to detekt rules with type resolution, not to regex tests |
 | Bank connectors, voice and QR input | Transactions have one creation path (a `NewTransaction` through the repository) that every input source — form, voice, QR, bank import — feeds; no second write path, source recorded on the entity |
 | Kotlin Multiplatform | New domain logic and repositories avoid Android types (`Context`, `Uri`, Android `Log`); platform access goes through small interfaces |
-| Performance and animations | No work on the main thread that is not UI; lists are keyed and stable; state types are `@Immutable`/`@Stable` so Compose can skip |
+| Performance and animations | No work on the main thread that is not UI; lists are keyed and stable; state types are `@Immutable`/`@Stable` so Compose can skip; cold start and list scroll are measured by Macrobenchmark against `docs/performance.md`, leaks fail the flow test (LeakCanary) |
 
 ## Priorities when they conflict
 
