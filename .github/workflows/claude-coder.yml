@@ -34,6 +34,11 @@ jobs:
       id-token: write
       actions: read
     steps:
+      # Egress audit first: the report names every host the run contacts; the next change switches to
+      # `egress-policy: block` with that list, so a prompt injection has nowhere to send a token.
+      - uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -79,6 +84,11 @@ jobs:
       id-token: write
       actions: read
     steps:
+      # Egress audit first: the report names every host the run contacts; the next change switches to
+      # `egress-policy: block` with that list, so a prompt injection has nowhere to send a token.
+      - uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
