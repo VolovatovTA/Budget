@@ -80,9 +80,9 @@ Decision:
   of — documentation (`docs/**`, `*.md`, `.claude/**`), formatting produced by detekt auto-correct, a
   baseline that only shrinks, a patch-level dependency update. Everything with behaviour or design
   waits for the maintainer.
-- **Time window.** Agent workflows that write to the repository (coder, restacker) run only after 17:00
-  Europe/Belgrade on weekdays and any time at weekends; an issue labelled during the day is picked up
-  by the evening run.
+- **Time window.** No commits, pushes or PRs on weekdays between 08:00 and 17:00 Europe/Belgrade —
+  by people or agents; nights and weekends are free. An issue labelled during working hours is picked
+  up by the 17:05 sweep.
 Consequences: the maintainer's work is labelling issues, reading reports and merging; the gates
 (detekt, Konsist, module graph, Kover, flow test, baseline-growth guard, buildHealth) are what keeps
 an agent honest, so weakening any of them is itself a review finding.

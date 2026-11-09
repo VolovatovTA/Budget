@@ -12,6 +12,7 @@ decision 0006 allows → `restacker` rebases the open PRs. Agents run on the Cla
 - Agents in `.claude/agents/`: `coder` (implements an issue), `reviewer` (developer review),
   `architect` (architecture review), `restacker` (rebases open PRs after a merge). `coder` runs the two
   reviewers before declaring done.
-- Git writes (commit, push, PR) only after 17:00 local time; local edits, builds and tests any time.
+- Git writes (commit, push, PR) never on weekdays 08:00–17:00 Europe/Belgrade; nights and weekends any
+  time. Local edits, builds and tests always.
 - PRs target `master`, are merged by the maintainer with squash or rebase (linear history); stacked
   PRs are rebased after each merge.
