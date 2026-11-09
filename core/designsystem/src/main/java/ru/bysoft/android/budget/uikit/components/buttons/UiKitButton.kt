@@ -1,7 +1,6 @@
 package ru.bysoft.android.budget.uikit.components.buttons
 
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -32,6 +31,7 @@ import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonStyle
 import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonType
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
 import ru.bysoft.android.budget.uikit.components.buttons.entity.style
+import ru.bysoft.android.budget.uikit.components.image.UiKitDecorativeImage
 import ru.bysoft.android.budget.uikit.styles.BudgetSpacing
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 
@@ -46,7 +46,7 @@ fun UiKitButton(
     val style = info.type.style()
     ButtonSurface(size = info.size, style = style, enabled = isButtonEnabled, onClick = onClick, modifier = modifier) {
         info.painterLeftImage?.let { painter ->
-            Image(painter = painter, contentDescription = null, modifier = Modifier.size(info.size.iconSize))
+            UiKitDecorativeImage(painter = painter, modifier = Modifier.size(info.size.iconSize))
         }
         Text(text = info.text, color = style.content, style = info.size.textStyle(), maxLines = 1)
     }
@@ -64,7 +64,7 @@ fun UiKitSocialMediaButton(
     val size = ButtonSize.MEDIUM
     val style = ButtonType.SECONDARY.style()
     ButtonSurface(size = size, style = style, enabled = isButtonEnabled, onClick = onClick, modifier = modifier) {
-        Image(painter = painterLeftImage, contentDescription = null, modifier = Modifier.size(size.iconSize))
+        UiKitDecorativeImage(painter = painterLeftImage, modifier = Modifier.size(size.iconSize))
         Text(text = text, color = style.content, style = size.textStyle(), maxLines = 1)
     }
 }
