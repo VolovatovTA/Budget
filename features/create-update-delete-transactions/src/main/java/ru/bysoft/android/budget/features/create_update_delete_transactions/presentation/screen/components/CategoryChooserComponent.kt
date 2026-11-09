@@ -103,7 +103,7 @@ fun ShortSuccessCategoryComponent(
         )
         UiKitButton(
             info = UiKitButtonInfo(
-                text = stringResource(R.string.add_category2),
+                text = stringResource(R.string.add_category_button),
                 size = ButtonSize.MEDIUM
             ),
             onClick = onClick
@@ -237,7 +237,7 @@ private fun CategoryAddItem(
                 )
             }
             Text(
-                text = stringResource(R.string.add_category2),
+                text = stringResource(R.string.add_category_button),
                 style = UiKitTypography.TextXS.Regular,
                 textAlign = TextAlign.Center,
                 maxLines = 1,
