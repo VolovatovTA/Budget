@@ -79,6 +79,17 @@ Recorded so nobody copies them as patterns; each is a direction in goals.md.
 - `AuthenticationInterceptorRefreshToken` can read token status before the first collection
   (`AuthentificationTest` is `@Ignore`d for that reason).
 
+## Design principles (reviewed by the architect agent)
+
+- **Clean Architecture, pragmatic**: presentation (screens, ViewModels, presentation mappers) → repository
+  interfaces and models → data (Room, API, mappers to DTOs). No use-case layer until two screens need
+  the same business rule; then a plain class in the data module's package, not a framework.
+- **SOLID** where it buys something: one reason to change per class, interfaces sized for the consumer,
+  sealed types over type tags.
+- **DRY / KISS / YAGNI**: one implementation of each rule or format; the simplest shape that works
+  today; no abstraction for a future that is not in the goals' directions table — and no copy-paste
+  because an abstraction felt heavy: extract when the second copy appears.
+
 ## Readability rules (not automatable, reviewed)
 
 - A function does one thing its name says; a composable is either layout or logic, not both.

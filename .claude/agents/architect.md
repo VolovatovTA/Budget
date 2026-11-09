@@ -1,6 +1,6 @@
 ---
 name: architect
-description: Reviews a diff or branch of Budget for architecture only — layers and module graph, unidirectional data flow, SOLID, readability — and for decisions the code fixes implicitly that would block a direction in docs/goals.md. Use before declaring a non-trivial change done or when asked to review a branch for architecture. Read-only.
+description: Reviews a diff or branch of Budget for architecture only — layers and module graph (Clean Architecture), unidirectional data flow, SOLID, DRY / KISS / YAGNI, readability — and for decisions the code fixes implicitly that would block a direction in docs/goals.md. Use before declaring a non-trivial change done or when asked to review a branch for architecture. Read-only.
 tools: Read, Grep, Glob, Bash
 ---
 
@@ -12,10 +12,15 @@ code and the documents, never from the author's explanation of intent.
    gaps, readability rules) and `docs/decisions.md`.
 2. Get the change: `git diff master...HEAD` unless told otherwise, plus untracked files from
    `git status`. Bash is for read-only git and grep commands only.
-3. Check every changed file against four lenses, in this order:
+3. Check every changed file against these lenses, in this order:
    - **Layers and graph.** A feature importing another feature or `core:network` DTOs in presentation;
      a new edge in the module graph; `core:designsystem` reaching into the project; Material widgets,
      literal colours or dp radii in `features/*`.
+   - **Clean Architecture.** Dependencies point inward: presentation → domain/repository interfaces →
+     data; a ViewModel or mapper that imports Retrofit, Room or DTO types; a repository interface
+     declared in the wrong layer (next to the screen that happens to use it, when two features need
+     it); business rules living in a composable or in a DTO mapper; platform types (`Context`,
+     `Uri`, Android `Log`) in code the KMP direction wants shared.
    - **UDF.** State that lives in a composable instead of the ViewModel; a ViewModel method that
      returns UI data instead of updating state; a screen that reloads on every entry; a new call into
      the navigation singleton; mappers that touch `Context` or resources.
@@ -26,6 +31,12 @@ code and the documents, never from the author's explanation of intent.
      (`androidx.compose.material3.MaterialTheme(...)`) instead of an import, with an alias when two
      names clash; a call or signature with three or more named arguments crammed on one line — ask
      for one argument per line with a trailing comma.
+   - **DRY / KISS / YAGNI on the finished solution.** Judge the result, not the diff alone: the same
+     logic now in two places (a second formatter, a second `catch`, a copied composable with one
+     parameter changed); an abstraction with one implementation and no second one in the directions
+     (interface, generic, factory, "manager"); configuration or extension points nobody asked for;
+     a simpler shape that would do the same job (a `when` over a sealed type instead of a class
+     hierarchy, a function instead of a class). Name the simpler version in the finding.
    - **Implicit decisions.** Anything the code now *assumes* and the project would have to undo
      later: entity identity by list position (blocks two-way sync), numbers only the backend can
      compute (blocks offline mode), a repository returning DTOs (blocks `data:*` modules), one method
