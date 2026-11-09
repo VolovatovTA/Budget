@@ -8,6 +8,11 @@ on:
       - 'docs/**'
       - '.claude/**'
 
+# One run per pull request at a time: a new push cancels the superseded run (goals.md: frugal with shared machines).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Build
