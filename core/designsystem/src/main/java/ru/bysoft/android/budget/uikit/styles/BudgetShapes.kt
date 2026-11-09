@@ -13,11 +13,11 @@ object BudgetShapes {
     val pill = CircleShape
 }
 
-/** Spacing scale; `padding`/`halfPadding` in UiKittStyles.kt stay for legacy call sites. */
+/** Spacing scale; the legacy `padding` / `halfPadding` constants are the same values under old names. */
 object BudgetSpacing {
     val xs = 4.dp
-    val s = 8.dp
+    val s = halfPadding
     val m = 12.dp
-    val l = 16.dp
+    val l = padding
     val xl = 24.dp
 }

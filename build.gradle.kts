@@ -44,6 +44,15 @@ kover {
             excludes {
                 annotatedBy("androidx.compose.runtime.Composable", "androidx.compose.ui.tooling.preview.Preview")
                 classes("*ComposableSingletons*", "*.BuildConfig", "*.R", "*.R$*", "*Preview*", "*PreviewKt*")
+                // token tables are constants: nothing to test, see the spec ("no tests for coverage")
+                classes(
+                    "ru.bysoft.android.budget.uikit.colors.BudgetTokens*",
+                    "ru.bysoft.android.budget.uikit.colors.Gradient",
+                    "ru.bysoft.android.budget.uikit.colors.LightPalette",
+                    "ru.bysoft.android.budget.uikit.colors.DarkPalette",
+                    "ru.bysoft.android.budget.uikit.styles.BudgetShapes",
+                    "ru.bysoft.android.budget.uikit.styles.BudgetSpacing",
+                )
                 packages("ru.bysoft.android.budget.uikit.icons")
             }
         }
