@@ -44,7 +44,13 @@ fun UiKitButton(
     onClick: () -> Unit = {},
 ) {
     val style = info.type.style()
-    ButtonSurface(size = info.size, style = style, enabled = isButtonEnabled, onClick = onClick, modifier = modifier) {
+    ButtonSurface(
+        size = info.size,
+        style = style,
+        enabled = isButtonEnabled,
+        onClick = onClick,
+        modifier = modifier,
+    ) {
         info.painterLeftImage?.let { painter ->
             UiKitDecorativeImage(painter = painter, modifier = Modifier.size(info.size.iconSize))
         }
@@ -63,7 +69,13 @@ fun UiKitSocialMediaButton(
 ) {
     val size = ButtonSize.MEDIUM
     val style = ButtonType.SECONDARY.style()
-    ButtonSurface(size = size, style = style, enabled = isButtonEnabled, onClick = onClick, modifier = modifier) {
+    ButtonSurface(
+        size = size,
+        style = style,
+        enabled = isButtonEnabled,
+        onClick = onClick,
+        modifier = modifier,
+    ) {
         UiKitDecorativeImage(painter = painterLeftImage, modifier = Modifier.size(size.iconSize))
         Text(text = text, color = style.content, style = size.textStyle(), maxLines = 1)
     }
