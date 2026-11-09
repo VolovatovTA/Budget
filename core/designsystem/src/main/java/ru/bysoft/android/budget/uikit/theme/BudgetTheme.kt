@@ -2,8 +2,10 @@ package ru.bysoft.android.budget.uikit.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.material.MaterialTheme as Material2Theme
 import androidx.compose.material.lightColors
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme as Material3Theme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
@@ -53,8 +55,8 @@ fun BudgetTheme(
 ) {
     val palette: Palette = if (darkTheme) DarkPalette else LightPalette
     CompositionLocalProvider(LocalBudgetPalette provides palette) {
-        androidx.compose.material3.MaterialTheme(colorScheme = palette.toColorScheme(darkTheme)) {
-            androidx.compose.material.MaterialTheme(
+        Material3Theme(colorScheme = palette.toColorScheme(darkTheme)) {
+            Material2Theme(
                 colors = lightColors(
                     primary = palette.surface.primary,
                     surface = palette.surface.primary,
