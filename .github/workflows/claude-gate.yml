@@ -34,8 +34,8 @@ jobs:
           fi
           dow=$(TZ=Europe/Belgrade date +%u)
           hour=$(TZ=Europe/Belgrade date +%H)
-          if [ "$dow" -le 5 ] && [ "$((10#$hour))" -lt 17 ]; then
-            echo "::notice::Weekday before 17:00 Europe/Belgrade; Claude jobs wait for the evening."
+          if [ "$dow" -le 5 ] && [ "$((10#$hour))" -ge 9 ] && [ "$((10#$hour))" -lt 17 ]; then
+            echo "::notice::Working hours (Mon–Fri 09:00–17:00 Europe/Belgrade); Claude jobs wait for the evening sweep."
             echo "run=false" >> "$GITHUB_OUTPUT"
           else
             echo "run=true" >> "$GITHUB_OUTPUT"
