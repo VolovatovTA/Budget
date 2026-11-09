@@ -319,7 +319,7 @@ private fun AuthSuccessScreen(
                         .size(20.dp)
                 )
 
-                // TODO add link to terms and conditions when it will be ready
+                // TODO(#40): add the link to terms and conditions when the document exists
                 val text1 = stringResource(id = R.string.agree_with_terms_and_conditions)
 
                 val text4 = stringResource(id = R.string.conditions_text)

@@ -86,7 +86,7 @@ class TransactionCreateViewModel(
                 state.update { it.copyWithLoading(isLoading = false) }
                 navigate.back()
             } catch (e: TransactionCreateException) {
-                // TODO: show e.fieldErrors next to the fields instead of a generic toast
+                // TODO(#42): show e.fieldErrors next to the fields instead of a generic toast
                 errorLogger.logError(e)
                 toastState.tryEmit(R.string.error_answer)
                 state.update { it.copyWithLoading(isLoading = false) }

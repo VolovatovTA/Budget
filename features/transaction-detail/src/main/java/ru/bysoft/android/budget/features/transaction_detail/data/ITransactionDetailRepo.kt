@@ -15,7 +15,7 @@ class TransactionDetailRepo(
     private val mapper: ITransactionsDataMapper,
 ) : ITransactionDetailRepo {
 
-    // TODO: the backend has no GET transactions/{id}; until it does, pick the one from the list
+    // TODO(#38): the backend has no GET transactions/{id}; until it does, pick the one from the list
     override suspend fun getTransaction(id: String): TransactionData? =
         mapper.mapToData(api.getTransactions()).listTransactions.firstOrNull { it.id == id }
 

@@ -20,7 +20,15 @@ style:
   WildcardImport:
     excludeImports: []
   ForbiddenComment:
-    active: false            # TODO/FIXME are tracked in the plan, not forbidden
+    active: true
+    comments:
+      - reason: 'A TODO needs an issue: create one and write TODO(#123)'
+        value: 'TODO'
+      - reason: 'A FIXME needs an issue: create one and write FIXME(#123)'
+        value: 'FIXME'
+      - reason: 'Resolve before merging'
+        value: 'STOPSHIP'
+    allowedPatterns: '(TODO|FIXME)\(#\d+\)'
   ReturnCount:
     max: 3
   UnusedPrivateProperty:

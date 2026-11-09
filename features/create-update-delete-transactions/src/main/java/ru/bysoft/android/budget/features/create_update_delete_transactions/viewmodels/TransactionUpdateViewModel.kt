@@ -25,7 +25,7 @@ class TransactionUpdateViewModel(
     ITransactionUpdateViewModel {
 
     override fun update() {
-        // TODO: updating a transaction is not implemented yet
+        // TODO(#41): updating a transaction is not implemented yet
     }
 
     override fun initId(id: String) {

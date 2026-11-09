@@ -43,7 +43,7 @@ class GoogleAuthUiClient(
         }
     }
 
-    // TODO: Разавторизовать пользователя при выходе из профиля
+    // TODO(#39): sign the user out of Google as well when leaving the profile
     suspend fun signOut() {
         try {
             oneTapClient.signOut().await()
