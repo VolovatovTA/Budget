@@ -8,6 +8,22 @@ cd "$REPO" || exit 1
 [ -d "$WT" ] || git worktree add --detach -q "$WT" master || exit 1
 cd "$WT" || exit 1
 git fetch -q origin --prune 2>/dev/null
+# `restack.sh --all`: master moved; rebase every open PR that is behind it (independent PRs included), so
+# conflicts surface at once and CI re-runs on the current master.
+if [ "${1:-}" = "--all" ]; then
+  tip=$(git rev-parse origin/master)
+  gh pr list --state open --base master --json number,headRefName -q '.[] | "\(.number) \(.headRefName)"' | while read -r n head; do
+    git merge-base --is-ancestor "$tip" "origin/$head" 2>/dev/null && continue
+    git checkout -q --detach "origin/$head" || continue
+    if git rebase -q "$tip" >/dev/null 2>&1; then
+      git push -q --force-with-lease="$head:$(git rev-parse "origin/$head")" origin "HEAD:refs/heads/$head" 2>/dev/null \
+        && echo "RESTACK #$n: $head rebased onto master ($(git rev-parse --short "$tip"))"
+    else
+      git rebase --abort >/dev/null 2>&1; echo "RESTACK #$n: CONFLICT rebasing $head onto master — needs a hand"
+    fi
+  done
+  git checkout -q --detach origin/master 2>/dev/null; exit 0
+fi
 # `restack.sh --children <branch>`: a base branch got new commits (not rewritten); rebase the PRs on top of it.
 if [ "${1:-}" = "--children" ]; then
   parent=$2

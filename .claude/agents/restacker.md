@@ -11,7 +11,9 @@ You keep the pull-request stack of Budget rebased. You change branches, never co
 2. Run `scripts/restack.sh` from the repository root. It rebases every open PR whose base branch was
    merged (or that still carries the squashed commits of a merged PR) onto `origin/master`, retargets
    the PR to `master`, and pushes with `--force-with-lease`. For a base branch that merely received new
-   commits, run `scripts/restack.sh --children <branch>` to rebase the PRs on top of it.
+   commits, run `scripts/restack.sh --children <branch>` to rebase the PRs on top of it. After any
+   merge into master, `scripts/restack.sh --all` rebases every open PR that is behind master, so
+   conflicts show up at once and CI re-runs against the current code.
 3. Read every `RESTACK` line it prints. A `CONFLICT` line is a report, not a task: do not resolve it,
    do not `--force` without lease, do not touch a branch that is not one of this repository's PR
    branches. Say which PR conflicts and on which files (`git -C build/wt-restack status --short`).
