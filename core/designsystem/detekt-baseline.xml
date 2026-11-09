@@ -24,7 +24,6 @@
     <ID>ConstructorParameterNaming:UiKittStyles.kt$BudgetTypography$val Regular: TextStyle</ID>
     <ID>ConstructorParameterNaming:UiKittStyles.kt$BudgetTypography$val SemiBold: TextStyle</ID>
     <ID>ContentSlotReused:UiKitCurrencyPopUp.kt$itemInPopup</ID>
-    <ID>CyclomaticComplexMethod:UiKitButton.kt$@Composable fun UiKitButton( info: UiKitButtonInfo, modifier: Modifier = Modifier, isButtonEnabled: Boolean = true, onClick: () -&gt; Unit = {} )</ID>
     <ID>Filename:TextFieldColors.kt$ru.bysoft.android.budget.uikit.styles.text.TextFieldColors.kt</ID>
     <ID>LongParameterList:TextFieldColors.kt$BaseTextFieldColors$( private val textColor: Color, private val disabledTextColor: Color, private val cursorColor: Color, private val errorCursorColor: Color, private val focusedIndicatorColor: Color, private val unfocusedIndicatorColor: Color, private val errorIndicatorColor: Color, private val disabledIndicatorColor: Color, private val leadingIconColor: Color, private val disabledLeadingIconColor: Color, private val errorLeadingIconColor: Color, private val trailingIconColor: Color, private val disabledTrailingIconColor: Color, private val errorTrailingIconColor: Color, private val backgroundColor: Color, private val focusedLabelColor: Color, private val unfocusedLabelColor: Color, private val disabledLabelColor: Color, private val errorLabelColor: Color, private val placeholderColor: Color, private val disabledPlaceholderColor: Color )</ID>
     <ID>MatchingDeclarationName:TextFieldColors.kt$BaseTextFieldColors : TextFieldColors</ID>
@@ -59,8 +58,6 @@
     <ID>PreviewPublic:UiKitTextField.kt$TextFieldPreview</ID>
     <ID>PreviewPublic:UiKitTextField.kt$TextFieldPreviewDark</ID>
     <ID>PreviewPublic:UiKitTextField.kt$TextFieldPreviewLight</ID>
-    <ID>PreviewPublic:UiKitToggleButton.kt$ButtonsDark</ID>
-    <ID>PreviewPublic:UiKitToggleButton.kt$ButtonsLight</ID>
     <ID>UnstableCollections:ChartStyle.kt$List&lt;Color&gt;</ID>
     <ID>UnstableCollections:UiKitListItem.kt$List&lt;Int&gt;</ID>
     <ID>UnusedParameter:Chart5.kt$chartEntryModelProducer: ChartEntryModelProducer</ID>
@@ -73,7 +70,6 @@
     <ID>WildcardImport:UiKitDivider.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:UiKitRowTab.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:UiKitRowTab.kt$import androidx.compose.runtime.*</ID>
-    <ID>WildcardImport:UiKitToggleButton.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:UiKitTopBar.kt$import androidx.compose.foundation.layout.*</ID>
   </CurrentIssues>
 </SmellBaseline>

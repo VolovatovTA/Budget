@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.CreateUpdateCategoryState
 import ru.bysoft.android.budget.uikit.R
@@ -34,12 +33,12 @@ fun ButtonComponent(
     state: CreateUpdateCategoryState,
     text: String
 ) {
-    Box(modifier = Modifier.height(50.dp)) {
+    Box(modifier = Modifier.height(ButtonSize.LARGE.height)) {
         if (state.isLoading) {
             CircularProgressIndicator(modifier = Modifier.fillMaxSize())
         } else {
             UiKitButton(
-                info = UiKitButtonInfo(text, size = ButtonSize.MEDIUM),
+                info = UiKitButtonInfo(text, size = ButtonSize.LARGE),
                 onClick = onClickCreateUpdate
             )
         }

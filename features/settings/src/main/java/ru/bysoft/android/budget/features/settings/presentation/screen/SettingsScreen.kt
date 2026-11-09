@@ -47,7 +47,7 @@ import ru.bysoft.android.budget.features.settings.presentation.SettingsViewModel
 import ru.bysoft.android.budget.features.settings.presentation.entity.SettingsState
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.buttons.UiKitButton
-import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonSize
+import ru.bysoft.android.budget.uikit.components.buttons.entity.ButtonType
 import ru.bysoft.android.budget.uikit.components.buttons.entity.UiKitButtonInfo
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitPopUp
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
@@ -166,7 +166,7 @@ private fun SettingsScreenContent(
                     UiKitButton(
                         info = UiKitButtonInfo(
                             text = stringResource(R.string.logout),
-                            size = ButtonSize.MEDIUM
+                            type = ButtonType.OUTLINE,
                         ),
                         onClick = onLogoutClick,
                         modifier = Modifier.fillMaxWidth()
@@ -175,7 +175,7 @@ private fun SettingsScreenContent(
                     UiKitButton(
                         info = UiKitButtonInfo(
                             text = stringResource(R.string.delete_account),
-                            size = ButtonSize.MEDIUM
+                            type = ButtonType.DESTRUCTIVE_TEXT,
                         ),
                         onClick = onDeleteAccountClick,
                         modifier = Modifier.fillMaxWidth()

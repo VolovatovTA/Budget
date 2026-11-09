@@ -11,6 +11,6 @@
     <string name="icon_description">Your profile photo</string>
     <string name="dialog_delete_transaction_title">Delete transaction</string>
     <string name="dialog_delete_transaction_subtitle">Do you really want delete this transaction?</string>
-    <string name="dialog_delete_transaction_positive_button">yes</string>
-    <string name="dialog_delete_transaction_negative_button">no</string>
+    <string name="dialog_delete_transaction_positive_button">Yes</string>
+    <string name="dialog_delete_transaction_negative_button">No</string>
 </resources>

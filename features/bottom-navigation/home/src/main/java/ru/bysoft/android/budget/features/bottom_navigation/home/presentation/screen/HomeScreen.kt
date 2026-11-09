@@ -189,13 +189,14 @@ private fun <T> UiKitDialog(
             ) {
                 UiKitButton(
                     info = UiKitButtonInfo(
+                        type = ButtonType.SECONDARY,
                         text = stringResource(id = dialogState.negativeButtonText)
                     ),
                     onClick = { onDialogDismiss(dialogState.data) },
                 )
                 UiKitButton(
                     info = UiKitButtonInfo(
-                        type = ButtonType.TERTIARY,
+                        type = ButtonType.DESTRUCTIVE_TEXT,
                         text = stringResource(id = dialogState.positiveButtonText)
                     ),
                     onClick = { onDialogConfirmed(dialogState.data) }

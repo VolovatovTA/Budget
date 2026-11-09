@@ -11,6 +11,6 @@
     <string name="icon_description">Your profile photo</string>
     <string name="dialog_delete_transaction_title">Удаление транзакции</string>
     <string name="dialog_delete_transaction_subtitle">Вы действительно хотите удалить транзакцию?</string>
-    <string name="dialog_delete_transaction_positive_button">да</string>
-    <string name="dialog_delete_transaction_negative_button">нет</string>
+    <string name="dialog_delete_transaction_positive_button">Да</string>
+    <string name="dialog_delete_transaction_negative_button">Нет</string>
 </resources>

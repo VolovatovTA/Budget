@@ -352,7 +352,7 @@ private fun AuthSuccessScreen(
         Spacer(modifier = Modifier.height(padding + halfPadding))
 
         UiKitButton(
-            info = UiKitButtonInfo(text = btnText, size = ButtonSize.MEDIUM),
+            info = UiKitButtonInfo(text = btnText, size = ButtonSize.LARGE),
             isButtonEnabled = state.isButtonEnabled,
             onClick = { viewModel.onButtonClick(state.type) },
             modifier = Modifier

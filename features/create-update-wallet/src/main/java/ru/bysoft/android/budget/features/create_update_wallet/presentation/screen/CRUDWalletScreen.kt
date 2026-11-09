@@ -177,7 +177,7 @@ private fun ButtonComponent(viewModel: IWalletViewModel, state: ViewModelWalletS
                             id = R.string.wallet_btn_update_text
                         )
                     },
-                    size = ButtonSize.MEDIUM
+                    size = ButtonSize.LARGE
                 ),
                 onClick = viewModel::onButtonClick
             )

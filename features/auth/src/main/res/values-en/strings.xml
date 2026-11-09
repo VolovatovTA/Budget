@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="auth_main_sign_in_welcome_text">Welcome back!</string>
-    <string name="auth_btn_sign_in_text">sign in</string>
-    <string name="auth_btn_sign_up_text">sign up</string>
+    <string name="auth_btn_sign_in_text">Sign in</string>
+    <string name="auth_btn_sign_up_text">Sign up</string>
     <string name="auth_main_sign_up_welcome_text">Welcome!</string>
     <string name="auth_welcome_text">Hop back in</string>
     <string name="your_name_label">Name</string>
