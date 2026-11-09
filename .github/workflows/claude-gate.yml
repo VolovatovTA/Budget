@@ -1,5 +1,5 @@
 # Shared gate for every Claude workflow: subscription token only (decision 0006), no runs on weekdays
-# before 17:00 Europe/Belgrade, and a clean skip when the token secret is not configured yet.
+# between 08:00 and 17:00 Europe/Belgrade (nights and weekends are free), and a clean skip when the token secret is not configured yet.
 name: Claude gate
 
 on:
@@ -34,8 +34,8 @@ jobs:
           fi
           dow=$(TZ=Europe/Belgrade date +%u)
           hour=$(TZ=Europe/Belgrade date +%H)
-          if [ "$dow" -le 5 ] && [ "$((10#$hour))" -ge 9 ] && [ "$((10#$hour))" -lt 17 ]; then
-            echo "::notice::Working hours (Mon–Fri 09:00–17:00 Europe/Belgrade); Claude jobs wait for the evening sweep."
+          if [ "$dow" -le 5 ] && [ "$((10#$hour))" -ge 8 ] && [ "$((10#$hour))" -lt 17 ]; then
+            echo "::notice::Working hours (Mon–Fri 08:00–17:00 Europe/Belgrade); Claude jobs wait for the evening sweep."
             echo "run=false" >> "$GITHUB_OUTPUT"
           else
             echo "run=true" >> "$GITHUB_OUTPUT"
