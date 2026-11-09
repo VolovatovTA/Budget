@@ -237,7 +237,7 @@ private fun CategoryAddItem(
                 )
             }
             Text(
-                text = stringResource(R.string.add_category_button),
+                text = stringResource(R.string.add_category2),
                 style = UiKitTypography.TextXS.Regular,
                 textAlign = TextAlign.Center,
                 maxLines = 1,
