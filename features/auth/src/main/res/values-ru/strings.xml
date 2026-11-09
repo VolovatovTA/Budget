@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="auth_main_sign_in_welcome_text">С возвращением!</string>
-    <string name="auth_btn_sign_in_text">войти</string>
-    <string name="auth_btn_sign_up_text">зарегистрироваться</string>
+    <string name="auth_btn_sign_in_text">Войти</string>
+    <string name="auth_btn_sign_up_text">Зарегистрироваться</string>
     <string name="auth_main_sign_up_welcome_text">Добро пожаловать!</string>
     <string name="auth_welcome_text">В наше скромное приложение</string>
     <string name="your_name_label">Ваше имя</string>

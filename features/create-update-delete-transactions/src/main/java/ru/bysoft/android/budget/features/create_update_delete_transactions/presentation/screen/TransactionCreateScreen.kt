@@ -359,7 +359,7 @@ private fun TransactionButtonComponent(
         UiKitButton(
             info = UiKitButtonInfo(
                 text = stringResource(R.string.btn_text_create),
-                size = ButtonSize.MEDIUM
+                size = ButtonSize.LARGE
             ),
             onClick = onClick,
             modifier = Modifier.padding(bottom = padding),
