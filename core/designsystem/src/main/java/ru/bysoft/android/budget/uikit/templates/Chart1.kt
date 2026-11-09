@@ -44,7 +44,10 @@ private fun ComposeChart2(chartEntryModelProducer: ChartEntryModelProducer) {
                 decorations = remember(thresholdLine) { listOf(thresholdLine) },
             ),
             chartModelProducer = chartEntryModelProducer,
-            startAxis = startAxis(valueFormatter = startAxisValueFormatter, maxLabelCount = START_AXIS_LABEL_COUNT),
+            startAxis = startAxis(
+                valueFormatter = startAxisValueFormatter,
+                maxLabelCount = START_AXIS_LABEL_COUNT
+            ),
             bottomAxis = bottomAxis(tickPosition = bottomAxisTickPosition),
             marker = rememberMarker(),
         )
@@ -62,7 +65,11 @@ private fun rememberThresholdLine(): ThresholdLine {
         typeface = Typeface.MONOSPACE,
     )
     return remember(line, label) {
-        ThresholdLine(thresholdValue = THRESHOLD_LINE_VALUE, lineComponent = line, labelComponent = label)
+        ThresholdLine(
+            thresholdValue = THRESHOLD_LINE_VALUE,
+            lineComponent = line,
+            labelComponent = label
+        )
     }
 }
 

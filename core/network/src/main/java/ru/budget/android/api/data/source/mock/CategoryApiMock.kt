@@ -47,10 +47,7 @@ class CategoryApiMock(
             limitType = "",
         )
 
-    override suspend fun getCategory(
-        id: String,
-        path: String
-    ): CategoryItemResponse =
+    override suspend fun getCategory(id: String, path: String): CategoryItemResponse =
         CategoryItemResponse(
             currency = "USD",
             id = UUID.randomUUID().toString(),

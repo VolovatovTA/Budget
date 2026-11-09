@@ -13,10 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.uikit.icons.leftArrow
 
-fun mainTopBar(
-    text: String,
-    onBackClick: () -> Unit
-): @Composable () -> Unit {
+fun mainTopBar(text: String, onBackClick: () -> Unit): @Composable () -> Unit {
     return {
         Row(
             verticalAlignment = Alignment.CenterVertically,

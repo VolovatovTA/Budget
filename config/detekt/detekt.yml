@@ -16,7 +16,8 @@ style:
     ignoreCompanionObjectPropertyDeclaration: true
     ignoreAnnotated: ['Preview', 'Composable']   # dp/sp literals in layouts are design values
   MaxLineLength:
-    maxLineLength: 120
+    maxLineLength: 120       # wrapping rules below break calls and signatures at 100; 120 is the hard stop for strings
+    excludes: ['**/icons/**'] # vector path data
   WildcardImport:
     excludeImports: []
   ForbiddenComment:
@@ -87,6 +88,15 @@ Compose:
 formatting:
   active: true
   autoCorrect: true
+  ArgumentListWrapping:
+    maxLineLength: 100
+  ParameterListWrapping:
+    maxLineLength: 100
+  FunctionSignature:
+    active: true
+    maxLineLength: 100
+    forceMultilineWhenParameterCountGreaterOrEqualThan: 3
+    functionBodyExpressionWrapping: 'multiline'
   PackageName:
     active: false            # snake_case packages: see naming.PackageNaming above
   MaximumLineLength:

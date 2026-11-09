@@ -264,11 +264,12 @@ object UiKitColors {
         get() = getColorsBySystemTheme()
 
     @Composable
-    fun card(isSelected: Boolean): Color = if (isDark) {
-        if (isSelected) colors.neutral.`300` else colors.surface.tertiary
-    } else {
-        if (isSelected) colors.neutral.`300` else colors.surface.primary
-    }
+    fun card(isSelected: Boolean): Color =
+        if (isDark) {
+            if (isSelected) colors.neutral.`300` else colors.surface.tertiary
+        } else {
+            if (isSelected) colors.neutral.`300` else colors.surface.primary
+        }
 
     val selectionColors
         @Composable

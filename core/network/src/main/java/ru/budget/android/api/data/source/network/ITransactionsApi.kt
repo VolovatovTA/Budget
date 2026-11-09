@@ -22,7 +22,9 @@ interface ITransactionsApi {
     ): TransactionResponse
 
     @POST("$pathToTransactions/expense")
-    suspend fun createTransactionExpense(@Body request: TransactionExpenseCreateRequest): TransactionResponse
+    suspend fun createTransactionExpense(
+        @Body request: TransactionExpenseCreateRequest
+    ): TransactionResponse
 
     @GET(pathToTransactions)
     suspend fun getExpensesTransactions(
@@ -34,10 +36,14 @@ interface ITransactionsApi {
     ): TransactionResponse
 
     @POST("$pathToTransactions/income")
-    suspend fun createTransactionIncome(@Body request: TransactionIncomeCreateRequest): TransactionResponse
+    suspend fun createTransactionIncome(
+        @Body request: TransactionIncomeCreateRequest
+    ): TransactionResponse
 
     @POST("$pathToTransactions/transfer")
-    suspend fun createTransactionTransfer(@Body request: TransactionTransferCreateRequest): TransactionResponse
+    suspend fun createTransactionTransfer(
+        @Body request: TransactionTransferCreateRequest
+    ): TransactionResponse
 
     @DELETE("$pathToTransactions/{id}")
     suspend fun deleteTransaction(@Path("id") id: String)

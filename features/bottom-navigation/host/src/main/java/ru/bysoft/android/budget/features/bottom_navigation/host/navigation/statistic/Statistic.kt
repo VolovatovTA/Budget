@@ -12,5 +12,6 @@ object Statistic :
     override val label: Int = R.string.label_statistic
 
     @Composable
-    override fun backgroundColor() = ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.primary.`100`
+    override fun backgroundColor() =
+        ru.bysoft.android.budget.uikit.colors.UiKitColors.colors.primary.`100`
 }

@@ -50,9 +50,7 @@ import ru.bysoft.android.budget.uikit.styles.padding
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HomeScreen(
-    viewModel: IHomeViewModel,
-) {
+fun HomeScreen(viewModel: IHomeViewModel,) {
     LaunchedEffect(Unit) { viewModel.loadData() }
 
     val context = LocalContext.current

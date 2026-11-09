@@ -8,7 +8,11 @@ import ru.budget.android.api.data.source.network.entity.category.CategoryRequest
 
 interface ICategoryRepo {
     suspend fun createCategory(categoryRequest: CategoryRequest, name: String): Result<Unit>
-    suspend fun updateCategory(categoryRequest: CategoryRequest, name: String, id: String): Result<Unit>
+    suspend fun updateCategory(
+        categoryRequest: CategoryRequest,
+        name: String,
+        id: String
+    ): Result<Unit>
     suspend fun getCategoryInfo(id: String, path: String): CategoryItemResponse
     suspend fun delete(id: String, path: String): Result<Unit>
 }

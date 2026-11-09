@@ -57,9 +57,7 @@ import ru.bysoft.android.budget.uikit.styles.padding
 import ru.bysoft.android.budget.uikit.templates.topBar
 
 @Composable
-fun CreateCategoryScreen(
-    viewModel: ICreateCategoryViewModel
-) {
+fun CreateCategoryScreen(viewModel: ICreateCategoryViewModel) {
     val state = viewModel.state.collectAsState().value
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
@@ -117,11 +115,17 @@ fun CreateCategoryScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .focusRequester(focusRequester),
-                    keyboardActions = KeyboardActions { focusManager.moveFocus(FocusDirection.Next) },
+                    keyboardActions = KeyboardActions {
+                        focusManager.moveFocus(
+                            FocusDirection.Next
+                        )
+                    },
                 )
             }
             item {
-                VerticalExpandableContent(isCollapsed = state.typeCategory != CategoryTypeEnum.EXPENSE) {
+                VerticalExpandableContent(
+                    isCollapsed = state.typeCategory != CategoryTypeEnum.EXPENSE
+                ) {
                     CreateCategoryLimitComponent(
                         state = state,
                         onAmountChanged = viewModel::onAmountChanged,

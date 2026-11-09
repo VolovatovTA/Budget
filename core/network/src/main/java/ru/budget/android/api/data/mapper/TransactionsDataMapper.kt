@@ -19,12 +19,20 @@ class TransactionsDataMapper(
     private val locale: Locale
 ) : ITransactionsDataMapper {
     override fun mapToData(response: TransactionResponse) =
-        ListTransactionsData(listTransactions = response.data?.mapNotNull { it?.let { mapToData(it) } }.orEmpty())
+        ListTransactionsData(
+            listTransactions = response.data?.mapNotNull { it?.let { mapToData(it) } }.orEmpty()
+        )
 
     private fun mapToData(response: TransactionItemResponse): TransactionData =
         when {
-            response.type == "EXPENSE" && response.transfer == null -> getExpenseTransaction(response, locale = locale)
-            response.type == "INCOME" && response.transfer == null -> getIncomeTransaction(response, locale = locale)
+            response.type == "EXPENSE" && response.transfer == null -> getExpenseTransaction(
+                response,
+                locale = locale
+            )
+            response.type == "INCOME" && response.transfer == null -> getIncomeTransaction(
+                response,
+                locale = locale
+            )
             response.transfer != null -> getTransferTransaction(response, locale = locale)
             else -> throw UnknownTypeTransaction(response.type)
         }
@@ -67,7 +75,9 @@ class TransactionsDataMapper(
             id = transactionItemResponse.id
         )
 
-    private fun getCategories(transactionItemResponse: TransactionItemResponse): List<CategoryData> =
+    private fun getCategories(
+        transactionItemResponse: TransactionItemResponse
+    ): List<CategoryData> =
         when {
             !transactionItemResponse.listTransactionExpenseResponse.isNullOrEmpty() -> transactionItemResponse.listTransactionExpenseResponse.map {
                 ExpenseCategory(
@@ -79,7 +89,9 @@ class TransactionsDataMapper(
             }
             transactionItemResponse.transactionIncomeResponse != null -> listOf(
                 IncomeCategory(
-                    currency = getCurrency(transactionItemResponse.transactionIncomeResponse.currency),
+                    currency = getCurrency(
+                        transactionItemResponse.transactionIncomeResponse.currency
+                    ),
                     id = transactionItemResponse.transactionIncomeResponse.id,
                     name = transactionItemResponse.transactionIncomeResponse.name,
                     iconName = transactionItemResponse.transactionIncomeResponse.iconName

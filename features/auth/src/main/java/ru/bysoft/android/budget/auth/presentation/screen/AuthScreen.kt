@@ -331,7 +331,9 @@ private fun AuthSuccessScreen(
                             LinkAnnotation.Url(
                                 url = "https://www.iubenda.com/privacy-policy/52608160",
                                 styles = TextLinkStyles(
-                                    style = UiKitTypography.Body2Link(UiKitTypography.TextXS.Regular)
+                                    style = UiKitTypography.Body2Link(
+                                        UiKitTypography.TextXS.Regular
+                                    )
                                 ),
                             )
                         ) {

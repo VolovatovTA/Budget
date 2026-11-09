@@ -48,17 +48,23 @@ class TransactionApiMock(
         delay(delayMock)
     }
 
-    override suspend fun createTransactionExpense(request: TransactionExpenseCreateRequest): TransactionResponse {
+    override suspend fun createTransactionExpense(
+        request: TransactionExpenseCreateRequest
+    ): TransactionResponse {
         delay(delayMock)
         return allTransactions()
     }
 
-    override suspend fun createTransactionIncome(request: TransactionIncomeCreateRequest): TransactionResponse {
+    override suspend fun createTransactionIncome(
+        request: TransactionIncomeCreateRequest
+    ): TransactionResponse {
         delay(delayMock)
         return allTransactions()
     }
 
-    override suspend fun createTransactionTransfer(request: TransactionTransferCreateRequest): TransactionResponse {
+    override suspend fun createTransactionTransfer(
+        request: TransactionTransferCreateRequest
+    ): TransactionResponse {
         delay(delayMock)
         return allTransactions()
     }

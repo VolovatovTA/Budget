@@ -61,7 +61,9 @@ private fun WalletSuccessComponent(
         items(
             count = state.list.size,
             itemContent = { index ->
-                val backgroundColor = UiKitColors.card(state.list[index].id == state.selectedWalletId)
+                val backgroundColor = UiKitColors.card(
+                    state.list[index].id == state.selectedWalletId
+                )
                 Surface(
                     shape = RoundedCornerShape(corner),
                     color = backgroundColor,

@@ -28,7 +28,12 @@ class StatisticRepo(
         return mapper.mapToData(response)
     }
 
-    override suspend fun getUpdatedCategoryData(id: String, dateFrom: String?, dateTo: String?, oldCategoryData: ExpenseCategory): ExpenseCategory {
+    override suspend fun getUpdatedCategoryData(
+        id: String,
+        dateFrom: String?,
+        dateTo: String?,
+        oldCategoryData: ExpenseCategory
+    ): ExpenseCategory {
         val response = transactionApi.getExpensesTransactions(
             expenseIds = listOf(id),
             dateFrom = dateFrom,

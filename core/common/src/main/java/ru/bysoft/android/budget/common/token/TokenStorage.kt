@@ -22,7 +22,9 @@ class TokenStorage(
     private val context: Context
 ) : ITokenStorage {
     companion object {
-        private val Context.tokenStorage: DataStore<Preferences> by preferencesDataStore("tokenStore")
+        private val Context.tokenStorage: DataStore<Preferences> by preferencesDataStore(
+            "tokenStore"
+        )
         val tokensKey = stringPreferencesKey("field1")
     }
 

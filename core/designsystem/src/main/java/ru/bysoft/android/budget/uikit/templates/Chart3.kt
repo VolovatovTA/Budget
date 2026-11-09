@@ -48,7 +48,10 @@ internal fun Chart3(chartEntryModelProducer: ChartEntryModelProducer) {
 private fun ComposeChart3(chartEntryModelProducer: ChartEntryModelProducer) {
     ProvideChartStyle(rememberChartStyle(chartColors)) {
         Chart(
-            chart = lineChart(pointPosition = LineChart.PointPosition.Start, axisValuesOverrider = axisValueOverrider),
+            chart = lineChart(
+                pointPosition = LineChart.PointPosition.Start,
+                axisValuesOverrider = axisValueOverrider
+            ),
             chartModelProducer = chartEntryModelProducer,
             startAxis = startAxis(
                 guideline = null,
@@ -89,7 +92,10 @@ private val axisValueOverrider =
     AxisValuesOverrider.adaptiveYValues(yFraction = AXIS_VALUE_OVERRIDER_Y_FRACTION, round = true)
 private val axisTitleHorizontalPaddingValue = 8.dp
 private val axisTitleVerticalPaddingValue = 2.dp
-private val axisTitlePadding = dimensionsOf(axisTitleHorizontalPaddingValue, axisTitleVerticalPaddingValue)
+private val axisTitlePadding = dimensionsOf(
+    axisTitleHorizontalPaddingValue,
+    axisTitleVerticalPaddingValue
+)
 private val axisTitleMarginValue = 4.dp
 private val startAxisTitleMargins = dimensionsOf(end = axisTitleMarginValue)
 private val bottomAxisTitleMargins = dimensionsOf(top = axisTitleMarginValue)

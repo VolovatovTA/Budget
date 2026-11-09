@@ -39,8 +39,5 @@ interface ICategoryApi {
     ): CategoryItemResponse
 
     @DELETE("$pathToCategory{$namePathExpenseIncome}/{$nameId}")
-    suspend fun delete(
-        @Path(nameId) id: String,
-        @Path(namePathExpenseIncome) path: String
-    )
+    suspend fun delete(@Path(nameId) id: String, @Path(namePathExpenseIncome) path: String)
 }

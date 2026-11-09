@@ -49,10 +49,7 @@ internal val BudgetFontFamily = FontFamily(
  * colour while the migration is in progress.
  */
 @Composable
-fun BudgetTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit,
-) {
+fun BudgetTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit,) {
     val palette: Palette = if (darkTheme) DarkPalette else LightPalette
     CompositionLocalProvider(LocalBudgetPalette provides palette) {
         Material3Theme(colorScheme = palette.toColorScheme(darkTheme)) {
@@ -63,7 +60,9 @@ fun BudgetTheme(
                     background = palette.surface.primary,
                 )
             ) {
-                CompositionLocalProvider(LocalTextSelectionColors provides UiKitColors.selectionColors) {
+                CompositionLocalProvider(
+                    LocalTextSelectionColors provides UiKitColors.selectionColors
+                ) {
                     content()
                 }
             }

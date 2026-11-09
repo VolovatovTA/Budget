@@ -13,10 +13,7 @@ import androidx.compose.ui.Alignment
 const val DURATION_ANIMATION = 250
 
 @Composable
-fun VerticalExpandableContent(
-    isCollapsed: Boolean,
-    content: @Composable (() -> Unit)
-) {
+fun VerticalExpandableContent(isCollapsed: Boolean, content: @Composable (() -> Unit)) {
     val expandTransition = remember {
         expandVertically(
             expandFrom = Alignment.Top,
@@ -42,7 +39,8 @@ fun VerticalExpandableContent(
     }
 }
 
-fun <T> defaultAnimationSpec(duration: Int = DURATION_ANIMATION) = tween<T>(
-    durationMillis = duration,
-    easing = FastOutSlowInEasing
-)
+fun <T> defaultAnimationSpec(duration: Int = DURATION_ANIMATION) =
+    tween<T>(
+        durationMillis = duration,
+        easing = FastOutSlowInEasing
+    )

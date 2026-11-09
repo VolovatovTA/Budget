@@ -44,7 +44,9 @@ internal fun Chart4(chartEntryModelProducer: ComposedChartEntryModelProducer<Cha
 }
 
 @Composable
-private fun ComposeChart4(chartEntryModelProducer: ComposedChartEntryModelProducer<ChartEntryModel>) {
+private fun ComposeChart4(
+    chartEntryModelProducer: ComposedChartEntryModelProducer<ChartEntryModel>
+) {
     ProvideChartStyle(rememberChartStyle(columnChartColors, lineChartColors)) {
         val defaultColumns = currentChartStyle.columnChart.columns
         val defaultLines = currentChartStyle.lineChart.lines
@@ -61,7 +63,11 @@ private fun ComposeChart4(chartEntryModelProducer: ComposedChartEntryModelProduc
         )
         val lineChart = lineChart(
             remember(defaultLines) {
-                defaultLines.map { defaultLine -> defaultLine.copy(pointConnector = pointConnector) }
+                defaultLines.map { defaultLine ->
+                    defaultLine.copy(
+                        pointConnector = pointConnector
+                    )
+                }
             },
         )
         Chart(

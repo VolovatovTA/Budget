@@ -11,11 +11,17 @@ class CurrencyRateApiMock(
 ) : ICurrencyRatesApi {
     override suspend fun getCurrencyRates(base: String): CurrencyRatesResponse {
         // в файле курсы относительно USD, для другой базовой валюты пересчитываем
-        val usdRates = context.getStringFromAsset("currency_rates/mock.json").restore<CurrencyRatesResponse>()
+        val usdRates = context.getStringFromAsset(
+            "currency_rates/mock.json"
+        ).restore<CurrencyRatesResponse>()
         val baseRate = usdRates.conversionRates[base] ?: return usdRates
         return usdRates.copy(
             baseCode = base,
-            conversionRates = usdRates.conversionRates.mapValues { (_, rate) -> rate?.div(baseRate) }
+            conversionRates = usdRates.conversionRates.mapValues { (_, rate) ->
+                rate?.div(
+                    baseRate
+                )
+            }
         )
     }
 }

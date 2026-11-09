@@ -45,7 +45,10 @@ abstract class CreateUpdateCategoryViewModel(
 
     override val state: MutableStateFlow<CreateUpdateCategoryState> = MutableStateFlow(
         CreateUpdateCategoryState(
-            currencyFieldState = CurrencyFieldState(selectedCurrency = null, list = getAvailableCurrency())
+            currencyFieldState = CurrencyFieldState(
+                selectedCurrency = null,
+                list = getAvailableCurrency()
+            )
         )
     )
 
@@ -110,19 +113,25 @@ abstract class CreateUpdateCategoryViewModel(
             CategoryErrorType.INVALID_CURRENCY ->
                 state.update {
                     it.copy(
-                        currencyFieldState = state.value.currencyFieldState.copy(errorText = R.string.invalid_currency)
+                        currencyFieldState = state.value.currencyFieldState.copy(
+                            errorText = R.string.invalid_currency
+                        )
                     )
                 }
             CategoryErrorType.INVALID_NAME ->
                 state.update {
                     it.copy(
-                        nameTextState = state.value.nameTextState.copy(errorText = R.string.invalid_name)
+                        nameTextState = state.value.nameTextState.copy(
+                            errorText = R.string.invalid_name
+                        )
                     )
                 }
             CategoryErrorType.NO_UNIQ_NAME ->
                 state.update {
                     it.copy(
-                        nameTextState = state.value.nameTextState.copy(errorText = R.string.no_unique_name)
+                        nameTextState = state.value.nameTextState.copy(
+                            errorText = R.string.no_unique_name
+                        )
                     )
                 }
         }

@@ -27,10 +27,7 @@ import ru.bysoft.android.budget.uikit.styles.padding
 import ru.bysoft.android.budget.uikit.templates.topBar
 
 @Composable
-fun UpdateCategoryScreen(
-    viewModel: IUpdateCategoryViewModel,
-    id: String
-) {
+fun UpdateCategoryScreen(viewModel: IUpdateCategoryViewModel, id: String) {
     val focusManager = LocalFocusManager.current
     LaunchedEffect(Unit) { viewModel.initId(id) }
     val state = viewModel.state.collectAsState().value

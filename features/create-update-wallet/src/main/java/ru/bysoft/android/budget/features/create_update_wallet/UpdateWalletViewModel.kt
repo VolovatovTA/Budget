@@ -38,7 +38,10 @@ class UpdateWalletViewModel(
     override fun onButtonClick() {
         viewModelScope.launch(createWalletExceptionHandler) {
             _state.value = _state.value.copy(isLoading = true)
-            val result = repository.updateWallet(walletId = walletId, walletScreenController.state.value)
+            val result = repository.updateWallet(
+                walletId = walletId,
+                walletScreenController.state.value
+            )
             if (result.isSuccess) {
                 _state.value = _state.value.copy(isLoading = false)
                 navigate.popBack()

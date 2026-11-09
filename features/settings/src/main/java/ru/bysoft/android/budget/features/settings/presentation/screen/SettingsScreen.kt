@@ -115,7 +115,11 @@ private fun SettingsScreenContent(
                     .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                var isLoadingSuccess by remember { mutableStateOf(state.meInfoData?.pictureUrl != null) }
+                var isLoadingSuccess by remember {
+                    mutableStateOf(
+                        state.meInfoData?.pictureUrl != null
+                    )
+                }
                 val modifier = Modifier
                     .padding(padding)
                     .size(100.dp)

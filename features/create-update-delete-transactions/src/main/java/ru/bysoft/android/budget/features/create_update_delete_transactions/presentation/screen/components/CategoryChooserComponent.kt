@@ -85,10 +85,7 @@ private fun SuccessCategoryComponent(
 }
 
 @Composable
-fun ShortSuccessCategoryComponent(
-    text: String,
-    onClick: () -> Unit
-) {
+fun ShortSuccessCategoryComponent(text: String, onClick: () -> Unit) {
     Row(
         Modifier.padding(horizontal = padding, vertical = padding / 2)
     ) {
@@ -190,9 +187,7 @@ fun PreviewCategoryNight() {
 }
 
 @Composable
-private fun CategoryAddItem(
-    onClick: () -> Unit
-) {
+private fun CategoryAddItem(onClick: () -> Unit) {
     val stroke = Stroke(
         width = 2f,
         pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
@@ -250,10 +245,7 @@ private fun CategoryAddItem(
 }
 
 @Composable
-private fun CategoryItem(
-    category: CategoryPresentation,
-    onClick: (CategoryPresentation) -> Unit
-) {
+private fun CategoryItem(category: CategoryPresentation, onClick: (CategoryPresentation) -> Unit) {
     Surface(
         shape = RoundedCornerShape(corner),
         color = UiKitColors.card(category.isChosen),

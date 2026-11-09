@@ -13,7 +13,9 @@ class HomeNavigation(
     private val navHostController: NavHostControllerWrapper
 ) : IHomeNavigation {
     override fun toUpdateTransaction(id: String) {
-        navHostController.navigate("${Transaction.updateScreen}/${TransactionUpdateNavParams(id).toJson()}")
+        navHostController.navigate(
+            "${Transaction.updateScreen}/${TransactionUpdateNavParams(id).toJson()}"
+        )
     }
 
     override fun toTransactionDetail(id: String) {

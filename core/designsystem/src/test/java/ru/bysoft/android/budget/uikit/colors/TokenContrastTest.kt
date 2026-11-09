@@ -15,7 +15,9 @@ class TokenContrastTest {
     fun `text tokens reach 4,5 to 1 on every surface in both themes`() {
         val violations = themes.flatMap { (theme, t) ->
             listOf("textHigh" to t.textHigh, "textMedium" to t.textMedium).flatMap { (name, fg) ->
-                surfacesOf(t).mapNotNull { (surface, bg) -> violation(theme, name, surface, fg, bg, TEXT_MIN) }
+                surfacesOf(
+                    t
+                ).mapNotNull { (surface, bg) -> violation(theme, name, surface, fg, bg, TEXT_MIN) }
             }
         }
         assertEquals(emptyList<String>(), violations)
@@ -32,7 +34,18 @@ class TokenContrastTest {
             )
             val marks = semantic + t.categoryPalette.mapIndexed { i, c -> "category[$i]" to c }
             marks.flatMap { (name, fg) ->
-                surfacesOf(t).mapNotNull { (surface, bg) -> violation(theme, name, surface, fg, bg, GRAPHIC_MIN) }
+                surfacesOf(
+                    t
+                ).mapNotNull { (surface, bg) ->
+                    violation(
+                        theme,
+                        name,
+                        surface,
+                        fg,
+                        bg,
+                        GRAPHIC_MIN
+                    )
+                }
             }
         }
         assertEquals(emptyList<String>(), violations)
@@ -41,7 +54,14 @@ class TokenContrastTest {
     private fun surfacesOf(t: BudgetTokens) =
         listOf("background" to t.background, "surface" to t.surface, "surface2" to t.surface2)
 
-    private fun violation(theme: String, name: String, surface: String, fg: Color, bg: Color, min: Double): String? {
+    private fun violation(
+        theme: String,
+        name: String,
+        surface: String,
+        fg: Color,
+        bg: Color,
+        min: Double
+    ): String? {
         val ratio = contrastRatio(fg, bg)
         return if (ratio < min) "$theme $name on $surface = %.2f".format(ratio) else null
     }

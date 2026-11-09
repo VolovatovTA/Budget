@@ -32,18 +32,19 @@ class HomePresentationMapper(
     override fun mapToState(data: List<WalletData>) =
         data.map { mapToState(it) }.plus(WalletCreateNewPresentation)
 
-    private fun mapToState(data: WalletData) = WalletCardPresentation(
-        name = data.name,
-        balance = data.balance,
-        currency = getCurrency(data.currency),
-        backgroundColor = "primary.500",
-        walletId = data.id,
-        icon = data.iconName,
-        lastOperationDate = SimpleDateFormat(
-            dateFormatOutput,
-            locale
-        ).format(Calendar.getInstance().time)
-    )
+    private fun mapToState(data: WalletData) =
+        WalletCardPresentation(
+            name = data.name,
+            balance = data.balance,
+            currency = getCurrency(data.currency),
+            backgroundColor = "primary.500",
+            walletId = data.id,
+            icon = data.iconName,
+            lastOperationDate = SimpleDateFormat(
+                dateFormatOutput,
+                locale
+            ).format(Calendar.getInstance().time)
+        )
 
     override fun mapToInfo(
         data: ListTransactionsData,

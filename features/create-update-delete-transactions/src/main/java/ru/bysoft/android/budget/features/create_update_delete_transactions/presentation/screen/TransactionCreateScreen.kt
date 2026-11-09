@@ -51,9 +51,7 @@ internal val HEIGHT_ELEMENT = 60.dp
 internal val padding = 12.dp
 
 @Composable
-fun TransactionScreen(
-    viewModel: ITransactionsViewModel,
-) {
+fun TransactionScreen(viewModel: ITransactionsViewModel,) {
     val transactionState by viewModel.state.collectAsState()
 
     val context = LocalContext.current

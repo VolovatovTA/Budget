@@ -68,7 +68,9 @@ class TransactionCreateViewModel(
         state.update {
             it.copyWithCurrency(
                 currencyFieldState = it.currencyFieldState.copy(
-                    selectedCurrency = getCurrency(meInfo.getCurrentMeInfo()?.settingsData?.currency)
+                    selectedCurrency = getCurrency(
+                        meInfo.getCurrentMeInfo()?.settingsData?.currency
+                    )
                 )
             )
         }
