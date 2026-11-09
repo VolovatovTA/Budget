@@ -35,6 +35,9 @@ fun ButtonType.style(): ButtonStyle {
             border = tokens.line
         )
         ButtonType.TEXT -> ButtonStyle(container = Color.Transparent, content = tokens.accent)
-        ButtonType.DESTRUCTIVE_TEXT -> ButtonStyle(container = Color.Transparent, content = tokens.negative)
+        ButtonType.DESTRUCTIVE_TEXT -> ButtonStyle(
+            container = Color.Transparent,
+            content = tokens.negative
+        )
     }
 }

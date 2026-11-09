@@ -16,6 +16,16 @@ enum class ButtonSize(
     val horizontalPadding: Dp,
 ) {
     SMALL(height = 36.dp, shape = BudgetShapes.small, iconSize = 16.dp, horizontalPadding = 14.dp),
-    MEDIUM(height = 48.dp, shape = BudgetShapes.control, iconSize = 20.dp, horizontalPadding = 20.dp),
-    LARGE(height = 52.dp, shape = BudgetShapes.control, iconSize = 24.dp, horizontalPadding = 24.dp),
+    MEDIUM(
+        height = 48.dp,
+        shape = BudgetShapes.control,
+        iconSize = 20.dp,
+        horizontalPadding = 20.dp
+    ),
+    LARGE(
+        height = 52.dp,
+        shape = BudgetShapes.control,
+        iconSize = 24.dp,
+        horizontalPadding = 24.dp
+    ),
 }
