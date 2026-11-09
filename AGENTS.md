@@ -57,7 +57,9 @@ emulator for every pull request.
 12. **Calls and signatures read top-down.** A call or declaration with three or more named arguments
     puts one argument per line with a trailing comma; a shorter call stays on one line. Lines are at
     most 100 characters (detekt `MaxLineLength`, ktlint wraps automatically). Reviewers ask for it.
-13. **The backend is archived** (decision 0005): no new code in `core:network`, the auth interceptor or
+13. **One push per PR.** Run the gates locally first; push when they are green, not per commit. No
+    empty commits to re-run CI; rebase only the PR that is next to merge (`scripts/restack.sh --next`).
+14. **The backend is archived** (decision 0005): no new code in `core:network`, the auth interceptor or
     token storage; new features work on local data; `remoteBack` only has to compile.
 
 ## Done means

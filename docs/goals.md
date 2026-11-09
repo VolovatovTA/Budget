@@ -38,7 +38,10 @@ Nothing here is for sale: no paid tier, no ads, no monetisation.
    described, decorative ones are skipped, rows read as one sentence), targets are at least 48 dp,
    nothing breaks at 200 % font scale; phones, foldables and tablets each get a layout that fits
    (window size classes, fold posture), not a stretched phone screen.
-10. **Checked, not promised.** Module graph, layering, coroutine discipline, static analysis, coverage
+10. **Frugal with shared machines.** GitHub Actions minutes and API calls are spent only when a local
+    check cannot replace them: one push per pull request after the local gates are green, no pushes
+    per commit, no CI re-runs for their own sake, no rebases of PRs that are not next to merge.
+11. **Checked, not promised.** Module graph, layering, coroutine discipline, static analysis, coverage
    gate and the instrumented flow test run on every PR; a rule that cannot be checked is written down
    in [architecture.md](architecture.md) with its reason.
 

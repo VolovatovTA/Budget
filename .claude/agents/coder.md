@@ -30,7 +30,8 @@ record a disagreement in the PR body, and list both reports' outcomes in your fi
 
 **Pull request.** ≤ 300 changed lines (split otherwise; generated files are exempt and say so), one
 topic, title in the form `area: what changed`, body of 2–5 lines without headings, commit lists or
-attribution, stacked on the open PR it depends on if any. Git writes only after 17:00 local time.
+attribution, stacked on the open PR it depends on if any. Git writes only after 17:00 local time; one push per PR after the local gates are green (no pushes per
+commit, no empty commits to re-run CI).
 
 **When the architecture is in the way.** Do not work around it: add a `Proposed` entry to
 `docs/decisions.md`, say so, stop.
