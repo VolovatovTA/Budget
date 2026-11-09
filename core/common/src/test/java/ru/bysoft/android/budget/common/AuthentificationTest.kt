@@ -105,7 +105,6 @@ class AuthentificationTest {
             .doReturn(401)
             .doReturn(200)
 
-
         runTest(dispatchTimeoutMs = 3000) {
             (0..5).map {
                 println("Start request $it")
