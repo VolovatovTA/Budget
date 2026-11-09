@@ -24,8 +24,8 @@ class TokenContrastTest {
     @Test
     fun `accent, semantic and category colours reach 3 to 1 on the surfaces they are drawn on`() {
         val violations = themes.flatMap { (theme, t) ->
-            val marks = listOf("accent" to t.accent, "positive" to t.positive, "negative" to t.negative, "warning" to t.warning) +
-                t.categoryPalette.mapIndexed { i, c -> "category[$i]" to c }
+            val semantic = listOf("accent" to t.accent, "positive" to t.positive, "negative" to t.negative, "warning" to t.warning)
+            val marks = semantic + t.categoryPalette.mapIndexed { i, c -> "category[$i]" to c }
             marks.flatMap { (name, fg) ->
                 surfacesOf(t).mapNotNull { (surface, bg) -> violation(theme, name, surface, fg, bg, GRAPHIC_MIN) }
             }

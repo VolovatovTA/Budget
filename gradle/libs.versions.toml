@@ -136,6 +136,7 @@ room-gradlePlugin = { module = "androidx.room:room-gradle-plugin", version.ref =
 dependency-analysis-gradlePlugin = { module = "com.autonomousapps:dependency-analysis-gradle-plugin", version.ref = "dependency-analysis" }
 kover-gradlePlugin = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kover" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+detekt-gradlePlugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 compose-rules-detekt = { module = "io.nlopez.compose.rules:detekt", version.ref = "compose-rules-detekt" }
 
 [bundles]
@@ -172,3 +173,4 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 # Convention plugins from build-logic
 bysoft-library = { id = "ru.bysoft.library", version = "unspecified" }
 bysoft-compose = { id = "ru.bysoft.compose", version = "unspecified" }
+bysoft-detekt = { id = "ru.bysoft.detekt", version = "unspecified" }

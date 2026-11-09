@@ -17,6 +17,7 @@ dependencies {
     compileOnly(libs.room.gradlePlugin)
     compileOnly(libs.dependency.analysis.gradlePlugin)
     compileOnly(libs.kover.gradlePlugin)
+    compileOnly(libs.detekt.gradlePlugin)
 
 }
 
@@ -25,6 +26,10 @@ gradlePlugin {
         register("androidLibraryBasic") {
             id = libs.plugins.bysoft.library.get().pluginId
             implementationClass = "ru.BaseLibraryPlugin"
+        }
+        register("detektConvention") {
+            id = libs.plugins.bysoft.detekt.get().pluginId
+            implementationClass = "ru.DetektConventionPlugin"
         }
         register("androidLibraryCompose") {
             id = libs.plugins.bysoft.compose.get().pluginId

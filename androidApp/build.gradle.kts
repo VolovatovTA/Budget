@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.serialization)
     alias(libs.plugins.dependency.analysis)
     alias(libs.plugins.kover)
+    alias(libs.plugins.bysoft.detekt)
 }
 
 android {

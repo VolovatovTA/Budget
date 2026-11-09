@@ -15,6 +15,7 @@ class BaseLibraryPlugin : Plugin<Project> {
             apply("com.android.library")
             apply("com.autonomousapps.dependency-analysis")
             apply("org.jetbrains.kotlinx.kover")
+            apply("ru.bysoft.detekt")
         }
 
         target.extensions.getByType(LibraryExtension::class.java).apply {

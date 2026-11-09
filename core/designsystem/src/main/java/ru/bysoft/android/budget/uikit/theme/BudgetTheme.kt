@@ -2,10 +2,8 @@ package ru.bysoft.android.budget.uikit.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
-import androidx.compose.material.MaterialTheme as Material2Theme
 import androidx.compose.material.lightColors
 import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.MaterialTheme as Material3Theme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
@@ -22,6 +20,8 @@ import ru.bysoft.android.budget.uikit.colors.LightPalette
 import ru.bysoft.android.budget.uikit.colors.LocalBudgetPalette
 import ru.bysoft.android.budget.uikit.colors.Palette
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
+import androidx.compose.material.MaterialTheme as Material2Theme
+import androidx.compose.material3.MaterialTheme as Material3Theme
 
 /**
  * Wix Madefor Display (SIL OFL 1.1, see core/designsystem/FONT_LICENSE.txt): one variable TTF,

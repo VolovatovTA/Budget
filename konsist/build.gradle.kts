@@ -2,6 +2,7 @@
 plugins {
     // version comes from the root plugins block, like every other Kotlin plugin here
     id("org.jetbrains.kotlin.jvm")
+    alias(libs.plugins.bysoft.detekt)
 }
 
 kotlin {
