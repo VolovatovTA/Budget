@@ -2,7 +2,6 @@ package ru.bysoft.android.budget.uikit.components.devider
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +25,7 @@ fun UiKitDivider(
     position: DividerTextPosition = DividerTextPosition.CENTER,
 ) {
     val color =
-        if (isSystemInDarkTheme()) UiKitColors.colors.neutral.`300`
+        if (UiKitColors.isDark) UiKitColors.colors.neutral.`300`
         else UiKitColors.colors.neutral.`500`
     Box(modifier = modifier) {
         Spacer(

@@ -16,7 +16,6 @@ package ru.bysoft.android.budget.uikit.theme
  * limitations under the License.
  */
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Brush
@@ -31,12 +30,13 @@ import com.patrykandpatrick.vico.core.chart.line.LineChart
 import com.patrykandpatrick.vico.core.component.shape.LineComponent
 import com.patrykandpatrick.vico.core.component.shape.Shapes
 import com.patrykandpatrick.vico.core.component.shape.shader.DynamicShaders
+import ru.bysoft.android.budget.uikit.colors.UiKitColors
 
 @Composable
 internal fun rememberChartStyle(columnChartColors: List<Color>, lineChartColors: List<Color>): ChartStyle {
-    val isSystemInDarkTheme = isSystemInDarkTheme()
-    return remember(columnChartColors, lineChartColors, isSystemInDarkTheme) {
-        val defaultColors = if (isSystemInDarkTheme) DefaultColors.Dark else DefaultColors.Light
+    val isDark = UiKitColors.isDark
+    return remember(columnChartColors, lineChartColors, isDark) {
+        val defaultColors = if (isDark) DefaultColors.Dark else DefaultColors.Light
         ChartStyle(
             ChartStyle.Axis(
                 axisLabelColor = Color(defaultColors.axisLabelColor),

@@ -3,10 +3,14 @@ package ru.bysoft.android.budget.uikit.colors
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import ru.bysoft.android.budget.uikit.styles.text.BaseTextFieldColors
 
+@Stable
 interface Palette {
+    val isDark: Boolean
     val primary: BudgetTone
     val neutral: BudgetTone
     val feedbackRed: BudgetTone
@@ -46,6 +50,7 @@ data class BudgetTypeColors(
 
 
 object LightPalette : Palette {
+    override val isDark = false
     override val tokens = LightTokens
     override val primary = BudgetTone(
         `1100` = Color(0xFF110045),
@@ -125,6 +130,7 @@ object LightPalette : Palette {
 }
 
 object DarkPalette : Palette {
+    override val isDark = true
     override val tokens = DarkTokens
     override val primary = BudgetTone(
         `1100` = Color(0xFF261051),
@@ -204,13 +210,20 @@ object DarkPalette : Palette {
 }
 
 
-object UiKitColors {
+/** Provided by BudgetTheme; null outside of it (previews), then the system setting decides. */
+val LocalBudgetPalette = staticCompositionLocalOf<Palette?> { null }
 
+object UiKitColors {
 
     @Composable
     private fun getColorsBySystemTheme(): Palette {
-        return if (isSystemInDarkTheme()) DarkPalette else LightPalette
+        return LocalBudgetPalette.current ?: if (isSystemInDarkTheme()) DarkPalette else LightPalette
     }
+
+    /** True when the active palette is the dark one; the kit asks this instead of the system setting. */
+    val isDark: Boolean
+        @Composable
+        get() = colors.isDark
 
     /**
      * Формат цвета: primary.1100
@@ -254,7 +267,7 @@ object UiKitColors {
         get() = getColorsBySystemTheme()
 
     @Composable
-    fun card(isSelected: Boolean): Color = if (isSystemInDarkTheme()) {
+    fun card(isSelected: Boolean): Color = if (isDark) {
         if (isSelected) colors.neutral.`300` else colors.surface.tertiary
     } else {
         if (isSelected) colors.neutral.`300` else colors.surface.primary
@@ -271,7 +284,7 @@ object UiKitColors {
     val textField
         @Composable
         get() =
-            if (isSystemInDarkTheme())
+            if (isDark)
                 BaseTextFieldColors(
                     textColor = colors.type.high,
                     backgroundColor = Color.Transparent,

@@ -8,6 +8,7 @@ android {
 }
 
 dependencies {
+    api(libs.compose.material3)
     implementation(libs.bundles.compose.icons)
     implementation(libs.compose.shimmer)
     implementation(libs.charts.compose)
