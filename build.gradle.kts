@@ -18,6 +18,7 @@ plugins {
     alias(libs.plugins.dependency.analysis)
     alias(libs.plugins.module.graph.assert)
     alias(libs.plugins.kover)
+    alias(libs.plugins.detekt) apply false
 }
 
 // Merged unit-test coverage: `./gradlew koverHtmlReportCoverage` (build/reports/kover/htmlCoverage),
@@ -89,4 +90,21 @@ moduleGraphAssert {
 
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
+}
+// Static analysis: `./gradlew detekt` (CI job "detekt"). Project conventions live in config/detekt/detekt.yml,
+// pre-existing findings in each module's detekt-baseline.xml; a touched file loses its baseline entries.
+val detektPluginId = libs.plugins.detekt.get().pluginId
+val detektRuleSets = listOf(libs.detekt.formatting, libs.compose.rules.detekt)
+subprojects {
+    if (!buildFile.exists()) return@subprojects
+    apply(plugin = detektPluginId)
+    extensions.configure<io.gitlab.arturbosch.detekt.extensions.DetektExtension> {
+        buildUponDefaultConfig = true
+        config.setFrom(rootProject.file("config/detekt/detekt.yml"))
+        baseline = file("detekt-baseline.xml")
+        parallel = true
+    }
+    dependencies {
+        detektRuleSets.forEach { "detektPlugins"(it) }
+    }
 }

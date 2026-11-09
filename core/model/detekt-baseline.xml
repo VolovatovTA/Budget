@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ImplicitDefaultLocale:Utils.kt$String.format("%.${countNumbersAfterDot}f", amount)</ID>
+    <ID>MagicNumber:Utils.kt$3</ID>
+    <ID>WildcardImport:Utils.kt$import java.util.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

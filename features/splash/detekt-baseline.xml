@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>MutableStateAutoboxing:SplashScreen.kt$mutableStateOf(0)</ID>
+    <ID>MutableStateParam:SplashScreen.kt$animatedState</ID>
+    <ID>ParameterNaming:SplashScreen.kt$onAnimationFinished</ID>
+    <ID>RememberMissing:SplashScreen.kt$mutableStateOf(0)</ID>
+  </CurrentIssues>
+</SmellBaseline>

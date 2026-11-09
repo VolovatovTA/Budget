@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ModifierMissing:BottomNavigationScreen.kt$BottomNavigationScreen</ID>
+    <ID>PreviewPublic:BottomNavigationScreen.kt$BottomNavigationScreenPreview</ID>
+    <ID>WildcardImport:BottomNavigationScreen.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:BottomNavigationScreen.kt$import androidx.compose.material.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

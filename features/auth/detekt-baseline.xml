@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComposableParamOrder:AuthTextField.kt$AuthTextField</ID>
+    <ID>CyclomaticComplexMethod:AuthScreen.kt$@Composable @OptIn(ExperimentalTextApi::class) private fun AuthSuccessScreen( paddingValues: PaddingValues, state: AuthState, viewModel: IAuthViewModel, googleAuthUiClient: GoogleAuthUiClient?, launcher: ManagedActivityResultLauncher&lt;IntentSenderRequest, ActivityResult&gt;?, scope: CoroutineScope )</ID>
+    <ID>Indentation:AuthViewModel.kt$AuthViewModel$ </ID>
+    <ID>InstanceOfCheckForException:AuthRepository.kt$AuthRepository$e is SSLPeerUnverifiedException</ID>
+    <ID>InstanceOfCheckForException:GoogleAuthUiClient.kt$GoogleAuthUiClient$e is CancellationException</ID>
+    <ID>MagicNumber:AuthViewModel.kt$AuthViewModel$6</ID>
+    <ID>MaxLineLength:AuthScreen.kt$if (state.type == AuthActionType.SIGN_IN) R.string.password_enter_label else R.string.password_create_label</ID>
+    <ID>MaxLineLength:AuthViewModel.kt$AuthViewModel$errorText = if (it.type == AuthActionType.SIGN_UP &amp;&amp; password != state.value.confirmPassword.text) R.string.passwords_not_match else null</ID>
+    <ID>MaxLineLength:AuthViewModel.kt$AuthViewModel$errorText = if (it.type == AuthActionType.SIGN_UP &amp;&amp; password != state.value.password.text) R.string.passwords_not_match else null</ID>
+    <ID>MaxLineLength:AuthViewModel.kt$AuthViewModel$if (it.type == AuthActionType.SIGN_UP &amp;&amp; password != state.value.confirmPassword.text) R.string.passwords_not_match else null</ID>
+    <ID>MaxLineLength:IAuthDataMapper.kt$"The password field is required.", "The password must be at least 6 characters." -&gt; R.string.field_password_invalid_length</ID>
+    <ID>ModifierMissing:AuthScreen.kt$AuthScreen</ID>
+    <ID>ModifierNotUsedAtRoot:AuthTextField.kt$modifier = modifier .fillMaxWidth() .padding(horizontal = padding) .onFocusChanged { if (!it.isFocused) onNotFocused(state.text) }</ID>
+    <ID>ParameterNaming:AuthTextField.kt$onNotFocused</ID>
+    <ID>PreviewPublic:AuthScreen.kt$AuthPreview</ID>
+    <ID>PrintStackTrace:GoogleAuthUiClient.kt$GoogleAuthUiClient$e</ID>
+    <ID>SwallowedException:AuthRepository.kt$AuthRepository$e: Throwable</ID>
+    <ID>TooGenericExceptionCaught:AuthRepository.kt$AuthRepository$e: Throwable</ID>
+    <ID>TooGenericExceptionCaught:GoogleAuthUiClient.kt$GoogleAuthUiClient$e: Exception</ID>
+    <ID>WildcardImport:AuthTextField.kt$import androidx.compose.foundation.layout.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

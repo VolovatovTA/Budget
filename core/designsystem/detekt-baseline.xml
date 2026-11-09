@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComposableParamOrder:UiKitIconComponent.kt$UiKitIconsComponent</ID>
+    <ID>ComposableParamOrder:UiKitListItem.kt$UiKitListItem</ID>
+    <ID>ComposableParamOrder:UiKitTextField.kt$UiKitTextField</ID>
+    <ID>ComposableParamOrder:UiKitTextField.kt$UiKitTextFieldWithCurrency</ID>
+    <ID>ComposableParamOrder:UiKitTextField.kt$UiKitTextFieldWithPopUpAndCurrency</ID>
+    <ID>CompositionLocalAllowlist:UiKitPalette.kt$LocalBudgetPalette</ID>
+    <ID>ConstructorParameterNaming:UiKitPalette.kt$BudgetTone$val `1000`: Color</ID>
+    <ID>ConstructorParameterNaming:UiKitPalette.kt$BudgetTone$val `100`: Color</ID>
+    <ID>ConstructorParameterNaming:UiKitPalette.kt$BudgetTone$val `1100`: Color</ID>
+    <ID>ConstructorParameterNaming:UiKitPalette.kt$BudgetTone$val `200`: Color</ID>
+    <ID>ConstructorParameterNaming:UiKitPalette.kt$BudgetTone$val `300`: Color</ID>
+    <ID>ConstructorParameterNaming:UiKitPalette.kt$BudgetTone$val `400`: Color</ID>
+    <ID>ConstructorParameterNaming:UiKitPalette.kt$BudgetTone$val `500`: Color</ID>
+    <ID>ConstructorParameterNaming:UiKitPalette.kt$BudgetTone$val `600`: Color</ID>
+    <ID>ConstructorParameterNaming:UiKitPalette.kt$BudgetTone$val `700`: Color</ID>
+    <ID>ConstructorParameterNaming:UiKitPalette.kt$BudgetTone$val `800`: Color</ID>
+    <ID>ConstructorParameterNaming:UiKitPalette.kt$BudgetTone$val `900`: Color</ID>
+    <ID>ConstructorParameterNaming:UiKittStyles.kt$BudgetTypography$val Bold: TextStyle</ID>
+    <ID>ConstructorParameterNaming:UiKittStyles.kt$BudgetTypography$val Medium: TextStyle</ID>
+    <ID>ConstructorParameterNaming:UiKittStyles.kt$BudgetTypography$val Regular: TextStyle</ID>
+    <ID>ConstructorParameterNaming:UiKittStyles.kt$BudgetTypography$val SemiBold: TextStyle</ID>
+    <ID>ContentSlotReused:UiKitCurrencyPopUp.kt$itemInPopup</ID>
+    <ID>CyclomaticComplexMethod:UiKitButton.kt$@Composable fun UiKitButton( info: UiKitButtonInfo, modifier: Modifier = Modifier, isButtonEnabled: Boolean = true, onClick: () -&gt; Unit = {} )</ID>
+    <ID>Filename:TextFieldColors.kt$ru.bysoft.android.budget.uikit.styles.text.TextFieldColors.kt</ID>
+    <ID>LongParameterList:TextFieldColors.kt$BaseTextFieldColors$( private val textColor: Color, private val disabledTextColor: Color, private val cursorColor: Color, private val errorCursorColor: Color, private val focusedIndicatorColor: Color, private val unfocusedIndicatorColor: Color, private val errorIndicatorColor: Color, private val disabledIndicatorColor: Color, private val leadingIconColor: Color, private val disabledLeadingIconColor: Color, private val errorLeadingIconColor: Color, private val trailingIconColor: Color, private val disabledTrailingIconColor: Color, private val errorTrailingIconColor: Color, private val backgroundColor: Color, private val focusedLabelColor: Color, private val unfocusedLabelColor: Color, private val disabledLabelColor: Color, private val errorLabelColor: Color, private val placeholderColor: Color, private val disabledPlaceholderColor: Color )</ID>
+    <ID>MatchingDeclarationName:TextFieldColors.kt$BaseTextFieldColors : TextFieldColors</ID>
+    <ID>MatchingDeclarationName:UiKitDivider.kt$DividerTextPosition</ID>
+    <ID>MatchingDeclarationName:UiKitTextField.kt$TextFieldState</ID>
+    <ID>MaxLineLength:UiKitCheckBox.kt$uncheckedColor = if (UiKitColors.isDark) UiKitColors.colors.neutral.`300` else UiKitColors.colors.neutral.`500`</ID>
+    <ID>ModifierMissing:UiKitIconComponent.kt$UiKitIconsComponent</ID>
+    <ID>ModifierMissing:UiKitTextField.kt$UiKitCurrencyPopUpTextField</ID>
+    <ID>ModifierNotUsedAtRoot:UiKitAvatar.kt$modifier = modifier .size(40.dp) .clickable( remember { MutableInteractionSource() }, indication = if (rippleEnabled) LocalIndication.current else null ) { onClick() }</ID>
+    <ID>ModifierNotUsedAtRoot:UiKitCurrencyPopUp.kt$modifier = modifier</ID>
+    <ID>ModifierNotUsedAtRoot:UiKitTextField.kt$modifier = modifier .onFocusChanged { if (!it.isFocused) onNotFocused(state.text) }</ID>
+    <ID>ModifierReused:UiKitCurrencyPopUp.kt$Column( modifier = modifier.clickable { showMenu.value = !showMenu.value } ) { Surface( shape = RoundedCornerShape(10.dp), modifier = modifier, color = Color.Transparent ) { Row( verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center ) { itemInPopup(info.selectedValue) Box( contentAlignment = Alignment.CenterEnd, modifier = Modifier ) { Icon( imageVector = if (showMenu.value) { Icons.Filled.ArrowDropUp } else { Icons.Filled.ArrowDropDown }, contentDescription = null, tint = UiKitColors.colors.type.high, ) } Spacer(modifier = Modifier.width(10.dp)) } } if (!info.errorText.isNullOrEmpty()) { Text( text = info.errorText, style = UiKitTypography.TextXS.Regular, color = UiKitColors.colors.feedbackRed.`1100`, ) } DropdownMenu( expanded = showMenu.value, onDismissRequest = { showMenu.value = false }, modifier = Modifier ) { info.list.forEach { item -&gt; DropdownMenuItem( onClick = { showMenu.value = false onClickItem(item) } ) { itemInPopup(item) } } } }</ID>
+    <ID>ModifierReused:UiKitCurrencyPopUp.kt$Surface( shape = RoundedCornerShape(10.dp), modifier = modifier, color = Color.Transparent ) { Row( verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center ) { itemInPopup(info.selectedValue) Box( contentAlignment = Alignment.CenterEnd, modifier = Modifier ) { Icon( imageVector = if (showMenu.value) { Icons.Filled.ArrowDropUp } else { Icons.Filled.ArrowDropDown }, contentDescription = null, tint = UiKitColors.colors.type.high, ) } Spacer(modifier = Modifier.width(10.dp)) } }</ID>
+    <ID>MultipleEmitters:UiKitCurrencyPopUp.kt$UiKitPopUp</ID>
+    <ID>MultipleEmitters:UiKitTextField.kt$UiKitTextField</ID>
+    <ID>PackageNaming:UiKitAmountInfo.kt$package ru.bysoft.android.budget.uikit.components.listItem.entity</ID>
+    <ID>PackageNaming:UiKitListItem.kt$package ru.bysoft.android.budget.uikit.components.listItem</ID>
+    <ID>ParameterNaming:UiKitRowTab.kt$onCheckChanged</ID>
+    <ID>ParameterNaming:UiKitTextField.kt$onNotFocused</ID>
+    <ID>PreviewAnnotationNaming:UiKitIconComponent.kt$BothThemePreview$BothThemePreview</ID>
+    <ID>PreviewPublic:Preview.kt$Dark</ID>
+    <ID>PreviewPublic:Preview.kt$Light</ID>
+    <ID>PreviewPublic:UiKitCheckBox.kt$Dark</ID>
+    <ID>PreviewPublic:UiKitCheckBox.kt$Light</ID>
+    <ID>PreviewPublic:UiKitDivider.kt$DividerPreviewDark</ID>
+    <ID>PreviewPublic:UiKitDivider.kt$DividerPreviewLight</ID>
+    <ID>PreviewPublic:UiKitIconComponent.kt$UiKitIconsComponentPreview</ID>
+    <ID>PreviewPublic:UiKitListItem.kt$UiKitListItemPreview</ID>
+    <ID>PreviewPublic:UiKitRowTab.kt$UiKitRowTabDarkPreview</ID>
+    <ID>PreviewPublic:UiKitRowTab.kt$UiKitRowTabLightPreview</ID>
+    <ID>PreviewPublic:UiKitTextField.kt$PopupPreview</ID>
+    <ID>PreviewPublic:UiKitTextField.kt$TextFieldPreview</ID>
+    <ID>PreviewPublic:UiKitTextField.kt$TextFieldPreviewDark</ID>
+    <ID>PreviewPublic:UiKitTextField.kt$TextFieldPreviewLight</ID>
+    <ID>PreviewPublic:UiKitToggleButton.kt$ButtonsDark</ID>
+    <ID>PreviewPublic:UiKitToggleButton.kt$ButtonsLight</ID>
+    <ID>UnusedParameter:Chart5.kt$chartEntryModelProducer: ChartEntryModelProducer</ID>
+    <ID>WildcardImport:ExpandVertical.kt$import androidx.compose.animation.*</ID>
+    <ID>WildcardImport:Preview.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:TextFieldColors.kt$import androidx.compose.runtime.*</ID>
+    <ID>WildcardImport:UiKitCheckBox.kt$import androidx.compose.runtime.*</ID>
+    <ID>WildcardImport:UiKitCurrencyPopUp.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:UiKitCurrencyPopUp.kt$import androidx.compose.material.*</ID>
+    <ID>WildcardImport:UiKitDivider.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:UiKitRowTab.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:UiKitRowTab.kt$import androidx.compose.runtime.*</ID>
+    <ID>WildcardImport:UiKitToggleButton.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:UiKitTopBar.kt$import androidx.compose.foundation.layout.*</ID>
+  </CurrentIssues>
+</SmellBaseline>
