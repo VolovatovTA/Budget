@@ -1,0 +1,26 @@
+# Issues are the agents' specifications, so only the maintainer's circle writes them: anything opened by
+# someone who is not an owner, member or collaborator is closed and locked (backstop behind the
+# repository's interaction limit).
+name: Issue guard
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  guard:
+    if: >-
+      github.event.issue.author_association != 'OWNER' &&
+      github.event.issue.author_association != 'MEMBER' &&
+      github.event.issue.author_association != 'COLLABORATOR'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          N: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$N" --repo "$GITHUB_REPOSITORY" --body "Issues in this repository are written by its maintainers; thank you for the interest."
+          gh issue close "$N" --repo "$GITHUB_REPOSITORY" --reason "not planned"
+          gh issue lock "$N" --repo "$GITHUB_REPOSITORY" --reason spam
