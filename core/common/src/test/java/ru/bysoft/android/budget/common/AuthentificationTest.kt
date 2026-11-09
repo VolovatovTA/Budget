@@ -105,17 +105,6 @@ class AuthentificationTest {
             .doReturn(401)
             .doReturn(200)
 
-//        (0..12).map {
-//            println("Start request $it")
-//            scope.async {
-//                val response = chain.proceed(any())
-//                if (it == 0) {
-//                    assert(response == this@AuthentificationTest.expiredAccessTokeResponse)
-//                } else {
-//                    assert(response == this@AuthentificationTest.successAuthResponse)
-//                }
-//            }
-//        }
 
         runTest(dispatchTimeoutMs = 3000) {
             (0..5).map {
