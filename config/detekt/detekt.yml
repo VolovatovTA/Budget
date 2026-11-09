@@ -1,0 +1,97 @@
+# Budget detekt config. Built upon the default config; only deviations are listed.
+# Rule of thumb: configure here what is a project convention, put the rest in the per-module
+# baseline (detekt-baseline.xml) and shrink the baseline whenever a file is touched.
+
+build:
+  maxIssues: 0
+
+config:
+  validation: true
+  warningsAsErrors: true
+
+style:
+  MagicNumber:
+    excludes: ['**/test/**', '**/androidTest/**', '**/icons/**', '**/colors/**']
+    ignorePropertyDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+    ignoreAnnotated: ['Preview', 'Composable']   # dp/sp literals in layouts are design values
+  MaxLineLength:
+    maxLineLength: 120
+  WildcardImport:
+    excludeImports: []
+  ForbiddenComment:
+    active: true
+    comments:
+      - reason: 'A TODO needs an issue: create one and write TODO(#123)'
+        value: 'TODO'
+      - reason: 'A FIXME needs an issue: create one and write FIXME(#123)'
+        value: 'FIXME'
+      - reason: 'Resolve before merging'
+        value: 'STOPSHIP'
+    allowedPatterns: '(TODO|FIXME)\(#\d+\)'
+  ReturnCount:
+    max: 3
+  UnusedPrivateProperty:
+    active: true
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated: ['Composable']
+  PackageNaming:
+    packagePattern: '[a-z]+(\.[a-z][a-z0-9_]*)*'   # snake_case feature packages exist until the flat-names cleanup
+  TopLevelPropertyNaming:
+    constantPattern: '[A-Z][_A-Z0-9]*|[a-z][A-Za-z0-9]*'
+
+complexity:
+  LongParameterList:
+    functionThreshold: 7
+    constructorThreshold: 8
+    ignoreAnnotated: ['Composable']   # slots + modifier + callbacks are normal for composables
+  LongMethod:
+    threshold: 80
+    ignoreAnnotated: ['Composable', 'Preview']
+  TooManyFunctions:
+    thresholdInClasses: 15
+    thresholdInInterfaces: 15
+    ignorePrivate: true
+
+exceptions:
+  TooGenericExceptionCaught:
+    active: true             # plan item: catch (Throwable) must rethrow CancellationException
+  SwallowedException:
+    active: true
+    ignoredExceptionTypes: ['CancellationException']
+
+coroutines:
+  active: true
+  SuspendFunSwallowedCancellation:
+    active: true
+  GlobalCoroutineUsage:
+    active: true
+  InjectDispatcher:
+    active: true
+
+Compose:
+  active: true
+  ModifierMissing:
+    active: true
+  ModifierNotUsedAtRoot:
+    active: true
+  Material2:
+    active: false            # M2 → M3 migration runs through the kit, tracked by the Konsist rule in PR 13
+  PreviewPublic:
+    active: true
+  UnstableCollections:
+    active: true             # composable parameters take ImmutableList/PersistentList (kotlinx.collections.immutable)
+
+formatting:
+  active: true
+  autoCorrect: true
+  PackageName:
+    active: false            # snake_case packages: see naming.PackageNaming above
+  MaximumLineLength:
+    active: false            # style.MaxLineLength reports it once
+  NoWildcardImports:
+    active: false            # style.WildcardImport reports it once
+  FinalNewline:
+    active: false            # style.NewLineAtEndOfFile reports it once

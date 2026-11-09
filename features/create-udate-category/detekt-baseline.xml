@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComposableParamOrder:CategoryComponents.kt$CreateUpdateCategoryTextField</ID>
+    <ID>Filename:CreateViewModel.kt$ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels.CreateViewModel.kt</ID>
+    <ID>Filename:UpdateViewModel.kt$ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels.UpdateViewModel.kt</ID>
+    <ID>MatchingDeclarationName:CreateViewModel.kt$CreateCategoryViewModel : CreateUpdateCategoryViewModelICreateCategoryViewModel</ID>
+    <ID>MatchingDeclarationName:UpdateViewModel.kt$UpdateCategoryViewModel : CreateUpdateCategoryViewModelIUpdateCategoryViewModel</ID>
+    <ID>ModifierMissing:CategoryComponents.kt$ButtonComponent</ID>
+    <ID>ModifierMissing:CreateCategoryScreen.kt$CreateCategoryLimitComponent</ID>
+    <ID>ModifierMissing:CreateCategoryScreen.kt$CreateCategoryScreen</ID>
+    <ID>ModifierMissing:UpdateCategoryScreen.kt$UpdateCategoryScreen</ID>
+    <ID>ParameterNaming:CategoryComponents.kt$onCurrencySelected</ID>
+    <ID>ParameterNaming:CategoryComponents.kt$onNotFocused</ID>
+    <ID>ParameterNaming:CreateCategoryScreen.kt$onAmountChanged</ID>
+    <ID>ParameterNaming:CreateCategoryScreen.kt$onCurrencySelected</ID>
+    <ID>ParameterNaming:CreateCategoryScreen.kt$onPeriodSelected</ID>
+    <ID>PreviewPublic:CreateCategoryScreen.kt$UpdateScreenPreview</ID>
+    <ID>WildcardImport:UpdateCategoryScreen.kt$import androidx.compose.foundation.layout.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

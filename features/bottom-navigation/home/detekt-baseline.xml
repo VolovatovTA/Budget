@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>EmptyFunctionBlock:HomeViewModel.kt$HomeViewModel${ }</ID>
+    <ID>ExplicitItLambdaParameter:HomeViewModel.kt$HomeViewModel${ index, it -&gt; UiKitTabInfo(it.text, index == 0) }</ID>
+    <ID>LongMethod:HomeTransactionsComponent.kt$@OptIn(ExperimentalMaterialApi::class) private fun LazyListScope.transactionsSuccessComponent( state: TransactionSuccess, onTransactionClick: (id: String) -&gt; Unit, )</ID>
+    <ID>LongParameterList:HomeViewModel.kt$HomeViewModel$( private val errorLogger: IErrorLogger, private val walletsRepo: IHomeWalletsRepo, private val meRepo: IHomeMeRepo, private val transactionsRepo: ITransactionsRepo, private val navigate: IHomeNavigation, private val meInfo: IMeInfo, private val mapper: IHomePresentationMapper, private val currencyRatesRepo: ICurrencyRatesRepo )</ID>
+    <ID>MagicNumber:HomeTransactionsComponent.kt$0.25f</ID>
+    <ID>MagicNumber:HomeTransactionsComponent.kt$4</ID>
+    <ID>MaxLineLength:HomeViewModel.kt$HomeViewModel$isTransfersChecked(filters) &amp;&amp; !isExpenseChecked(filters) &amp;&amp; !isIncomeChecked(filters) -&gt; TransferTypeEnum.ONLY_TRANSFER</ID>
+    <ID>ModifierMissing:HomeFiltersComponent.kt$HomeFiltersComponent</ID>
+    <ID>ModifierMissing:HomeScreen.kt$HomeScreen</ID>
+    <ID>ModifierMissing:HomeTitleComponent.kt$HomeTitleComponent</ID>
+    <ID>ModifierMissing:WalletsPagerComponent.kt$WalletSimpleCard</ID>
+    <ID>ModifierMissing:WalletsPagerComponent.kt$WalletsPagerComponent</ID>
+    <ID>ParameterNaming:HomeFiltersComponent.kt$onCheckChanged</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onDialogConfirmed</ID>
+    <ID>ParameterNaming:HomeTitleComponent.kt$onCurrencyChanged</ID>
+    <ID>ParameterNaming:WalletsPagerComponent.kt$onPositionSelected</ID>
+    <ID>PreviewPublic:HomeScreen.kt$UiKitDialogPreview</ID>
+    <ID>PreviewPublic:HomeTitleComponent.kt$TitleErrorPreview</ID>
+    <ID>PreviewPublic:HomeTitleComponent.kt$TitlePreview</ID>
+    <ID>PreviewPublic:HomeTitleComponent.kt$TitleWaitingPreview</ID>
+    <ID>PreviewPublic:Preview.kt$ErrorPreview</ID>
+    <ID>PreviewPublic:Preview.kt$LoadingPreview</ID>
+    <ID>PreviewPublic:Preview.kt$SuccessPreview</ID>
+    <ID>TooGenericExceptionCaught:ITransactionsRepo.kt$TransactionRepo$e: Throwable</ID>
+    <ID>WildcardImport:HomePresentationMapper.kt$import ru.bysoft.android.budget.common.data_entity.*</ID>
+    <ID>WildcardImport:HomeViewModel.kt$import kotlinx.coroutines.*</ID>
+    <ID>WildcardImport:HomeViewModel.kt$import kotlinx.coroutines.flow.*</ID>
+    <ID>WildcardImport:HomeViewModel.kt$import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.transactions.*</ID>
+    <ID>WildcardImport:HomeViewModel.kt$import ru.bysoft.android.budget.features.bottom_navigation.home.presentation.entity.wallets.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

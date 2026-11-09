@@ -18,6 +18,7 @@ plugins {
     alias(libs.plugins.dependency.analysis)
     alias(libs.plugins.module.graph.assert)
     alias(libs.plugins.kover)
+    alias(libs.plugins.detekt) apply false
 }
 
 // Merged unit-test coverage: `./gradlew koverHtmlReportCoverage` (build/reports/kover/htmlCoverage),

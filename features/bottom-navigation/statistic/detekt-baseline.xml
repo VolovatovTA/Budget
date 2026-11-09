@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ForEachOnRange:StatisticSuccessScreen.kt$0..10</ID>
+    <ID>ForEachOnRange:StatisticWaitingScreen.kt$0..5</ID>
+    <ID>MagicNumber:StatisticViewModel.kt$StatisticViewModel$7</ID>
+    <ID>MaxLineLength:IStatisticRepo.kt$StatisticRepo$override suspend</ID>
+    <ID>MaxLineLength:StatisticSuccessScreen.kt$stringResource(R.string.text_limit) + categoryInfo.subtitle</ID>
+    <ID>ModifierMissing:StatisticErrorScreen.kt$StatisticErrorScreen</ID>
+    <ID>ModifierMissing:StatisticScreen.kt$AddCategoryElement</ID>
+    <ID>ModifierMissing:StatisticScreen.kt$StatisticScreen</ID>
+    <ID>ModifierMissing:StatisticSuccessScreen.kt$StatisticSuccessScreen</ID>
+    <ID>PreviewPublic:StatisticSuccessScreen.kt$Preview</ID>
+    <ID>TooGenericExceptionCaught:StatisticViewModel.kt$StatisticViewModel$t: Throwable</ID>
+    <ID>UnusedPrivateProperty:StatisticViewModel.kt$StatisticViewModel$private val handlerTransactions = errorLogger.handler { state.update { statisticState -&gt; when (statisticState) { is StatisticSuccessState -&gt; { statisticState.copy( listInfo = statisticState.listInfo.map { categoryData -&gt; if (categoryData.amount is UiKitAmountInfoWaiting) { categoryData.copy( amount = UiKitAmountInfoError ) } else { categoryData } } ) } else -&gt; statisticState } } }</ID>
+    <ID>ViewModelForwarding:StatisticScreen.kt$StatisticSuccessScreen(state, viewModel)</ID>
+    <ID>WildcardImport:StatisticSuccessScreen.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:StatisticSuccessScreen.kt$import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.*</ID>
+    <ID>WildcardImport:StatisticViewModel.kt$import java.util.*</ID>
+    <ID>WildcardImport:StatisticViewModel.kt$import kotlinx.coroutines.*</ID>
+    <ID>WildcardImport:StatisticViewModel.kt$import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.*</ID>
+    <ID>WildcardImport:StatisticWaitingScreen.kt$import androidx.compose.foundation.layout.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

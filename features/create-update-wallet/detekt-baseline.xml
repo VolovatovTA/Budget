@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComposableParamOrder:CRUDWalletScreen.kt$CreateWalletTextField</ID>
+    <ID>MaxLineLength:CRUDWalletScreen.kt$title = if (viewModel is CreateWalletViewModel) R.string.wallet_title_create else R.string.wallet_title_update</ID>
+    <ID>ModifierMissing:CRUDWalletScreen.kt$CRUDWalletScreen</ID>
+    <ID>ModifierNotUsedAtRoot:CRUDWalletScreen.kt$modifier = modifier .fillMaxWidth() .padding(horizontal = padding) .onFocusChanged { if (!it.isFocused) onNotFocused(state.text) }</ID>
+    <ID>ParameterNaming:CRUDWalletScreen.kt$onNotFocused</ID>
+    <ID>PreviewPublic:CRUDWalletScreen.kt$PreviewCreateWalletScreen</ID>
+    <ID>TooGenericExceptionThrown:WalletRepository.kt$WalletRepository$throw Throwable("can't recognize $t as CreateWalletErrorResponse")</ID>
+    <ID>ViewModelForwarding:CRUDWalletScreen.kt$ButtonComponent(viewModel, viewModelWalletState)</ID>
+    <ID>WildcardImport:CRUDWalletScreen.kt$import androidx.compose.foundation.layout.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

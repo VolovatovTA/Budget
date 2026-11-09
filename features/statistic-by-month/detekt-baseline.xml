@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComposableParamOrder:StatisticByFiltersScreen.kt$StatisticScreenContent</ID>
+    <ID>ModifierMissing:StatisticByFiltersScreen.kt$StatisticByFiltersScreen</ID>
+    <ID>ModifierMissing:StatisticByFiltersScreenSuccess.kt$StatisticByFiltersScreenSuccess</ID>
+    <ID>MutableStateAutoboxing:StatisticByFiltersScreenSuccess.kt$mutableStateOf(0)</ID>
+    <ID>PreviewPublic:StatisticByFiltersScreen.kt$PreviewChart</ID>
+    <ID>PreviewPublic:StatisticByFiltersScreenSuccess.kt$Preview</ID>
+    <ID>WildcardImport:StatisticByFiltersScreen.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:StatisticByFiltersScreen.kt$import ru.bysoft.android.budget.features.statistic_by_month.presentation.*</ID>
+    <ID>WildcardImport:StatisticByFiltersScreenSuccess.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:StatisticByFiltersScreenSuccess.kt$import androidx.compose.runtime.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

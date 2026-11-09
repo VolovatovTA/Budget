@@ -53,6 +53,8 @@ module-graph-assert = "2.9.1"
 junit = "4.13.2"
 konsist = "0.18.0"
 kover = "0.9.11"
+detekt = "1.23.8"
+compose-rules-detekt = "0.4.28"
 androidx-test-core = "1.5.0"
 androidx-test-runner = "1.5.2"
 androidx-test-junit = "1.3.0"
@@ -133,6 +135,9 @@ compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-
 room-gradlePlugin = { module = "androidx.room:room-gradle-plugin", version.ref = "room" }
 dependency-analysis-gradlePlugin = { module = "com.autonomousapps:dependency-analysis-gradle-plugin", version.ref = "dependency-analysis" }
 kover-gradlePlugin = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kover" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+detekt-gradlePlugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+compose-rules-detekt = { module = "io.nlopez.compose.rules:detekt", version.ref = "compose-rules-detekt" }
 
 [bundles]
 compose = [
@@ -163,7 +168,9 @@ crashlitycs = { id = "com.google.firebase.crashlytics", version.ref = "firebase-
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
 module-graph-assert = { id = "com.jraska.module.graph.assertion", version.ref = "module-graph-assert" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 # Convention plugins from build-logic
 bysoft-library = { id = "ru.bysoft.library", version = "unspecified" }
 bysoft-compose = { id = "ru.bysoft.compose", version = "unspecified" }
+bysoft-detekt = { id = "ru.bysoft.detekt", version = "unspecified" }

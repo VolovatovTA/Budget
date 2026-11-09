@@ -32,3 +32,19 @@ jobs:
           update-comment: true
           min-coverage-overall: 12
           min-coverage-changed-files: 50
+  detekt:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: true
+
+      # Conventions in config/detekt/detekt.yml, pre-existing findings in the per-module detekt-baseline.xml
+      - run: ./gradlew detekt

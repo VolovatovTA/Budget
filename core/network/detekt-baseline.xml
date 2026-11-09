@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ConstructorParameterNaming:TransactionCreateRequest.kt$TransactionIncomeCreateRequest$@SerialName("income_id") val income_id: String? = null</ID>
+    <ID>Filename:MeRequest.kt$ru.budget.android.api.data.source.network.entity.me.MeRequest.kt</ID>
+    <ID>Filename:TransactionTypeRequest.kt$ru.budget.android.api.data.source.network.entity.transactions.TransactionTypeRequest.kt</ID>
+    <ID>FunctionParameterNaming:ITransactionsApi.kt$ITransactionsApi$@Query("income_ids") income_ids: String? = null</ID>
+    <ID>FunctionParameterNaming:ITransactionsApi.kt$ITransactionsApi$@Query("wallet_ids[]") wallet_ids: List&lt;String&gt;? = null</ID>
+    <ID>LongParameterList:ITransactionsApi.kt$ITransactionsApi$( @Query("type") type: String? = null, @Query("transfer") transferType: String? = null, @Query("currency") currency: String? = null, @Query("date_from") dateFrom: String? = null, @Query("date_to") dateTo: String? = null, @Query("expense_ids") expenseIds: String? = null, @Query("income_ids") income_ids: String? = null, @Query("wallet_ids[]") wallet_ids: List&lt;String&gt;? = null, )</ID>
+    <ID>MatchingDeclarationName:MeRequest.kt$SettingsRequest</ID>
+    <ID>MatchingDeclarationName:TransactionTypeRequest.kt$TransferTypeEnum</ID>
+    <ID>MaxLineLength:TransactionsDataMapper.kt$TransactionsDataMapper$!transactionItemResponse.listTransactionExpenseResponse.isNullOrEmpty()</ID>
+    <ID>TooGenericExceptionThrown:CreateWalletMapper.kt$throw Throwable("Unknown slug: ${response.slug}")</ID>
+    <ID>WildcardImport:CategoryApiMock.kt$import java.util.*</ID>
+    <ID>WildcardImport:CategoryApiMock.kt$import ru.budget.android.api.data.source.network.entity.category.*</ID>
+    <ID>WildcardImport:CategoryDataMapper.kt$import ru.bysoft.android.budget.common.data_entity.*</ID>
+    <ID>WildcardImport:ICategoryApi.kt$import ru.budget.android.api.data.source.network.entity.category.*</ID>
+    <ID>WildcardImport:ITransactionsApi.kt$import retrofit2.http.*</ID>
+    <ID>WildcardImport:IWalletApi.kt$import ru.budget.android.api.data.source.network.entity.wallet.*</ID>
+    <ID>WildcardImport:TransactionsDataMapper.kt$import ru.bysoft.android.budget.common.data_entity.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

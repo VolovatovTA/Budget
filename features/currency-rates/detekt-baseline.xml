@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>MaxLineLength:CurrencyRatesRepoTest.kt$CurrencyRatesRepoTest$all.forEach { base -&gt; all.forEach { t -&gt; dao.rows[base.iso4217 to t.iso4217] = CurrencyRateEntity(base.iso4217, t.iso4217, 1.0, updatedAt) } }</ID>
+  </CurrentIssues>
+</SmellBaseline>

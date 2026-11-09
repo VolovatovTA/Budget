@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComposableParamOrder:WalletChooserComponent.kt$WalletSuccessComponent</ID>
+    <ID>CyclomaticComplexMethod:TransactionCreateScreen.kt$@Composable private fun TransactionCreateScreenMain( transactionState: ITransactionState, setCategoriesIds: (CategoryPresentation) -&gt; Unit, setWalletId: (fromId: String?, toId: String?) -&gt; Unit, setComment: (String) -&gt; Unit, setAmount: (String) -&gt; Unit, setCurrency: (BudgetCurrencyEnum) -&gt; Unit, setExchangeAmount: (BudgetCurrencyEnum, String) -&gt; Unit, setTransactionType: (TransactionTypeEnum) -&gt; Unit, onEmptyCategoryClick: () -&gt; Unit, setFullAmount: (BudgetCurrencyEnum, Boolean) -&gt; Unit, setRevert: (BudgetCurrencyEnum, Boolean) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>EmptyFunctionBlock:TransactionCreateViewModel.kt$TransactionCreateViewModel${ }</ID>
+    <ID>EmptyFunctionBlock:TransactionUpdateViewModel.kt$TransactionUpdateViewModel${ }</ID>
+    <ID>LambdaParameterEventTrailing:WalletChooserComponent.kt$onClick</ID>
+    <ID>LongParameterList:TransactionCreateViewModel.kt$TransactionCreateViewModel$( errorLogger: IErrorLogger, private val navigate: ITransactionNavigation, private val transactionsRepo: ITransactionsRepo, categoriesRepo: ICategoriesRepo, walletsRepo: IWalletsRepo, private val transactionMapper: ITransactionPresentationMapper, private val meInfo: IMeInfo, private val currencyRatesRepo: ICurrencyRatesRepo, categoryMapperPresentation: ITransactionsCategoryPresentationMapper, walletMapper: ITransactionWalletPresentationMapper, savedStateHandle: SavedStateHandle )</ID>
+    <ID>LongParameterList:TransactionExpenseState.kt$ITransactionState$( open val commentState: TextFieldState = TextFieldState(), open val amountState: TextFieldState = TextFieldState(), open val currencyFieldState: CurrencyFieldState&lt;BudgetCurrencyEnum&gt; = CurrencyFieldState( selectedCurrency = null, list = getAvailableCurrency() ), open val categoryState: CategoryState?, open val exchangeFieldState: List&lt;ExchangeFieldState&gt; = emptyList(), open val isLoading: Boolean = false, open val walletFromFieldState: IWalletFieldState?, open val walletToFieldState: IWalletFieldState?, )</ID>
+    <ID>MagicNumber:TransactionCreateViewModel.kt$6</ID>
+    <ID>MaxLineLength:TransactionCreateScreen.kt$if</ID>
+    <ID>MaxLineLength:TransactionCreateScreen.kt$is TransactionExpenseState -&gt; isCategoryLoadedAndNotEmptyAndSelectedAtLeastOne &amp;&amp; isWalletFromLoadedAndNotEmptyAndSelectedAtLeastOne</ID>
+    <ID>MaxLineLength:TransactionCreateScreen.kt$is TransactionIncomeState -&gt; isCategoryLoadedAndNotEmptyAndSelectedAtLeastOne &amp;&amp; isWalletToLoadedAndNotEmptyAndSelectedAtLeastOne</ID>
+    <ID>MaxLineLength:TransactionCreateScreen.kt$is TransactionTransferState -&gt; isWalletFromLoadedAndNotEmptyAndSelectedAtLeastOne &amp;&amp; isWalletToLoadedAndNotEmptyAndSelectedAtLeastOne</ID>
+    <ID>MaxLineLength:TransactionExpenseState.kt$TransactionTransferState$override</ID>
+    <ID>MaxLineLength:TransactionPresentationMapperTest.kt$TransactionPresentationMapperTest$private</ID>
+    <ID>ModifierMissing:CategoryChooserComponent.kt$ShortSuccessCategoryComponent</ID>
+    <ID>ModifierMissing:TransactionCreateScreen.kt$TransactionScreen</ID>
+    <ID>ModifierNotUsedAtRoot:ExchangesComponent.kt$modifier = modifier</ID>
+    <ID>MultipleEmitters:CategoryChooserComponent.kt$PreviewCategory</ID>
+    <ID>MultipleEmitters:CategoryChooserComponent.kt$PreviewCategoryNight</ID>
+    <ID>PreviewPublic:CategoryChooserComponent.kt$PreviewCategory</ID>
+    <ID>PreviewPublic:CategoryChooserComponent.kt$PreviewCategoryNight</ID>
+    <ID>PreviewPublic:ExchangesComponent.kt$ExchangesComponent</ID>
+    <ID>PreviewPublic:TransactionScreenPreview.kt$TransactionScreenPreview</ID>
+    <ID>PreviewPublic:WalletChooserComponent.kt$WalletChooserComponentPreview</ID>
+    <ID>UnstableCollections:ExchangesComponent.kt$List&lt;ExchangeFieldState&gt;</ID>
+    <ID>WildcardImport:CategoryChooserComponent.kt$import androidx.compose.foundation.*</ID>
+    <ID>WildcardImport:CategoryChooserComponent.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:CategoryChooserComponent.kt$import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*</ID>
+    <ID>WildcardImport:CategoryChooserComponent.kt$import ru.bysoft.android.budget.uikit.styles.*</ID>
+    <ID>WildcardImport:ExchangesComponent.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:TransactionCreateScreen.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:TransactionCreateScreen.kt$import androidx.compose.material.*</ID>
+    <ID>WildcardImport:TransactionCreateScreen.kt$import androidx.compose.runtime.*</ID>
+    <ID>WildcardImport:TransactionCreateScreen.kt$import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*</ID>
+    <ID>WildcardImport:TransactionsDi.kt$import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.mapper.*</ID>
+    <ID>WildcardImport:WalletChooserComponent.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:WalletChooserComponent.kt$import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*</ID>
+  </CurrentIssues>
+</SmellBaseline>
