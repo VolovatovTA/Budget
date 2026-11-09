@@ -48,7 +48,9 @@ emulator for every pull request.
 8. **Small PRs**: about 300 changed lines, one topic, body of 2–5 lines, no commit lists. Generated
    files (baselines) are exempt and say so in the body.
 9. **Non-goals stay out** ([goals.md](docs/goals.md)); a direction listed there must stay reachable.
-10. **The backend is archived** (decision 0005): no new code in `core:network`, the auth interceptor or
+10. **A TODO needs an issue.** Write `TODO(#123)` / `FIXME(#123)` with the issue you created for it;
+    a bare TODO fails detekt (`ForbiddenComment`). `STOPSHIP` never merges.
+11. **The backend is archived** (decision 0005): no new code in `core:network`, the auth interceptor or
     token storage; new features work on local data; `remoteBack` only has to compile.
 
 ## Done means
