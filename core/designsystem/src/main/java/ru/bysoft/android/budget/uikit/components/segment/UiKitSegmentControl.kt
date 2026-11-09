@@ -62,7 +62,10 @@ fun UiKitSegmentControl(
         val segmentWidth = maxWidth / options.size
         if (!multiSelect) {
             val index = selected.firstOrNull() ?: 0
-            val offset by animateDpAsState(targetValue = segmentWidth * index, label = "segmentIndicator")
+            val offset by animateDpAsState(
+                targetValue = segmentWidth * index,
+                label = "segmentIndicator"
+            )
             Box(
                 modifier = Modifier
                     .offset(x = offset)
