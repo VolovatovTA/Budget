@@ -1,22 +1,23 @@
 # Goals
 
-Budget is a personal-finance app for Android: wallets in several currencies, income and expense
-transactions, categories with limits, spending statistics. One developer plus coding agents; the
-codebase is also the practice ground for agent-driven development, so rules are explicit and checked.
+Budget is a free personal-finance app for Android: wallets in several currencies, income and expense
+transactions, categories with limits, spending statistics. It is one developer's training ground as an
+architect and engineer — a place to learn the Android platform and its APIs properly, with coding
+agents doing much of the typing — that happens to be a useful product for the people who use it.
+Nothing here is for sale: no paid tier, no ads, no monetisation.
 
 ## Goals
 
-1. **Daily use in under ten seconds.** Adding a transaction is the main flow: open, amount, category,
+1. **Grow the author as an architect and engineer.** Every change is an occasion to do the thing the
+   right way: explicit architecture, checked rules, honest tests, a decision log. Trying a new Android
+   API or library the proper way is worth more than the shortest patch.
+2. **Daily use in under ten seconds.** Adding a transaction is the main flow: open, amount, category,
    wallet, done. Everything else is secondary to that path staying short and never losing data.
-2. **Works without an account.** The free tier keeps wallets, categories and transactions on the
-   device (Room) and computes balances, limits and statistics locally. The backend is an option, not a
-   requirement.
-3. **The data is the user's.** Two-way sync of transactions, wallets and categories as a spreadsheet
+3. **Works without an account.** Wallets, categories and transactions live on the device (Room) and
+   balances, limits and statistics are computed locally; the backend is an option, not a requirement.
+4. **The data is the user's.** Two-way sync of transactions, wallets and categories as a spreadsheet
    (.xlsx) on Google Drive or Yandex Disk, chosen in settings: edits in the sheet come back into the app,
-   app edits go into the sheet, conflicts are resolved latest-wins with a confirmation on same-field
-   conflicts.
-4. **One paid unlock, no ads.** Play Billing non-consumable "Pro" (RuStore billing for the Russian
-   market later); what Pro unlocks is still open (account sync, cloud backup, limits).
+   app edits go into the sheet; conflicts are latest-wins with a confirmation on same-field conflicts.
 5. **A 2026-grade look.** One typeface with Cyrillic (Wix Madefor Display), own design tokens for light
    and dark, components in `core:designsystem` only; every string localised (ru, en).
 6. **Checked, not promised.** Module graph, layering, coroutine discipline, static analysis, coverage
@@ -25,19 +26,15 @@ codebase is also the practice ground for agent-driven development, so rules are 
 
 ## Non-goals
 
-Agents: do not build these and do not add extension points for them. Each needs a record in
-[decisions.md](decisions.md) first.
+Agents: do not build these and do not add extension points for them.
 
+- **Monetisation of any kind**: paid tiers, in-app purchases, subscriptions, ads, analytics for sale.
 - **A second UI toolkit or a second theme language.** Material 3 is reachable only through the kit;
   features never import `androidx.compose.material*` widgets directly.
-- **Server-side features before the local mode exists**: shared budgets, multi-user, bank imports.
-- **A custom backend protocol.** The backend stays the existing REST API; new needs go to the local
-  layer first.
-- **Pixel-exact charts or a charting framework of our own.** The existing chart library is drawn with
-  tokens; replacing it is a decision, not a refactor.
-- **Pluggable storage, pluggable sync providers beyond the two named**, generic "cloud" abstractions.
 - **Tests written for the coverage number.** A test pins behaviour that can break; constants and data
   holders are excluded from the measurement instead of being tested.
+
+Anything else the maintainer has not named is open: propose it in [decisions.md](decisions.md).
 
 ## Directions (what the architecture must keep possible)
 
@@ -59,4 +56,5 @@ even when the change itself is correct.
 1. Never lose or corrupt the user's transactions.
 2. The add-transaction path stays short and works offline.
 3. Keep the module graph and layering as drawn; a direction above must stay reachable.
-4. Then looks, then speed, then new features.
+4. When two solutions cost the same, take the one that teaches something about the platform.
+5. Then looks, then speed, then new features.

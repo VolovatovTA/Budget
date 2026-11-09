@@ -65,7 +65,7 @@ Recorded so nobody copies them as patterns; each is a direction in goals.md.
   `kind` sealed field.
 - Repository interfaces live inside the features that use them (several `ITransactionsRepo`s). Target:
   `data:*` modules.
-- `localMock` flavor is JSON mocks in `core:network`. Target: the local repositories *are* the free tier.
+- `localMock` flavor is JSON mocks in `core:network`. Target: the local repositories *are* the no-account mode.
 - The two Konsist coroutine rules match function bodies with regexes. Target: detekt rules with type
   resolution; Konsist keeps structure only.
 - `AuthenticationInterceptorRefreshToken` can read token status before the first collection
