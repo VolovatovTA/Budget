@@ -15,7 +15,7 @@ import ru.bysoft.android.budget.uikit.icons.leftArrow
 
 fun mainTopBar(
     text: String,
-    onBackClick: ()-> Unit
+    onBackClick: () -> Unit
 ): @Composable () -> Unit {
     return {
         Row(
@@ -35,7 +35,6 @@ fun mainTopBar(
                 text,
                 modifier = Modifier.padding(horizontal = 10.dp).fillMaxWidth()
             )
-
         }
     }
 }

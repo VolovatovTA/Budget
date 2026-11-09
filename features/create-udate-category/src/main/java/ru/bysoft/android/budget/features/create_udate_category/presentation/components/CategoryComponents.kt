@@ -44,7 +44,6 @@ fun ButtonComponent(
             )
         }
     }
-
 }
 
 @Composable
@@ -63,7 +62,6 @@ fun CreateUpdateCategoryTextField(
         modifier = modifier,
         verticalArrangement = Arrangement.Center
     ) {
-
         UiKitTextFieldWithCurrency(
             state = state,
             onValueChange = onTextChange,

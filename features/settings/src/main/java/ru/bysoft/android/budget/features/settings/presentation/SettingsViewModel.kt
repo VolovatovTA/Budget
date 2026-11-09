@@ -1,7 +1,5 @@
 package ru.bysoft.android.budget.features.settings.presentation
 
-import ru.bysoft.android.budget.common.errors.IErrorLogger
-import ru.bysoft.android.budget.currency.getAvailableCurrency
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -12,11 +10,13 @@ import kotlinx.coroutines.launch
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
+import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.me_info.entity.DayOfWeek
 import ru.bysoft.android.budget.common.token.ITokenStorage
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
+import ru.bysoft.android.budget.currency.getAvailableCurrency
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.settings.R
 import ru.bysoft.android.budget.features.settings.data.SettingsRepository
@@ -24,7 +24,6 @@ import ru.bysoft.android.budget.features.settings.presentation.entity.SettingsSt
 import ru.bysoft.android.budget.features.settings.presentation.navigation.ISettingsNavigation
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.PopupFieldState
-
 
 val SettingDi = module {
     viewModelOf(::SettingsViewModel)
@@ -96,8 +95,8 @@ class SettingsViewModel(
     private fun showConfirmIfNeed() {
         _state.update {
             it.copy(
-                isDataChanged = it.dayOfWeekState.selectedValue != loadedData?.settingsData?.firstDayOfWeek
-                        || it.currencyFieldState.selectedCurrency?.iso4217 != loadedData?.settingsData?.currency
+                isDataChanged = it.dayOfWeekState.selectedValue != loadedData?.settingsData?.firstDayOfWeek ||
+                    it.currencyFieldState.selectedCurrency?.iso4217 != loadedData?.settingsData?.currency
             )
         }
     }

@@ -1,8 +1,8 @@
 package ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.mapper
 
 import ru.bysoft.android.budget.common.data_entity.ExpenseCategory
-import ru.bysoft.android.budget.currency.getBeautifulAmount
 import ru.bysoft.android.budget.common.data_entity.StatisticData
+import ru.bysoft.android.budget.currency.getBeautifulAmount
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.CategoryInfo
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.ProgressInfo
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.ProgressInfoWaiting
@@ -21,7 +21,8 @@ class StatisticPresentationMapper {
                 getCategoryState(
                     category,
                     amountInfo,
-                    ProgressInfoWaiting.takeIf { category.limitAmount != null || category.limitType != null })
+                    ProgressInfoWaiting.takeIf { category.limitAmount != null || category.limitType != null }
+                )
             }
         )
 

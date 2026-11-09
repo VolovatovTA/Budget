@@ -16,6 +16,5 @@ fun StatisticErrorScreen() {
         contentAlignment = Alignment.Center
     ) {
         Text(text = stringResource(R.string.error_while_loading_some_data_statistic))
-
     }
 }

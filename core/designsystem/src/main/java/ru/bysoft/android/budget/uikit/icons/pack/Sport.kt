@@ -16,8 +16,10 @@ val Sport: ImageVector
             return _Sport!!
         }
         _Sport = Builder(
-            name = "Sport", defaultWidth = 20.0.dp, defaultHeight =
-            20.0.dp, viewportWidth = 20.0f, viewportHeight = 20.0f
+            name = "Sport", defaultWidth = 20.0.dp,
+            defaultHeight =
+            20.0.dp,
+            viewportWidth = 20.0f, viewportHeight = 20.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

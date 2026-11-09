@@ -7,9 +7,9 @@ import ru.bysoft.android.budget.common.data_entity.TransactionTransfer
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
 import ru.bysoft.android.budget.common.util.dateFormatOutput
 import ru.bysoft.android.budget.currency.getBeautifulAmount
-import ru.bysoft.android.budget.uikit.icons.UiKitIcons
 import ru.bysoft.android.budget.features.transaction_detail.presentation.entity.CategoryItem
 import ru.bysoft.android.budget.features.transaction_detail.presentation.entity.TransactionDetailState
+import ru.bysoft.android.budget.uikit.icons.UiKitIcons
 import java.text.SimpleDateFormat
 import java.util.Locale
 

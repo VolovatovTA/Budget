@@ -18,7 +18,7 @@ interface IWalletApi {
     @POST(pathWallet)
     suspend fun createWallet(@Body request: CreateWalletRequest): WalletItemResponse
 
-    @PUT ("$pathWallet/{$idPlacement}")
+    @PUT("$pathWallet/{$idPlacement}")
     suspend fun updateWallet(@Path(idPlacement) id: String, @Body request: UpdateWalletRequest)
 
     @DELETE("$pathWallet/{$idPlacement}")
@@ -26,5 +26,4 @@ interface IWalletApi {
 
     @GET("$pathWallet/{$idPlacement}")
     suspend fun getWallet(@Path(idPlacement) id: String): WalletItemResponse
-
 }

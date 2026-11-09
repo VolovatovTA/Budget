@@ -3,7 +3,6 @@ package ru.bysoft.android.budget.common.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -11,21 +10,22 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.BottomNavigation
+import org.koin.compose.viewmodel.koinViewModel
 import ru.bysoft.android.budget.auth.presentation.screen.AuthScreen
-import ru.bysoft.android.budget.features.bottom_navigation.host.screen.BottomNavigationScreen
 import ru.bysoft.android.budget.common.navigation.auth.Auth
-import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.create_wallet.WalletNavigation
 import ru.bysoft.android.budget.common.navigation.create_update_categiry.CreateUpdateCategory
 import ru.bysoft.android.budget.common.navigation.splash.Splash
 import ru.bysoft.android.budget.common.util.restore
+import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.BottomNavigation
+import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.create_wallet.WalletNavigation
 import ru.bysoft.android.budget.features.bottom_navigation.host.navigation.settings.SettingsNavigation
+import ru.bysoft.android.budget.features.bottom_navigation.host.screen.BottomNavigationScreen
 import ru.bysoft.android.budget.features.create_udate_category.navigation.CreateCategoryNavInfo
-import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.transaction.Transaction
 import ru.bysoft.android.budget.features.create_udate_category.presentation.screen.CreateCategoryScreen
 import ru.bysoft.android.budget.features.create_udate_category.presentation.screen.UpdateCategoryScreen
 import ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels.CreateCategoryViewModel
 import ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels.UpdateCategoryViewModel
+import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.transaction.Transaction
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.screen.TransactionScreen
 import ru.bysoft.android.budget.features.create_update_delete_transactions.viewmodels.TransactionCreateViewModel
 import ru.bysoft.android.budget.features.create_update_delete_transactions.viewmodels.TransactionUpdateViewModel
@@ -44,7 +44,6 @@ import ru.bysoft.android.budget.features.transaction_detail.presentation.screen.
 @Composable
 fun MainNavigationHost(mainNavController: NavHostController) {
     NavHost(navController = mainNavController, startDestination = Splash.route) {
-
         composable(Splash.route) {
             SplashScreen()
         }
@@ -88,7 +87,6 @@ fun MainNavigationHost(mainNavController: NavHostController) {
                     walletId = walletId
                 )
             }
-
         }
 
         navigation(

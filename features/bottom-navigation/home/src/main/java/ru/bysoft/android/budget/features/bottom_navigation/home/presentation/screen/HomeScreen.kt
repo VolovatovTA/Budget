@@ -84,7 +84,7 @@ fun HomeScreen(
         backgroundColor = UiKitColors.colors.surface.primary,
     ) {
         if (dialogState != null) {
-            UiKitDialog(viewModel::onDialogDismiss,viewModel::onDialogConfirmed, dialogState)
+            UiKitDialog(viewModel::onDialogDismiss, viewModel::onDialogConfirmed, dialogState)
         }
         Column(
             modifier = Modifier

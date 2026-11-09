@@ -1,22 +1,22 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.viewmodels
 
-import ru.bysoft.android.budget.common.errors.IErrorLogger
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.common.data_entity.CurrencyRateData
+import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.util.restore
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.currency.getCurrencyByDisplayName
+import ru.bysoft.android.budget.features.create_update_delete_transactions.R
 import ru.bysoft.android.budget.features.create_update_delete_transactions.data.ICategoriesRepo
 import ru.bysoft.android.budget.features.create_update_delete_transactions.data.ITransactionsRepo
 import ru.bysoft.android.budget.features.create_update_delete_transactions.data.IWalletsRepo
 import ru.bysoft.android.budget.features.create_update_delete_transactions.data.entity.TransactionCreateException
-import ru.bysoft.android.budget.features.create_update_delete_transactions.R
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.ITransactionNavigation
 import ru.bysoft.android.budget.features.create_update_delete_transactions.navigation.TransactionsCreateNavParams
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.CategoryPresentation
@@ -49,7 +49,8 @@ class TransactionCreateViewModel(
     walletsRepo = walletsRepo,
     categoryMapperPresentation = categoryMapperPresentation,
     walletMapper = walletMapper
-), ITransactionCreateViewModel {
+),
+    ITransactionCreateViewModel {
 
     private var currencyRates: CurrencyRateData? = null
 
@@ -73,7 +74,6 @@ class TransactionCreateViewModel(
         }
     }
 
-
     override fun create() {
         viewModelScope.launch(transactionCEH) {
             try {
@@ -95,7 +95,6 @@ class TransactionCreateViewModel(
     }
 
     override fun initNavParams(argument: TransactionsCreateNavParams) {
-
     }
 
     private fun showExchangesIfNeed() {
@@ -123,7 +122,6 @@ class TransactionCreateViewModel(
             .filter { walletIdList.contains(it.id) }
             .filter { it.currency != currentState.currencyFieldState.selectedCurrency }
             .map { it.currency }
-
 
         val finalTargetListCurrency =
             (categoryWithCurrencyDiffWithTransactionCurrency + listWalletCurrencyExceptSelectedCurrency)
@@ -153,7 +151,6 @@ class TransactionCreateViewModel(
         baseCurrency: BudgetCurrencyEnum,
         targetCurrency: BudgetCurrencyEnum
     ): String {
-
         val rate = currencyRates?.map?.get(baseCurrency)
             ?.firstOrNull { rate -> rate.currency == targetCurrency }
             ?.rate ?: 0.0

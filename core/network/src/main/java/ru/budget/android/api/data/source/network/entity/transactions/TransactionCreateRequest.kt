@@ -11,6 +11,7 @@ const val currencyName = "currency"
 const val exchangesName = "exchanges"
 const val expensesName = "expenses"
 const val walletIdName = "wallet_id"
+
 @Serializable
 data class TransactionExpenseCreateRequest(
     @SerialName(amountName)

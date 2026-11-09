@@ -1,6 +1,5 @@
 package ru.bysoft.android.budget.features.create_udate_category.presentation.screen
 
-import ru.bysoft.android.budget.features.create_udate_category.presentation.mapper.toIconPack
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,9 +16,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.features.create_udate_category.R
-import ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels.IUpdateCategoryViewModel
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.ButtonComponent
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.CreateUpdateCategoryTextField
+import ru.bysoft.android.budget.features.create_udate_category.presentation.mapper.toIconPack
+import ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels.IUpdateCategoryViewModel
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.expandablecontent.VerticalExpandableContent
 import ru.bysoft.android.budget.uikit.components.icon_component.UiKitIconsComponent
@@ -28,7 +28,8 @@ import ru.bysoft.android.budget.uikit.templates.topBar
 
 @Composable
 fun UpdateCategoryScreen(
-    viewModel: IUpdateCategoryViewModel, id: String
+    viewModel: IUpdateCategoryViewModel,
+    id: String
 ) {
     val focusManager = LocalFocusManager.current
     LaunchedEffect(Unit) { viewModel.initId(id) }

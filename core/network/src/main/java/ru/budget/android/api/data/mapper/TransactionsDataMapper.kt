@@ -1,10 +1,10 @@
 package ru.budget.android.api.data.mapper
 
+import ru.budget.android.api.data.source.network.entity.transactions.TransactionItemResponse
+import ru.budget.android.api.data.source.network.entity.transactions.TransactionResponse
 import ru.bysoft.android.budget.common.data_entity.*
 import ru.bysoft.android.budget.common.util.dateFormat
 import ru.bysoft.android.budget.currency.getCurrency
-import ru.budget.android.api.data.source.network.entity.transactions.TransactionResponse
-import ru.budget.android.api.data.source.network.entity.transactions.TransactionItemResponse
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -19,13 +19,13 @@ class TransactionsDataMapper(
     private val locale: Locale
 ) : ITransactionsDataMapper {
     override fun mapToData(response: TransactionResponse) =
-        ListTransactionsData(listTransactions = response.data?.mapNotNull { it?.let{mapToData(it)} }.orEmpty())
+        ListTransactionsData(listTransactions = response.data?.mapNotNull { it?.let { mapToData(it) } }.orEmpty())
 
     private fun mapToData(response: TransactionItemResponse): TransactionData =
-        when  {
-            response.type == "EXPENSE" && response.transfer == null-> getExpenseTransaction(response, locale = locale)
-            response.type == "INCOME"  && response.transfer == null-> getIncomeTransaction(response, locale = locale)
-            response.transfer != null-> getTransferTransaction(response, locale = locale)
+        when {
+            response.type == "EXPENSE" && response.transfer == null -> getExpenseTransaction(response, locale = locale)
+            response.type == "INCOME" && response.transfer == null -> getIncomeTransaction(response, locale = locale)
+            response.transfer != null -> getTransferTransaction(response, locale = locale)
             else -> throw UnknownTypeTransaction(response.type)
         }
 

@@ -16,8 +16,10 @@ val Food: ImageVector
             return _Food!!
         }
         _Food = Builder(
-            name = "Food", defaultWidth = 15.0.dp, defaultHeight =
-            19.0.dp, viewportWidth = 15.0f, viewportHeight = 19.0f
+            name = "Food", defaultWidth = 15.0.dp,
+            defaultHeight =
+            19.0.dp,
+            viewportWidth = 15.0f, viewportHeight = 19.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

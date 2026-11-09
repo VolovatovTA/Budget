@@ -1,12 +1,12 @@
 package ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels
 
-import ru.bysoft.android.budget.common.errors.handler
-import ru.bysoft.android.budget.common.errors.IErrorLogger
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import ru.budget.android.api.data.source.network.entity.category.CategoryRequest
 import ru.bysoft.android.budget.common.data_entity.CategoryErrorType
+import ru.bysoft.android.budget.common.errors.IErrorLogger
+import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.currency.getAvailableCurrency
@@ -16,7 +16,6 @@ import ru.bysoft.android.budget.features.create_udate_category.navigation.Create
 import ru.bysoft.android.budget.features.create_udate_category.navigation.ICreateUpdateCategoryNavigation
 import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.CreateUpdateCategoryState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
-
 
 class CreateCategoryViewModel(
     private val errorLogger: IErrorLogger,

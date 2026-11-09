@@ -50,7 +50,7 @@ private fun WalletSuccessComponent(
     state: WalletSuccessState,
     onClick: (String) -> Unit = {}
 ) {
-    val countRows = if(state.list.size > 4) 2 else 1
+    val countRows = if (state.list.size > 4) 2 else 1
     LazyHorizontalGrid(
         rows = GridCells.Fixed(countRows),
         modifier = modifier.height(countRows * HEIGHT_WALLET + padding * (countRows - 1)),
@@ -145,27 +145,30 @@ fun WalletChooserComponentPreview() {
     Column {
         WalletChooserComponent(WalletWaitingState, onClick = {})
         WalletChooserComponent(WalletErrorState, onClick = {})
-        WalletChooserComponent(WalletSuccessState(
-            listOf(
-                WalletInfo(
-                    "First",
-                    "1234.5 ₽",
-                    "",
-                    BudgetCurrencyEnum.USD
-                ),
-                WalletInfo(
-                    "Second",
-                    "1234.5 ₽",
-                    "",
-                    BudgetCurrencyEnum.RUB
-                ),
-                WalletInfo(
-                    "Third",
-                    "1234.5 ₽",
-                    "",
-                    BudgetCurrencyEnum.BGN
-                ),
-            )
-        ), onClick = {})
+        WalletChooserComponent(
+            WalletSuccessState(
+                listOf(
+                    WalletInfo(
+                        "First",
+                        "1234.5 ₽",
+                        "",
+                        BudgetCurrencyEnum.USD
+                    ),
+                    WalletInfo(
+                        "Second",
+                        "1234.5 ₽",
+                        "",
+                        BudgetCurrencyEnum.RUB
+                    ),
+                    WalletInfo(
+                        "Third",
+                        "1234.5 ₽",
+                        "",
+                        BudgetCurrencyEnum.BGN
+                    ),
+                )
+            ),
+            onClick = {}
+        )
     }
 }

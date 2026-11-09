@@ -1,11 +1,11 @@
 package ru.bysoft.android.budget.common.warmup
 
-import ru.bysoft.android.budget.common.errors.handler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.common.errors.IErrorLogger
+import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.features.currency_rates.data.ICurrencyRatesRepo
 
 /**

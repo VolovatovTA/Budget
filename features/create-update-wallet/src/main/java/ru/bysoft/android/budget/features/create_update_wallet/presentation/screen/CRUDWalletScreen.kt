@@ -1,7 +1,5 @@
 package ru.bysoft.android.budget.features.create_update_wallet.presentation.screen
 
-import ru.bysoft.android.budget.uikit.icons.UiKitIcons.UiKitIconPack
-import ru.bysoft.android.budget.currency.getAvailableCurrency
 import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.border
@@ -27,8 +25,6 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,6 +32,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import ru.bysoft.android.budget.common.R
 import ru.bysoft.android.budget.common.data_entity.CreateWalletErrorData
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
+import ru.bysoft.android.budget.currency.getAvailableCurrency
 import ru.bysoft.android.budget.features.create_update_wallet.CreateWalletViewModel
 import ru.bysoft.android.budget.features.create_update_wallet.ICreateWalletViewModel
 import ru.bysoft.android.budget.features.create_update_wallet.IUpdateWalletViewModel
@@ -52,6 +49,7 @@ import ru.bysoft.android.budget.uikit.components.icon_component.UiKitIconsCompon
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitCurrencyPopUpTextField
 import ru.bysoft.android.budget.uikit.components.textfield.UiKitTextFieldWithCurrency
+import ru.bysoft.android.budget.uikit.icons.UiKitIcons.UiKitIconPack
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.styles.corner
 import ru.bysoft.android.budget.uikit.styles.halfPadding
@@ -86,7 +84,9 @@ fun CRUDWalletScreen(
             title = if (viewModel is CreateWalletViewModel) R.string.wallet_title_create else R.string.wallet_title_update,
             onBackClick = viewModel::onBackClick,
             onClickDelete = walletId?.let {
-                { (viewModel as? IUpdateWalletViewModel)?.onWalletDeleteClick(it) }
+                {
+                    (viewModel as? IUpdateWalletViewModel)?.onWalletDeleteClick(it)
+                }
             }
         )
     ) { paddingValues ->
@@ -116,7 +116,6 @@ fun CRUDWalletScreen(
                     state = controllerWalletState.balanceTextState,
                     onValueChange = {
                         screenController.onBalanceChanged(it)
-
                     },
                     label = stringResource(R.string.wallet_balance_text),
                     inputType = KeyboardType.Number,
@@ -169,16 +168,21 @@ private fun ButtonComponent(viewModel: IWalletViewModel, state: ViewModelWalletS
         } else {
             UiKitButton(
                 info = UiKitButtonInfo(
-                    if (viewModel is CreateWalletViewModel) stringResource(id = R.string.wallet_btn_create_text) else stringResource(
-                        id = R.string.wallet_btn_update_text
-                    ),
+                    if (viewModel is CreateWalletViewModel) {
+                        stringResource(
+                            id = R.string.wallet_btn_create_text
+                        )
+                    } else {
+                        stringResource(
+                            id = R.string.wallet_btn_update_text
+                        )
+                    },
                     size = ButtonSize.MEDIUM
                 ),
                 onClick = viewModel::onButtonClick
             )
         }
     }
-
 }
 
 @Composable
@@ -255,7 +259,6 @@ fun PreviewCreateWalletScreen() {
             override fun onCurrencySelected(currency: BudgetCurrencyEnum) = Unit
             override fun onIconSelected(iconName: String?) = Unit
             override fun showError(errorType: CreateWalletErrorData?) = Unit
-
         }
 
         val viewModel = object : ICreateWalletViewModel {
@@ -269,5 +272,4 @@ fun PreviewCreateWalletScreen() {
             viewModel = viewModel
         )
     }
-
 }

@@ -16,4 +16,3 @@ data class ViewModelWalletState(
     val isLoading: Boolean = false,
     val toastText: String? = null
 )
-

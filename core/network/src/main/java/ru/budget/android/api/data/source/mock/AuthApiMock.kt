@@ -29,9 +29,6 @@ class AuthApiMock(
     }
 
     override suspend fun signInByGoogle(request: SignInGoogleRequest): AuthSuccessResponse {
-        return AuthSuccessResponse(
-
-        )
+        return AuthSuccessResponse()
     }
-
 }

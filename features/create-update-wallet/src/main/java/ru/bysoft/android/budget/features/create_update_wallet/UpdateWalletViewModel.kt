@@ -1,6 +1,5 @@
 package ru.bysoft.android.budget.features.create_update_wallet
 
-import ru.bysoft.android.budget.common.errors.IErrorLogger
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.bysoft.android.budget.common.data_entity.CreateWalletErrorData
+import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.create_update_wallet.data.IWalletRepository

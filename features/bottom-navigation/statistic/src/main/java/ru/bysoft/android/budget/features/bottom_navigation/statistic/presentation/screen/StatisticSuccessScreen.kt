@@ -17,12 +17,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.IStatisticViewModel
+import ru.bysoft.android.budget.features.bottom_navigation.statistic.R
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.*
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.listItem.UiKitListItem
 import ru.bysoft.android.budget.uikit.components.shimmer.UiKitShimmerComponent
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
-import ru.bysoft.android.budget.features.bottom_navigation.statistic.R
 import ru.bysoft.android.budget.uikit.styles.halfPadding
 import ru.bysoft.android.budget.uikit.styles.padding
 
@@ -36,7 +36,6 @@ fun StatisticSuccessScreen(
             .fillMaxWidth()
     ) {
         Column {
-
             if (state.listInfo.isEmpty()) {
                 Text(
                     text = stringResource(R.string.empty_category_list),
@@ -136,7 +135,6 @@ private fun StatisticProgressIndicator(progress: ProgressInfo) {
             }
     }
 }
-
 
 @Preview
 @Composable

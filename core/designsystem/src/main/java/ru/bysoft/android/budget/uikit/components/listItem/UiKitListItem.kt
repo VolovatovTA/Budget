@@ -49,7 +49,6 @@ fun UiKitListItem(
     subTitle: String? = null,
     amountColor: Color,
 ) {
-
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -108,15 +107,12 @@ private fun UiKitListItemIcons(ides: List<Int>) {
         }
         1 -> {
             Icon(ides.first(), padding)
-
         }
         2 -> {
             Box {
                 Icon(ides.first(), halfPadding)
                 Icon(ides[1], halfPadding + 20.dp)
             }
-
-
         }
         3 -> {
             Box {
@@ -151,7 +147,6 @@ private fun UiKitListItemIcons(ides: List<Int>) {
                 }
             }
         }
-
     }
 }
 
@@ -172,7 +167,6 @@ private fun Icon(id: Int, start: Dp, top: Dp = 0.dp) {
                 .background(UiKitColors.colors.surface.secondary)
                 .padding(quarterPadding)
         )
-
     }
 }
 
@@ -217,7 +211,6 @@ fun UiKitListItemAmount(
     }
 }
 
-
 @Preview
 @Composable
 fun UiKitListItemPreview() {
@@ -254,5 +247,4 @@ fun UiKitListItemPreview() {
             amountColor = UiKitColors.colors.primary.`1100`
         )
     }
-
 }

@@ -16,8 +16,10 @@ val logo: ImageVector
             return _logo!!
         }
         _logo = Builder(
-            name = "logo", defaultWidth = 101.0.dp, defaultHeight =
-            94.0.dp, viewportWidth = 101.0f, viewportHeight = 94.0f
+            name = "logo", defaultWidth = 101.0.dp,
+            defaultHeight =
+            94.0.dp,
+            viewportWidth = 101.0f, viewportHeight = 94.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFFDECFEB)), stroke = null, fillAlpha = 0.45f,

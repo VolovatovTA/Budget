@@ -1,6 +1,5 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.viewmodels
 
-import ru.bysoft.android.budget.common.errors.IErrorLogger
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -8,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.TransactionTypeEnum
@@ -66,7 +66,6 @@ abstract class TransactionsCommonViewModel(
     private val walletMapper: ITransactionWalletPresentationMapper,
 ) : ViewModel(), ITransactionsViewModel {
 
-
     override val toastState = MutableSharedFlow<Int>(extraBufferCapacity = 1)
 
     private val handlerCategory = errorLogger.handler {
@@ -105,9 +104,13 @@ abstract class TransactionsCommonViewModel(
                 val exchangeAmount =
                     currentExchangeFieldState.enteredAmount.text.toDoubleOrNull() ?: 0.0
                 val multiplier =
-                    if (currentExchangeFieldState.isRevert) state.value.amountState.text.toDoubleOrNull()
-                        ?: Double.MAX_VALUE else state.value.amountState.text.toDoubleOrNull()
-                        ?: 0.0
+                    if (currentExchangeFieldState.isRevert) {
+                        state.value.amountState.text.toDoubleOrNull()
+                            ?: Double.MAX_VALUE
+                    } else {
+                        state.value.amountState.text.toDoubleOrNull()
+                            ?: 0.0
+                    }
                 val newAmount = exchangeAmount / previousAmount * multiplier
                 setExchangeAmount(
                     currentExchangeFieldState.targetCurrency,
@@ -120,7 +123,9 @@ abstract class TransactionsCommonViewModel(
                                 exchange.copy(
                                     shownAmount = amount.toDoubleOrNull() ?: 0.0,
                                 )
-                            } else exchange
+                            } else {
+                                exchange
+                            }
                         }
                     )
                 }
@@ -213,7 +218,6 @@ abstract class TransactionsCommonViewModel(
         } else if (currentState is TransactionIncomeState) {
             updateCategoriesId(currentState, categoryPresentation)
         }
-
     }
 
     private fun updateCategoriesId(
@@ -225,8 +229,11 @@ abstract class TransactionsCommonViewModel(
             state.value = currentState.copy(
                 categoryState = currentCategoryState.copy(
                     listCategory = currentCategoryState.listCategory.map { oldCategory ->
-                        if (oldCategory == categoryPresentation) oldCategory.copy(isChosen = !oldCategory.isChosen)
-                        else oldCategory
+                        if (oldCategory == categoryPresentation) {
+                            oldCategory.copy(isChosen = !oldCategory.isChosen)
+                        } else {
+                            oldCategory
+                        }
                     }
                 )
             )
@@ -242,8 +249,11 @@ abstract class TransactionsCommonViewModel(
             state.value = currentState.copy(
                 categoryState = currentCategoryState.copy(
                     listCategory = currentCategoryState.listCategory.map { oldCategory ->
-                        if (oldCategory == categoryPresentation) oldCategory.copy(isChosen = !oldCategory.isChosen)
-                        else oldCategory.copy(isChosen = false)
+                        if (oldCategory == categoryPresentation) {
+                            oldCategory.copy(isChosen = !oldCategory.isChosen)
+                        } else {
+                            oldCategory.copy(isChosen = false)
+                        }
                     }
                 )
             )
@@ -305,7 +315,7 @@ abstract class TransactionsCommonViewModel(
                         val enteredAmount =
                             roundToSixSignificantDigits(
                                 shownAmount /
-                                        (ex.enteredAmount.text.toDoubleOrNull() ?: Double.MAX_VALUE)
+                                    (ex.enteredAmount.text.toDoubleOrNull() ?: Double.MAX_VALUE)
 
                             )
                         ex.copy(
@@ -326,7 +336,6 @@ abstract class TransactionsCommonViewModel(
     override fun back() {
         navigate.back()
     }
-
 
     private fun loadCategories() {
         viewModelScope.launch(handlerCategory) {

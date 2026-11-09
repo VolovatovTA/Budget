@@ -48,9 +48,11 @@ fun UiKitRowTab(
                 else -> UiKitColors.colors.primary.`300`
             }
             val textColor =
-                if (filterData.isChecked && !UiKitColors.isDark)
+                if (filterData.isChecked && !UiKitColors.isDark) {
                     UiKitColors.colors.surface.primary
-                else UiKitColors.colors.type.high
+                } else {
+                    UiKitColors.colors.type.high
+                }
             Surface(
                 color = backgroundSurface,
                 shape = RoundedCornerShape(20.dp),
@@ -58,21 +60,23 @@ fun UiKitRowTab(
                     .padding(quarterPadding)
                     .height(40.dp)
             ) {
-                Box(modifier = Modifier.clickable(
-                    enabled = filterData.isEnabled,
-                    onClick = {
-                        innerState = UiKitRowTabState(
-                            innerState.listFilters.mapIndexed { indexTab, tab ->
-                                when {
-                                    indexTab == index -> tab.copy(isChecked = true)
-                                    isMultiplyCheckedEnabled -> tab
-                                    else -> tab.copy(isChecked = false)
+                Box(
+                    modifier = Modifier.clickable(
+                        enabled = filterData.isEnabled,
+                        onClick = {
+                            innerState = UiKitRowTabState(
+                                innerState.listFilters.mapIndexed { indexTab, tab ->
+                                    when {
+                                        indexTab == index -> tab.copy(isChecked = true)
+                                        isMultiplyCheckedEnabled -> tab
+                                        else -> tab.copy(isChecked = false)
+                                    }
                                 }
-                            }
-                        )
-                        onCheckChanged(!filterData.isChecked, index)
-                    }
-                )) {
+                            )
+                            onCheckChanged(!filterData.isChecked, index)
+                        }
+                    )
+                ) {
                     Text(
                         text = stringResource(id = filterData.text),
                         style = UiKitTypography.TextMD.Regular,
@@ -80,7 +84,6 @@ fun UiKitRowTab(
                         modifier = Modifier.padding(horizontal = padding, vertical = halfPadding)
                     )
                 }
-
             }
         }
     }

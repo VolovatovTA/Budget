@@ -1,10 +1,10 @@
 package ru.bysoft.android.budget.features.bottom_navigation.home.data.me.mapper
 
-import ru.bysoft.android.budget.common.me_info.entity.MeData
-import ru.bysoft.android.budget.common.me_info.entity.SettingsData
 import ru.budget.android.api.data.source.network.entity.me.MeResponse
 import ru.budget.android.api.data.source.network.entity.me.SettingsResponse
 import ru.bysoft.android.budget.common.me_info.entity.DayOfWeek
+import ru.bysoft.android.budget.common.me_info.entity.MeData
+import ru.bysoft.android.budget.common.me_info.entity.SettingsData
 
 fun mapToData(response: MeResponse) = MeData(
     name = response.name,

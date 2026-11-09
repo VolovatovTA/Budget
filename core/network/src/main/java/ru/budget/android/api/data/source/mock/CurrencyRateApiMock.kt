@@ -8,7 +8,7 @@ import ru.bysoft.android.budget.common.util.restore
 
 class CurrencyRateApiMock(
     private val context: Context
-): ICurrencyRatesApi {
+) : ICurrencyRatesApi {
     override suspend fun getCurrencyRates(base: String): CurrencyRatesResponse {
         // в файле курсы относительно USD, для другой базовой валюты пересчитываем
         val usdRates = context.getStringFromAsset("currency_rates/mock.json").restore<CurrencyRatesResponse>()

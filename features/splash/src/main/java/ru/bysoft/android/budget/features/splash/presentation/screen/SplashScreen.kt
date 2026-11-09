@@ -59,8 +59,9 @@ private fun SplashContent(
             animationSpec = tween(1000),
             finishedListener = {
                 animatedState.value++
-                if (animatedState.value >= 2)
+                if (animatedState.value >= 2) {
                     onAnimationFinished.invoke()
+                }
             }
         )
 

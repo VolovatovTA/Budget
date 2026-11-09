@@ -50,7 +50,6 @@ fun UiKitButton(
         ButtonType.ERROR_SECONDARY -> BudgetButtonColors.errorSecondary(isButtonPressed)
     }
 
-
     if (info.type == ButtonType.OUTLINE) {
         val borderStroke = BudgetButtonColors.borderStroke(isButtonPressed, isButtonEnabled)
         OutlinedButton(

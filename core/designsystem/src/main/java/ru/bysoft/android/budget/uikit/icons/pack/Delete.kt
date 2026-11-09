@@ -16,8 +16,10 @@ val Delete: ImageVector
             return _Delete!!
         }
         _Delete = Builder(
-            name = "Delete", defaultWidth = 18.0.dp, defaultHeight =
-            21.0.dp, viewportWidth = 18.0f, viewportHeight = 21.0f
+            name = "Delete", defaultWidth = 18.0.dp,
+            defaultHeight =
+            21.0.dp,
+            viewportWidth = 18.0f, viewportHeight = 21.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

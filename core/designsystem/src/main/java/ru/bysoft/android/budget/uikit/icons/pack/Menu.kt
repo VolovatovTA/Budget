@@ -16,8 +16,10 @@ val Menu: ImageVector
             return _Menu!!
         }
         _Menu = Builder(
-            name = "Menu", defaultWidth = 14.0.dp, defaultHeight =
-            14.0.dp, viewportWidth = 14.0f, viewportHeight = 14.0f
+            name = "Menu", defaultWidth = 14.0.dp,
+            defaultHeight =
+            14.0.dp,
+            viewportWidth = 14.0f, viewportHeight = 14.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

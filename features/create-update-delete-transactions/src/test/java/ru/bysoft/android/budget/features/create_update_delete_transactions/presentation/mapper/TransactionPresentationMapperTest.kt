@@ -3,8 +3,6 @@ package ru.bysoft.android.budget.features.create_update_delete_transactions.pres
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
-import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
-import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 import ru.bysoft.android.budget.features.create_update_delete_transactions.data.entity.NewExchange
 import ru.bysoft.android.budget.features.create_update_delete_transactions.data.entity.NewTransaction
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.CategoryPresentation
@@ -15,17 +13,31 @@ import ru.bysoft.android.budget.features.create_update_delete_transactions.prese
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.TransactionTransferState
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.WalletInfo
 import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.WalletSuccessState
+import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
+import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 
 class TransactionPresentationMapperTest {
 
     private val mapper = TransactionPresentationMapper()
 
-    private val usd = CurrencyFieldState(selectedCurrency = BudgetCurrencyEnum.USD, list = listOf(BudgetCurrencyEnum.USD))
+    private val usd = CurrencyFieldState(
+        selectedCurrency = BudgetCurrencyEnum.USD,
+        list = listOf(BudgetCurrencyEnum.USD)
+    )
     private val wallets = WalletSuccessState(
-        list = listOf(WalletInfo("Main", "100 $", "w1", BudgetCurrencyEnum.USD), WalletInfo("Cash", "50 €", "w2", BudgetCurrencyEnum.EUR)),
+        list = listOf(
+            WalletInfo("Main", "100 $", "w1", BudgetCurrencyEnum.USD),
+            WalletInfo("Cash", "50 €", "w2", BudgetCurrencyEnum.EUR)
+        ),
         selectedWalletId = "w1",
     )
-    private fun category(id: String, chosen: Boolean) = CategoryPresentation(iconName = null, name = id, isChosen = chosen, id = id, currency = "$")
+    private fun category(id: String, chosen: Boolean) = CategoryPresentation(
+        iconName = null,
+        name = id,
+        isChosen = chosen,
+        id = id,
+        currency = "$"
+    )
 
     @Test
     fun `expense takes the chosen categories and the from-wallet`() {
@@ -33,13 +45,19 @@ class TransactionPresentationMapperTest {
             amountState = TextFieldState("86.40"),
             commentState = TextFieldState("groceries"),
             currencyFieldState = usd,
-            categoryState = CategorySuccess(listOf(category("food", true), category("fun", false), category("home", true))),
+            categoryState = CategorySuccess(
+                listOf(category("food", true), category("fun", false), category("home", true))
+            ),
             walletFromFieldState = wallets,
         )
 
         val expected = NewTransaction.Expense(
-            amount = 86.40f, comment = "groceries", currency = BudgetCurrencyEnum.USD,
-            exchanges = emptyList(), categoryIds = listOf("food", "home"), walletId = "w1",
+            amount = 86.40f,
+            comment = "groceries",
+            currency = BudgetCurrencyEnum.USD,
+            exchanges = emptyList(),
+            categoryIds = listOf("food", "home"),
+            walletId = "w1",
         )
         assertEquals(expected, mapper.toNewTransaction(state))
     }

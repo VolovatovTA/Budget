@@ -18,6 +18,7 @@ interface Palette {
     val feedbackGreen: BudgetTone
     val surface: BudgetSurfaceColors
     val type: BudgetTypeColors
+
     /** 2026 token set; new components read only this, the tones above are legacy. */
     val tokens: BudgetTokens
 }
@@ -47,7 +48,6 @@ data class BudgetTypeColors(
     val medium: Color,
     val low: Color,
 )
-
 
 object LightPalette : Palette {
     override val isDark = false
@@ -209,7 +209,6 @@ object DarkPalette : Palette {
     )
 }
 
-
 /** Provided by BudgetTheme; null outside of it (previews), then the system setting decides. */
 val LocalBudgetPalette = staticCompositionLocalOf<Palette?> { null }
 
@@ -249,7 +248,6 @@ object UiKitColors {
         }
     }
 
-
     @Composable
     fun getBudgetColorsByName(name: String) =
         when (name) {
@@ -260,7 +258,6 @@ object UiKitColors {
             "feedbackGreen" -> this.colors.feedbackGreen
             else -> this.colors.primary
         }
-
 
     val colors: Palette
         @Composable
@@ -284,7 +281,7 @@ object UiKitColors {
     val textField
         @Composable
         get() =
-            if (isDark)
+            if (isDark) {
                 BaseTextFieldColors(
                     textColor = colors.type.high,
                     backgroundColor = Color.Transparent,
@@ -308,7 +305,7 @@ object UiKitColors {
                     errorIndicatorColor = colors.feedbackRed.`600`,
                     errorCursorColor = colors.feedbackRed.`600`
                 )
-            else
+            } else {
                 BaseTextFieldColors(
                     textColor = colors.type.high,
                     backgroundColor = Color.Transparent,
@@ -332,4 +329,5 @@ object UiKitColors {
                     errorIndicatorColor = colors.feedbackRed.`600`,
                     errorCursorColor = colors.feedbackRed.`600`
                 )
+            }
 }

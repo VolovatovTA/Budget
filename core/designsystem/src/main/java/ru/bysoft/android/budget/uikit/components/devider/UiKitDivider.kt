@@ -7,7 +7,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
@@ -25,8 +24,11 @@ fun UiKitDivider(
     position: DividerTextPosition = DividerTextPosition.CENTER,
 ) {
     val color =
-        if (UiKitColors.isDark) UiKitColors.colors.neutral.`300`
-        else UiKitColors.colors.neutral.`500`
+        if (UiKitColors.isDark) {
+            UiKitColors.colors.neutral.`300`
+        } else {
+            UiKitColors.colors.neutral.`500`
+        }
     Box(modifier = modifier) {
         Spacer(
             modifier = Modifier

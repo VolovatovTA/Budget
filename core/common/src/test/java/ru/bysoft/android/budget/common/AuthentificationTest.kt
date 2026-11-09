@@ -4,16 +4,11 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.*
 import okhttp3.Interceptor
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.Protocol
 import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
-import okhttp3.ResponseBody.Companion.toResponseBody
-import org.junit.Test
-
 import org.junit.Before
 import org.junit.Ignore
+import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -89,7 +84,6 @@ class AuthentificationTest {
     @Test
     fun refreshSingleRequest() {
         Mockito.`when`(successAuthResponse.code).doReturn(401).doReturn(200)
-
 
         runTest {
             val response = authentificator.intercept(chain)

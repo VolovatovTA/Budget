@@ -27,7 +27,9 @@ class ViewModelCoroutinesTest {
 
     @Test
     fun `viewModelScope async is started inside a launch, never as a root`() {
-        viewModels.assertFalse(additionalMessage = "wrap it: viewModelScope.launch(handler) { async { ... }.await() }") {
+        viewModels.assertFalse(
+            additionalMessage = "wrap it: viewModelScope.launch(handler) { async { ... }.await() }"
+        ) {
             ROOT_ASYNC.containsMatchIn(it.text)
         }
     }

@@ -8,7 +8,7 @@ interface IWalletsDataMapper {
     fun mapToData(response: WalletListResponse?): List<WalletData>
 }
 
-class WalletsDataMapper: IWalletsDataMapper {
+class WalletsDataMapper : IWalletsDataMapper {
     override fun mapToData(response: WalletListResponse?): List<WalletData> {
         return response?.data?.map { mapToData(it) } ?: emptyList()
     }

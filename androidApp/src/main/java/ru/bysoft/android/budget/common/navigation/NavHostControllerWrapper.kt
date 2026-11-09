@@ -1,7 +1,6 @@
 package ru.bysoft.android.budget.common.navigation
 
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,6 +31,4 @@ class NavHostControllerWrapper {
 
     suspend fun currentBackStackEntry(): NavBackStackEntry? =
         controller.filterNotNull().first().currentBackStackEntry
-
-
 }

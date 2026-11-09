@@ -22,7 +22,6 @@ fun Throwable.ifHttpErrorGetErrorBody(): String? {
     return null
 }
 
-
 object EmptyAnswer : Call<Unit> {
     override fun clone(): Call<Unit> = this
 
@@ -39,5 +38,4 @@ object EmptyAnswer : Call<Unit> {
     override fun request(): Request = Request.Builder().build()
 
     override fun timeout(): Timeout = Timeout()
-
 }

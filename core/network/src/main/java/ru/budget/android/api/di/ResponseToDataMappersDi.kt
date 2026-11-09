@@ -10,7 +10,7 @@ import ru.budget.android.api.data.mapper.TransactionsDataMapper
 import ru.budget.android.api.data.mapper.WalletsDataMapper
 
 val ResponseToDataMappersDi = module {
-    singleOf(:: TransactionsDataMapper) bind  ITransactionsDataMapper::class
-    singleOf(:: WalletsDataMapper) bind  IWalletsDataMapper::class
-    singleOf(:: CategoryDataMapper)
+    singleOf(::TransactionsDataMapper) bind ITransactionsDataMapper::class
+    singleOf(::WalletsDataMapper) bind IWalletsDataMapper::class
+    singleOf(::CategoryDataMapper)
 }

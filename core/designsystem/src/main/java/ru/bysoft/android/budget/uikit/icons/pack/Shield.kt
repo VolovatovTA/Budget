@@ -16,8 +16,10 @@ val Shield: ImageVector
             return _Shield!!
         }
         _Shield = Builder(
-            name = "Shield", defaultWidth = 18.0.dp, defaultHeight =
-            23.0.dp, viewportWidth = 18.0f, viewportHeight = 23.0f
+            name = "Shield", defaultWidth = 18.0.dp,
+            defaultHeight =
+            23.0.dp,
+            viewportWidth = 18.0f, viewportHeight = 23.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

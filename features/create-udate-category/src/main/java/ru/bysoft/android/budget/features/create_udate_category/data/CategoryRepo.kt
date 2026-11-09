@@ -28,7 +28,6 @@ class CategoryRepo(
         } catch (e: HttpException) {
             Result.failure(mapper.getCategoryErrorType(e.response()?.errorBody()?.string()))
         }
-
     }
 
     override suspend fun updateCategory(
@@ -36,7 +35,6 @@ class CategoryRepo(
         name: String,
         id: String
     ): Result<Unit> {
-
         return try {
             api.updateCategory(categoryRequest, name, id)
             Result.success(Unit)
@@ -49,9 +47,8 @@ class CategoryRepo(
         return api.getCategory(id, path)
     }
 
-    override suspend fun delete(id: String, path: String): Result<Unit>  {
+    override suspend fun delete(id: String, path: String): Result<Unit> {
         api.delete(id, path)
         return Result.success(Unit)
     }
-
 }

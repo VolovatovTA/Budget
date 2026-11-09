@@ -36,7 +36,6 @@ import ru.bysoft.android.budget.uikit.styles.halfPadding
 import ru.bysoft.android.budget.uikit.styles.padding
 import ru.bysoft.android.budget.uikit.theme.BudgetTheme
 
-
 data class UiKitIconState(
     val iconName: String?
 )
@@ -49,7 +48,6 @@ fun UiKitIconsComponent(
     onClick: (String?) -> Unit,
     selectedIcon: UiKitIconState
 ) {
-
     // the leading null stands for "without icon"
     val listIcons = listOf<UiKitIcons.IIcons?>(null) + UiKitIcons.getIcons(pack)
     val rowsCount = when (listIcons.size) {
@@ -104,7 +102,6 @@ fun UiKitIconsComponent(
         }
     }
 }
-
 
 @BothThemePreview
 @Composable

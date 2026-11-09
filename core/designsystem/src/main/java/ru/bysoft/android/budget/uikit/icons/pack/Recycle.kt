@@ -16,8 +16,10 @@ val Recycle: ImageVector
             return _Recycle!!
         }
         _Recycle = Builder(
-            name = "Recycle", defaultWidth = 20.0.dp, defaultHeight =
-            22.0.dp, viewportWidth = 20.0f, viewportHeight = 22.0f
+            name = "Recycle", defaultWidth = 20.0.dp,
+            defaultHeight =
+            22.0.dp,
+            viewportWidth = 20.0f, viewportHeight = 22.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

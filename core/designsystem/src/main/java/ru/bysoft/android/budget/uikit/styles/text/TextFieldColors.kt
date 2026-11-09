@@ -121,5 +121,4 @@ class BaseTextFieldColors(
     override fun cursorColor(isError: Boolean): State<Color> {
         return rememberUpdatedState(if (isError) errorCursorColor else cursorColor)
     }
-
 }

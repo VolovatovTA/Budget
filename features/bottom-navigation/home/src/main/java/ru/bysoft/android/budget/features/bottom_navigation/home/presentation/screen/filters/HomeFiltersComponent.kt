@@ -10,12 +10,10 @@ import ru.bysoft.android.budget.uikit.styles.padding
 
 @Composable
 fun HomeFiltersComponent(filtersState: UiKitRowTabState, onCheckChanged: (Boolean, Int) -> Unit) {
-
     UiKitRowTab(
         startState = filtersState,
         onCheckChanged = onCheckChanged,
         isMultiplyCheckedEnabled = true,
         modifier = Modifier.fillMaxWidth().padding(horizontal = padding)
     )
-
 }

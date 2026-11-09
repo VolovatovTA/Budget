@@ -16,8 +16,10 @@ val Person: ImageVector
             return _Person!!
         }
         _Person = Builder(
-            name = "Person", defaultWidth = 16.0.dp, defaultHeight =
-            19.0.dp, viewportWidth = 16.0f, viewportHeight = 19.0f
+            name = "Person", defaultWidth = 16.0.dp,
+            defaultHeight =
+            19.0.dp,
+            viewportWidth = 16.0f, viewportHeight = 19.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

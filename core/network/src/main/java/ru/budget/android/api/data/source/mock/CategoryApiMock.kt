@@ -5,7 +5,6 @@ import kotlinx.coroutines.delay
 import ru.budget.android.api.data.source.network.ICategoryApi
 import ru.budget.android.api.data.source.network.entity.category.*
 import ru.budget.android.api.data.source.network.pathToWallet
-import ru.bysoft.android.budget.common.network.MOCK_DELAY_NAME
 import ru.bysoft.android.budget.common.util.getStringFromAsset
 import ru.bysoft.android.budget.common.util.pointJson
 import ru.bysoft.android.budget.common.util.restore
@@ -20,7 +19,6 @@ class CategoryApiMock(
         delay(delayMock)
         return context.getStringFromAsset("$pathToWallet/$name$pointJson").restore()
     }
-
 
     override suspend fun createCategory(
         request: CategoryRequest,
@@ -63,5 +61,4 @@ class CategoryApiMock(
         )
 
     override suspend fun delete(id: String, path: String) = Unit
-
 }

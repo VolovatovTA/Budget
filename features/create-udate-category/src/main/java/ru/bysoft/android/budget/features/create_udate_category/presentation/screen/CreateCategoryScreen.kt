@@ -1,7 +1,5 @@
 package ru.bysoft.android.budget.features.create_udate_category.presentation.screen
 
-import ru.bysoft.android.budget.features.create_udate_category.presentation.mapper.toIconPack
-import ru.bysoft.android.budget.currency.getAvailableCurrency
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,11 +34,13 @@ import kotlinx.coroutines.flow.StateFlow
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.PeriodState
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
+import ru.bysoft.android.budget.currency.getAvailableCurrency
 import ru.bysoft.android.budget.features.create_udate_category.R
 import ru.bysoft.android.budget.features.create_udate_category.navigation.CreateCategoryNavInfo
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.ButtonComponent
 import ru.bysoft.android.budget.features.create_udate_category.presentation.components.CreateUpdateCategoryTextField
 import ru.bysoft.android.budget.features.create_udate_category.presentation.entity.CreateUpdateCategoryState
+import ru.bysoft.android.budget.features.create_udate_category.presentation.mapper.toIconPack
 import ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels.ICreateCategoryViewModel
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState

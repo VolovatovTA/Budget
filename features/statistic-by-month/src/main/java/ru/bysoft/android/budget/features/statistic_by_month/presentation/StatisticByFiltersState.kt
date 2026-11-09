@@ -10,4 +10,4 @@ data class StatisticByFiltersStateSuccess(
     val multiDataSetChartEntryModelProducer: ChartEntryModelProducer = ChartEntryModelProducer()
 ) : StatisticByFiltersState
 
-object StatisticByFiltersStateError: StatisticByFiltersState
+object StatisticByFiltersStateError : StatisticByFiltersState

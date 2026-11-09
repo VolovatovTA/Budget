@@ -109,7 +109,6 @@ fun ShortSuccessCategoryComponent(
             onClick = onClick
         )
     }
-
 }
 
 const val countRows = 2
@@ -137,7 +136,6 @@ private fun NotEmptySuccessCategoryComponent(
                     is CategoryAdd -> CategoryAddItem(onClickAdd)
                 }
                 Spacer(Modifier.width(if (index > list.size - countRows) halfPadding else 0.dp))
-
             }
         )
     }
@@ -165,7 +163,6 @@ fun PreviewCategory() {
     )
 
     WaitingCategoryComponent()
-
 }
 
 @Preview(
@@ -190,7 +187,6 @@ fun PreviewCategoryNight() {
     )
 
     WaitingCategoryComponent()
-
 }
 
 @Composable
@@ -249,7 +245,6 @@ private fun CategoryAddItem(
                     .fillMaxWidth()
                     .padding(quarterPadding)
             )
-
         }
     }
 }

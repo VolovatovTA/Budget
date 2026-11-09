@@ -20,10 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.IStatisticViewModel
+import ru.bysoft.android.budget.features.bottom_navigation.statistic.R
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.StatisticErrorState
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.StatisticSuccessState
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.StatisticWaitingState
-import ru.bysoft.android.budget.features.bottom_navigation.statistic.R
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.listItem.UiKitListItem
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfoSuccess
@@ -70,10 +70,7 @@ fun StatisticScreen(
                 modifier = Modifier.align(Alignment.TopCenter)
             )
         }
-
-
     }
-
 }
 
 @Composable

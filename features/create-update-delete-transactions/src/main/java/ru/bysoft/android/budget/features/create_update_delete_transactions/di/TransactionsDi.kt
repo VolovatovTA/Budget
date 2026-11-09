@@ -14,7 +14,6 @@ import ru.bysoft.android.budget.features.create_update_delete_transactions.prese
 import ru.bysoft.android.budget.features.create_update_delete_transactions.viewmodels.TransactionCreateViewModel
 import ru.bysoft.android.budget.features.create_update_delete_transactions.viewmodels.TransactionUpdateViewModel
 
-
 val TransactionsDi = module {
     singleOf(::TransactionsRepo) bind ITransactionsRepo::class
     singleOf(::CategoriesRepo) bind ICategoriesRepo::class

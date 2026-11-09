@@ -56,7 +56,6 @@ fun LazyListScope.homeTransactionsComponent(
     state: TransactionsState,
     onTransactionClick: (id: String) -> Unit,
 ) {
-
     when (state) {
         is TransactionSuccess -> transactionsSuccessComponent(state, onTransactionClick)
         is TransactionLoading -> transactionLoadingComponent()
@@ -85,7 +84,6 @@ private fun LazyListScope.transactionsSuccessComponent(
             }
         }
     } else {
-
         items(
             items = state.list,
         ) { data ->
@@ -189,7 +187,6 @@ private fun LazyListScope.transactionsSuccessComponent(
             )
         }
     }
-
 }
 
 private fun LazyListScope.transactionLoadingComponent() {
@@ -244,7 +241,8 @@ private fun LazyListScope.transactionErrorComponent() {
                 text = stringResource(R.string.error_while_loading_some_data),
                 modifier = Modifier
                     .padding(
-                        horizontal = padding, vertical = 30.dp
+                        horizontal = padding,
+                        vertical = 30.dp
                     ),
                 style = UiKitTypography.TextMD.Regular
             )

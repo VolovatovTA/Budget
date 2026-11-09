@@ -33,7 +33,8 @@ fun SuccessPreview() {
                     icon = "wallet"
                 ),
                 WalletCreateNewPresentation
-            ),""
+            ),
+            ""
         ),
         lazyListState = rememberLazyListState(3),
         {},
@@ -41,7 +42,6 @@ fun SuccessPreview() {
         {},
     )
     LoadingWallets(rememberLazyListState())
-
 }
 
 @Preview

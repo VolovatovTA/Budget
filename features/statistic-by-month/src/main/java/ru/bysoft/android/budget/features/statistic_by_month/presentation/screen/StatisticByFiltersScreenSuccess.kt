@@ -19,11 +19,11 @@ import com.patrykandpatrick.vico.core.component.shape.LineComponent
 import com.patrykandpatrick.vico.core.component.shape.Shapes
 import com.patrykandpatrick.vico.core.component.text.TextComponent
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
+import ru.bysoft.android.budget.features.statistic_by_month.presentation.StatisticByFiltersStateSuccess
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitPopUp
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.PopupFieldState
 import ru.bysoft.android.budget.uikit.theme.rememberChartStyle
 import ru.bysoft.android.budget.uikit.theme.rememberMarker
-import ru.bysoft.android.budget.features.statistic_by_month.presentation.StatisticByFiltersStateSuccess
 
 @Composable
 fun StatisticByFiltersScreenSuccess(
@@ -118,7 +118,6 @@ private fun StatisticByFilterChart(chartEntryModelProducer: ChartEntryModelProdu
         )
     }
 }
-
 
 private const val COLOR_1_CODE = 0xff6438a7
 private const val COLOR_2_CODE = 0xff3490de

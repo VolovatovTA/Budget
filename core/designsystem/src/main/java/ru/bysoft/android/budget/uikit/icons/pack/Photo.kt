@@ -15,11 +15,17 @@ val Photo: ImageVector
         if (_Photo != null) {
             return _Photo!!
         }
-        _Photo = Builder(name = "Photo", defaultWidth = 20.0.dp, defaultHeight =
-                18.0.dp, viewportWidth = 20.0f, viewportHeight = 18.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+        _Photo = Builder(
+            name = "Photo", defaultWidth = 20.0.dp,
+            defaultHeight =
+            18.0.dp,
+            viewportWidth = 20.0f, viewportHeight = 18.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
                 moveTo(17.0f, 3.0f)
                 horizontalLineTo(15.1416f)
                 lineTo(13.4092f, 0.0f)
@@ -84,7 +90,7 @@ val Photo: ImageVector
                 close()
             }
         }
-        .build()
+            .build()
         return _Photo!!
     }
 
