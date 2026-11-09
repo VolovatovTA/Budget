@@ -64,8 +64,8 @@ emulator for every pull request.
 
 - Build, unit tests, `:konsist:test`, `assertModuleGraph` and `detekt` pass locally.
 - New logic has a test that fails without it; new UI was looked at on a device or emulator in both themes.
-- The architect agent (`.claude/agents/architect.md`) reviewed the change and its findings are
-  fixed or recorded in `docs/decisions.md`.
+- The `reviewer` and `architect` agents (`.claude/agents/`) reviewed the change; their findings are
+  fixed or the disagreement is recorded in the PR body / `docs/decisions.md`.
 
 ## When the architecture is in the way
 
