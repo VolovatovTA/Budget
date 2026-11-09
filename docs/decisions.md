@@ -73,7 +73,8 @@ Decision:
   workflow environment; every agent workflow starts with a step that fails if that variable is set.
   "Extra usage" / usage credits stay off in claude.ai, so runs stop at the subscription limit.
 - **Roles.** `coder` implements one issue per PR; `reviewer` and `architect` comment on every PR;
-  `restacker` rebases open PRs after each merge. Agent files live in `.claude/agents/`.
+  `restacker` rebases PRs stacked on a merged branch and, after each merge, only the PR next in line
+  (CI minutes are not spent on branches nobody merges yet). Agent files live in `.claude/agents/`.
 - **Merging.** The maintainer merges by default. Auto-merge (`gh pr merge --auto --squash`) is allowed
   only when all of: CI green; the architect reported "no architecture findings"; the PR is entirely one
   of — documentation (`docs/**`, `*.md`, `.claude/**`), formatting produced by detekt auto-correct, a
