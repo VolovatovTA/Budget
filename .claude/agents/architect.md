@@ -24,7 +24,8 @@ code and the documents, never from the author's explanation of intent.
      longer than a screen; a `Pair`/`Triple` carrying domain data; `!!`; commented-out code; a name
      that lies about what the thing does; a fully qualified name in code
      (`androidx.compose.material3.MaterialTheme(...)`) instead of an import, with an alias when two
-     names clash.
+     names clash; a call or signature with three or more named arguments crammed on one line — ask
+     for one argument per line with a trailing comma.
    - **Implicit decisions.** Anything the code now *assumes* and the project would have to undo
      later: entity identity by list position (blocks two-way sync), numbers only the backend can
      compute (blocks offline mode), a repository returning DTOs (blocks `data:*` modules), one method

@@ -86,5 +86,7 @@ Recorded so nobody copies them as patterns; each is a direction in goals.md.
 - No `!!` outside tests; nullability is modelled in state types.
 - Magic numbers are tokens or named constants, except dp/sp in layouts.
 - Prefer a small data class over a `Pair`/`Triple`; prefer a sealed type over a `String` tag.
+- Three or more named arguments go one per line with a trailing comma, in calls and in signatures;
+  lines stop at 100 characters.
 - Names are imported, never written fully qualified in code; two clashing names get import aliases
   (`import androidx.compose.material3.MaterialTheme as Material3Theme`). A detekt rule for this is planned.

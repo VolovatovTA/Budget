@@ -53,7 +53,10 @@ emulator for every pull request.
 11. **Accessible by default.** Every image or icon either has a real `contentDescription` from a string
     resource or is a `UiKitDecorativeImage`; `contentDescription = null` is banned elsewhere. Touch
     targets ≥ 48 dp, text rows use `heightIn`, layouts branch on window size class.
-12. **The backend is archived** (decision 0005): no new code in `core:network`, the auth interceptor or
+12. **Calls and signatures read top-down.** A call or declaration with three or more named arguments
+    puts one argument per line with a trailing comma; a shorter call stays on one line. Lines are at
+    most 100 characters (detekt `MaxLineLength`, ktlint wraps automatically). Reviewers ask for it.
+13. **The backend is archived** (decision 0005): no new code in `core:network`, the auth interceptor or
     token storage; new features work on local data; `remoteBack` only has to compile.
 
 ## Done means
