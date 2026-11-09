@@ -11,5 +11,6 @@ dependencies {
     implementation(libs.bundles.compose.icons)
     implementation(libs.compose.shimmer)
     implementation(libs.charts.compose)
-    
+
+    testImplementation(libs.junit)
 }

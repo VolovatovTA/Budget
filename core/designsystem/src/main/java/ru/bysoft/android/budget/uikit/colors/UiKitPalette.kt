@@ -14,6 +14,8 @@ interface Palette {
     val feedbackGreen: BudgetTone
     val surface: BudgetSurfaceColors
     val type: BudgetTypeColors
+    /** 2026 token set; new components read only this, the tones above are legacy. */
+    val tokens: BudgetTokens
 }
 
 data class BudgetTone(
@@ -44,6 +46,7 @@ data class BudgetTypeColors(
 
 
 object LightPalette : Palette {
+    override val tokens = LightTokens
     override val primary = BudgetTone(
         `1100` = Color(0xFF110045),
         `1000` = Color(0xFF250E6A),
@@ -122,6 +125,7 @@ object LightPalette : Palette {
 }
 
 object DarkPalette : Palette {
+    override val tokens = DarkTokens
     override val primary = BudgetTone(
         `1100` = Color(0xFF261051),
         `1000` = Color(0xFF3E1E71),
