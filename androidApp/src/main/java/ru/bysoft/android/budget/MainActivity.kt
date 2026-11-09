@@ -9,9 +9,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import org.koin.android.ext.android.getKoin
 import org.koin.android.ext.android.inject
-import org.koin.androidx.scope.activityScope
 import ru.bysoft.android.budget.common.navigation.MainNavigationHost
 import ru.bysoft.android.budget.common.navigation.NavHostControllerWrapper
 import ru.bysoft.android.budget.common.util.TAG
@@ -20,7 +18,7 @@ import ru.bysoft.android.budget.uikit.theme.BudgetTheme
 
 class MainActivity : ComponentActivity() {
 
-    private val navWrapper: NavHostControllerWrapper by inject ()
+    private val navWrapper: NavHostControllerWrapper by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,5 +46,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
 }

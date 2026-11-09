@@ -1,21 +1,24 @@
 package ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity
 
-import ru.bysoft.android.budget.currency.getAvailableCurrency
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
+import ru.bysoft.android.budget.currency.getAvailableCurrency
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 
 sealed class ITransactionState(
     open val commentState: TextFieldState = TextFieldState(),
     open val amountState: TextFieldState = TextFieldState(),
-    open val currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum> = CurrencyFieldState(selectedCurrency = null, list = getAvailableCurrency()),
+    open val currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum> = CurrencyFieldState(
+        selectedCurrency = null,
+        list = getAvailableCurrency()
+    ),
     open val categoryState: CategoryState?,
     open val exchangeFieldState: List<ExchangeFieldState> = emptyList(),
     open val isLoading: Boolean = false,
     open val walletFromFieldState: IWalletFieldState?,
     open val walletToFieldState: IWalletFieldState?,
 
-    ) {
+) {
     abstract fun copyWithAmount(amountState: TextFieldState): ITransactionState
     abstract fun copyWithComment(commentState: TextFieldState): ITransactionState
     abstract fun copyWithCurrency(currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum>): ITransactionState
@@ -24,13 +27,15 @@ sealed class ITransactionState(
     abstract fun copyWithCategory(categoryState: CategoryState): ITransactionState
     abstract fun copyWithWalletFromState(walletFieldState: IWalletFieldState): ITransactionState
     abstract fun copyWithWalletToState(walletFieldState: IWalletFieldState): ITransactionState
-
 }
 
 data class TransactionExpenseState(
     override val commentState: TextFieldState = TextFieldState(),
     override val amountState: TextFieldState = TextFieldState(),
-    override val currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum> = CurrencyFieldState(selectedCurrency = null, list = getAvailableCurrency()),
+    override val currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum> = CurrencyFieldState(
+        selectedCurrency = null,
+        list = getAvailableCurrency()
+    ),
     override val categoryState: CategoryState = CategoryWaiting,
     override val exchangeFieldState: List<ExchangeFieldState> = emptyList(),
     override val isLoading: Boolean = false,
@@ -68,13 +73,15 @@ data class TransactionExpenseState(
 
     override fun copyWithWalletToState(walletFieldState: IWalletFieldState): ITransactionState =
         this
-
 }
 
 data class TransactionIncomeState(
     override val commentState: TextFieldState = TextFieldState(),
     override val amountState: TextFieldState = TextFieldState(),
-    override val currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum> = CurrencyFieldState(selectedCurrency = null, list = getAvailableCurrency()),
+    override val currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum> = CurrencyFieldState(
+        selectedCurrency = null,
+        list = getAvailableCurrency()
+    ),
     override val categoryState: CategoryState = CategoryWaiting,
     override val exchangeFieldState: List<ExchangeFieldState> = emptyList(),
     override val isLoading: Boolean = false,
@@ -108,17 +115,19 @@ data class TransactionIncomeState(
         this.copy(categoryState = categoryState)
 
     override fun copyWithWalletFromState(walletFieldState: IWalletFieldState): TransactionIncomeState =
-       this
+        this
 
     override fun copyWithWalletToState(walletFieldState: IWalletFieldState): ITransactionState =
         this.copy(walletToFieldState = walletFieldState)
-
 }
 
 data class TransactionTransferState(
     override val commentState: TextFieldState = TextFieldState(),
     override val amountState: TextFieldState = TextFieldState(),
-    override val currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum> = CurrencyFieldState(selectedCurrency = null, list = getAvailableCurrency()),
+    override val currencyFieldState: CurrencyFieldState<BudgetCurrencyEnum> = CurrencyFieldState(
+        selectedCurrency = null,
+        list = getAvailableCurrency()
+    ),
     override val categoryState: CategoryState? = null,
     override val exchangeFieldState: List<ExchangeFieldState> = emptyList(),
     override val isLoading: Boolean = false,
@@ -171,17 +180,16 @@ data class CategorySuccess(
     val listCategory: List<CategoryPresentation>
 ) : CategoryState
 
-
 sealed interface ICategoryPresentation
 
-object CategoryAdd: ICategoryPresentation
+object CategoryAdd : ICategoryPresentation
 data class CategoryPresentation(
     val iconName: String?,
     val name: String,
     val isChosen: Boolean = false,
     val id: String,
     val currency: String
-): ICategoryPresentation
+) : ICategoryPresentation
 
 sealed interface IWalletFieldState
 

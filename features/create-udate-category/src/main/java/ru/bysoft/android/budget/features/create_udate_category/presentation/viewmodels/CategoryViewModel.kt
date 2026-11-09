@@ -1,15 +1,15 @@
 package ru.bysoft.android.budget.features.create_udate_category.presentation.viewmodels
 
-import ru.bysoft.android.budget.currency.getAvailableCurrency
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import ru.bysoft.android.budget.common.data_entity.CategoryErrorType
-import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum
 import ru.bysoft.android.budget.common.util.PeriodState
 import ru.bysoft.android.budget.common.util.applyFilter
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
+import ru.bysoft.android.budget.currency.getAvailableCurrency
 import ru.bysoft.android.budget.features.create_udate_category.R
 import ru.bysoft.android.budget.features.create_udate_category.navigation.CreateCategoryNavInfo
 import ru.bysoft.android.budget.features.create_udate_category.navigation.ICreateUpdateCategoryNavigation
@@ -129,5 +129,4 @@ abstract class CreateUpdateCategoryViewModel(
     }
 
     override fun back() = navigate.back()
-
 }

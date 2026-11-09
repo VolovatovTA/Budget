@@ -3,7 +3,6 @@ package ru.budget.android.api.data.source.network.entity.me
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class MeResponse(
     @SerialName("email")

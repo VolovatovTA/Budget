@@ -1,12 +1,11 @@
 package ru.bysoft.android.budget.uikit.components.listItem.entity
 
-
 sealed interface UiKitAmountInfo
 
 data class UiKitAmountInfoSuccess(
     val amount: String
-): UiKitAmountInfo
+) : UiKitAmountInfo
 
-object UiKitAmountInfoError: UiKitAmountInfo
+object UiKitAmountInfoError : UiKitAmountInfo
 
-object UiKitAmountInfoWaiting: UiKitAmountInfo
+object UiKitAmountInfoWaiting : UiKitAmountInfo

@@ -15,11 +15,17 @@ val Calendar: ImageVector
         if (_Calendar != null) {
             return _Calendar!!
         }
-        _Calendar = Builder(name = "Calendar", defaultWidth = 20.0.dp, defaultHeight =
-                19.0.dp, viewportWidth = 20.0f, viewportHeight = 19.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+        _Calendar = Builder(
+            name = "Calendar", defaultWidth = 20.0.dp,
+            defaultHeight =
+            19.0.dp,
+            viewportWidth = 20.0f, viewportHeight = 19.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
                 moveTo(7.0f, 8.0f)
                 horizontalLineTo(5.0f)
                 verticalLineTo(10.0f)
@@ -84,7 +90,7 @@ val Calendar: ImageVector
                 close()
             }
         }
-        .build()
+            .build()
         return _Calendar!!
     }
 

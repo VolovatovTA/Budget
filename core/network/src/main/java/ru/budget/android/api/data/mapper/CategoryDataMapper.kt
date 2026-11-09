@@ -16,7 +16,6 @@ class CategoryDataMapper {
         )
     }
 
-
     fun getNewCategoryData(
         transactionsResponse: TransactionResponse,
         oldCategoryData: ExpenseCategory
@@ -65,7 +64,6 @@ class CategoryDataMapper {
             // the body is not the error json we expect
             CategoryErrorType.TECHNICAL_ERROR_IN_BACK
         }
-
     }
 
     private fun getErrorTypeByString(slug: String): CategoryErrorType =
@@ -76,5 +74,4 @@ class CategoryDataMapper {
             CategoryErrorType.NO_UNIQ_NAME.messageFromBack -> CategoryErrorType.NO_UNIQ_NAME
             else -> CategoryErrorType.UNKNOWN_ERROR
         }
-
 }

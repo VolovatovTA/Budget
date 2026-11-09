@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
-import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -70,7 +69,6 @@ fun Light() {
             enabled = false
         )
     }
-
 }
 
 @Preview(
@@ -99,6 +97,4 @@ fun Dark() {
             enabled = false
         )
     }
-
 }
-

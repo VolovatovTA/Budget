@@ -16,8 +16,10 @@ val Heart: ImageVector
             return _Heart!!
         }
         _Heart = Builder(
-            name = "Heart", defaultWidth = 20.0.dp, defaultHeight =
-            19.0.dp, viewportWidth = 20.0f, viewportHeight = 19.0f
+            name = "Heart", defaultWidth = 20.0.dp,
+            defaultHeight =
+            19.0.dp,
+            viewportWidth = 20.0f, viewportHeight = 19.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

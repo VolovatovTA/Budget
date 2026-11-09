@@ -66,9 +66,11 @@ class CurrencyRatesRepo(
         }
         val data = mapper.getCurrencyRates(responses)
         val syncedAt = now()
-        dao.upsertAll(data.map.flatMap { (base, rates) ->
-            rates.map { CurrencyRateEntity(base.iso4217, it.currency.iso4217, it.rate, syncedAt) }
-        })
+        dao.upsertAll(
+            data.map.flatMap { (base, rates) ->
+                rates.map { CurrencyRateEntity(base.iso4217, it.currency.iso4217, it.rate, syncedAt) }
+            }
+        )
         return data
     }
 

@@ -104,9 +104,10 @@ fun BottomNavigationScreen(
             }
         }
     ) {
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(it)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
         ) {
             BottomNavigationNavHost(bottomNavigationNavController)
         }
@@ -122,13 +123,11 @@ fun BottomNavigationScreenPreview() {
     )
 }
 
-
 private fun navigateToScreen(
     navController: NavHostController,
     screen: NavigationInfo,
     needPopUp: Boolean = true
 ) {
-
     navController.navigate(route = screen.screenName) {
         // Pop up to the start destination of the graph to
         // avoid building up a large stack of destinations

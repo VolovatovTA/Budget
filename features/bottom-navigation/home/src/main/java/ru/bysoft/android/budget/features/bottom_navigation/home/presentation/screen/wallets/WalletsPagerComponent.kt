@@ -91,7 +91,6 @@ fun WalletsPagerComponent(
             }
         }
     }
-
 }
 
 @Composable
@@ -174,7 +173,8 @@ fun WalletCardComponent(
 ) {
     when (info) {
         is WalletCardPresentation -> WalletSimpleCard(
-            info, onClickSimple,
+            info,
+            onClickSimple,
             onClickEdit,
             currentWalletId == info.walletId
         )
@@ -264,7 +264,6 @@ fun WalletSimpleCard(
                         .padding(horizontal = padding),
                     contentAlignment = Alignment.BottomStart
                 ) {
-
                 }
             }
             Box(

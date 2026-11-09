@@ -1,11 +1,11 @@
 package ru.bysoft.android.budget.features.splash
 
-import ru.bysoft.android.budget.common.errors.handler
-import ru.bysoft.android.budget.common.errors.IErrorLogger
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import ru.bysoft.android.budget.common.errors.IErrorLogger
+import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.common.token.ITokenStorage
 import ru.bysoft.android.budget.features.splash.navigation.ISplashNavigation
 
@@ -28,6 +28,4 @@ class SplashViewModel(
             }
         }
     }
-
-
 }

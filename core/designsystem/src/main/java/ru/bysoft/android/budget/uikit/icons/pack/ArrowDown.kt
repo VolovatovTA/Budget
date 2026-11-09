@@ -16,8 +16,10 @@ val ArrowDown: ImageVector
             return _ArrowDown!!
         }
         _ArrowDown = Builder(
-            name = "ArrowDown", defaultWidth = 20.0.dp, defaultHeight =
-            12.0.dp, viewportWidth = 20.0f, viewportHeight = 12.0f
+            name = "ArrowDown", defaultWidth = 20.0.dp,
+            defaultHeight =
+            12.0.dp,
+            viewportWidth = 20.0f, viewportHeight = 12.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

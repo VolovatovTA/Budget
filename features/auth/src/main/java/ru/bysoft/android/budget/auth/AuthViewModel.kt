@@ -1,6 +1,5 @@
 package ru.bysoft.android.budget.auth
 
-import ru.bysoft.android.budget.common.errors.IErrorLogger
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +13,7 @@ import ru.bysoft.android.budget.auth.presentation.entity.AuthActionType
 import ru.bysoft.android.budget.auth.presentation.entity.AuthState
 import ru.bysoft.android.budget.auth.presentation.mapper.getSignInData
 import ru.bysoft.android.budget.auth.presentation.mapper.getSignUpData
+import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 
@@ -55,13 +55,14 @@ class AuthViewModel(
         state.update {
             it.copy(
                 password =
-                    TextFieldState(
-                        password,
-                        if (it.type == AuthActionType.SIGN_UP && password != state.value.confirmPassword.text) R.string.passwords_not_match else null
-                    ),
+                TextFieldState(
+                    password,
+                    if (it.type == AuthActionType.SIGN_UP && password != state.value.confirmPassword.text) R.string.passwords_not_match else null
+                ),
                 confirmPassword = it.confirmPassword.copy(
                     errorText = if (it.type == AuthActionType.SIGN_UP && password != state.value.confirmPassword.text) R.string.passwords_not_match else null
-                ), isButtonEnabled = isAllComplete(password = password),
+                ),
+                isButtonEnabled = isAllComplete(password = password),
                 toastText = null
             )
         }
@@ -71,10 +72,10 @@ class AuthViewModel(
         state.update {
             it.copy(
                 confirmPassword =
-                    TextFieldState(
-                        password,
-                        if (password != state.value.password.text) R.string.passwords_not_match else null
-                    ),
+                TextFieldState(
+                    password,
+                    if (password != state.value.password.text) R.string.passwords_not_match else null
+                ),
                 password = it.password.copy(
                     errorText = if (it.type == AuthActionType.SIGN_UP && password != state.value.password.text) R.string.passwords_not_match else null
                 ),
@@ -100,8 +101,11 @@ class AuthViewModel(
     }
 
     private fun isAllForGoogleComplete(state: AuthState): Boolean {
-        return if (state.type == AuthActionType.SIGN_IN) true
-        else state.isCheckBoxChecked
+        return if (state.type == AuthActionType.SIGN_IN) {
+            true
+        } else {
+            state.isCheckBoxChecked
+        }
     }
 
     override fun setNewName(name: String) {
@@ -179,7 +183,9 @@ class AuthViewModel(
             it.copy(
                 type = newType,
                 toastText = null,
-                password = it.password.copy(errorText = if (newType == AuthActionType.SIGN_IN) null else it.password.errorText),
+                password = it.password.copy(
+                    errorText = if (newType == AuthActionType.SIGN_IN) null else it.password.errorText
+                ),
                 isButtonEnabled = isAllComplete(type = newType)
             )
         }
@@ -200,7 +206,6 @@ class AuthViewModel(
         } else {
             state.update { it.copy(isLoading = false) }
         }
-
     }
 
     override fun setLoading(b: Boolean) {
@@ -219,10 +224,9 @@ class AuthViewModel(
             AuthActionType.SIGN_IN -> isEmailCorrect(email) && isPasswordCorrect(password)
             AuthActionType.SIGN_UP -> isCheckBoxChecked && isEmailCorrect(email) && isPasswordCorrect(
                 password
-            )
-                    && isNameCorrect(name) && password == confirmPassword
+                ) &&
+                isNameCorrect(name) && password == confirmPassword
         }
-
 
     private fun isEmailCorrect(email: String) = email.contains('@') && email.contains('.')
 

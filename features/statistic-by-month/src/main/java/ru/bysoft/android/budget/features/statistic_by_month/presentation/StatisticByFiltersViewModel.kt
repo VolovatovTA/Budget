@@ -1,7 +1,5 @@
 package ru.bysoft.android.budget.features.statistic_by_month.presentation
 
-import ru.bysoft.android.budget.common.util.dayOfWeekSundayZero
-import ru.bysoft.android.budget.common.errors.IErrorLogger
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.patrykandpatrick.vico.core.entry.FloatEntry
@@ -10,7 +8,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.budget.android.api.data.source.network.entity.transactions.TransferTypeEnum
+import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.errors.handler
+import ru.bysoft.android.budget.common.util.dayOfWeekSundayZero
 import ru.bysoft.android.budget.features.statistic_by_month.data.IStatisticByFiltersRepo
 
 class StatisticByFiltersViewModel(

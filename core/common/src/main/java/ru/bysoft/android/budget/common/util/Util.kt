@@ -1,7 +1,6 @@
 package ru.bysoft.android.budget.common.util
 
 import android.content.Context
-import android.os.Parcelable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -85,11 +84,11 @@ enum class TransactionTypeEnum(
 ) {
     EXPENSE(R.string.btn_expense_text, "EXPENSE"),
     INCOME(R.string.btn_income_text, "INCOME"),
-    TRANSFER(R.string.btn_transfer_text, "TRANSFER");
+    TRANSFER(R.string.btn_transfer_text, "TRANSFER")
 }
 
 enum class CategoryTypeEnum(val text: Int, val pathToBack: String) {
-    INCOME(R.string.btn_income_text, "incomes"), EXPENSE(R.string.btn_expense_text, "expenses");
+    INCOME(R.string.btn_income_text, "incomes"), EXPENSE(R.string.btn_expense_text, "expenses")
 }
 
 const val dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"

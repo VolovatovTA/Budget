@@ -20,15 +20,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ru.bysoft.android.budget.features.transaction_detail.R
+import ru.bysoft.android.budget.features.transaction_detail.presentation.ITransactionDetailViewModel
+import ru.bysoft.android.budget.features.transaction_detail.presentation.entity.CategoryItem
+import ru.bysoft.android.budget.features.transaction_detail.presentation.entity.TransactionDetailState
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.styles.halfPadding
 import ru.bysoft.android.budget.uikit.styles.padding
 import ru.bysoft.android.budget.uikit.templates.topBar
-import ru.bysoft.android.budget.features.transaction_detail.R
-import ru.bysoft.android.budget.features.transaction_detail.presentation.ITransactionDetailViewModel
-import ru.bysoft.android.budget.features.transaction_detail.presentation.entity.CategoryItem
-import ru.bysoft.android.budget.features.transaction_detail.presentation.entity.TransactionDetailState
 
 @Composable
 fun TransactionDetailScreen(viewModel: ITransactionDetailViewModel) {

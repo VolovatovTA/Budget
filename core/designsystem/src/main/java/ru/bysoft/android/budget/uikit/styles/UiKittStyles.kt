@@ -228,7 +228,6 @@ object UiKitTypography {
             )
         }
 
-
     val TextXS: BudgetTypography
         @Composable
         get() {

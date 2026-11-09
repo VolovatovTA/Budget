@@ -2,9 +2,9 @@ package ru.bysoft.android.budget.auth.data
 
 import ru.budget.android.api.data.source.network.IAuthApi
 import ru.budget.android.api.data.source.network.entity.auth.SignInGoogleRequest
+import ru.bysoft.android.budget.auth.data.entity.SignErrorData
 import ru.bysoft.android.budget.auth.data.entity.SignInData
 import ru.bysoft.android.budget.auth.data.entity.SignUpData
-import ru.bysoft.android.budget.auth.data.entity.SignErrorData
 import ru.bysoft.android.budget.auth.data.mapper.mapToErrorData
 import ru.bysoft.android.budget.auth.data.mapper.mapToSignInRequest
 import ru.bysoft.android.budget.auth.data.mapper.mapToSignUpRequest
@@ -31,7 +31,6 @@ class AuthRepository(
         val authResponse: AuthResponse = try {
             api.signIn(signInData.mapToSignInRequest())
         } catch (e: Throwable) {
-
             val errorJson = e.ifHttpErrorGetErrorBody()
 
             when {
@@ -66,7 +65,6 @@ class AuthRepository(
         val authResponse: AuthResponse = try {
             api.signUp(signUpData.mapToSignUpRequest())
         } catch (e: Throwable) {
-
             val errorJson = e.ifHttpErrorGetErrorBody()
 
             when {
@@ -100,9 +98,7 @@ class AuthRepository(
     override suspend fun signInByGoogle(idToken: String?) {
         val authResponse = api.signInByGoogle(SignInGoogleRequest(idToken))
         tokenRepo.saveTokens(authResponse)
-
     }
-
 }
 
 class EmptySlugMessage(json: String?) : Throwable(json)

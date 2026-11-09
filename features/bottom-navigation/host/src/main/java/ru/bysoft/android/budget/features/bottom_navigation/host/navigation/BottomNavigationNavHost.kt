@@ -64,4 +64,3 @@ interface BottomNavigationButtonInfo {
     @Composable
     fun backgroundColor(): Color
 }
-

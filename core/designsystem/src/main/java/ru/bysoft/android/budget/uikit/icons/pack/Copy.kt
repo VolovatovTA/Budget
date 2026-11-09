@@ -16,8 +16,10 @@ val Copy: ImageVector
             return _Copy!!
         }
         _Copy = Builder(
-            name = "Copy", defaultWidth = 16.0.dp, defaultHeight =
-            18.0.dp, viewportWidth = 16.0f, viewportHeight = 18.0f
+            name = "Copy", defaultWidth = 16.0.dp,
+            defaultHeight =
+            18.0.dp,
+            viewportWidth = 16.0f, viewportHeight = 18.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

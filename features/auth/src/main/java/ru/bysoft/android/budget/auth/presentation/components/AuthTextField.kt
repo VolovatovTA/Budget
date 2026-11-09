@@ -21,7 +21,6 @@ import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.styles.padding
 
-
 @Composable
 fun AuthTextField(
     state: TextFieldState,
@@ -75,6 +74,4 @@ fun AuthTextField(
             )
         }
     }
-
-
 }

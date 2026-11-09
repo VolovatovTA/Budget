@@ -16,8 +16,10 @@ val Health: ImageVector
             return _Health!!
         }
         _Health = Builder(
-            name = "Health", defaultWidth = 18.0.dp, defaultHeight =
-            18.0.dp, viewportWidth = 18.0f, viewportHeight = 18.0f
+            name = "Health", defaultWidth = 18.0.dp,
+            defaultHeight =
+            18.0.dp,
+            viewportWidth = 18.0f, viewportHeight = 18.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

@@ -23,7 +23,6 @@ class StatisticByFiltersRepo constructor(
         walletId: List<String>?,
         transferType: TransferTypeEnum
     ): List<ListTransactionsData> {
-
         val response = api.getTransactions(
             type = type,
             wallet_ids = walletId,
@@ -36,5 +35,4 @@ class StatisticByFiltersRepo constructor(
             mapper.mapToData(it)
         }.orEmpty()
     }
-
 }

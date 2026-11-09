@@ -1,7 +1,5 @@
 package ru.bysoft.android.budget.features.bottom_navigation.statistic
 
-import ru.bysoft.android.budget.common.util.dayOfWeekSundayZero
-import ru.bysoft.android.budget.common.errors.handler
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
@@ -10,8 +8,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import ru.bysoft.android.budget.common.data_entity.ExpenseCategory
 import ru.bysoft.android.budget.common.errors.IErrorLogger
-import ru.bysoft.android.budget.currency.getBeautifulAmount
+import ru.bysoft.android.budget.common.errors.handler
+import ru.bysoft.android.budget.common.util.dayOfWeekSundayZero
 import ru.bysoft.android.budget.common.util.getCalculatedDate
+import ru.bysoft.android.budget.currency.getBeautifulAmount
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.data.IStatisticRepo
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.navigation.IStatisticNavigation
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.*
@@ -96,7 +96,7 @@ class StatisticViewModel(
                         }
                     }
                 } catch (t: CancellationException) {
-                    throw  t
+                    throw t
                 } catch (t: Throwable) {
                     errorLogger.logError(t)
                     state.update { statisticState ->
@@ -124,23 +124,33 @@ class StatisticViewModel(
                             ) to filledCategory.limitType?.let {
                                 ProgressInfoSuccess(
                                     // 0/0 = 0
-                                    if (filledCategory.amount == 0f && filledCategory.limitAmount == 0f) 0f
-                                    // (5 || null)/null ~= 0
-                                    else (filledCategory.amount ?: 0f) / (filledCategory.limitAmount
-                                        ?: Float.MAX_VALUE)
+                                    if (filledCategory.amount == 0f && filledCategory.limitAmount == 0f) {
+                                        0f
+                                    } // (5 || null)/null ~= 0
+                                    else {
+                                        (filledCategory.amount ?: 0f) / (
+                                            filledCategory.limitAmount
+                                                ?: Float.MAX_VALUE
+                                            )
+                                    }
                                 )
                             }
-                        } else UiKitAmountInfoError to ProgressInfoError
+                        } else {
+                            UiKitAmountInfoError to ProgressInfoError
+                        }
                     mapper.getCategoryState(
                         filledCategory,
                         amount,
                         progress
                     )
-                } else
+                } else {
                     category
+                }
             }
         )
-    } else statisticState
+    } else {
+        statisticState
+    }
 
     override fun addCategory() {
         navigate.toCreateCategory()

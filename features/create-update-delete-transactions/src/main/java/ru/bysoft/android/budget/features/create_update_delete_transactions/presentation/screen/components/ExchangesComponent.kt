@@ -82,7 +82,6 @@ fun ExchangesComponent(
                     .padding(horizontal = padding)
                     .fillMaxWidth()
             ) {
-
                 val baseCurrencyName = exchangeState
                     .baseCurrency
                     .displayName
@@ -192,7 +191,6 @@ fun ExchangesComponent(
                         }
                     }
                 }
-
 
                 if (!exchangeState.isFullAmount) {
                     Surface(

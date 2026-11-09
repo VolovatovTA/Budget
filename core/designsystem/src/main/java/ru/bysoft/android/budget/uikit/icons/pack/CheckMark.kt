@@ -16,8 +16,10 @@ val CheckMark: ImageVector
             return _CheckMark!!
         }
         _CheckMark = Builder(
-            name = "CheckMark", defaultWidth = 22.0.dp, defaultHeight =
-            16.0.dp, viewportWidth = 22.0f, viewportHeight = 16.0f
+            name = "CheckMark", defaultWidth = 22.0.dp,
+            defaultHeight =
+            16.0.dp,
+            viewportWidth = 22.0f, viewportHeight = 16.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

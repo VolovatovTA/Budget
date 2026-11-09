@@ -78,7 +78,6 @@ private fun ComposeChart3(chartEntryModelProducer: ChartEntryModelProducer) {
     }
 }
 
-
 private const val COLOR_1_CODE = 0xffffbb00
 private const val COLOR_2_CODE = 0xff9db591
 private const val AXIS_VALUE_OVERRIDER_Y_FRACTION = 1.2f

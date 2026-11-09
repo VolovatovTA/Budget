@@ -1,16 +1,16 @@
 package ru.bysoft.android.budget.features.create_update_wallet.presentation.controllers
 
-import ru.bysoft.android.budget.currency.getAvailableCurrency
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import ru.bysoft.android.budget.common.R
 import ru.bysoft.android.budget.common.data_entity.CreateWalletErrorData
 import ru.bysoft.android.budget.common.me_info.IMeInfo
+import ru.bysoft.android.budget.common.util.applyFilter
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
+import ru.bysoft.android.budget.currency.getAvailableCurrency
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.create_update_wallet.IWalletScreenController
-import ru.bysoft.android.budget.common.R
-import ru.bysoft.android.budget.common.util.applyFilter
 import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.ControllerWalletState
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.CurrencyFieldState
 import ru.bysoft.android.budget.uikit.components.textfield.TextFieldState

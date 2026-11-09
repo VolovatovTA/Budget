@@ -16,8 +16,10 @@ val Beach: ImageVector
             return _Beach!!
         }
         _Beach = Builder(
-            name = "Beach", defaultWidth = 21.0.dp, defaultHeight =
-            20.0.dp, viewportWidth = 21.0f, viewportHeight = 20.0f
+            name = "Beach", defaultWidth = 21.0.dp,
+            defaultHeight =
+            20.0.dp,
+            viewportWidth = 21.0f, viewportHeight = 20.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

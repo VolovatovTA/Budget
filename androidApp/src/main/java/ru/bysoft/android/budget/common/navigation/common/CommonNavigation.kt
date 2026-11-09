@@ -6,7 +6,7 @@ import ru.bysoft.android.budget.common.navigation.NavHostControllerWrapper
 import ru.bysoft.android.budget.common.navigation.auth.Auth
 import ru.bysoft.android.budget.common.network.authentificator.ICommonNavigation
 
-class CommonNavigation (
+class CommonNavigation(
     private val navHostController: NavHostControllerWrapper
 ) : ICommonNavigation {
     override suspend fun navigateToAuth() {

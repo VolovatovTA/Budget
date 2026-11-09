@@ -3,7 +3,6 @@ package ru.bysoft.android.budget.common.me_info.entity
 import ru.bysoft.android.budget.common.R
 import java.util.*
 
-
 data class MeData(
     val email: String,
     val name: String,

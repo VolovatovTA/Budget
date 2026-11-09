@@ -16,8 +16,10 @@ val Rest: ImageVector
             return _Rest!!
         }
         _Rest = Builder(
-            name = "Rest", defaultWidth = 20.0.dp, defaultHeight =
-            13.0.dp, viewportWidth = 20.0f, viewportHeight = 13.0f
+            name = "Rest", defaultWidth = 20.0.dp,
+            defaultHeight =
+            13.0.dp,
+            viewportWidth = 20.0f, viewportHeight = 13.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

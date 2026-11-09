@@ -19,13 +19,11 @@ interface ICategoryApi {
     @GET("$pathToWallet/{$pathExpensesName}")
     suspend fun getCategories(@Path(pathExpensesName) name: String): CategoryResponse
 
-
     @POST("$pathToCategory{$namePathExpenseIncome}")
     suspend fun createCategory(
         @Body request: CategoryRequest,
         @Path(namePathExpenseIncome) path: String
     ): CategoryItemResponse
-
 
     @PUT("$pathToCategory{$namePathExpenseIncome}/{$nameId}")
     suspend fun updateCategory(

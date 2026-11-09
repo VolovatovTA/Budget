@@ -23,4 +23,3 @@ import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
 internal fun Chart5(chartEntryModelProducer: ChartEntryModelProducer) {
 //    ComposeChart5(chartEntryModelProducer)
 }
-

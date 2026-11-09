@@ -7,13 +7,13 @@ sealed interface IStatisticState
 
 data class StatisticSuccessState(
     val listInfo: List<CategoryInfo>
-): IStatisticState
+) : IStatisticState
 
-object StatisticErrorState: IStatisticState
+object StatisticErrorState : IStatisticState
 
 data class StatisticWaitingState(
     val isRefreshing: Boolean
-): IStatisticState
+) : IStatisticState
 
 data class CategoryInfo(
     @DrawableRes val icon: Int?,
@@ -27,10 +27,10 @@ data class CategoryInfo(
 
 sealed interface ProgressInfo
 
-object ProgressInfoWaiting: ProgressInfo
+object ProgressInfoWaiting : ProgressInfo
 
 data class ProgressInfoSuccess(
     val progress: Float
-): ProgressInfo
+) : ProgressInfo
 
-object ProgressInfoError: ProgressInfo
+object ProgressInfoError : ProgressInfo

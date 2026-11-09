@@ -3,9 +3,9 @@ package ru.bysoft.android.budget.auth.data.mapper
 import ru.budget.android.api.data.source.network.entity.auth.SignInRequest
 import ru.budget.android.api.data.source.network.entity.auth.SignUpRequest
 import ru.bysoft.android.budget.auth.R
+import ru.bysoft.android.budget.auth.data.entity.SignErrorData
 import ru.bysoft.android.budget.auth.data.entity.SignInData
 import ru.bysoft.android.budget.auth.data.entity.SignUpData
-import ru.bysoft.android.budget.auth.data.entity.SignErrorData
 import ru.bysoft.android.budget.common.token.entity.SignErrorResponse
 
 fun SignInData.mapToSignInRequest(): SignInRequest = SignInRequest(
@@ -19,15 +19,14 @@ fun SignUpData.mapToSignUpRequest(): SignUpRequest = SignUpRequest(
     name = this.name
 )
 
-
 fun SignErrorResponse.mapToErrorData(): SignErrorData {
-    if (error == "Invalid credentials")
+    if (error == "Invalid credentials") {
         return SignErrorData(
             errorPasswordText = R.string.field_password_invalid_length,
             errorEmailText = R.string.field_email_invalid,
             errorToastText = R.string.invalid_credentials
         )
-
+    }
 
     return SignErrorData(
         errorPasswordText = getPasswordTextId(errors?.password),
@@ -36,14 +35,13 @@ fun SignErrorResponse.mapToErrorData(): SignErrorData {
     )
 }
 
-
 fun getEmailTextId(emailError: List<String>?): Int? {
     return emailError?.firstNotNullOfOrNull {
-            when (it) {
-                "The email field is required.", "The email must be a valid email address." -> R.string.field_email_invalid
-                else -> null
-            }
+        when (it) {
+            "The email field is required.", "The email must be a valid email address." -> R.string.field_email_invalid
+            else -> null
         }
+    }
 }
 
 fun getPasswordTextId(passwordError: List<String>?): Int? {

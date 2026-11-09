@@ -95,8 +95,6 @@ fun ButtonsLight() {
             enabled = false
         )
     }
-
-
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
@@ -126,6 +124,4 @@ fun ButtonsDark() {
             enabled = false
         )
     }
-
-
 }

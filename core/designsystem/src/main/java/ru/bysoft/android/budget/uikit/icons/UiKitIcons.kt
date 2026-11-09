@@ -5,9 +5,11 @@ import ru.bysoft.android.budget.uikit.R
 
 object UiKitIcons {
     private val icons =
-        (ExpensesIcons.entries +
+        (
+            ExpensesIcons.entries +
                 IncomesIcons.entries +
-                WalletIcons.entries)
+                WalletIcons.entries
+            )
             .associate { it.nameForBack to it.id }
 
     fun getByName(name: String?): Int? = icons[name]
@@ -21,7 +23,6 @@ object UiKitIcons {
 
     /** Which set of icons a picker offers. Features map their own types onto this. */
     enum class UiKitIconPack { EXPENSE, INCOME, WALLET }
-
 
     interface IIcons {
         val nameForBack: String
@@ -90,8 +91,5 @@ object UiKitIcons {
         Wallet("wallet", R.drawable.wallet),
         Card02("card_02", R.drawable.card_02),
         DiscountCircle("discount_circle", R.drawable.discount_circle),
-
     }
-
-
 }

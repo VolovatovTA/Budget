@@ -20,5 +20,4 @@ interface IAuthApi {
 
     @POST(postSignInGoogleRoute)
     suspend fun signInByGoogle(@Body request: SignInGoogleRequest): AuthSuccessResponse
-
 }

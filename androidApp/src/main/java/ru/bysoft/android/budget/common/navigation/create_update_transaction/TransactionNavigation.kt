@@ -1,6 +1,5 @@
 package ru.bysoft.android.budget.common.navigation.create_update_transaction
 
-import androidx.navigation.NavHostController
 import ru.bysoft.android.budget.common.navigation.NavHostControllerWrapper
 import ru.bysoft.android.budget.common.navigation.create_update_categiry.CreateUpdateCategory
 import ru.bysoft.android.budget.common.util.CategoryTypeEnum

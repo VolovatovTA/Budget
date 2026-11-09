@@ -64,7 +64,7 @@ enum class BudgetCurrencyEnum(
     SYP("₤", "SYP", R.drawable.sy_syria),
     SDG("₤", "SDG", R.drawable.sd_sudan),
     AMD("֏", "AMD", R.drawable.am_armenia),
-    UNKNOWN("", "", R.drawable.aw_aruba);
+    UNKNOWN("", "", R.drawable.aw_aruba)
 }
 
 fun getBeautifulAmount(amount: Float, currency: BudgetCurrencyEnum): String {
@@ -82,5 +82,4 @@ fun getBeautifulAmount(amount: Float, currency: BudgetCurrencyEnum): String {
         ?.reversed() ?: "0"
     val decimals = roundedAmount.dropWhile { it != '.' }.drop(1)
     return "$accurateAmount.$decimals ${currency.displayName}"
-
 }

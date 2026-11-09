@@ -42,6 +42,7 @@ import ru.bysoft.android.budget.common.me_info.entity.DayOfWeek
 import ru.bysoft.android.budget.common.me_info.entity.MeData
 import ru.bysoft.android.budget.common.me_info.entity.SettingsData
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
+import ru.bysoft.android.budget.features.settings.R
 import ru.bysoft.android.budget.features.settings.presentation.SettingsViewModel
 import ru.bysoft.android.budget.features.settings.presentation.entity.SettingsState
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
@@ -55,7 +56,6 @@ import ru.bysoft.android.budget.uikit.icons.pack.Person
 import ru.bysoft.android.budget.uikit.styles.UiKitTypography
 import ru.bysoft.android.budget.uikit.styles.doubleCorner
 import ru.bysoft.android.budget.uikit.styles.padding
-import ru.bysoft.android.budget.features.settings.R
 
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel) {
@@ -163,7 +163,6 @@ private fun SettingsScreenContent(
                         .padding(padding),
                     verticalArrangement = Arrangement.spacedBy(padding)
                 ) {
-
                     UiKitButton(
                         info = UiKitButtonInfo(
                             text = stringResource(R.string.logout),
@@ -355,6 +354,10 @@ fun PreviewSettingsScreen() {
                 list = DayOfWeek.values().toList()
             )
         ),
-        {}, {}, {}, {}, {}
+        {},
+        {},
+        {},
+        {},
+        {}
     )
 }

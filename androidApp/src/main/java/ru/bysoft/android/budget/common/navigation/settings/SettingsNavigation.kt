@@ -19,5 +19,4 @@ class SettingsNavigation(
     override fun popBack() {
         navHostController.popBackStack()
     }
-
 }

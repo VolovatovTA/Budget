@@ -1,7 +1,7 @@
 package ru.bysoft.android.budget.common.data_entity
 
-import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.common.util.PeriodState
+import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 
 sealed class CategoryData(
     open val currency: BudgetCurrencyEnum,
@@ -26,7 +26,6 @@ data class IncomeCategory(
     override val name: String,
     override val iconName: String?,
 ) : CategoryData(currency, id, name, iconName)
-
 
 class CategoryErrorType(val messageFromBack: String?) : Throwable(messageFromBack) {
     companion object {

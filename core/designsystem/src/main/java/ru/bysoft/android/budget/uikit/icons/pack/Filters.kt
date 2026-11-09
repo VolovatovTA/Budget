@@ -16,8 +16,10 @@ val Filters: ImageVector
             return _Filters!!
         }
         _Filters = Builder(
-            name = "Filters", defaultWidth = 20.0.dp, defaultHeight =
-            18.0.dp, viewportWidth = 20.0f, viewportHeight = 18.0f
+            name = "Filters", defaultWidth = 20.0.dp,
+            defaultHeight =
+            18.0.dp,
+            viewportWidth = 20.0f, viewportHeight = 18.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

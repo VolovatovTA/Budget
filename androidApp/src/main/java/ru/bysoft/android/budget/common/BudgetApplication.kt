@@ -14,6 +14,8 @@ import ru.bysoft.android.budget.common.di.NavigationDi
 import ru.bysoft.android.budget.common.navigation.NavHostControllerWrapper
 import ru.bysoft.android.budget.common.token.di.TokenDi
 import ru.bysoft.android.budget.common.warmup.AppWarmUp
+import ru.bysoft.android.budget.di.buildTypeModules
+import ru.bysoft.android.budget.di.flavorModules
 import ru.bysoft.android.budget.features.bottom_navigation.home.di.HomeDi
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.di.StatisticDi
 import ru.bysoft.android.budget.features.create_udate_category.di.CreatedUpdateCategoryDi
@@ -24,8 +26,6 @@ import ru.bysoft.android.budget.features.settings.presentation.SettingDi
 import ru.bysoft.android.budget.features.splash.di.SplashDi
 import ru.bysoft.android.budget.features.statistic_by_month.di.StatisticByFiltersDi
 import ru.bysoft.android.budget.features.transaction_detail.di.TransactionDetailDi
-import ru.bysoft.android.budget.di.buildTypeModules
-import ru.bysoft.android.budget.di.flavorModules
 import ru.bysoft.shared.Platform
 
 class BudgetApplication : Application() {

@@ -1,6 +1,7 @@
 package ru.bysoft.android.budget.uikit.components.textfield
 
 import android.content.res.Configuration
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,6 +23,7 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,8 +43,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.annotation.DrawableRes
-import androidx.compose.runtime.Immutable
 import ru.bysoft.android.budget.uikit.R
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitPopUp
@@ -172,7 +172,6 @@ fun <T, C> UiKitTextFieldWithPopUpAndCurrency(
         }
     }
 }
-
 
 @Composable
 fun <C> UiKitTextFieldWithCurrency(
@@ -407,7 +406,6 @@ fun TextFieldPreview() {
             keyboardActions = KeyboardActions { }
         )
         Spacer(modifier = Modifier.width(500.dp))
-
     }
 }
 
@@ -418,7 +416,9 @@ fun PopupPreview() {
         info = PopupFieldState(
             list = previewCurrencies,
             selectedValue = previewCurrencies[1]
-        ), onClickItem = {}) { t ->
+        ),
+        onClickItem = {}
+    ) { t ->
         t?.let {
             UiKitCurrencyPopUpTextField(t.symbol, t.flag)
         }
@@ -442,7 +442,6 @@ fun UiKitCurrencyPopUpTextField(symbol: String, @DrawableRes flag: Int? = null) 
             .clip(RoundedCornerShape(halfCorner)),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         Text(
             text = symbol,
             style = UiKitTypography.TextSM.Medium,

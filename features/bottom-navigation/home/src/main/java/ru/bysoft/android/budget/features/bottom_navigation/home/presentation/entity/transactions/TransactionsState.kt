@@ -19,7 +19,9 @@ data class TransactionLoading(
 
 object TransactionError : TransactionsState
 
-data class TransactionInfo @OptIn(ExperimentalMaterialApi::class) constructor(
+data class TransactionInfo
+@OptIn(ExperimentalMaterialApi::class)
+constructor(
     val name: String?,
     val icons: List<Int>,
     val date: String?,

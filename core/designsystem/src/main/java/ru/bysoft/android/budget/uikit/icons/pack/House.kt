@@ -15,11 +15,17 @@ val House: ImageVector
         if (_House != null) {
             return _House!!
         }
-        _House = Builder(name = "House", defaultWidth = 18.0.dp, defaultHeight =
-                19.0.dp, viewportWidth = 18.0f, viewportHeight = 19.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+        _House = Builder(
+            name = "House", defaultWidth = 18.0.dp,
+            defaultHeight =
+            19.0.dp,
+            viewportWidth = 18.0f, viewportHeight = 19.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
+                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
                 moveTo(9.0f, 0.8038f)
                 lineTo(0.0f, 6.0f)
                 verticalLineTo(19.0f)
@@ -46,7 +52,7 @@ val House: ImageVector
                 close()
             }
         }
-        .build()
+            .build()
         return _House!!
     }
 

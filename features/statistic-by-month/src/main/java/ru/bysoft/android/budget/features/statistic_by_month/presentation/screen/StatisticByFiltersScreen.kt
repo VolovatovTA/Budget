@@ -60,4 +60,3 @@ private fun StatisticScreenContent(
 fun PreviewChart() {
     StatisticScreenContent(state = StatisticByFiltersStateSuccess())
 }
-

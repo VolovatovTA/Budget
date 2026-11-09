@@ -16,8 +16,10 @@ val Card: ImageVector
             return _Card!!
         }
         _Card = Builder(
-            name = "Card", defaultWidth = 20.0.dp, defaultHeight =
-            16.0.dp, viewportWidth = 20.0f, viewportHeight = 16.0f
+            name = "Card", defaultWidth = 20.0.dp,
+            defaultHeight =
+            16.0.dp,
+            viewportWidth = 20.0f, viewportHeight = 16.0f
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,

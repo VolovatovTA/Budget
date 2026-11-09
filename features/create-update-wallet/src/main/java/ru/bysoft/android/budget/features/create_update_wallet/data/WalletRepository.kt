@@ -2,16 +2,15 @@ package ru.bysoft.android.budget.features.create_update_wallet.data
 
 import retrofit2.HttpException
 import ru.budget.android.api.data.mapper.WalletsDataMapper
-import ru.budget.android.api.data.source.network.IWalletApi
-import ru.bysoft.android.budget.common.util.onNull
-import ru.bysoft.android.budget.common.util.restore
-import ru.budget.android.api.data.source.network.entity.wallet.WalletErrorResponse
-import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.ControllerWalletState
 import ru.budget.android.api.data.mapper.mapToData
+import ru.budget.android.api.data.source.network.IWalletApi
 import ru.budget.android.api.data.source.network.entity.wallet.CreateWalletRequest
 import ru.budget.android.api.data.source.network.entity.wallet.UpdateWalletRequest
+import ru.budget.android.api.data.source.network.entity.wallet.WalletErrorResponse
 import ru.bysoft.android.budget.common.data_entity.WalletData
-
+import ru.bysoft.android.budget.common.util.onNull
+import ru.bysoft.android.budget.common.util.restore
+import ru.bysoft.android.budget.features.create_update_wallet.presentation.entity.ControllerWalletState
 
 interface IWalletRepository {
     suspend fun createWallet(state: ControllerWalletState): Result<Unit>
@@ -61,9 +60,7 @@ class WalletRepository constructor(
     override suspend fun deleteWallet(id: String) {
         api.deleteWallet(id)
     }
-
 }
-
 
 fun mapToCreateRequest(state: ControllerWalletState): CreateWalletRequest =
     CreateWalletRequest(

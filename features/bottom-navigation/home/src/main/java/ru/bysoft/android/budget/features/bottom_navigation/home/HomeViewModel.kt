@@ -1,6 +1,5 @@
 package ru.bysoft.android.budget.features.bottom_navigation.home
 
-import ru.bysoft.android.budget.common.errors.IErrorLogger
 import androidx.compose.material.DismissState
 import androidx.compose.material.DismissValue
 import androidx.compose.material.ExperimentalMaterialApi
@@ -9,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import ru.budget.android.api.data.source.network.entity.transactions.TransferTypeEnum
+import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.common.me_info.IMeInfo
 import ru.bysoft.android.budget.common.network.entity.ifHttpErrorGetErrorBody
@@ -110,7 +110,6 @@ class HomeViewModel(
     )
 
     override fun onClickSimpleWallet() {
-
     }
 
     override fun onClickCreateWallet() {
@@ -193,7 +192,6 @@ class HomeViewModel(
                 errorLogger.logError(result.exceptionOrNull() ?: Exception("Unknown error"))
             }
         }
-
     }
 
     override fun onSettingsClick() {
@@ -228,17 +226,20 @@ class HomeViewModel(
             transactionsState.update { transactionState ->
                 (transactionState as? TransactionSuccess)?.copy(
                     list = transactionState.list.map { transactionInfo ->
-                        if (transactionInfo.id == data) transactionInfo.copy(
-                            isWaiting = false,
-                            dismissState = DismissState(DismissValue.Default) {
-                                deleteLambda(it, data)
-                            }
-                        ) else transactionInfo
+                        if (transactionInfo.id == data) {
+                            transactionInfo.copy(
+                                isWaiting = false,
+                                dismissState = DismissState(DismissValue.Default) {
+                                    deleteLambda(it, data)
+                                }
+                            )
+                        } else {
+                            transactionInfo
+                        }
                     }
                 ) ?: transactionState
             }
         }
-
     }
 
     override fun <T> onDialogConfirmed(data: T) {
@@ -353,5 +354,4 @@ class HomeViewModel(
         }
         true
     }
-
 }

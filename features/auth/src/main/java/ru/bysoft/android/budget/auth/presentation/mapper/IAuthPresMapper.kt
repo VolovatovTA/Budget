@@ -10,7 +10,7 @@ fun AuthState.getSignInData() =
         password = password.text
     )
 
-fun AuthState.getSignUpData()=
+fun AuthState.getSignUpData() =
     SignUpData(
         email = email.text,
         password = password.text,

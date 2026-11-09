@@ -3,8 +3,6 @@ package ru.budget.android.api.data.source.network.entity.transactions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import ru.budget.android.api.data.source.network.entity.wallet.WalletItemResponse
-import ru.budget.android.api.data.source.network.entity.wallet.WalletResponse
-
 
 @kotlinx.serialization.Serializable
 data class TransactionResponse(

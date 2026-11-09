@@ -12,7 +12,7 @@ import ru.bysoft.android.budget.common.util.getStringFromAsset
 import ru.bysoft.android.budget.common.util.pointJson
 import ru.bysoft.android.budget.common.util.restore
 
-class TransactionApiMock (
+class TransactionApiMock(
     private val context: Context,
     private val delayMock: Long
 ) : ITransactionsApi {
@@ -44,7 +44,7 @@ class TransactionApiMock (
         return allTransactions()
     }
 
-    override suspend fun deleteTransaction(id: String): Unit {
+    override suspend fun deleteTransaction(id: String) {
         delay(delayMock)
     }
 

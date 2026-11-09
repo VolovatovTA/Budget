@@ -15,7 +15,7 @@ interface ITransactionsRepo {
     suspend fun deleteTransaction(id: String): Result<Unit>
 }
 
-class TransactionRepo (
+class TransactionRepo(
     private val api: ITransactionsApi,
     private val mapper: ITransactionsDataMapper
 ) : ITransactionsRepo {
@@ -42,5 +42,4 @@ class TransactionRepo (
             Result.failure(e)
         }
     }
-
 }

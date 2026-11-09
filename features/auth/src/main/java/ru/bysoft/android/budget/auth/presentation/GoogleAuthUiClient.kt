@@ -22,7 +22,7 @@ class GoogleAuthUiClient(
     suspend fun signIn(): IntentSender? {
         val result = try {
             oneTapClient.beginSignIn(buildSignInRequest()).await()
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             null
         }
@@ -47,9 +47,9 @@ class GoogleAuthUiClient(
     suspend fun signOut() {
         try {
             oneTapClient.signOut().await()
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
-            if(e is CancellationException) throw e
+            if (e is CancellationException) throw e
         }
     }
 
