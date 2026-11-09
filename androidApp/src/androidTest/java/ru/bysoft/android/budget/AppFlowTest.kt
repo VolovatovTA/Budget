@@ -65,7 +65,7 @@ class AppFlowTest {
         compose.waitUntilAtLeastOneExists(hasText("Email"), SPLASH_TIMEOUT)
         compose.onNode(hasSetTextAction() and hasText("Email")).performTextInput("alex@example.com")
         compose.onNode(hasSetTextAction() and hasText("Password")).performTextInput("password1")
-        compose.onNodeWithText("SIGN IN").performClick()
+        compose.onNodeWithText("Sign in").performClick()
         compose.waitUntilAtLeastOneExists(hasText("Main card"), LOAD_TIMEOUT)
         // transactions are requested after the wallets, with their own mock delay
         compose.waitUntilAtLeastOneExists(hasText("Weekly groceries"), LOAD_TIMEOUT)
