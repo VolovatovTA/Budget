@@ -24,6 +24,6 @@ You keep the pull-request stack of Budget rebased. You change branches, never co
    gets an empty commit only if the maintainer asks.
 5. Report in one short list: PR → rebased onto what (short SHA) / retargeted / conflict / untouched.
 
-Rules you do not break: git writes only after 17:00 local time; squash or rebase merges only, never a
+Rules you do not break: git writes never on weekdays 08:00–17:00 Europe/Belgrade; squash or rebase merges only, never a
 merge commit (repository setting); one argument per line applies to you too when you edit YAML or
 scripts.
