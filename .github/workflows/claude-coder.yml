@@ -5,10 +5,10 @@ name: Claude coder
 on:
   issues:
     types: [labeled]
-  # Evening sweep: issues labelled during working hours (skipped by the gate) are picked up at 17:05
-  # Europe/Belgrade (15:05 UTC in winter, 16:05 in summer — both after 17:00 local).
+  # Evening sweep for issues labelled during working hours (the gate skipped them). 16:05 UTC is
+  # 17:05 in Belgrade in winter (UTC+1) and 18:05 in summer (UTC+2): after 17:00 in both.
   schedule:
-    - cron: '5 15 * * 1-5'
+    - cron: '5 16 * * 1-5'
   workflow_dispatch:
     inputs:
       issue:
@@ -35,13 +35,20 @@ jobs:
       issues: read
       actions: write
     steps:
+      # Handled = a PR from agent/issue-N exists (open, merged or closed) or the branch exists (a run in
+      # progress). At most two issues start per sweep so a backlog cannot burn the quota in one evening.
       - env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          for n in $(gh issue list --repo "$GITHUB_REPOSITORY" --label agent --state open --json number -q '.[].number'); do
-            if gh api "repos/$GITHUB_REPOSITORY/branches/agent/issue-$n" >/dev/null 2>&1; then continue; fi
+          started=0
+          for n in $(gh issue list --repo "$GITHUB_REPOSITORY" --label agent --state open --limit 100 \
+                       --json number -q 'sort_by(.number)[].number'); do
+            [ "$started" -ge 2 ] && break
+            prs=$(gh pr list --repo "$GITHUB_REPOSITORY" --head "agent/issue-$n" --state all --json number -q 'length')
+            [ "$prs" != "0" ] && continue
+            gh api "repos/$GITHUB_REPOSITORY/branches/agent/issue-$n" >/dev/null 2>&1 && continue
             gh workflow run claude-coder.yml --repo "$GITHUB_REPOSITORY" -f issue="$n"
-            echo "dispatched issue #$n"
+            echo "dispatched issue #$n"; started=$((started + 1))
           done
 
   implement-issue:
@@ -54,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     concurrency:
-      group: claude-coder-${{ github.event.issue.number }}
+      group: claude-coder-${{ github.event.inputs.issue || github.event.issue.number }}
       cancel-in-progress: false
     permissions:
       contents: write
@@ -63,6 +70,9 @@ jobs:
       id-token: write
       actions: read
     steps:
+      - name: The issue number is a number
+        run: |
+          [[ "$ISSUE" =~ ^[0-9]+$ ]] || { echo "::error::issue must be a number, got '$ISSUE'"; exit 1; }
       # Egress audit first: the report names every host the run contacts; the next change switches to
       # `egress-policy: block` with that list, so a prompt injection has nowhere to send a token.
       - uses: step-security/harden-runner@v2

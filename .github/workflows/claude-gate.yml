@@ -1,5 +1,7 @@
 # Shared gate for every Claude workflow: subscription token only (decision 0006), no runs on weekdays
-# between 08:00 and 17:00 Europe/Belgrade (nights and weekends are free), and a clean skip when the token secret is not configured yet.
+# between 08:00 and 17:00 Europe/Belgrade (nights and weekends are free), and a clean skip when the
+# token secret is not configured yet. The coder's sweep cron must land after 17:00 local in both DST
+# states, hence 16:05 UTC.
 name: Claude gate
 
 on:
