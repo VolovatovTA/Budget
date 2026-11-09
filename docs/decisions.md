@@ -46,3 +46,19 @@ Decision: a test has at most two assertions (Konsist `TestShapeTest`), names one
 fail on a concrete production change; constants and data holders are excluded from Kover instead of
 tested. Consequences: coverage may read lower; reviewers audit every test in a diff (count, purpose,
 regression caught). Revisit when: never, by design.
+
+## 0005 · Backend archived, the app is local-first · Accepted · 2026-11-09
+
+Context: the server behind `core:network` is a separate project and is not expected back soon; the
+app's goals (local mode, spreadsheet sync, bank imports) do not need it.
+Decision: the remote path is frozen, not deleted. `remoteBack` stays a flavor that must compile but is
+not what CI tests, the device checks or the store build use; `localMock` is renamed to the local mode
+and its JSON mocks are replaced by the local repositories (Room) as work on the `data:*` direction
+proceeds; `core:network`, the auth interceptor and token storage receive no new code. Sign-in /
+sign-up are skipped in the local mode (a local account is created silently); the screens stay for the
+day the backend returns. Consequences: every new feature is designed against local data only; the
+design refresh still restyles auth screens only as far as shared components reach them; `localMock`
+flow tests become the real tests of the shipped app. Revisit when: the server project is alive again
+with a stable API — then the remote repositories are re-wired behind the same interfaces, and sync
+between local data and the server becomes a feature like the spreadsheet sync.
+

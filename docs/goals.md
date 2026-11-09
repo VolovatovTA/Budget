@@ -13,8 +13,10 @@ Nothing here is for sale: no paid tier, no ads, no monetisation.
    API or library the proper way is worth more than the shortest patch.
 2. **Daily use in under ten seconds.** Adding a transaction is the main flow: open, amount, category,
    wallet, done. Everything else is secondary to that path staying short and never losing data.
-3. **Works without an account.** Wallets, categories and transactions live on the device (Room) and
-   balances, limits and statistics are computed locally; the backend is an option, not a requirement.
+3. **Local first, no account.** Wallets, categories and transactions live on the device (Room) and
+   balances, limits and statistics are computed locally. The backend is **archived** (decision 0005):
+   its server is a separate project that is not coming back soon, so the app is built, tested and
+   shipped as a local app; the remote code stays in the tree, frozen, until that project is revived.
 4. **The data is the user's.** Two-way sync of transactions, wallets and categories as a spreadsheet
    (.xlsx) on Google Drive or Yandex Disk, chosen in settings: edits in the sheet come back into the app,
    app edits go into the sheet; conflicts are latest-wins with a confirmation on same-field conflicts.
@@ -41,6 +43,9 @@ Nothing here is for sale: no paid tier, no ads, no monetisation.
 Agents: do not build these and do not add extension points for them.
 
 - **Monetisation of any kind**: paid tiers, in-app purchases, subscriptions, ads, analytics for sale.
+- **Backend work.** No new endpoints, DTOs, auth flows or server-dependent features while the backend
+  is archived; a screen that only makes sense with a server (sign-in, sign-up, account deletion) is
+  bypassed in the local mode, not improved.
 - **A second UI toolkit or a second theme language.** Material 3 is reachable only through the kit;
   features never import `androidx.compose.material*` widgets directly.
 - **Tests written for the coverage number.** A test pins behaviour that can break; constants and data
@@ -56,7 +61,7 @@ even when the change itself is correct.
 | Direction | What it needs from today's code |
 |---|---|
 | `data:*` modules, repositories as the single source of truth (`Flow` over a cache) | Features talk to repository interfaces only; nothing reads `core:network` DTOs from presentation; no screen reloads on every entry |
-| Local (offline) implementation of every repository | Repository interfaces return `core:model` types, not DTOs; no backend-computed numbers assumed to be free |
+| Local implementation of every repository is *the* implementation | Repository interfaces return `core:model` types, not DTOs; balances, totals, limits and statistics are computed on the device; the remote implementations compile but are not wired by default |
 | Two-way spreadsheet sync | Every entity has a stable id and a last-modified timestamp; no entity identity by list position |
 | Navigation by events from ViewModels | No new code reaches the `NavHostController` singleton; new screens expose events, not navigation calls |
 | One `onEvent(UiEvent)` per ViewModel | New ViewModels take a sealed event, not one method per tap |
