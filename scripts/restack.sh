@@ -1,6 +1,6 @@
 #!/bin/zsh
-# After a stacked PR is merged into master (squash or rebase), rebase every PR above it and retarget
-# the first one onto master. Prints one RESTACK line per action, nothing when there is nothing to do.
+# After a stacked PR is merged into master (squash or rebase), rebase the PRs that were based on it
+# onto master and retarget them; PRs stacked higher wait for their own parent to merge. Prints one RESTACK line per action, nothing when there is nothing to do.
 set -u
 REPO=$(git rev-parse --show-toplevel)
 WT=$REPO/build/wt-restack
@@ -75,10 +75,10 @@ for pass in 1 2 3 4 5 6 7 8; do
         d=$(git rev-list --count "$sha..origin/$head"); [ "$d" -lt "$best" ] && { best=$d; merged=$sha; }
       done
     fi
+    # Only PRs whose own base was merged are rebased. PRs stacked on *those* keep a clean diff (GitHub
+    # diffs against the merge base) and get their turn when their parent merges — no CI spent early.
     if [ -n "$merged" ]; then
       oldbase=$merged; newbase=$(git rev-parse origin/master); [ "$base" = master ] || retarget=1; label=master
-    elif [ -n "${newtip[$base]:-}" ]; then
-      oldbase=${oldtip[$base]}; newbase=${newtip[$base]}; label=$base
     else
       continue
     fi

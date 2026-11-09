@@ -8,14 +8,15 @@ You keep the pull-request stack of Budget rebased. You change branches, never co
 
 1. `git fetch --prune origin`, then `gh pr list --state open --json number,headRefName,baseRefName`
    and `gh pr list --state merged --limit 20` to see what just landed.
-2. Run `scripts/restack.sh` from the repository root. It rebases every open PR whose base branch was
-   merged (or that still carries the squashed commits of a merged PR) onto `origin/master`, retargets
-   the PR to `master`, and pushes with `--force-with-lease`. For a base branch that merely received new
-   commits, run `scripts/restack.sh --children <branch>` to rebase the PRs on top of it. After any
-   merge into master, `scripts/restack.sh --next` rebases only the PR next in line (lowest number on
-   master, behind it) so its CI runs on current code, and reports PRs GitHub marks as conflicting.
-   The rest wait for their turn: CI minutes are free but not worth spending on branches nobody
-   merges yet.
+2. Run `scripts/restack.sh` from the repository root. It touches only the PRs whose own base branch
+   was just merged: they are rebased onto `origin/master` (dropping the squashed commits they still
+   carry), retargeted to `master` and pushed with `--force-with-lease`. PRs stacked higher are left
+   alone — their diff against their parent stays clean and they get their turn when that parent merges.
+   Then run `scripts/restack.sh --next`: it rebases one more PR, the next in line to merge (lowest
+   number on master and behind it), so its CI runs on current code, and prints a CONFLICT line for any
+   PR GitHub marks as conflicting. Nothing else is rebased: CI minutes are not spent on branches nobody
+   is about to merge. `--children <branch>` exists for the rare case that a base branch got new commits
+   and its direct children must follow.
 3. Read every `RESTACK` line it prints. A `CONFLICT` line is a report, not a task: do not resolve it,
    do not `--force` without lease, do not touch a branch that is not one of this repository's PR
    branches. Say which PR conflicts and on which files (`git -C build/wt-restack status --short`).
