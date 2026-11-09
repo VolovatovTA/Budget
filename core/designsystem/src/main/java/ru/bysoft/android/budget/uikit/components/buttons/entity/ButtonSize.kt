@@ -1,7 +1,6 @@
 package ru.bysoft.android.budget.uikit.components.buttons.entity
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
@@ -20,7 +19,7 @@ enum class ButtonSize(val height: Dp, val radius: Dp, val iconSize: Dp) {
 object BudgetButtonColors {
     @Composable
     fun primary(isButtonPressed: Boolean): ButtonColors =
-        if (isSystemInDarkTheme())
+        if (UiKitColors.isDark)
             ButtonDefaults.buttonColors(
                 backgroundColor =
                 if (isButtonPressed) UiKitColors.colors.primary.`600`
@@ -41,7 +40,7 @@ object BudgetButtonColors {
 
     @Composable
     fun secondary(isButtonPressed: Boolean): ButtonColors =
-        if (isSystemInDarkTheme())
+        if (UiKitColors.isDark)
             ButtonDefaults.buttonColors(
                 backgroundColor =
                 if (isButtonPressed) UiKitColors.colors.primary.`1000`
@@ -62,7 +61,7 @@ object BudgetButtonColors {
 
     @Composable
     fun outline(isButtonPressed: Boolean): ButtonColors =
-        if (isSystemInDarkTheme())
+        if (UiKitColors.isDark)
             ButtonDefaults.buttonColors(
                 backgroundColor =
                 if (isButtonPressed) Color.Transparent
@@ -83,7 +82,7 @@ object BudgetButtonColors {
 
     @Composable
     fun borderStroke(isButtonPressed: Boolean, isButtonEnabled: Boolean): BorderStroke =
-        if (isSystemInDarkTheme())
+        if (UiKitColors.isDark)
             BorderStroke(
                 1.5.dp,
                 when{
@@ -104,7 +103,7 @@ object BudgetButtonColors {
 
     @Composable
     fun tertiary(isButtonPressed: Boolean): ButtonColors =
-        if (isSystemInDarkTheme())
+        if (UiKitColors.isDark)
             ButtonDefaults.buttonColors(
                 backgroundColor =
                 if (isButtonPressed) Color.White
@@ -125,7 +124,7 @@ object BudgetButtonColors {
 
     @Composable
     fun error(isButtonPressed: Boolean): ButtonColors =
-        if (isSystemInDarkTheme())
+        if (UiKitColors.isDark)
             ButtonDefaults.buttonColors(
                 backgroundColor =
                 if (isButtonPressed) UiKitColors.colors.feedbackRed.`700`
@@ -146,7 +145,7 @@ object BudgetButtonColors {
 
     @Composable
     fun errorSecondary(isButtonPressed: Boolean): ButtonColors =
-        if (isSystemInDarkTheme())
+        if (UiKitColors.isDark)
             ButtonDefaults.buttonColors(
                 backgroundColor =
                 if (isButtonPressed) UiKitColors.colors.feedbackRed.`700`

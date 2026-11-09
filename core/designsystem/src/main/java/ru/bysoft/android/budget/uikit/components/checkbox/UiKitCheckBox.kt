@@ -3,7 +3,6 @@ package ru.bysoft.android.budget.uikit.components.checkbox
 import android.content.res.Configuration
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Checkbox
@@ -32,7 +31,7 @@ fun UiKitCheckBox(
         onCheckedChange = onCheckedChange,
         colors = CheckboxDefaults.colors(
             checkedColor = UiKitColors.colors.primary.`600`,
-            uncheckedColor = if (isSystemInDarkTheme()) UiKitColors.colors.neutral.`300` else UiKitColors.colors.neutral.`500`,
+            uncheckedColor = if (UiKitColors.isDark) UiKitColors.colors.neutral.`300` else UiKitColors.colors.neutral.`500`,
             checkmarkColor = if (!enabled) UiKitColors.colors.neutral.`400` else Color.White,
             disabledColor = UiKitColors.colors.neutral.`300`,
             disabledIndeterminateColor = UiKitColors.colors.neutral.`400`,

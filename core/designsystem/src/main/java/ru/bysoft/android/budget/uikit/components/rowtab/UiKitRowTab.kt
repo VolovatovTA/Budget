@@ -3,7 +3,6 @@ package ru.bysoft.android.budget.uikit.components.rowtab
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
@@ -49,7 +48,7 @@ fun UiKitRowTab(
                 else -> UiKitColors.colors.primary.`300`
             }
             val textColor =
-                if (filterData.isChecked && !isSystemInDarkTheme())
+                if (filterData.isChecked && !UiKitColors.isDark)
                     UiKitColors.colors.surface.primary
                 else UiKitColors.colors.type.high
             Surface(
