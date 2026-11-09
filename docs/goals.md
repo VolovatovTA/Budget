@@ -18,9 +18,21 @@ Nothing here is for sale: no paid tier, no ads, no monetisation.
 4. **The data is the user's.** Two-way sync of transactions, wallets and categories as a spreadsheet
    (.xlsx) on Google Drive or Yandex Disk, chosen in settings: edits in the sheet come back into the app,
    app edits go into the sheet; conflicts are latest-wins with a confirmation on same-field conflicts.
-5. **A 2026-grade look.** One typeface with Cyrillic (Wix Madefor Display), own design tokens for light
-   and dark, components in `core:designsystem` only; every string localised (ru, en).
-6. **Checked, not promised.** Module graph, layering, coroutine discipline, static analysis, coverage
+5. **A 2026-grade look, fast and animated.** One typeface with Cyrillic (Wix Madefor Display), own
+   design tokens for light and dark, components in `core:designsystem` only; every string localised
+   (ru, en). Scrolling and transitions stay at the display's frame rate on a mid-range phone (no jank
+   on the Redmi Note 8 Pro used for checks); state changes are animated, not snapped.
+6. **Less typing: voice and receipts.** A transaction can be dictated (on-device speech recognition,
+   amount + category + wallet parsed from the phrase) or scanned from a receipt QR code (the fiscal
+   receipt formats of the markets below), with the user confirming before it is saved.
+7. **Bank data in, for free.** Spending synced from the banks the author's users actually have —
+   Kaspi, Poštanska štedionica, BBVA, T-Bank, Sber or other banks not under sanctions — using whatever
+   each bank gives away without a paid API contract: statement exports, open-banking sandboxes,
+   notification parsing. Integration depth follows what is free; one bank at a time, behind one
+   `BankConnector` interface.
+8. **Kotlin Multiplatform where it pays.** Domain logic, repositories and sync move into `shared`
+   so an iOS client becomes possible; UI stays native per platform.
+9. **Checked, not promised.** Module graph, layering, coroutine discipline, static analysis, coverage
    gate and the instrumented flow test run on every PR; a rule that cannot be checked is written down
    in [architecture.md](architecture.md) with its reason.
 
@@ -50,6 +62,9 @@ even when the change itself is correct.
 | One `onEvent(UiEvent)` per ViewModel | New ViewModels take a sealed event, not one method per tap |
 | Flat feature modules, `bottom-navigation:host` into `androidApp` | No new feature-to-feature dependency |
 | Konsist for structure, detekt for code | Body-level rules go to detekt rules with type resolution, not to regex tests |
+| Bank connectors, voice and QR input | Transactions have one creation path (a `NewTransaction` through the repository) that every input source — form, voice, QR, bank import — feeds; no second write path, source recorded on the entity |
+| Kotlin Multiplatform | New domain logic and repositories avoid Android types (`Context`, `Uri`, Android `Log`); platform access goes through small interfaces |
+| Performance and animations | No work on the main thread that is not UI; lists are keyed and stable; state types are `@Immutable`/`@Stable` so Compose can skip |
 
 ## Priorities when they conflict
 

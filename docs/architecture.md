@@ -59,8 +59,15 @@ features never import `androidx.compose.material*` widgets. Every user-visible s
 
 Recorded so nobody copies them as patterns; each is a direction in goals.md.
 
-- `NavHostControllerWrapper` is a singleton holding the last `NavHostController`; ViewModels reach it
-  through `I*Navigation` singletons. Target: navigation events from ViewModels, observed by the Activity.
+- **Activity leak through navigation (confirmed 2026-11-09).** `NavHostControllerWrapper` is a Koin
+  singleton (`BudgetApplication`); `MainActivity.setContent` calls `set(rememberNavController())` and
+  nothing ever clears it. A `NavHostController` holds its Activity, so after the Activity finishes the
+  controller, the Activity and its view tree stay reachable from the application-scoped singleton
+  until the next Activity replaces them (or until process death if the user leaves the app).
+  ViewModels call `I*Navigation` singletons that use the wrapper. Target: ViewModels emit navigation
+  *events* (a sealed `NavEvent` in a `Channel`/`SharedFlow`); the Activity (or the NavHost composable)
+  collects them and calls `navController.navigate`. No singleton holds a controller; the wrapper and the
+  `*Navigation` classes go away.
 - `ITransactionState` is a sealed class with eight `copyWith*` functions. Target: one editor state plus a
   `kind` sealed field.
 - Repository interfaces live inside the features that use them (several `ITransactionsRepo`s). Target:
