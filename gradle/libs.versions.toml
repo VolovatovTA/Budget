@@ -53,6 +53,7 @@ module-graph-assert = "2.9.1"
 junit = "4.13.2"
 konsist = "0.18.0"
 kover = "0.9.11"
+kotlinx-collections-immutable = "0.4.0"
 detekt = "1.23.8"
 compose-rules-detekt = "0.4.28"
 androidx-test-core = "1.5.0"
@@ -135,6 +136,7 @@ compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-
 room-gradlePlugin = { module = "androidx.room:room-gradle-plugin", version.ref = "room" }
 dependency-analysis-gradlePlugin = { module = "com.autonomousapps:dependency-analysis-gradle-plugin", version.ref = "dependency-analysis" }
 kover-gradlePlugin = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kover" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 detekt-gradlePlugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 compose-rules-detekt = { module = "io.nlopez.compose.rules:detekt", version.ref = "compose-rules-detekt" }
