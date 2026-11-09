@@ -1,0 +1,12 @@
+# Changes here need the maintainer's review (enable "require review from code owners" in the
+# master branch protection): everything an agent could use to widen its own permissions.
+.github/            @VolovatovTA
+.claude/            @VolovatovTA
+build-logic/        @VolovatovTA
+gradle/             @VolovatovTA
+*.gradle.kts        @VolovatovTA
+gradle.properties   @VolovatovTA
+settings.gradle.kts @VolovatovTA
+config/detekt/      @VolovatovTA
+konsist/            @VolovatovTA
+scripts/            @VolovatovTA
