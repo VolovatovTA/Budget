@@ -25,7 +25,6 @@
     <ID>PreviewPublic:Preview.kt$ErrorPreview</ID>
     <ID>PreviewPublic:Preview.kt$LoadingPreview</ID>
     <ID>PreviewPublic:Preview.kt$SuccessPreview</ID>
-    <ID>TooGenericExceptionCaught:ITransactionsRepo.kt$TransactionRepo$e: Throwable</ID>
     <ID>WildcardImport:HomePresentationMapper.kt$import ru.bysoft.android.budget.common.data_entity.*</ID>
     <ID>WildcardImport:HomeViewModel.kt$import kotlinx.coroutines.*</ID>
     <ID>WildcardImport:HomeViewModel.kt$import kotlinx.coroutines.flow.*</ID>

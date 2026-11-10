@@ -10,7 +10,7 @@ import android.content.IntentSender
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
 import com.google.android.gms.auth.api.identity.SignInClient
-import kotlinx.coroutines.CancellationException
+import com.google.android.gms.common.api.ApiException
 import kotlinx.coroutines.tasks.await
 import ru.bysoft.android.budget.auth.R
 
@@ -22,7 +22,7 @@ class GoogleAuthUiClient(
     suspend fun signIn(): IntentSender? {
         val result = try {
             oneTapClient.beginSignIn(buildSignInRequest()).await()
-        } catch (e: Exception) {
+        } catch (e: ApiException) {
             e.printStackTrace()
             null
         }
@@ -35,7 +35,7 @@ class GoogleAuthUiClient(
                 token = oneTapClient.getSignInCredentialFromIntent(intent).googleIdToken,
                 errorMessage = null
             )
-        } catch (e: Exception) {
+        } catch (e: ApiException) {
             SignInResult(
                 token = null,
                 errorMessage = e.message
@@ -47,9 +47,8 @@ class GoogleAuthUiClient(
     suspend fun signOut() {
         try {
             oneTapClient.signOut().await()
-        } catch (e: Exception) {
+        } catch (e: ApiException) {
             e.printStackTrace()
-            if (e is CancellationException) throw e
         }
     }
 

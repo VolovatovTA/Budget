@@ -15,6 +15,7 @@ import ru.bysoft.android.budget.common.token.entity.AuthSuccessResponse
 import ru.bysoft.android.budget.common.token.entity.SignErrorResponse
 import ru.bysoft.android.budget.common.util.restore
 import javax.net.ssl.SSLPeerUnverifiedException
+import kotlin.coroutines.cancellation.CancellationException
 
 interface IAuthRepository {
     suspend fun signIn(signInData: SignInData): SignErrorData?
@@ -30,6 +31,8 @@ class AuthRepository(
     override suspend fun signIn(signInData: SignInData): SignErrorData? {
         val authResponse: AuthResponse = try {
             api.signIn(signInData.mapToSignInRequest())
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Throwable) {
             val errorJson = e.ifHttpErrorGetErrorBody()
 
@@ -64,6 +67,8 @@ class AuthRepository(
     override suspend fun signUp(signUpData: SignUpData): SignErrorData? {
         val authResponse: AuthResponse = try {
             api.signUp(signUpData.mapToSignUpRequest())
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Throwable) {
             val errorJson = e.ifHttpErrorGetErrorBody()
 

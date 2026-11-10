@@ -11,6 +11,7 @@ import ru.bysoft.android.budget.common.errors.IErrorLogger
 import ru.bysoft.android.budget.common.errors.handler
 import ru.bysoft.android.budget.common.util.dayOfWeekSundayZero
 import ru.bysoft.android.budget.common.util.getCalculatedDate
+import ru.bysoft.android.budget.common.util.runCatchingCancellable
 import ru.bysoft.android.budget.currency.getBeautifulAmount
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.data.IStatisticRepo
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.navigation.IStatisticNavigation
@@ -77,7 +78,7 @@ class StatisticViewModel(
             }
 
             data.listCategoryData.forEach { categoryData ->
-                try {
+                runCatchingCancellable {
                     Calendar.getInstance(locale).firstDayOfWeek = Calendar.MONDAY
 
                     val currentDate = Calendar.getInstance(locale).time
@@ -95,9 +96,7 @@ class StatisticViewModel(
                             updateStateByNewCategory(statisticState, filledCategory)
                         }
                     }
-                } catch (t: CancellationException) {
-                    throw t
-                } catch (t: Throwable) {
+                }.onFailure { t ->
                     errorLogger.logError(t)
                     state.update { statisticState ->
                         updateStateByNewCategory(statisticState, categoryData.copy(amount = null))
