@@ -1,6 +1,6 @@
 # actionlint runs locally (`actionlint`) and in lint-workflows.yaml.
 paths:
-  .github/workflows/**/*.yml:
+  .github/workflows/**/*.y*ml:
     ignore:
       # $vars inside single quotes belong to jq and GraphQL, not to the shell
       - 'SC2016:'

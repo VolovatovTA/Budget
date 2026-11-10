@@ -5,10 +5,12 @@
 #   answer-mention  : `@claude` in a comment gets analysis and a reply; it never writes
 #   sweep           : 17:05 Europe/Belgrade — issues labelled during working hours and unanswered reviews
 #
-# Tokens. The agent step runs with the Claude GitHub App token the action provides (that is what `gh`
-# inside the agent uses). Pushes, pull requests, replies and thread resolution happen in workflow steps
-# with the same app token (`steps.claude.outputs.github_token`), because events made with the
-# repository's GITHUB_TOKEN start no workflows: CI and the reviews must run on every agent push.
+# Tokens. Every write — the agent's own `gh` calls, pushes, pull requests, replies, thread resolution —
+# is made as the maintainer's GitHub App (secrets AGENT_APP_ID / AGENT_APP_PRIVATE_KEY, login in the
+# repository variable AGENT_BOT_LOGIN), minted per job by actions/create-github-app-token and handed to the
+# action as `github_token`. The repository's GITHUB_TOKEN starts no workflows, and the token the Claude
+# action mints for itself is revoked when its step ends, so neither can push for the loop: CI and the
+# reviews must run on every agent push.
 #
 # What is enforced by the workflow, not by the prompt: pushes happen in a workflow step (the agent has no
 # `git push`), only to agent/* and only fast-forward; a diff that touches build scripts, workflows, checks,
@@ -58,8 +60,10 @@ env:
     Bash(gh issue view:*),Bash(gh issue comment:*),Bash(gh pr view:*),Bash(gh pr diff:*),
     Bash(gh pr comment:*),Bash(gh run list:*),Bash(gh run view:*)
   # Paths an agent may change only when the issue is labelled `infra`: everything the build executes, every
-  # check and baseline, and the instructions later agent runs follow. CODEOWNERS lists the same paths as
-  # globs (GitHub reads globs, grep reads a regex); a path added here is added there in the same change.
+  # check and baseline, and the instructions later agent runs follow; .github/workflows/ is rejected always
+  # (the action refuses a workflow file that differs from master, so the loop could never review it).
+  # CODEOWNERS lists the same paths as globs (GitHub reads globs, grep reads a regex); a path added here is
+  # added there in the same change.
   PROTECTED_PATHS: '^(\.github/|\.claude/|build-logic/|gradle/|config/detekt/|konsist/|scripts/|gradlew(\.bat)?$|(AGENTS|CLAUDE)\.md$|\.editorconfig$|.*\.gradle\.kts$|gradle\.properties$|.*detekt-baseline\.xml$|.*lint.*\.xml$)'
   MAX_ROUNDS: 3
 
@@ -71,16 +75,20 @@ jobs:
       (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
       (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
       (github.event_name == 'pull_request_review' &&
-       github.event.review.user.login == 'claude[bot]' &&
-       startsWith(github.event.review.body, '**architect review**')) ||
+       github.event.review.user.login == vars.AGENT_BOT_LOGIN &&
+       startsWith(github.event.review.body, '**architect review**') &&
+       startsWith(github.event.pull_request.head.ref, 'agent/')) ||
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/claude-gate.yml
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      AGENT_APP_ID: ${{ secrets.AGENT_APP_ID }}
+      AGENT_APP_PRIVATE_KEY: ${{ secrets.AGENT_APP_PRIVATE_KEY }}
 
-  # Evening sweep: issues labelled `agent` without a branch or PR (two per evening), and every open agent
-  # PR that has an architect review — the fix job's guard decides whether a round is due.
+  # Evening sweep: issues labelled `agent` without a branch or PR (two per evening), and agent PRs whose
+  # architect review (posted during working hours) is newer than the last coder reply and that do not
+  # wait for the maintainer. The fix job's guard re-checks everything else.
   sweep:
     needs: gate
     if: needs.gate.outputs.run == 'true' && github.event_name == 'schedule'
@@ -93,7 +101,9 @@ jobs:
     steps:
       - env:
           GH_TOKEN: ${{ github.token }}
+          BOT_LOGIN: ${{ vars.AGENT_BOT_LOGIN }}
         run: |
+          bot="${BOT_LOGIN%\[bot\]}"   # GraphQL and `gh --json` spell a bot without the suffix
           started=0
           for n in $(gh issue list --repo "$GITHUB_REPOSITORY" --label agent --state open --limit 100 \
                        --json number -q 'sort_by(.number)[].number'); do
@@ -104,13 +114,16 @@ jobs:
             gh workflow run claude-coder.yml --repo "$GITHUB_REPOSITORY" -f issue="$n"
             echo "dispatched issue #$n"; started=$((started + 1))
           done
-          for pr in $(gh pr list --repo "$GITHUB_REPOSITORY" --state open --json number,headRefName \
-                        -q '.[] | select(.headRefName | startswith("agent/")) | .number'); do
-            reviews=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pr/reviews?per_page=100" \
-                        -q '[.[] | select(.user.login == "claude[bot]" and (.body | startswith("**architect review**")))] | length')
-            [ "$reviews" = "0" ] && continue
-            gh workflow run claude-coder.yml --repo "$GITHUB_REPOSITORY" -f pr="$pr"
-            echo "dispatched fix check for #$pr"
+          for pr in $(gh pr list --repo "$GITHUB_REPOSITORY" --state open --json number,headRefName,labels \
+                        -q '.[] | select((.headRefName | startswith("agent/")) and ([.labels[].name] | index("needs-maintainer") | not)) | .number'); do
+            architect_at=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pr/reviews?per_page=100" \
+                             -q "[.[] | select(.user.login == \"$BOT_LOGIN\" and (.body | startswith(\"**architect review**\")))] | last | .submitted_at // \"\"")
+            last_fix_at=$(gh pr view "$pr" --repo "$GITHUB_REPOSITORY" --json comments \
+                            -q "[.comments[] | select((.author.login == \"$bot\" or .author.login == \"github-actions\") and (.body | startswith(\"**coder fix\")))] | last | .createdAt // \"\"")
+            if [ -n "$architect_at" ] && [[ "$architect_at" > "$last_fix_at" ]]; then
+              gh workflow run claude-coder.yml --repo "$GITHUB_REPOSITORY" -f pr="$pr"
+              echo "dispatched fix for #$pr"
+            fi
           done
 
   implement-issue:
@@ -133,19 +146,24 @@ jobs:
     env:
       ISSUE: ${{ github.event.inputs.issue || github.event.issue.number }}
     steps:
+      - uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
       - name: The issue number is a number
         run: |
           if ! [[ "$ISSUE" =~ ^[0-9]+$ ]]; then
             echo "::error::issue must be a number, got '$ISSUE'"
             exit 1
           fi
-      - uses: step-security/harden-runner@v2
-        with:
-          egress-policy: audit
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           persist-credentials: false
+      - uses: actions/create-github-app-token@v2
+        id: app
+        with:
+          app-id: ${{ secrets.AGENT_APP_ID }}
+          private-key: ${{ secrets.AGENT_APP_PRIVATE_KEY }}
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -159,6 +177,7 @@ jobs:
         id: claude
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ steps.app.outputs.token }}
           prompt: |
             You are the `coder` agent: read .claude/agents/coder.md and AGENTS.md first and follow them.
             Implement GitHub issue #${{ env.ISSUE }}; `gh issue view ${{ env.ISSUE }} --comments` is the
@@ -174,8 +193,9 @@ jobs:
             --allowedTools "${{ env.CODER_TOOLS }}"
             --max-turns 60
       - name: Diff guard, push, pull request
+        id: push
         env:
-          GH_TOKEN: ${{ steps.claude.outputs.github_token }}
+          GH_TOKEN: ${{ steps.app.outputs.token }}
         run: |
           set -e
           if [ "$(git rev-list --count origin/master..HEAD)" = "0" ]; then
@@ -183,17 +203,23 @@ jobs:
             echo "::notice::No commits were made for #$ISSUE."; exit 0
           fi
           changed=$(git diff --name-only origin/master...HEAD)
+          echo "reported=true" >> "$GITHUB_OUTPUT"
+          if echo "$changed" | grep -q '^\.github/workflows/'; then
+            gh issue comment "$ISSUE" --body "The agent's change touched .github/workflows, which only the maintainer edits; nothing was pushed."
+            echo "::error::workflow files changed"; exit 1
+          fi
           infra=$(gh issue view "$ISSUE" --json labels -q '[.labels[].name] | index("infra") != null')
           if [ "$infra" != "true" ] && echo "$changed" | grep -Eq "$PROTECTED_PATHS"; then
-            gh issue comment "$ISSUE" --body "The agent's change touched protected paths (build scripts, workflows, checks, baselines or agent instructions) on an issue without the \`infra\` label; nothing was pushed. Files: $(echo "$changed" | grep -E "$PROTECTED_PATHS" | tr '\n' ' ')"
+            gh issue comment "$ISSUE" --body "The agent's change touched protected paths (build scripts, checks, baselines or agent instructions) on an issue without the \`infra\` label; nothing was pushed. Files: $(echo "$changed" | grep -E "$PROTECTED_PATHS" | tr '\n' ' ')"
             echo "::error::protected paths changed"; exit 1
           fi
+          echo "reported=false" >> "$GITHUB_OUTPUT"
           [ -s "$RUNNER_TEMP/pr.md" ] || { echo "::error::$RUNNER_TEMP/pr.md is missing"; exit 1; }
           git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/agent/issue-$ISSUE"
           title=$(head -1 "$RUNNER_TEMP/pr.md"); body=$(tail -n +3 "$RUNNER_TEMP/pr.md")
           gh pr create --base master --head "agent/issue-$ISSUE" --title "$title" --body "$body"
       - name: Report a failed run on the issue
-        if: failure()
+        if: failure() && steps.push.outputs.reported != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -209,8 +235,9 @@ jobs:
     if: >-
       needs.gate.outputs.run == 'true' &&
       ((github.event_name == 'pull_request_review' &&
-        github.event.review.user.login == 'claude[bot]' &&
+        github.event.review.user.login == vars.AGENT_BOT_LOGIN &&
         startsWith(github.event.review.body, '**architect review**') &&
+        startsWith(github.event.pull_request.head.ref, 'agent/') &&
         github.event.pull_request.head.repo.full_name == github.repository) ||
        (github.event_name == 'workflow_dispatch' && github.event.inputs.pr != ''))
     runs-on: ubuntu-latest
@@ -226,13 +253,18 @@ jobs:
       actions: read
     env:
       PR: ${{ github.event.inputs.pr || github.event.pull_request.number }}
+      BOT_LOGIN: ${{ vars.AGENT_BOT_LOGIN }}
     steps:
+      - uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
       - name: Is a round due
         id: guard
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           if ! [[ "$PR" =~ ^[0-9]+$ ]]; then echo "::error::pr must be a number"; exit 1; fi
+          bot="${BOT_LOGIN%\[bot\]}"   # GraphQL and `gh --json` spell a bot without the suffix
           gh pr view "$PR" --repo "$GITHUB_REPOSITORY" --json headRefName,headRefOid,isCrossRepository,comments,labels > "$RUNNER_TEMP/pr.json"
           head=$(jq -r .headRefName "$RUNNER_TEMP/pr.json"); sha=$(jq -r .headRefOid "$RUNNER_TEMP/pr.json")
           if [[ "$head" != agent/* ]] || [ "$(jq -r .isCrossRepository "$RUNNER_TEMP/pr.json")" != "false" ]; then
@@ -240,10 +272,10 @@ jobs:
             echo "go=false" >> "$GITHUB_OUTPUT"; exit 0
           fi
           gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/reviews?per_page=100" \
-            -q '[.[] | select(.user.login == "claude[bot]")]' > "$RUNNER_TEMP/reviews.json"
-          architect_at=$(jq -r '[.[] | select(.body | startswith("**architect review**"))] | last | .submitted_at // ""' "$RUNNER_TEMP/reviews.json")
+            -q "[.[] | select(.user.login == \"$BOT_LOGIN\")]" > "$RUNNER_TEMP/reviews.json"
+          architect_at=$(jq -r --arg sha "$sha" '[.[] | select(.commit_id == $sha and (.body | startswith("**architect review**")))] | last | .submitted_at // ""' "$RUNNER_TEMP/reviews.json")
           # Rounds are the workflow's own replies: posted as claude (app token) or github-actions (failure step).
-          fixes='[.comments[] | select((.author.login == "claude" or .author.login == "github-actions") and (.body | startswith("**coder fix")))]'
+          fixes="[.comments[] | select((.author.login == \"$bot\" or .author.login == \"github-actions\") and (.body | startswith(\"**coder fix\")))]"
           last_fix_at=$(jq -r "$fixes | last | .createdAt // \"\"" "$RUNNER_TEMP/pr.json")
           rounds=$(jq -r "$fixes | length" "$RUNNER_TEMP/pr.json")
           if jq -e '[.labels[].name] | index("needs-maintainer")' "$RUNNER_TEMP/pr.json" >/dev/null; then
@@ -271,16 +303,18 @@ jobs:
             echo "go=false" >> "$GITHUB_OUTPUT"; exit 0
           fi
           { echo "go=true"; echo "head=$head"; echo "round=$((rounds + 1))"; } >> "$GITHUB_OUTPUT"
-      - uses: step-security/harden-runner@v2
-        if: steps.guard.outputs.go == 'true'
-        with:
-          egress-policy: audit
       - uses: actions/checkout@v4
         if: steps.guard.outputs.go == 'true'
         with:
           ref: ${{ steps.guard.outputs.head }}
           fetch-depth: 0
           persist-credentials: false
+      - uses: actions/create-github-app-token@v2
+        if: steps.guard.outputs.go == 'true'
+        id: app
+        with:
+          app-id: ${{ secrets.AGENT_APP_ID }}
+          private-key: ${{ secrets.AGENT_APP_PRIVATE_KEY }}
       - uses: actions/setup-java@v4
         if: steps.guard.outputs.go == 'true'
         with:
@@ -297,24 +331,30 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          jq -r 'def latest(p): [.[] | select(.body | startswith(p))] | last | .body // "(no " + p + " yet)";
+          bot="${BOT_LOGIN%\[bot\]}"
+          sha=$(gh pr view "$PR" --json headRefOid -q .headRefOid)
+          jq -r --arg sha "$sha" 'def latest(p): [.[] | select(.commit_id == $sha and (.body | startswith(p)))] | last | .body // "(no " + p + " on this commit)";
                  latest("**reviewer review**"), "", "---", "", latest("**architect review**")' "$RUNNER_TEMP/reviews.json" > "$RUNNER_TEMP/reviews.md"
           gh api graphql -F owner="${GITHUB_REPOSITORY%/*}" -F name="${GITHUB_REPOSITORY#*/}" -F pr="$PR" -f query='
             query($owner: String!, $name: String!, $pr: Int!) {
               repository(owner: $owner, name: $name) { pullRequest(number: $pr) {
                 reviewThreads(first: 100) { nodes {
                   id isResolved
-                  comments(first: 1) { nodes { databaseId path line body } } } } } } }' \
-            -q '[.data.repository.pullRequest.reviewThreads.nodes[] | select(.isResolved | not)
+                  comments(first: 1) { nodes { databaseId path line body author { login } } } } } } } }' \
+            > "$RUNNER_TEMP/threads-raw.json"
+          jq --arg bot "$bot" '[.data.repository.pullRequest.reviewThreads.nodes[]
+                 | select((.isResolved | not) and .comments.nodes[0].author.login == $bot)
                  | {thread: .id, comment: .comments.nodes[0].databaseId, path: .comments.nodes[0].path,
-                    line: .comments.nodes[0].line, body: .comments.nodes[0].body}]' > "$RUNNER_TEMP/threads.json"
+                    line: .comments.nodes[0].line, body: .comments.nodes[0].body}]' \
+            "$RUNNER_TEMP/threads-raw.json" > "$RUNNER_TEMP/threads.json"
           echo "$(jq length "$RUNNER_TEMP/threads.json") open threads"
       - uses: anthropics/claude-code-action@v1
         id: claude
         if: steps.guard.outputs.go == 'true'
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          allowed_bots: "claude[bot]"
+          github_token: ${{ steps.app.outputs.token }}
+          allowed_bots: ${{ vars.AGENT_BOT_LOGIN }}
           prompt: |
             You are the `coder` agent: read .claude/agents/coder.md and AGENTS.md first and follow them.
             Pull request #${{ env.PR }} is checked out on its branch; this is fix round ${{ steps.guard.outputs.round }}
@@ -336,8 +376,9 @@ jobs:
             --max-turns 60
       - name: Diff guard, push, reply, resolve threads
         if: steps.guard.outputs.go == 'true'
+        id: push
         env:
-          GH_TOKEN: ${{ steps.claude.outputs.github_token }}
+          GH_TOKEN: ${{ steps.app.outputs.token }}
           HEAD: ${{ steps.guard.outputs.head }}
           ROUND: ${{ steps.guard.outputs.round }}
         run: |
@@ -345,18 +386,22 @@ jobs:
           [ -s "$RUNNER_TEMP/reply.md" ] || { echo "::error::$RUNNER_TEMP/reply.md is missing"; exit 1; }
           if [ "$(git rev-list --count "origin/$HEAD..HEAD")" != "0" ]; then
             changed=$(git diff --name-only "origin/$HEAD...HEAD")
+            # Rejections are reported by the failure step, whose comment is the one that counts as the round.
+            if echo "$changed" | grep -q '^\.github/workflows/'; then
+              echo "::error::the fix touched .github/workflows, which only the maintainer edits"; exit 1
+            fi
             issue=$(gh pr view "$PR" --json body -q .body | grep -oE 'Closes #[0-9]+' | grep -oE '[0-9]+' | head -1)
             infra=false
             [ -n "$issue" ] && infra=$(gh issue view "$issue" --json labels -q '[.labels[].name] | index("infra") != null')
             if [ "$infra" != "true" ] && echo "$changed" | grep -Eq "$PROTECTED_PATHS"; then
-              gh pr comment "$PR" --body "**coder fix $ROUND** — the fix touched protected paths without an \`infra\` issue; nothing was pushed: $(echo "$changed" | grep -E "$PROTECTED_PATHS" | tr '\n' ' ')"
-              echo "::error::protected paths changed"; exit 1
+              echo "::error::protected paths changed without an infra issue: $(echo "$changed" | grep -E "$PROTECTED_PATHS" | tr '\n' ' ')"; exit 1
             fi
             git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/$HEAD"
           fi
           gh pr comment "$PR" --body-file "$RUNNER_TEMP/reply.md"
           # Only threads the collect step listed can be touched; the agent's file is data, not a command list.
           [ -s "$RUNNER_TEMP/threads-out.json" ] || exit 0
+          jq -e 'type == "array"' "$RUNNER_TEMP/threads-out.json" >/dev/null 2>&1 || { echo "::warning::threads-out.json is not a JSON array; no thread touched"; exit 0; }
           jq -c '.[] | select(.outcome == "fixed" or .outcome == "declined")' "$RUNNER_TEMP/threads-out.json" | while read -r item; do
             thread=$(jq -r .thread <<< "$item")
             known=$(jq -r --arg t "$thread" '[.[] | select(.thread == $t)] | length' "$RUNNER_TEMP/threads.json")

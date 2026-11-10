@@ -10,6 +10,12 @@ on:
       - '**/*.md'
       - 'docs/**'
 
+# A new push cancels the whole run, reviewer and architect alike: an architect review of a stale head
+# would otherwise start a fix round against code that no longer exists.
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   gate:
     if: >-
@@ -18,28 +24,29 @@ jobs:
     uses: ./.github/workflows/claude-gate.yml
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      AGENT_APP_ID: ${{ secrets.AGENT_APP_ID }}
+      AGENT_APP_PRIVATE_KEY: ${{ secrets.AGENT_APP_PRIVATE_KEY }}
 
   reviewer:
     needs: gate
     if: needs.gate.outputs.run == 'true'
-    concurrency:
-      group: claude-review-reviewer-${{ github.event.pull_request.number }}
-      cancel-in-progress: true
     uses: ./.github/workflows/claude-review-role.yml
     with:
       role: reviewer
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      AGENT_APP_ID: ${{ secrets.AGENT_APP_ID }}
+      AGENT_APP_PRIVATE_KEY: ${{ secrets.AGENT_APP_PRIVATE_KEY }}
 
   architect:
     needs: [gate, reviewer]
-    # Runs after the reviewer whether that job succeeded or not; never when the gate said no.
-    if: always() && needs.gate.outputs.run == 'true'
-    concurrency:
-      group: claude-review-architect-${{ github.event.pull_request.number }}
-      cancel-in-progress: true
+    # Runs after the reviewer whether that job succeeded or not; never when the gate said no or the run was
+    # cancelled by a newer push.
+    if: ${{ !cancelled() && needs.gate.outputs.run == 'true' }}
     uses: ./.github/workflows/claude-review-role.yml
     with:
       role: architect
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      AGENT_APP_ID: ${{ secrets.AGENT_APP_ID }}
+      AGENT_APP_PRIVATE_KEY: ${{ secrets.AGENT_APP_PRIVATE_KEY }}

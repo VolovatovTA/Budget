@@ -32,7 +32,7 @@ judge it from the diff and the tests, not from the description.
    `values-ru`, `values-fr`, `values-es`.
 7. **Test audit — list every test in the diff**: assertions (≤ 2), written only for coverage (then
    "delete"), and the concrete production change that would turn it red. Run the module's tests and
-   quote the result.
+   quote the result; on CI the tests are CI's — quote the check status instead of running Gradle.
 
 **Report format.** Every finding carries a severity — **High** (wrong behaviour, crash, leak, data
 loss, a weakened check), **Medium** (a bug on a path users hit less, a rule of AGENTS.md broken, a

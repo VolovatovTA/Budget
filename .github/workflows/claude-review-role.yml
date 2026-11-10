@@ -1,6 +1,8 @@
 # One review role on the pull request that called this workflow (see claude-review.yml). The agent writes
 # $RUNNER_TEMP/review.json (verdict, summary, inline findings); a step posts it as one GitHub review with
-# the findings as inline comments, using the app token so the review event reaches claude-coder.yml.
+# the findings as inline comments, as the maintainer's GitHub App (AGENT_BOT_LOGIN), whose events start
+# workflows: the architect's review is what reaches claude-coder.yml. The same token is handed to the
+# action, so agent PRs (opened by that bot) pass its actor check through `allowed_bots`.
 # Round N = number of this role's earlier reviews + 1; from round 2 the agent gets the previous round's
 # findings with their thread state and repeats them in the summary, struck through when fixed.
 name: Claude review role
@@ -14,6 +16,10 @@ on:
         type: string
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN:
+        required: true
+      AGENT_APP_ID:
+        required: true
+      AGENT_APP_PRIVATE_KEY:
         required: true
 
 jobs:
@@ -30,6 +36,7 @@ jobs:
       PR: ${{ github.event.pull_request.number }}
       BASE: ${{ github.event.pull_request.base.ref }}
       SHA: ${{ github.event.pull_request.head.sha }}
+      BOT_LOGIN: ${{ vars.AGENT_BOT_LOGIN }}
     steps:
       - name: The role is one of two
         run: |
@@ -43,13 +50,18 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+      - uses: actions/create-github-app-token@v2
+        id: app
+        with:
+          app-id: ${{ secrets.AGENT_APP_ID }}
+          private-key: ${{ secrets.AGENT_APP_PRIVATE_KEY }}
       - name: Round number and the previous round's findings
         id: rounds
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/reviews?per_page=100" \
-            -q "[.[] | select(.user.login == \"claude[bot]\" and (.body | startswith(\"**$ROLE review**\")))]" > "$RUNNER_TEMP/earlier.json"
+            -q "[.[] | select(.user.login == \"$BOT_LOGIN\" and (.body | startswith(\"**$ROLE review**\")))]" > "$RUNNER_TEMP/earlier.json"
           round=$(( $(jq length "$RUNNER_TEMP/earlier.json") + 1 ))
           echo "round=$round" >> "$GITHUB_OUTPUT"
           jq -r 'last | .body // ""' "$RUNNER_TEMP/earlier.json" > "$RUNNER_TEMP/previous.md"
@@ -68,6 +80,8 @@ jobs:
         id: claude
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ steps.app.outputs.token }}
+          allowed_bots: ${{ vars.AGENT_BOT_LOGIN }}
           prompt: |
             Read .claude/agents/${{ env.ROLE }}.md and follow it exactly; it is your role. Review pull request
             #${{ env.PR }}, round ${{ steps.rounds.outputs.round }}: the diff is
@@ -90,7 +104,7 @@ jobs:
             --max-turns 25
       - name: Post the review with inline findings
         env:
-          GH_TOKEN: ${{ steps.claude.outputs.github_token }}
+          GH_TOKEN: ${{ steps.app.outputs.token }}
           ROUND: ${{ steps.rounds.outputs.round }}
         run: |
           set -e
