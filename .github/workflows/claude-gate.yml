@@ -1,6 +1,7 @@
 # Shared gate for every Claude workflow: subscription token only (decision 0006), no runs on weekdays
-# between 08:00 and 17:00 Europe/Belgrade (nights and weekends are free), and a clean skip when the
-# token secret is not configured yet. The coder's sweep cron must land after 17:00 local in both DST
+# between 08:00 and 17:00 Europe/Belgrade (nights and weekends are free), and a clean skip while the
+# secrets are not configured: the subscription token, and the maintainer's GitHub App that pushes and
+# posts for the agents (AGENT_APP_ID, AGENT_APP_PRIVATE_KEY, repository variable AGENT_BOT_LOGIN). The coder's sweep cron must land after 17:00 local in both DST
 # states, hence 16:05 UTC.
 name: Claude gate
 
@@ -8,6 +9,10 @@ on:
   workflow_call:
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN:
+        required: false
+      AGENT_APP_ID:
+        required: false
+      AGENT_APP_PRIVATE_KEY:
         required: false
     outputs:
       run:
@@ -29,9 +34,16 @@ jobs:
       - id: decide
         env:
           TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          APP_ID: ${{ secrets.AGENT_APP_ID }}
+          APP_KEY: ${{ secrets.AGENT_APP_PRIVATE_KEY }}
+          BOT_LOGIN: ${{ vars.AGENT_BOT_LOGIN }}
         run: |
           if [ -z "$TOKEN" ]; then
             echo "::notice::CLAUDE_CODE_OAUTH_TOKEN is not configured; Claude jobs are skipped."
+            echo "run=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          if [ -z "$APP_ID" ] || [ -z "$APP_KEY" ] || [ -z "$BOT_LOGIN" ]; then
+            echo "::notice::AGENT_APP_ID, AGENT_APP_PRIVATE_KEY or the variable AGENT_BOT_LOGIN is missing; Claude jobs are skipped."
             echo "run=false" >> "$GITHUB_OUTPUT"; exit 0
           fi
           dow=$(TZ=Europe/Belgrade date +%u)

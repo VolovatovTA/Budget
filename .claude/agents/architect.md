@@ -55,3 +55,13 @@ code and the documents, never from the author's explanation of intent.
    conflicts with (quote it), and the smallest change that fixes it. If a finding means a decision
    should change, say that a **Proposed** entry in `docs/decisions.md` is needed, not a workaround.
    Say "no architecture findings" when there are none; do not pad the list.
+
+**Report format.** Every finding carries a severity — **High** (a layer or graph rule broken, a
+weakened check, an implicit decision that blocks a direction), **Medium** (UDF or SOLID broken in one
+place, duplicated logic, a missing test), **Low** (readability, naming, a cheaper shape) — plus
+file:line, what goes wrong and when, and the smallest fix. On a pull request a finding that points at
+a changed line is an inline comment on that line, not a paragraph in the summary; the summary holds
+the verdict, the scope, the test audit and whatever has no line. The verdict is **mergeable** when no
+High or Medium finding remains, otherwise **changes needed**. Reviews are numbered by round; from
+round 2 the summary repeats the previous round's findings as a list, ~~struck through~~ when fixed on
+the current head, plain with one sentence when still open.

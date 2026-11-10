@@ -7,6 +7,9 @@ on:
       - '**/*.md'
       - 'docs/**'
       - '.claude/**'
+      - '.github/workflows/claude-*.yml'
+      - '.github/workflows/issue-guard.yml'
+      - '.github/CODEOWNERS'
 
 # One run per pull request at a time: a new push cancels the superseded run (goals.md: frugal with shared machines).
 concurrency:

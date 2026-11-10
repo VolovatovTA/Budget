@@ -10,3 +10,11 @@ settings.gradle.kts @VolovatovTA
 config/detekt/      @VolovatovTA
 konsist/            @VolovatovTA
 scripts/            @VolovatovTA
+gradlew             @VolovatovTA
+gradlew.bat         @VolovatovTA
+AGENTS.md           @VolovatovTA
+CLAUDE.md           @VolovatovTA
+.editorconfig       @VolovatovTA
+lint.xml            @VolovatovTA
+*lint-baseline.xml  @VolovatovTA
+*detekt-baseline.xml @VolovatovTA

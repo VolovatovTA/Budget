@@ -75,11 +75,39 @@ Decision:
 - **Roles.** `coder` implements one issue per PR; `reviewer` and `architect` comment on every PR;
   `restacker` rebases PRs stacked on a merged branch and, after each merge, only the PR next in line
   (CI minutes are not spent on branches nobody merges yet). Agent files live in `.claude/agents/`.
+- **Fix rounds (amendment 2026-11-10).** The two reviews of a pull request are posted as GitHub
+  reviews with inline comments, the reviewer's first and the architect's after it (one workflow, two
+  jobs in sequence), each with a verdict line (`**Verdict:** mergeable` or `changes needed`) and a round
+  number; from round 2 a review repeats the previous round's findings, struck through when fixed. On an
+  `agent/*` branch the architect's review starts a coder fix round: the coder treats the findings as
+  claims to verify, fixes everything that holds except a Low one whose fix would be larger than the
+  problem (each skipped one gets a sentence in the reply), the workflow pushes
+  fast-forward to the same branch, replies with "**coder fix N**", resolves the threads marked fixed
+  and answers the declined ones in place. Three rounds per PR; when the reviews after the third still
+  ask for changes, the PR is labelled `needs-maintainer` and the maintainer is mentioned. Pushes, PR
+  creation and review posts are made as a GitHub App the maintainer owns (secrets `AGENT_APP_ID`,
+  `AGENT_APP_PRIVATE_KEY`, login in the repository variable `AGENT_BOT_LOGIN`), never with the
+  repository `GITHUB_TOKEN`, whose events start no workflows, and never with the token the Claude
+  action mints for itself, which it revokes when its step ends: every agent push runs CI and both
+  reviews — a rebase too, so a declined finding raised again costs a round and ends with the
+  maintainer at the cap, by design. Only inline threads opened by the agents are coder input; a
+  person's note reaches the coder through `@claude`. Pushes and PR creation happen in workflow
+  steps, never by the agent; a diff touching build scripts, checks, baselines or the agent
+  instructions is rejected unless the issue is labelled `infra`, and `.github/workflows/**` is
+  rejected always: the action refuses a workflow file that differs from `master`, so an agent could
+  never get such a change reviewed by the loop — workflows are the maintainer's by hand. The `agent` and `infra` labels are set by the maintainer only, on issues they
+  wrote or read in full: the workflow cannot tell who applied a label, so the label is the trust
+  decision. An `infra` PR is never auto-merged, whatever class it falls in; the documentation class
+  below therefore covers only `docs/**` and `*.md` outside the agent instructions.
+  Revisit when: a fix round weakens a check or most PRs reach the cap.
 - **Merging.** The maintainer merges by default. Auto-merge (`gh pr merge --auto --squash`) is allowed
   only when all of: CI green; the architect reported "no architecture findings"; the PR is entirely one
-  of — documentation (`docs/**`, `*.md`, `.claude/**`), formatting produced by detekt auto-correct, a
+  of — formatting produced by detekt auto-correct, a
   baseline that only shrinks, a patch-level dependency update. Everything with behaviour or design
-  waits for the maintainer.
+  waits for the maintainer. Documentation PRs (`docs/**`, `*.md` except `AGENTS.md` and
+  `CLAUDE.md`) get no agent review (the review workflow ignores those paths) and are merged by the
+  maintainer after reading them; `.claude/**`, `.github/**`, `AGENTS.md` and `CLAUDE.md` need the
+  `infra` label and the maintainer.
 - **Time window.** No commits, pushes or PRs on weekdays between 08:00 and 17:00 Europe/Belgrade —
   by people or agents; nights and weekends are free. An issue labelled during working hours is picked
   up by the 17:05 sweep.
