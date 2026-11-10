@@ -312,7 +312,7 @@ jobs:
           fi
           if [ "$rounds" -ge "$MAX_ROUNDS" ]; then
             gh label create needs-maintainer --repo "$GITHUB_REPOSITORY" --color B60205 --force \
-              --description "$MAX_ROUNDS fix rounds are done and the reviewers still ask for changes" >/dev/null
+              --description "The fix rounds are over and the reviewers still ask for changes" >/dev/null
             gh pr edit "$PR" --repo "$GITHUB_REPOSITORY" --add-label needs-maintainer
             gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body "**needs maintainer** @$GITHUB_REPOSITORY_OWNER — $MAX_ROUNDS fix rounds are done and the reviewers still ask for changes; the remaining findings need your decision."
             echo "go=false" >> "$GITHUB_OUTPUT"; exit 0
@@ -455,9 +455,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh label create needs-maintainer --repo "$GITHUB_REPOSITORY" --color B60205 --force \
-            --description "$MAX_ROUNDS fix rounds are done and the reviewers still ask for changes" >/dev/null
+            --description "The fix rounds are over and the reviewers still ask for changes" >/dev/null
           gh pr edit "$PR" --repo "$GITHUB_REPOSITORY" --add-label needs-maintainer
-          gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body "**needs maintainer** @$GITHUB_REPOSITORY_OWNER — the coder changed nothing in this round (findings declined or gates red), so no new review will come; the open findings need your decision."
+          gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body "**needs maintainer** @$GITHUB_REPOSITORY_OWNER — the coder changed nothing in a fix round (findings declined or gates red), so no new review will come; the open findings need your decision."
 
   answer-mention:
     needs: gate
