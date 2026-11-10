@@ -1,0 +1,45 @@
+# Both reviews of a same-repo pull request, in sequence: `reviewer` (.claude/agents/reviewer.md) first,
+# `architect` (.claude/agents/architect.md) after it, so the architect's review is always the last one and
+# is what starts a coder fix round (claude-coder.yml). The steps are in claude-review-role.yml.
+name: Claude review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+
+jobs:
+  gate:
+    if: >-
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    uses: ./.github/workflows/claude-gate.yml
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+  reviewer:
+    needs: gate
+    if: needs.gate.outputs.run == 'true'
+    concurrency:
+      group: claude-review-reviewer-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    uses: ./.github/workflows/claude-review-role.yml
+    with:
+      role: reviewer
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+  architect:
+    needs: [gate, reviewer]
+    # Runs after the reviewer whether that job succeeded or not; never when the gate said no.
+    if: always() && needs.gate.outputs.run == 'true'
+    concurrency:
+      group: claude-review-architect-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    uses: ./.github/workflows/claude-review-role.yml
+    with:
+      role: architect
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}

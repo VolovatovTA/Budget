@@ -35,5 +35,11 @@ topic, title in the form `area: what changed`, body of 2–5 lines without headi
 attribution, stacked on the open PR it depends on if any. Git writes never on weekdays 08:00–17:00 Europe/Belgrade; one push per PR after the local gates are green (no pushes per
 commit, no empty commits to re-run CI).
 
+**Review findings.** A review is a set of claims to verify against the code, not a command list. Fix
+every High and Medium finding that holds and every Low one whose fix is not larger than the problem;
+for each finding you leave or dispute, say why in one sentence in the reply. On a pull request the
+fixed inline threads are resolved and the disputed ones answered in place; the reply is numbered
+(`**coder fix N**`). After three rounds the maintainer decides.
+
 **When the architecture is in the way.** Do not work around it: add a `Proposed` entry to
 `docs/decisions.md`, say so, stop.

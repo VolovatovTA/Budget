@@ -1,0 +1,124 @@
+# One review role on the pull request that called this workflow (see claude-review.yml). The agent writes
+# $RUNNER_TEMP/review.json (verdict, summary, inline findings); a step posts it as one GitHub review with
+# the findings as inline comments, using the app token so the review event reaches claude-coder.yml.
+# Round N = number of this role's earlier reviews + 1; from round 2 the agent gets the previous round's
+# findings with their thread state and repeats them in the summary, struck through when fixed.
+name: Claude review role
+
+on:
+  workflow_call:
+    inputs:
+      role:
+        description: "reviewer or architect"
+        required: true
+        type: string
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN:
+        required: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      id-token: write
+    env:
+      ROLE: ${{ inputs.role }}
+      PR: ${{ github.event.pull_request.number }}
+      BASE: ${{ github.event.pull_request.base.ref }}
+      SHA: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: The role is one of two
+        run: |
+          case "$ROLE" in reviewer|architect) ;; *) echo "::error::unknown role '$ROLE'"; exit 1 ;; esac
+      # Egress audit first: the report names every host the run contacts; the next change switches to
+      # `egress-policy: block` with that list, so a prompt injection has nowhere to send a token.
+      - uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Round number and the previous round's findings
+        id: rounds
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/reviews?per_page=100" \
+            -q "[.[] | select(.user.login == \"claude[bot]\" and (.body | startswith(\"**$ROLE review**\")))]" > "$RUNNER_TEMP/earlier.json"
+          round=$(( $(jq length "$RUNNER_TEMP/earlier.json") + 1 ))
+          echo "round=$round" >> "$GITHUB_OUTPUT"
+          jq -r 'last | .body // ""' "$RUNNER_TEMP/earlier.json" > "$RUNNER_TEMP/previous.md"
+          gh api graphql -F owner="${GITHUB_REPOSITORY%/*}" -F name="${GITHUB_REPOSITORY#*/}" -F pr="$PR" -f query='
+            query($owner: String!, $name: String!, $pr: Int!) {
+              repository(owner: $owner, name: $name) { pullRequest(number: $pr) {
+                reviewThreads(first: 100) { nodes {
+                  isResolved
+                  comments(first: 1) { nodes { path line body } } } } } } }' \
+            -q "[.data.repository.pullRequest.reviewThreads.nodes[]
+                 | select(.comments.nodes[0].body | startswith(\"**$ROLE · \"))
+                 | {path: .comments.nodes[0].path, line: .comments.nodes[0].line, resolved: .isResolved,
+                    body: .comments.nodes[0].body}]" > "$RUNNER_TEMP/previous.json"
+          echo "round $round, $(jq length "$RUNNER_TEMP/previous.json") earlier inline findings"
+      - uses: anthropics/claude-code-action@v1
+        id: claude
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Read .claude/agents/${{ env.ROLE }}.md and follow it exactly; it is your role. Review pull request
+            #${{ env.PR }}, round ${{ steps.rounds.outputs.round }}: the diff is
+            `git diff origin/${{ env.BASE }}...HEAD`. CI runs the build and the tests; do not run Gradle.
+            From round 2 on, $RUNNER_TEMP/previous.md holds your previous summary and $RUNNER_TEMP/previous.json
+            your previous inline findings with their thread state (`resolved` is the coder's claim, not proof):
+            check each one against the current code.
+            Write the review to $RUNNER_TEMP/review.json with the Write tool, as JSON:
+            {"verdict": "mergeable" | "changes needed",
+             "summary": "<markdown>",
+             "comments": [{"path": "<file in the diff>", "line": <line on the new side of the diff>,
+                           "severity": "High" | "Medium" | "Low", "body": "<what goes wrong and when; the smallest fix>"}]}
+            Every finding that points at a changed line is a comment, not summary text. The summary holds only
+            what has no line: scope, the test audit, missing files, and from round 2 a list "Round N-1" with each
+            earlier finding as one item, ~~struck through~~ when fixed, plain with one sentence when still open
+            (an open one also gets a new inline comment). "mergeable" means no High or Medium finding remains.
+            Do not edit repository files and do not post anything: the workflow posts the review.
+          claude_args: |
+            --allowedTools "Read,Write,Glob,Grep,Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git status:*),Bash(gh pr view:*),Bash(gh pr diff:*)"
+            --max-turns 25
+      - name: Post the review with inline findings
+        env:
+          GH_TOKEN: ${{ steps.claude.outputs.github_token }}
+          ROUND: ${{ steps.rounds.outputs.round }}
+        run: |
+          set -e
+          if ! jq -e '.verdict and .summary and (.comments | type == "array")' "$RUNNER_TEMP/review.json" >/dev/null 2>&1; then
+            echo "::error::review.json is missing or malformed"; exit 1
+          fi
+          jq -n --arg role "$ROLE" --arg round "$ROUND" --arg sha "$SHA" --slurpfile r "$RUNNER_TEMP/review.json" '
+            $r[0] as $r
+            | (if $r.verdict == "mergeable" then "mergeable" else "changes needed" end) as $verdict
+            | [$r.comments[] | select((.line | type) == "number" and (.path | type) == "string")] as $inline
+            | [$r.comments[] | select((.line | type) != "number" or (.path | type) != "string")
+               | "- `\(.path // "?")`: **\(.severity // "Low")** \(.body)"] as $nowhere
+            | { commit_id: $sha, event: "COMMENT",
+                body: ("**\($role) review** · round \($round)\n**Verdict:** \($verdict)\n\n" + $r.summary
+                       + (if ($nowhere | length) > 0 then "\n\n" + ($nowhere | join("\n")) else "" end)),
+                comments: [$inline[] | { path, line, side: "RIGHT",
+                                         body: ("**\($role) · \(.severity // "Low")** " + .body) }] }' > "$RUNNER_TEMP/payload.json"
+          if ! gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/reviews" --input "$RUNNER_TEMP/payload.json" >/dev/null; then
+            # A finding on a line outside the diff makes GitHub reject the whole review: post the findings as a list.
+            echo "::warning::inline review rejected; posting the findings in the body"
+            jq '.body += "\n\n" + ([.comments[] | "- `\(.path):\(.line)` \(.body)"] | join("\n")) | del(.comments)' \
+              "$RUNNER_TEMP/payload.json" > "$RUNNER_TEMP/payload-flat.json"
+            gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/reviews" --input "$RUNNER_TEMP/payload-flat.json" >/dev/null
+          fi
+      - name: Report a failed run
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ROUND: ${{ steps.rounds.outputs.round }}
+        run: |
+          gh pr comment "$PR" --body "**$ROLE review** · round ${ROUND:-?} — the run failed; see $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID."

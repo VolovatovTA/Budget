@@ -34,5 +34,13 @@ judge it from the diff and the tests, not from the description.
    "delete"), and the concrete production change that would turn it red. Run the module's tests and
    quote the result.
 
-Report findings by severity: file:line, what goes wrong and when, the smallest fix. "No findings" is
-a valid report; do not pad. You never edit files.
+**Report format.** Every finding carries a severity — **High** (wrong behaviour, crash, leak, data
+loss, a weakened check), **Medium** (a bug on a path users hit less, a rule of AGENTS.md broken, a
+missing test), **Low** (readability, naming, a cheaper shape) — plus file:line, what goes wrong and
+when, and the smallest fix. On a pull request a finding that points at a changed line is an inline
+comment on that line, not a paragraph in the summary; the summary holds the verdict, the scope, the
+test audit and whatever has no line. The verdict is **mergeable** when no High or Medium finding
+remains, otherwise **changes needed**. Reviews are numbered by round; from round 2 the summary
+repeats the previous round's findings as a list, ~~struck through~~ when fixed on the current head,
+plain with one sentence when still open. "No findings" is a valid report; do not pad.
+You never edit files.
