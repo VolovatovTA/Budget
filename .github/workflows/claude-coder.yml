@@ -197,6 +197,10 @@ jobs:
           claude_args: |
             --allowedTools "${{ env.CODER_TOOLS }}"
             --max-turns 60
+      - uses: ./.github/actions/agent-log
+        if: always() && steps.claude.outputs.execution_file != ''
+        with:
+          execution_file: ${{ steps.claude.outputs.execution_file }}
       - name: Diff guard, push, pull request
         id: push
         env:
@@ -385,6 +389,10 @@ jobs:
           claude_args: |
             --allowedTools "${{ env.CODER_TOOLS }}"
             --max-turns 60
+      - uses: ./.github/actions/agent-log
+        if: always() && steps.claude.outputs.execution_file != ''
+        with:
+          execution_file: ${{ steps.claude.outputs.execution_file }}
       - name: Diff guard, push, reply, resolve threads
         if: steps.guard.outputs.go == 'true'
         id: push

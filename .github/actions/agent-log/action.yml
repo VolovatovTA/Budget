@@ -1,0 +1,25 @@
+# Prints what the Claude action did — the tools it called, the calls that were denied and its final text —
+# from the execution file the action leaves on the runner. Without this a run that made no commits is a
+# number in the summary and nothing else.
+name: Agent log
+description: Summarise a claude-code-action run from its execution file
+inputs:
+  execution_file:
+    description: "steps.<claude>.outputs.execution_file"
+    required: true
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        FILE: ${{ inputs.execution_file }}
+      run: |
+        [ -s "$FILE" ] || { echo "::warning::no execution file"; exit 0; }
+        echo "::group::Tool calls"
+        jq -r '.[] | select(.type == "assistant") | .message.content[]? | select(.type == "tool_use")
+               | "\(.name) \(.input | tostring | .[0:160])"' "$FILE"
+        echo "::endgroup::"
+        jq -r '.[] | select(.type == "result")
+               | "turns: \(.num_turns)  denials: \(.permission_denials // [] | length)",
+                 (.permission_denials // [] | .[] | "denied: \(.tool_name) \(.tool_input | tostring | .[0:200])"),
+                 "", "Final text:", (.result // "(none)")' "$FILE"
