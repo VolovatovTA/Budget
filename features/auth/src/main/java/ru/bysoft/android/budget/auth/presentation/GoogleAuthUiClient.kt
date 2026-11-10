@@ -10,9 +10,9 @@ import android.content.IntentSender
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
 import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.android.gms.common.api.ApiException
 import kotlinx.coroutines.tasks.await
 import ru.bysoft.android.budget.auth.R
+import ru.bysoft.android.budget.common.util.runCatchingCancellable
 
 class GoogleAuthUiClient(
     private val context: Context,
@@ -20,36 +20,25 @@ class GoogleAuthUiClient(
 ) {
 
     suspend fun signIn(): IntentSender? {
-        val result = try {
+        val result = runCatchingCancellable {
             oneTapClient.beginSignIn(buildSignInRequest()).await()
-        } catch (e: ApiException) {
-            e.printStackTrace()
-            null
-        }
+        }.onFailure { it.printStackTrace() }.getOrNull()
         return result?.pendingIntent?.intentSender
     }
 
     fun signInWithIntent(intent: Intent?): SignInResult {
-        return try {
-            SignInResult(
-                token = oneTapClient.getSignInCredentialFromIntent(intent).googleIdToken,
-                errorMessage = null
-            )
-        } catch (e: ApiException) {
-            SignInResult(
-                token = null,
-                errorMessage = e.message
-            )
-        }
+        return runCatchingCancellable {
+            oneTapClient.getSignInCredentialFromIntent(intent).googleIdToken
+        }.fold(
+            onSuccess = { SignInResult(token = it, errorMessage = null) },
+            onFailure = { SignInResult(token = null, errorMessage = it.message) },
+        )
     }
 
     // TODO(#39): sign the user out of Google as well when leaving the profile
     suspend fun signOut() {
-        try {
-            oneTapClient.signOut().await()
-        } catch (e: ApiException) {
-            e.printStackTrace()
-        }
+        runCatchingCancellable { oneTapClient.signOut().await() }
+            .onFailure { it.printStackTrace() }
     }
 
     private fun buildSignInRequest(): BeginSignInRequest {
