@@ -180,7 +180,8 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ steps.app.outputs.token }}
-          # The sweep dispatches with GITHUB_TOKEN, so the actor of a dispatched run is github-actions.
+          # The sweep dispatches with GITHUB_TOKEN, so the actor of a dispatched run is github-actions; safe
+          # only because the job's `if` already limits what starts it (the label, a dispatch input).
           allowed_bots: ${{ vars.AGENT_BOT_LOGIN }},github-actions
           prompt: |
             You are the `coder` agent: read .claude/agents/coder.md and AGENTS.md first and follow them.
@@ -312,7 +313,7 @@ jobs:
           fi
           if [ "$rounds" -ge "$MAX_ROUNDS" ]; then
             gh label create needs-maintainer --repo "$GITHUB_REPOSITORY" --color B60205 --force \
-              --description "The fix rounds are over and the reviewers still ask for changes" >/dev/null
+              --description "The agent loop stopped on this PR; the maintainer decides" >/dev/null
             gh pr edit "$PR" --repo "$GITHUB_REPOSITORY" --add-label needs-maintainer
             gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body "**needs maintainer** @$GITHUB_REPOSITORY_OWNER — $MAX_ROUNDS fix rounds are done and the reviewers still ask for changes; the remaining findings need your decision."
             echo "go=false" >> "$GITHUB_OUTPUT"; exit 0
@@ -369,6 +370,8 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ steps.app.outputs.token }}
+          # github-actions is the actor of a sweep dispatch; safe only because the guard step has already
+          # checked the PR (agent/* in this repository, a round due).
           allowed_bots: ${{ vars.AGENT_BOT_LOGIN }},github-actions
           prompt: |
             You are the `coder` agent: read .claude/agents/coder.md and AGENTS.md first and follow them.
@@ -455,7 +458,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh label create needs-maintainer --repo "$GITHUB_REPOSITORY" --color B60205 --force \
-            --description "The fix rounds are over and the reviewers still ask for changes" >/dev/null
+            --description "The agent loop stopped on this PR; the maintainer decides" >/dev/null
           gh pr edit "$PR" --repo "$GITHUB_REPOSITORY" --add-label needs-maintainer
           gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body "**needs maintainer** @$GITHUB_REPOSITORY_OWNER — the coder changed nothing in a fix round (findings declined or gates red), so no new review will come; the open findings need your decision."
 
