@@ -1,0 +1,21 @@
+# The workflows are the least-tested code in the repository and hold the tokens: actionlint checks their
+# syntax, expressions and shell on every change to them (the app build, tests and emulator do not run).
+name: Lint workflows
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - '.github/CODEOWNERS'
+
+jobs:
+  actionlint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: raven-actions/actionlint@v2

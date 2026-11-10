@@ -88,10 +88,15 @@ Decision:
   never the repository `GITHUB_TOKEN`, whose events start no workflows: every agent push runs CI and
   both reviews. Pushes and PR creation happen in workflow steps, never by the agent; a diff touching
   build scripts, workflows, checks, baselines or the agent instructions is rejected unless the issue
-  is labelled `infra`. Revisit when: a fix round weakens a check or most PRs reach the cap.
+  is labelled `infra`. The `agent` and `infra` labels are set by the maintainer only, on issues they
+  wrote or read in full: the workflow cannot tell who applied a label, so the label is the trust
+  decision. An `infra` PR is never auto-merged, whatever class it falls in; the documentation class
+  below therefore covers only `docs/**` and `*.md` outside the agent instructions.
+  Revisit when: a fix round weakens a check or most PRs reach the cap.
 - **Merging.** The maintainer merges by default. Auto-merge (`gh pr merge --auto --squash`) is allowed
   only when all of: CI green; the architect reported "no architecture findings"; the PR is entirely one
-  of — documentation (`docs/**`, `*.md`, `.claude/**`), formatting produced by detekt auto-correct, a
+  of — documentation (`docs/**`, `*.md` except `AGENTS.md` and `CLAUDE.md`; not `.claude/**` or
+  `.github/**`, which need the `infra` label and the maintainer), formatting produced by detekt auto-correct, a
   baseline that only shrinks, a patch-level dependency update. Everything with behaviour or design
   waits for the maintainer.
 - **Time window.** No commits, pushes or PRs on weekdays between 08:00 and 17:00 Europe/Belgrade —

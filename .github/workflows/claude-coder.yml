@@ -58,7 +58,8 @@ env:
     Bash(gh issue view:*),Bash(gh issue comment:*),Bash(gh pr view:*),Bash(gh pr diff:*),
     Bash(gh pr comment:*),Bash(gh run list:*),Bash(gh run view:*)
   # Paths an agent may change only when the issue is labelled `infra`: everything the build executes, every
-  # check and baseline, and the instructions later agent runs follow. CODEOWNERS lists the same paths.
+  # check and baseline, and the instructions later agent runs follow. CODEOWNERS lists the same paths as
+  # globs (GitHub reads globs, grep reads a regex); a path added here is added there in the same change.
   PROTECTED_PATHS: '^(\.github/|\.claude/|build-logic/|gradle/|config/detekt/|konsist/|scripts/|gradlew(\.bat)?$|(AGENTS|CLAUDE)\.md$|\.editorconfig$|.*\.gradle\.kts$|gradle\.properties$|.*detekt-baseline\.xml$|.*lint.*\.xml$)'
   MAX_ROUNDS: 3
 
@@ -232,7 +233,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if ! [[ "$PR" =~ ^[0-9]+$ ]]; then echo "::error::pr must be a number"; exit 1; fi
-          gh pr view "$PR" --repo "$GITHUB_REPOSITORY" --json headRefName,headRefOid,isCrossRepository,comments > "$RUNNER_TEMP/pr.json"
+          gh pr view "$PR" --repo "$GITHUB_REPOSITORY" --json headRefName,headRefOid,isCrossRepository,comments,labels > "$RUNNER_TEMP/pr.json"
           head=$(jq -r .headRefName "$RUNNER_TEMP/pr.json"); sha=$(jq -r .headRefOid "$RUNNER_TEMP/pr.json")
           if [[ "$head" != agent/* ]] || [ "$(jq -r .isCrossRepository "$RUNNER_TEMP/pr.json")" != "false" ]; then
             echo "::notice::#$PR is not an agent branch of this repository; nothing to fix automatically."
@@ -241,12 +242,20 @@ jobs:
           gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/reviews?per_page=100" \
             -q '[.[] | select(.user.login == "claude[bot]")]' > "$RUNNER_TEMP/reviews.json"
           architect_at=$(jq -r '[.[] | select(.body | startswith("**architect review**"))] | last | .submitted_at // ""' "$RUNNER_TEMP/reviews.json")
-          last_fix_at=$(jq -r '[.comments[] | select(.body | startswith("**coder fix"))] | last | .createdAt // ""' "$RUNNER_TEMP/pr.json")
-          rounds=$(jq -r '[.comments[] | select(.body | startswith("**coder fix"))] | length' "$RUNNER_TEMP/pr.json")
+          # Rounds are the workflow's own replies: posted as claude (app token) or github-actions (failure step).
+          fixes='[.comments[] | select((.author.login == "claude" or .author.login == "github-actions") and (.body | startswith("**coder fix")))]'
+          last_fix_at=$(jq -r "$fixes | last | .createdAt // \"\"" "$RUNNER_TEMP/pr.json")
+          rounds=$(jq -r "$fixes | length" "$RUNNER_TEMP/pr.json")
+          if jq -e '[.labels[].name] | index("needs-maintainer")' "$RUNNER_TEMP/pr.json" >/dev/null; then
+            echo "::notice::#$PR waits for the maintainer."
+            echo "go=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
           if [ -z "$architect_at" ] || [[ "$architect_at" < "$last_fix_at" ]]; then
             echo "::notice::#$PR: the last architect review is already answered."
             echo "go=false" >> "$GITHUB_OUTPUT"; exit 0
           fi
+          # Both reviews must be on the head commit: after a push the old ones are stale and the new architect
+          # review (posted after the reviewer's by claude-review.yml) is what starts this job again.
           mergeable=$(jq -r --arg sha "$sha" '
             def latest(p): [.[] | select(.commit_id == $sha and (.body | startswith(p)))] | last | .body // "";
             [latest("**reviewer review**"), latest("**architect review**")] | all(contains("**Verdict:** mergeable"))' "$RUNNER_TEMP/reviews.json")
@@ -256,14 +265,12 @@ jobs:
           fi
           if [ "$rounds" -ge "$MAX_ROUNDS" ]; then
             gh label create needs-maintainer --repo "$GITHUB_REPOSITORY" --color B60205 --force \
-              --description "Three fix rounds are done and the reviewers still ask for changes" >/dev/null
+              --description "$MAX_ROUNDS fix rounds are done and the reviewers still ask for changes" >/dev/null
             gh pr edit "$PR" --repo "$GITHUB_REPOSITORY" --add-label needs-maintainer
             gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body "**needs maintainer** @$GITHUB_REPOSITORY_OWNER — $MAX_ROUNDS fix rounds are done and the reviewers still ask for changes; the remaining findings need your decision."
             echo "go=false" >> "$GITHUB_OUTPUT"; exit 0
           fi
-          echo "go=true" >> "$GITHUB_OUTPUT"
-          echo "head=$head" >> "$GITHUB_OUTPUT"
-          echo "round=$((rounds + 1))" >> "$GITHUB_OUTPUT"
+          { echo "go=true"; echo "head=$head"; echo "round=$((rounds + 1))"; } >> "$GITHUB_OUTPUT"
       - uses: step-security/harden-runner@v2
         if: steps.guard.outputs.go == 'true'
         with:
@@ -357,10 +364,12 @@ jobs:
             reply=$(jq -r '.reply // ""' <<< "$item")
             if [ -n "$reply" ]; then
               comment=$(jq -r --arg t "$thread" '.[] | select(.thread == $t) | .comment' "$RUNNER_TEMP/threads.json")
-              gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/comments/$comment/replies" -f body="$reply" >/dev/null
+              gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/comments/$comment/replies" -f body="$reply" >/dev/null \
+                || echo "::warning::reply on thread $thread failed"
             fi
             if [ "$(jq -r .outcome <<< "$item")" = "fixed" ]; then
-              gh api graphql -F id="$thread" -f query='mutation($id: ID!) { resolveReviewThread(input: {threadId: $id}) { thread { isResolved } } }' >/dev/null
+              gh api graphql -F id="$thread" -f query='mutation($id: ID!) { resolveReviewThread(input: {threadId: $id}) { thread { isResolved } } }' >/dev/null \
+                || echo "::warning::resolving thread $thread failed"
             fi
           done
       - name: Report a failed round

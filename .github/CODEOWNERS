@@ -16,3 +16,5 @@ AGENTS.md           @VolovatovTA
 CLAUDE.md           @VolovatovTA
 .editorconfig       @VolovatovTA
 lint.xml            @VolovatovTA
+*lint-baseline.xml  @VolovatovTA
+*detekt-baseline.xml @VolovatovTA
