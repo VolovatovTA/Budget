@@ -4,6 +4,7 @@ import ru.budget.android.api.data.mapper.ITransactionsDataMapper
 import ru.budget.android.api.data.source.network.ITransactionsApi
 import ru.budget.android.api.data.source.network.entity.transactions.TransferTypeEnum
 import ru.bysoft.android.budget.common.data_entity.ListTransactionsData
+import ru.bysoft.android.budget.common.util.runCatchingCancellable
 
 interface ITransactionsRepo {
     suspend fun getTransactions(
@@ -35,11 +36,6 @@ class TransactionRepo(
     }
 
     override suspend fun deleteTransaction(id: String): Result<Unit> {
-        return try {
-            api.deleteTransaction(id)
-            Result.success(Unit)
-        } catch (e: Throwable) {
-            Result.failure(e)
-        }
+        return runCatchingCancellable { api.deleteTransaction(id) }
     }
 }

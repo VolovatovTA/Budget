@@ -12,7 +12,6 @@
     <ID>ModifierMissing:StatisticScreen.kt$StatisticScreen</ID>
     <ID>ModifierMissing:StatisticSuccessScreen.kt$StatisticSuccessScreen</ID>
     <ID>PreviewPublic:StatisticSuccessScreen.kt$Preview</ID>
-    <ID>TooGenericExceptionCaught:StatisticViewModel.kt$StatisticViewModel$t: Throwable</ID>
     <ID>UnusedPrivateProperty:StatisticViewModel.kt$StatisticViewModel$private val handlerTransactions = errorLogger.handler { state.update { statisticState -&gt; when (statisticState) { is StatisticSuccessState -&gt; { statisticState.copy( listInfo = statisticState.listInfo.map { categoryData -&gt; if (categoryData.amount is UiKitAmountInfoWaiting) { categoryData.copy( amount = UiKitAmountInfoError ) } else { categoryData } } ) } else -&gt; statisticState } } }</ID>
     <ID>ViewModelForwarding:StatisticScreen.kt$StatisticSuccessScreen(state, viewModel)</ID>
     <ID>WildcardImport:StatisticSuccessScreen.kt$import androidx.compose.foundation.layout.*</ID>
