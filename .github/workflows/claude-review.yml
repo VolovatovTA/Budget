@@ -6,9 +6,14 @@ name: Claude review
 on:
   pull_request:
     types: [opened, synchronize, ready_for_review]
-    paths-ignore:
-      - '**/*.md'
-      - 'docs/**'
+    # Documentation gets no agent review; the agent instructions do (decision 0006). Last match wins.
+    paths:
+      - '**'
+      - '!docs/**'
+      - '!**/*.md'
+      - 'AGENTS.md'
+      - 'CLAUDE.md'
+      - '.claude/**'
 
 # A new push cancels the whole run, reviewer and architect alike: an architect review of a stale head
 # would otherwise start a fix round against code that no longer exists.

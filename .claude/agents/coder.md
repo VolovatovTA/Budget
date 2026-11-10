@@ -29,7 +29,8 @@ Find the call sites and the existing tests of what you touch; say in one line wh
 `./gradlew :androidApp:assembleLocalMockDebug testLocalMockDebugUnitTest testDebugUnitTest :konsist:test
 assertModuleGraph detekt`. UI changes are looked at on a device or emulator in both themes (screenshots
 in the PR). Then dispatch the `reviewer` and `architect` agents on the branch, fix what they return or
-record a disagreement in the PR body, and list both reports' outcomes in your final message.
+record a disagreement in the PR body, and list both reports' outcomes in your final message. On CI skip
+that step: the review workflow runs both agents after the push.
 
 **Pull request.** ≤ 300 changed lines (split otherwise; generated files are exempt and say so), one
 topic, title in the form `area: what changed`, body of 2–5 lines without headings, commit lists or
