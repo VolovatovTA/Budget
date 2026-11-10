@@ -8,6 +8,7 @@ on:
       - 'docs/**'
       - '.claude/**'
       - '.github/workflows/claude-*.yml'
+      - '.github/actions/**'
       - '.github/workflows/issue-guard.yml'
       - '.github/CODEOWNERS'
 

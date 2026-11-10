@@ -48,6 +48,8 @@ jobs:
           egress-policy: audit
       - uses: actions/checkout@v4
         with:
+          # The head itself, not the merge ref: inline comments are placed on the head's line numbers.
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
           persist-credentials: false
       - uses: actions/create-github-app-token@v2
@@ -86,10 +88,10 @@ jobs:
             Read .claude/agents/${{ env.ROLE }}.md and follow it exactly; it is your role. Review pull request
             #${{ env.PR }}, round ${{ steps.rounds.outputs.round }}: the diff is
             `git diff origin/${{ env.BASE }}...HEAD`. CI runs the build and the tests; do not run Gradle.
-            From round 2 on, $RUNNER_TEMP/previous.md holds your previous summary and $RUNNER_TEMP/previous.json
-            your previous inline findings with their thread state (`resolved` is the coder's claim, not proof):
-            check each one against the current code.
-            Write the review to $RUNNER_TEMP/review.json with the Write tool, as JSON:
+            From round 2 on, ${{ runner.temp }}/previous.md holds your previous summary and
+            ${{ runner.temp }}/previous.json your previous inline findings with their thread state (`resolved`
+            is the coder's claim, not proof): check each one against the current code.
+            Write the review to ${{ runner.temp }}/review.json with the Write tool, as JSON:
             {"verdict": "mergeable" | "changes needed",
              "summary": "<markdown>",
              "comments": [{"path": "<file in the diff>", "line": <line on the new side of the diff>,
@@ -102,6 +104,10 @@ jobs:
           claude_args: |
             --allowedTools "Read,Write,Glob,Grep,Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git status:*),Bash(gh pr view:*),Bash(gh pr diff:*)"
             --max-turns 25
+      - uses: ./.github/actions/agent-log
+        if: always() && steps.claude.outputs.execution_file != ''
+        with:
+          execution_file: ${{ steps.claude.outputs.execution_file }}
       - name: Post the review with inline findings
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
