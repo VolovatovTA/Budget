@@ -140,7 +140,9 @@ dependencies {
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.koin.core)
+    androidTestImplementation(libs.leakcanary.android.instrumentation)
     debugImplementation(libs.compose.ui.test.manifest)
+    debugImplementation(libs.leakcanary.android)
 
     // Modules
     implementation(project(":shared"))

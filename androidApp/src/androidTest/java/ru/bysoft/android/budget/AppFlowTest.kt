@@ -10,12 +10,17 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.runBlocking
+import leakcanary.LeakAssertions
+import leakcanary.LeakCanary
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.GlobalContext
+import shark.AndroidReferenceMatchers
+import shark.IgnoredReferenceMatcher
+import shark.ReferencePattern
 import ru.bysoft.android.budget.common.token.ITokenStorage
 
 /**
@@ -40,7 +45,11 @@ class AppFlowTest {
     }
 
     @After
-    fun close() = scenario.close()
+    fun close() {
+        scenario.close()
+        // an Activity, ViewModel or view still retained after the flow fails the test
+        LeakAssertions.assertNoLeaks()
+    }
 
     @Test
     fun signIn_showsWalletsAndTransactionsFromTheMockBackend() {
@@ -72,6 +81,21 @@ class AppFlowTest {
     }
 
     private companion object {
+        init {
+            // Known gap (docs/architecture.md, "Known gaps"): the application-scoped
+            // NavHostControllerWrapper keeps the NavHostController and so the Activity. Ignore
+            // exactly that edge until navigation by events replaces it; any new leak still fails.
+            LeakCanary.config = LeakCanary.config.copy(
+                referenceMatchers = AndroidReferenceMatchers.appDefaults +
+                    IgnoredReferenceMatcher(
+                        ReferencePattern.InstanceFieldPattern(
+                            "ru.bysoft.android.budget.common.navigation.NavHostControllerWrapper",
+                            "_controller",
+                        ),
+                    ),
+            )
+        }
+
         const val SPLASH_TIMEOUT = 10_000L
         /** mock APIs answer after a 1 s delay each; wallets, me and transactions load in sequence */
         const val LOAD_TIMEOUT = 20_000L
