@@ -18,10 +18,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.GlobalContext
+import ru.bysoft.android.budget.common.token.ITokenStorage
 import shark.AndroidReferenceMatchers
 import shark.IgnoredReferenceMatcher
 import shark.ReferencePattern
-import ru.bysoft.android.budget.common.token.ITokenStorage
 
 /**
  * End-to-end flows on the localMock flavor: the real app with the mock backend from
@@ -87,15 +87,16 @@ class AppFlowTest {
             // exactly that edge until navigation by events replaces it; any new leak still fails.
             LeakCanary.config = LeakCanary.config.copy(
                 referenceMatchers = AndroidReferenceMatchers.appDefaults +
-                    IgnoredReferenceMatcher(
-                        ReferencePattern.InstanceFieldPattern(
-                            "ru.bysoft.android.budget.common.navigation.NavHostControllerWrapper",
-                            "_controller",
-                        ),
-                    ),
+                    listOf("_controller", "controller").map { field ->
+                        IgnoredReferenceMatcher(
+                            ReferencePattern.InstanceFieldPattern(WRAPPER, field),
+                        )
+                    },
             )
         }
 
+        const val WRAPPER =
+            "ru.bysoft.android.budget.common.navigation.NavHostControllerWrapper"
         const val SPLASH_TIMEOUT = 10_000L
         /** mock APIs answer after a 1 s delay each; wallets, me and transactions load in sequence */
         const val LOAD_TIMEOUT = 20_000L
