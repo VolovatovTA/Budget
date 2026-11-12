@@ -65,6 +65,36 @@ class AmountFormatterTest {
     }
 
     @Test
+    fun `a point typed after a fraction keeps the fraction in en`() {
+        assertEquals("12.5", en.parse("12.5."))
+    }
+
+    @Test
+    fun `a point typed after a fraction keeps the fraction in ru`() {
+        assertEquals("12.5", ru.parse("12.5."))
+    }
+
+    @Test
+    fun `a comma typed after a point fraction keeps the fraction in ru`() {
+        assertEquals("12.5", ru.parse("12.5,"))
+    }
+
+    @Test
+    fun `a pasted ru-style amount in en keeps its fraction`() {
+        assertEquals("1234.5", en.parse("1.234,5"))
+    }
+
+    @Test
+    fun `parse keeps ascii digits only`() {
+        assertEquals("1", en.parse("1٢"))
+    }
+
+    @Test
+    fun `parse of empty is empty`() {
+        assertEquals("", en.parse(""))
+    }
+
+    @Test
     fun `parse of a lone separator is a zero fraction`() {
         assertEquals("0.", en.parse("."))
     }

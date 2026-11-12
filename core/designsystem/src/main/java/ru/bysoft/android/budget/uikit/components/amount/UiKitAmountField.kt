@@ -23,6 +23,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -39,7 +41,7 @@ import ru.bysoft.android.budget.uikit.theme.BudgetTheme
 /**
  * The big centred amount input. [value] is the raw amount (digits with an optional `.` fraction);
  * the field shows it grouped for the device locale and reports the raw value back through
- * [onValueChange]. [currency] sits next to the amount, the pill under it shows [chipLabel]
+ * [onValueChange]; [label] names the input for screen readers. [currency] sits next to the amount, the pill under it shows [chipLabel]
  * (currency / wallet) and calls [onChipClick], where the caller opens its picker.
  */
 @Composable
@@ -48,6 +50,7 @@ fun UiKitAmountField(
     onValueChange: (String) -> Unit,
     currency: String,
     chipLabel: String,
+    label: String,
     onChipClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -73,7 +76,9 @@ fun UiKitAmountField(
             BasicTextField(
                 value = value,
                 onValueChange = { onValueChange(formatter.parse(it)) },
-                modifier = Modifier.width(IntrinsicSize.Min),
+                modifier = Modifier
+                    .width(IntrinsicSize.Min)
+                    .semantics { contentDescription = label },
                 textStyle = style,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -122,6 +127,7 @@ private fun AmountFieldPreview() {
                 onValueChange = {},
                 currency = "€",
                 chipLabel = "Card · EUR",
+                label = "Amount",
                 onChipClick = {},
             )
             UiKitAmountField(
@@ -129,6 +135,7 @@ private fun AmountFieldPreview() {
                 onValueChange = {},
                 currency = "$",
                 chipLabel = "Cash · USD",
+                label = "Amount",
                 onChipClick = {},
             )
         }
