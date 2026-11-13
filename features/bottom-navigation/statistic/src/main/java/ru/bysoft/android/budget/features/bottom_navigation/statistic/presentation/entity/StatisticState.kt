@@ -1,6 +1,6 @@
 package ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity
 
-import androidx.annotation.DrawableRes
+import kotlinx.collections.immutable.ImmutableList
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfo
 
 sealed interface IStatisticState
@@ -16,7 +16,7 @@ data class StatisticWaitingState(
 ) : IStatisticState
 
 data class CategoryInfo(
-    @DrawableRes val icon: Int?,
+    val icons: ImmutableList<Int>,
     val name: String,
     val subtitle: String?,
     val subtitleAddition: Int?,

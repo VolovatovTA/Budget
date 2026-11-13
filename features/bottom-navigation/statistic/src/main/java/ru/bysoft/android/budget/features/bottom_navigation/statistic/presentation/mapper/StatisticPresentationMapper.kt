@@ -1,5 +1,6 @@
 package ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.mapper
 
+import kotlinx.collections.immutable.toImmutableList
 import ru.bysoft.android.budget.common.data_entity.ExpenseCategory
 import ru.bysoft.android.budget.common.data_entity.StatisticData
 import ru.bysoft.android.budget.currency.getBeautifulAmount
@@ -33,7 +34,8 @@ class StatisticPresentationMapper {
     ): CategoryInfo =
         CategoryInfo(
             amount = amountInfo,
-            icon = UiKitIcons.getByName(categoryData.iconName),
+            icons = listOfNotNull(UiKitIcons.getByName(categoryData.iconName))
+                .toImmutableList(),
             subtitle = categoryData.limitAmount?.let {
                 "${getBeautifulAmount(it, categoryData.currency)} "
             },

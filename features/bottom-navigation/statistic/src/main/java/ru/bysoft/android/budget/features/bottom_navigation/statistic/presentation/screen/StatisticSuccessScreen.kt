@@ -16,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.toImmutableList
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.IStatisticViewModel
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.R
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.*
@@ -53,7 +52,7 @@ fun StatisticSuccessScreen(state: StatisticSuccessState, viewModel: IStatisticVi
                     Spacer(modifier = Modifier.height(halfPadding))
                     UiKitListItem(
                         title = categoryInfo.name,
-                        icons = listOfNotNull(categoryInfo.icon).toImmutableList(),
+                        icons = categoryInfo.icons,
                         amount = categoryInfo.amount,
                         amountColor = UiKitColors.colors.type.high,
                         modifier = Modifier
