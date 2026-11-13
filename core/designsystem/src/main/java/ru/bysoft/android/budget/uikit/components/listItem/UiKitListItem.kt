@@ -28,6 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import ru.bysoft.android.budget.uikit.R
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 import ru.bysoft.android.budget.uikit.components.listItem.entity.UiKitAmountInfo
@@ -43,7 +45,7 @@ import ru.bysoft.android.budget.uikit.styles.quarterPadding
 @Composable
 fun UiKitListItem(
     title: String,
-    icons: List<Int>,
+    icons: ImmutableList<Int>,
     amount: UiKitAmountInfo,
     modifier: Modifier = Modifier,
     subTitle: String? = null,
@@ -100,7 +102,7 @@ val lengthOneLetter = 9.dp
 val sizeIcon = 32.dp
 
 @Composable
-private fun UiKitListItemIcons(ides: List<Int>) {
+private fun UiKitListItemIcons(ides: ImmutableList<Int>) {
     when (ides.size) {
         0 -> {
             Spacer(modifier = Modifier.width(padding))
@@ -221,32 +223,36 @@ fun UiKitListItemPreview() {
     Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
         UiKitListItem(
             title = "Title kblyvliylhblkjhblkjblkjblkhjb",
-            icons = listOf(),
+            icons = persistentListOf(),
             amount = UiKitAmountInfoWaiting,
             amountColor = UiKitColors.colors.primary.`1100`
         )
         UiKitListItem(
             title = "Titlevfdjdkfjnbdfkjbdf",
             subTitle = "ksjdvnskdvvgvgvygvygvinsodvnsodvunso",
-            icons = listOf(R.drawable.activity),
+            icons = persistentListOf(R.drawable.activity),
             amount = UiKitAmountInfoSuccess("1000 000 000 $"),
             amountColor = UiKitColors.colors.primary.`1100`
         )
         UiKitListItem(
             title = "Title",
-            icons = listOf(R.drawable.activity, R.drawable.bag),
+            icons = persistentListOf(R.drawable.activity, R.drawable.bag),
             amount = UiKitAmountInfoSuccess("1000"),
             amountColor = UiKitColors.colors.primary.`1100`
         )
         UiKitListItem(
             title = "Title",
-            icons = listOf(R.drawable.activity, R.drawable.bag, R.drawable.coins_rotate),
+            icons = persistentListOf(
+                R.drawable.activity,
+                R.drawable.bag,
+                R.drawable.coins_rotate,
+            ),
             amount = UiKitAmountInfoSuccess("1000"),
             amountColor = UiKitColors.colors.primary.`1100`
         )
         UiKitListItem(
             title = "Title",
-            icons = listOf(
+            icons = persistentListOf(
                 R.drawable.activity,
                 R.drawable.bag,
                 R.drawable.coins_rotate,

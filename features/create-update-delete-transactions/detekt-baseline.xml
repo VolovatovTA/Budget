@@ -26,7 +26,6 @@
     <ID>PreviewPublic:ExchangesComponent.kt$ExchangesComponent</ID>
     <ID>PreviewPublic:TransactionScreenPreview.kt$TransactionScreenPreview</ID>
     <ID>PreviewPublic:WalletChooserComponent.kt$WalletChooserComponentPreview</ID>
-    <ID>UnstableCollections:ExchangesComponent.kt$List&lt;ExchangeFieldState&gt;</ID>
     <ID>WildcardImport:CategoryChooserComponent.kt$import androidx.compose.foundation.*</ID>
     <ID>WildcardImport:CategoryChooserComponent.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:CategoryChooserComponent.kt$import ru.bysoft.android.budget.features.create_update_delete_transactions.presentation.entity.*</ID>

@@ -9,6 +9,7 @@ import com.patrykandpatrick.vico.compose.chart.Chart
 import com.patrykandpatrick.vico.compose.chart.line.lineChart
 import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
+import kotlinx.collections.immutable.persistentListOf
 import ru.bysoft.android.budget.uikit.theme.rememberChartStyle
 import ru.bysoft.android.budget.uikit.theme.rememberMarker
 
@@ -37,4 +38,4 @@ private const val COLOR_1_CODE = 0xffa485e0
 private const val PERSISTENT_MARKER_X = 10f
 
 private val color1 = Color(COLOR_1_CODE)
-private val chartColors = listOf(color1)
+private val chartColors = persistentListOf(color1)

@@ -19,6 +19,7 @@ import com.patrykandpatrick.vico.core.component.shape.LineComponent
 import com.patrykandpatrick.vico.core.component.shape.Shapes
 import com.patrykandpatrick.vico.core.component.text.TextComponent
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
+import kotlinx.collections.immutable.persistentListOf
 import ru.bysoft.android.budget.features.statistic_by_month.presentation.StatisticByFiltersStateSuccess
 import ru.bysoft.android.budget.uikit.components.currencyfield.UiKitPopUp
 import ru.bysoft.android.budget.uikit.components.currencyfield.entity.PopupFieldState
@@ -128,4 +129,4 @@ private const val AXIS_LABEL_ROTATION_DEGREES = 0f
 private val color1 = Color(COLOR_1_CODE)
 private val color2 = Color(COLOR_2_CODE)
 private val color3 = Color(COLOR_3_CODE)
-private val chartColors = listOf(color1, color2, color3)
+private val chartColors = persistentListOf(color1, color2, color3)

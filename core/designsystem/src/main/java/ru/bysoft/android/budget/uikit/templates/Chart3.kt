@@ -35,6 +35,7 @@ import com.patrykandpatrick.vico.core.chart.line.LineChart
 import com.patrykandpatrick.vico.core.chart.values.AxisValuesOverrider
 import com.patrykandpatrick.vico.core.component.shape.Shapes
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
+import kotlinx.collections.immutable.persistentListOf
 import ru.bysoft.android.budget.uikit.R
 import ru.bysoft.android.budget.uikit.theme.rememberChartStyle
 import ru.bysoft.android.budget.uikit.theme.rememberMarker
@@ -87,7 +88,7 @@ private const val AXIS_VALUE_OVERRIDER_Y_FRACTION = 1.2f
 
 private val color1 = Color(COLOR_1_CODE)
 private val color2 = Color(COLOR_2_CODE)
-private val chartColors = listOf(color1, color2)
+private val chartColors = persistentListOf(color1, color2)
 private val axisValueOverrider =
     AxisValuesOverrider.adaptiveYValues(yFraction = AXIS_VALUE_OVERRIDER_Y_FRACTION, round = true)
 private val axisTitleHorizontalPaddingValue = 8.dp

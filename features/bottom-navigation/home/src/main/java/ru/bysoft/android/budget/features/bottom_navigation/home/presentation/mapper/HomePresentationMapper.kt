@@ -3,6 +3,8 @@ package ru.bysoft.android.budget.features.bottom_navigation.home.presentation.ma
 import androidx.compose.material.DismissState
 import androidx.compose.material.DismissValue
 import androidx.compose.material.ExperimentalMaterialApi
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import ru.bysoft.android.budget.common.data_entity.*
 import ru.bysoft.android.budget.common.util.dateFormatOutput
 import ru.bysoft.android.budget.currency.getBeautifulAmount
@@ -70,9 +72,11 @@ class HomePresentationMapper(
             transactionData.date?.let { SimpleDateFormat(dateFormatOutput, locale).format(it) },
             icons =
             if (transactionData is TransactionTransfer) {
-                listOf(R.drawable.coins_rotate)
+                persistentListOf(R.drawable.coins_rotate)
             } else {
-                transactionData.categories.mapNotNull { UiKitIcons.getByName(it.iconName) }
+                transactionData.categories
+                    .mapNotNull { UiKitIcons.getByName(it.iconName) }
+                    .toImmutableList()
             },
             name = transactionData.comment,
             color = when (transactionData) {

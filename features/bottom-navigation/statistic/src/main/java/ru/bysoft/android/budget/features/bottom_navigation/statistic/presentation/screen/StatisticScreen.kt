@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.persistentListOf
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.IStatisticViewModel
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.R
 import ru.bysoft.android.budget.features.bottom_navigation.statistic.presentation.entity.StatisticErrorState
@@ -75,7 +76,7 @@ fun StatisticScreen(viewModel: IStatisticViewModel) {
 fun AddCategoryElement(onClick: () -> Unit) {
     UiKitListItem(
         title = stringResource(R.string.create_new_category),
-        icons = listOf(ru.bysoft.android.budget.uikit.R.drawable.plus_02),
+        icons = persistentListOf(ru.bysoft.android.budget.uikit.R.drawable.plus_02),
         amount = UiKitAmountInfoSuccess(""),
         amountColor = Color.Transparent,
         modifier = Modifier
