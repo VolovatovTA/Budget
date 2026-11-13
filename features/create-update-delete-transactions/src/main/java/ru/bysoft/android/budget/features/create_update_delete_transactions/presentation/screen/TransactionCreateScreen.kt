@@ -321,7 +321,9 @@ private fun TransactionCreateScreenMain(
         item {
             ExchangesComponent(
                 modifier = Modifier,
-                exchangeFieldState = transactionState.exchangeFieldState,
+                exchangeFieldState = remember(transactionState.exchangeFieldState) {
+                    transactionState.exchangeFieldState.toImmutableList()
+                },
                 setAmount = setExchangeAmount,
                 focusManager = focusManager,
                 setFullAmount = setFullAmount,

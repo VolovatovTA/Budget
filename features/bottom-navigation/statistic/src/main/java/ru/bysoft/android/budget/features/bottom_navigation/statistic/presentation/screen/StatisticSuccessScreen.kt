@@ -52,7 +52,7 @@ fun StatisticSuccessScreen(state: StatisticSuccessState, viewModel: IStatisticVi
                     Spacer(modifier = Modifier.height(halfPadding))
                     UiKitListItem(
                         title = categoryInfo.name,
-                        icons = listOfNotNull(categoryInfo.icon),
+                        icons = categoryInfo.icons,
                         amount = categoryInfo.amount,
                         amountColor = UiKitColors.colors.type.high,
                         modifier = Modifier

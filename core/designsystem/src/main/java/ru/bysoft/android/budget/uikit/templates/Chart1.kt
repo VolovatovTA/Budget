@@ -21,6 +21,7 @@ import com.patrykandpatrick.vico.core.chart.decoration.ThresholdLine
 import com.patrykandpatrick.vico.core.component.shape.LineComponent
 import com.patrykandpatrick.vico.core.component.shape.Shapes
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
+import kotlinx.collections.immutable.persistentListOf
 import ru.bysoft.android.budget.uikit.theme.rememberChartStyle
 import ru.bysoft.android.budget.uikit.theme.rememberMarker
 
@@ -83,7 +84,7 @@ private const val BOTTOM_AXIS_TICK_SPACING = 3
 
 private val color1 = Color(COLOR_1_CODE)
 private val color2 = Color(COLOR_2_CODE)
-private val chartColors = listOf(color1)
+private val chartColors = persistentListOf(color1)
 private val thresholdLineLabelMarginValue = 4.dp
 private val thresholdLineLabelHorizontalPaddingValue = 8.dp
 private val thresholdLineLabelVerticalPaddingValue = 2.dp

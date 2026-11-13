@@ -22,6 +22,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 import ru.bysoft.android.budget.currency.getCurrency
 import ru.bysoft.android.budget.features.create_update_delete_transactions.R
@@ -42,7 +44,7 @@ import ru.bysoft.android.budget.uikit.styles.quarterPadding
 @Composable
 fun ExchangesComponent(
     modifier: Modifier = Modifier,
-    exchangeFieldState: List<ExchangeFieldState> = listOf(
+    exchangeFieldState: ImmutableList<ExchangeFieldState> = persistentListOf(
         ExchangeFieldState(baseCurrency = getCurrency("USD"), targetCurrency = getCurrency("RUB")),
         ExchangeFieldState(baseCurrency = getCurrency("USD"), targetCurrency = getCurrency("RUB")),
         ExchangeFieldState(

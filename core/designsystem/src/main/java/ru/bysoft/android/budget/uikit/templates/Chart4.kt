@@ -35,6 +35,7 @@ import com.patrykandpatrick.vico.core.component.shape.LineComponent
 import com.patrykandpatrick.vico.core.component.shape.Shapes
 import com.patrykandpatrick.vico.core.entry.ChartEntryModel
 import com.patrykandpatrick.vico.core.entry.composed.ComposedChartEntryModelProducer
+import kotlinx.collections.immutable.persistentListOf
 import ru.bysoft.android.budget.uikit.theme.rememberChartStyle
 import ru.bysoft.android.budget.uikit.theme.rememberMarker
 
@@ -89,7 +90,7 @@ private val color1 = Color(COLOR_1_CODE)
 private val color2 = Color(COLOR_2_CODE)
 private val color3 = Color(COLOR_3_CODE)
 private val color4 = Color(COLOR_4_CODE)
-private val columnChartColors = listOf(color1, color2, color3)
-private val lineChartColors = listOf(color4)
+private val columnChartColors = persistentListOf(color1, color2, color3)
+private val lineChartColors = persistentListOf(color4)
 private val columnCornerRadius = 2.dp
 private val pointConnector = DefaultPointConnector(cubicStrength = 0f)

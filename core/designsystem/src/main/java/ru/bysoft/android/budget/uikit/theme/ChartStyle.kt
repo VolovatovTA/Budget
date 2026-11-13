@@ -30,12 +30,13 @@ import com.patrykandpatrick.vico.core.chart.line.LineChart
 import com.patrykandpatrick.vico.core.component.shape.LineComponent
 import com.patrykandpatrick.vico.core.component.shape.Shapes
 import com.patrykandpatrick.vico.core.component.shape.shader.DynamicShaders
+import kotlinx.collections.immutable.ImmutableList
 import ru.bysoft.android.budget.uikit.colors.UiKitColors
 
 @Composable
 internal fun rememberChartStyle(
-    columnChartColors: List<Color>,
-    lineChartColors: List<Color>
+    columnChartColors: ImmutableList<Color>,
+    lineChartColors: ImmutableList<Color>
 ): ChartStyle {
     val isDark = UiKitColors.isDark
     return remember(columnChartColors, lineChartColors, isDark) {
@@ -77,5 +78,5 @@ internal fun rememberChartStyle(
 }
 
 @Composable
-fun rememberChartStyle(chartColors: List<Color>) =
+fun rememberChartStyle(chartColors: ImmutableList<Color>) =
     rememberChartStyle(columnChartColors = chartColors, lineChartColors = chartColors)

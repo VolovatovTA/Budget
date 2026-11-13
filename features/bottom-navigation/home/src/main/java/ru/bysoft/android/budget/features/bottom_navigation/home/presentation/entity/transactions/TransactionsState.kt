@@ -3,6 +3,7 @@ package ru.bysoft.android.budget.features.bottom_navigation.home.presentation.en
 import androidx.compose.material.DismissState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
 import ru.bysoft.android.budget.currency.BudgetCurrencyEnum
 
 @Immutable
@@ -23,7 +24,7 @@ data class TransactionInfo
 @OptIn(ExperimentalMaterialApi::class)
 constructor(
     val name: String?,
-    val icons: List<Int>,
+    val icons: ImmutableList<Int>,
     val date: String?,
     val amount: String,
     val currency: BudgetCurrencyEnum,
